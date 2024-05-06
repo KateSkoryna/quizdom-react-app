@@ -4,37 +4,50 @@ import App from "./components/App/App";
 import { NewsComponent } from "./components/NewsComponent/NewsComponents";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./index.css";
-import { HeroComponent } from "./HeroComponent/HeroComponent";
+import { NotFoundPage } from "./pages/NotFoundPage/NotFoundPage";
+import { NewsPage } from "./pages/NewsPage/NewsPage";
+import { HomePage } from "./pages/HomePage/HomePage";
+import { QuizPage } from "./pages/QiuzPage/QuizPage";
+import { LoginPage } from "./pages/LoginPage/LoginPage";
+import { SignupPage } from "./pages/SignupPage/SignupPage";
+import { BlogsPage } from "./pages/BlogsPage/BlogsPage";
 
 const router = createBrowserRouter(
   [
     {
       path: "/",
       element: <App />,
+      errorElement: <NotFoundPage />,
       children: [
         {
           path: "/",
-          element: <HeroComponent />,
+          element: <HomePage />,
         },
         {
           path: "quizes",
-          element: <NewsComponent />,
+          element: <QuizPage />,
         },
         {
           path: "news",
-          element: <NewsComponent />,
+          element: <NewsPage />,
+          children: [
+            {
+              path: "news/:news_id",
+              element: <NewsComponent />,
+            },
+          ],
         },
         {
           path: "blogs",
-          element: <NewsComponent />,
+          element: <BlogsPage />,
         },
         {
           path: "signup",
-          element: <NewsComponent />,
+          element: <SignupPage />,
         },
         {
           path: "login",
-          element: <NewsComponent />,
+          element: <LoginPage />,
         },
       ],
     },

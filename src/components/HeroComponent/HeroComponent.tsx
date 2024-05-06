@@ -1,5 +1,5 @@
 import Card from "react-bootstrap/Card";
-import hero from "../assets/hero.jpg";
+import hero from "../../assets/hero.jpg";
 
 export const HeroComponent = () => {
   return (
