@@ -1,4 +1,41 @@
-:root {
+.navbar {
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+
+.navbar-toggler-icon {
+  background-image: url('./assets/burger.svg');
+}
+
+.navbar-collapse {
+  margin-left: 2rem;
+}
+
+.nav-link {
+  border-bottom: 2px solid transparent;
+}
+
+.nav-link:hover {
+  border-bottom: 2px solid #F7941D;
+}
+
+.nav-link:not(:last-child) {
+  margin-right: 2rem;
+}
+
+.carousel-list {
+  height: 480px;
+}
+
+.carousel-inner {
+  height: 480px;
+}
+
+.carousel-img {
+  object-fit: cover;
+}
+
+/* :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
@@ -29,6 +66,8 @@ body {
   min-width: 320px;
   min-height: 100vh;
 }
+
+
 
 h1 {
   font-size: 3.2em;
@@ -65,4 +104,4 @@ button:focus-visible {
   button {
     background-color: #f9f9f9;
   }
-}
+} */
