@@ -30,7 +30,12 @@ const router = createBrowserRouter(
         {
           path: "news",
           element: <NewsPage />,
-          children: [{ path: "news/:news_id", element: <NewsComponent /> }],
+          children: [
+            {
+              path: "news/:news_id",
+              element: <NewsComponent />,
+            },
+          ],
         },
         {
           path: "blogs",
