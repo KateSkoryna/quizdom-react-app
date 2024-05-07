@@ -13,7 +13,7 @@ const instance = axios.create({
 
 export async function getAllNews() {
   const url = `${NEWS_BASE_URL}?country=us&apiKey=${API_KEY}`;
-
+  console.log(API_KEY, NEWS_BASE_URL);
   try {
     const { data } = await instance.get(url);
     console.log(data);
