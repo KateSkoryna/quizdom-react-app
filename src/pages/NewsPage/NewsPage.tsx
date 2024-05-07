@@ -1,16 +1,16 @@
-import { SearchBar } from "../../SearchBar/SearchBar";
+import { SearchComponent } from "../../components/SearchComponent/SearchComponent";
 import { NewsListComponent } from "../../components/NewsListComponent/NewsListComponent";
 import { useLoaderData } from "react-router-dom";
 import { Article } from "../../types/types";
-import Container from "react-bootstrap/esm/Container";
+import { SearchNavBar } from "../../components/SearchNavBar/SearchNavBar";
 
 export const NewsPage = () => {
   const news: Article[] = useLoaderData() as Article[];
   return (
-    <Container>
-      <h2>News Page</h2>
-      <SearchBar />
+    <>
+      <SearchComponent />
+      <SearchNavBar />
       <NewsListComponent news={news} />
-    </Container>
+    </>
   );
 };

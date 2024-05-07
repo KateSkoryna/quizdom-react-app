@@ -24,6 +24,11 @@
   margin-right: 2rem;
 }
 
+.btn-primary {
+  background-color: #F7941D;
+  border-color: #F7941D;
+}
+
 .carousel-list {
   height: 480px;
 }

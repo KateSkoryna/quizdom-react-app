@@ -11,7 +11,7 @@ const instance = axios.create({
 //======================== NEWS  ==========================
 
 export async function getAllNews() {
-  const url = `${NEWS_BASE_URL}` + `${CATEGORY.GENERAL}&apikey=${API_KEY}`;
+  const url = `${NEWS_BASE_URL}` + `${CATEGORY.TECHNOLOGY}&apikey=${API_KEY}`;
 
   try {
     const { data } = await instance.get(url);
