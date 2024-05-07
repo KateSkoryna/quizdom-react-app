@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - main
+env:
+  VITE_NEWS_API_KEY: 75809539d88649f391543003976d0631
+  VITE_NEWS_BASE_URL: https://newsapi.org/v2/top-headlines
 
 jobs:
   build:
