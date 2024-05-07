@@ -11,12 +11,11 @@ export const NewsListComponent = ({ news }: { news: Article[] }) => {
     <Row xs={1} md={2} lg={3} xl={4} className="g-4">
       {news.map(({ title, image, description }: Article) => (
         <Col key={title}>
-          <Card style={{ width: "18rem" }}>
+          <Card>
             <Card.Img
               variant="top"
               src={image !== null ? image : DEFAULT_IMG}
-              width={150}
-              height={160}
+              className="img-fluid mx-auto d-block"
             />
             <Card.Body>
               <Card.Title>{title}</Card.Title>

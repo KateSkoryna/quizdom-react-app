@@ -36,6 +36,14 @@
   object-fit: cover;
 }
 
+@media screen and (max-width: 768px) {
+  .card {
+    max-width: 24rem;
+    margin-right: auto;
+    margin-left: auto;
+  }
+}
+
 /* :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
