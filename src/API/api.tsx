@@ -1,9 +1,8 @@
 import axios from "axios";
+import { CATEGORY } from "../const/const";
 
 const API_KEY = import.meta.env.VITE_NEWS_API_KEY;
 const NEWS_BASE_URL = import.meta.env.VITE_NEWS_BASE_URL;
-
-console.log(API_KEY, NEWS_BASE_URL);
 
 const instance = axios.create({
   baseURL: NEWS_BASE_URL,
@@ -12,11 +11,11 @@ const instance = axios.create({
 //======================== NEWS  ==========================
 
 export async function getAllNews() {
-  const url = `${NEWS_BASE_URL}?country=us&apiKey=${API_KEY}`;
-  console.log(API_KEY, NEWS_BASE_URL);
+  const url = `${NEWS_BASE_URL}` + `${CATEGORY.GENERAL}&apikey=${API_KEY}`;
+
   try {
     const { data } = await instance.get(url);
-    console.log(data);
+
     return data.articles;
   } catch (error: unknown) {
     if (error instanceof Error) {
