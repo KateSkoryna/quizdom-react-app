@@ -1,7 +1,9 @@
 import axios from "axios";
 
-const API_KEY = process.env.NEWS_API_KEY;
-const NEWS_BASE_URL = process.env.NEWS_BASE_URL;
+const API_KEY = import.meta.env.VITE_NEWS_API_KEY;
+const NEWS_BASE_URL = import.meta.env.VITE_NEWS_BASE_URL;
+
+console.log(API_KEY, NEWS_BASE_URL);
 
 const instance = axios.create({
   baseURL: NEWS_BASE_URL,
