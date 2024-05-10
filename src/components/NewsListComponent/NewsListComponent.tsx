@@ -6,7 +6,6 @@ import Button from "react-bootstrap/Button";
 import { DEFAULT_IMG } from "../../const/const";
 
 export const NewsListComponent = ({ news }: { news: Article[] }) => {
-  console.log(news);
   return (
     <Row xs={1} md={2} lg={3} xl={4} className="g-4">
       {news.map(({ title, image, description }: Article) => (

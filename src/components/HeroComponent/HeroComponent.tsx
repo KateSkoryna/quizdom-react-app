@@ -1,17 +1,14 @@
 import Card from "react-bootstrap/Card";
-import hero from "../../assets/hero.jpg";
+import { HeroComponentProps } from "../../types/types";
 
-export const HeroComponent = () => {
+export const HeroComponent = ({ joke, hero, person }: HeroComponentProps) => {
   return (
-    <Card className="bg-dark text-dark">
+    <Card className="bg-light text-dark">
       <Card.Img src={hero} alt="Card image" />
       <Card.ImgOverlay>
-        <Card.Title>Card title</Card.Title>
-        <Card.Text>
-          This is a wider card with supporting text below as a natural lead-in
-          to additional content. This content is a little bit longer.
-        </Card.Text>
-        <Card.Text>Last updated 3 mins ago</Card.Text>
+        <Card.Title>Dive into the Depths of Coding Wisdom</Card.Title>
+        <Card.Text>{joke}</Card.Text>
+        <Card.Text>{person}</Card.Text>
       </Card.ImgOverlay>
     </Card>
   );
