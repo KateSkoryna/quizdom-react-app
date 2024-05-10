@@ -1,4 +1,5 @@
 .navbar {
+  background-color: #00093C;
   padding-top: 1rem;
   padding-bottom: 1rem;
 }
@@ -26,6 +27,14 @@
 
 .carousel-list {
   height: 480px;
+}
+
+.offcanvas-header .btn-close {
+  --bs-btn-close-bg: url('./assets/close.svg');
+}
+
+.nav-link .offcanvas-link {
+  height: 50px;
 }
 
 .carousel-inner {

@@ -12,6 +12,7 @@ import { LoginPage } from "./pages/LoginPage/LoginPage";
 import { SignupPage } from "./pages/SignupPage/SignupPage";
 import { BlogsPage } from "./pages/BlogsPage/BlogsPage";
 import { getAllNews } from "./API/api";
+import { AboutComponent } from "./components/About/About";
 
 const router = createBrowserRouter(
   [
@@ -23,6 +24,10 @@ const router = createBrowserRouter(
         {
           path: "/",
           element: <HomePage />,
+        },
+        {
+          path: "/about",
+          element: <AboutComponent />,
         },
         {
           path: "quizes",
