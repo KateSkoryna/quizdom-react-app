@@ -29,6 +29,20 @@
   border-color: #F7941D;
 }
 
+.btn-primary:hover {
+  background-color: #00093C;
+  border-color: #00093C;
+}
+.react-datepicker-wrapper {
+  width: 100%;
+}
+.form-date-input {
+  border: var(--bs-border-width) solid var(--bs-border-color);
+  border-radius: var(--bs-border-radius);
+  transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+  width: 50%;
+}
+
 .carousel-list {
   height: 480px;
 }

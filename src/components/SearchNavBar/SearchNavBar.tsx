@@ -10,11 +10,7 @@ export const SearchNavBar = () => {
       <Nav className="d-flex justify-content-center gap-5">
         {values.map((category: string) => (
           <Nav.Item key={category}>
-            <Nav.Link
-              as={Button}
-              className="text-light"
-              style={{ width: "10rem" }}
-            >
+            <Nav.Link as={Button} style={{ width: "10rem", color: "white" }}>
               {category}
             </Nav.Link>
           </Nav.Item>
