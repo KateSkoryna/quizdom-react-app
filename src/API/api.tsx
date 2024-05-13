@@ -23,10 +23,8 @@ export async function getAllNews() {
 }
 
 export async function getJoke() {
-  const url = `${JOKES_BASE_URL}`;
   try {
-    const { data } = await axios.get(url);
-
+    const { data } = await axios.get(JOKES_BASE_URL);
     return data;
   } catch (error: unknown) {
     if (error instanceof Error) {

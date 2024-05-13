@@ -10,7 +10,7 @@ export const HomePage = () => {
   return (
     <>
       <HeroComponent
-        joke={joke ? joke : setup + " " + delivery}
+        joke={joke || setup + " " + delivery}
         hero={hero}
         person={person}
       />
