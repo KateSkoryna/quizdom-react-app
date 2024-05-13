@@ -1,32 +1,32 @@
-import Card from "react-bootstrap/Card";
-import Form from "react-bootstrap/Form";
-import image from "../../assets/hero.jpg";
-import FormControl from "react-bootstrap/esm/FormControl";
+import Nav from "react-bootstrap/Nav";
 import Button from "react-bootstrap/esm/Button";
+import { CATEGORY } from "../../const/const";
 import Container from "react-bootstrap/esm/Container";
+import FormControl from "react-bootstrap/esm/FormControl";
+import Form from "react-bootstrap/Form";
 
 export const SearchComponent = () => {
+  const values = Object.values(CATEGORY);
   return (
-    <Card className="bg-light text-dark mb-4">
-      <Card.Img src={image} alt="Card image" />
-      <Card.ImgOverlay>
-        <Container>
-          <Card.Title>Search</Card.Title>
-          <Card.Text>
-            Some quick example text to build on the card title and make up the
-            bulk of the card's content.
-          </Card.Text>
-          <Form className="d-flex mx-auto" style={{ width: "60rem" }}>
-            <FormControl
-              type="search"
-              placeholder="Search"
-              className="me-2"
-              aria-label="Search"
-            />
-            <Button type="submit">Search</Button>
-          </Form>
-        </Container>
-      </Card.ImgOverlay>
-    </Card>
+    <Container className="my-5">
+      <Form className="d-flex mx-auto mb-5">
+        <FormControl
+          type="search"
+          placeholder="Search"
+          className="me-2"
+          aria-label="Search"
+        />
+        <Button type="submit">Search</Button>
+      </Form>
+      <Nav className="d-flex justify-content-center gap-5">
+        {values.map((category: string) => (
+          <Nav.Item key={category}>
+            <Nav.Link as={Button} style={{ width: "10rem", color: "white" }}>
+              {category}
+            </Nav.Link>
+          </Nav.Item>
+        ))}
+      </Nav>
+    </Container>
   );
 };

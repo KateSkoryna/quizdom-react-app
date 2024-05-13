@@ -15,7 +15,7 @@ export const NavbarComponent = () => {
 
   return (
     <>
-      <Navbar expand="lg" className="navbar" data-bs-theme="dark">
+      <Navbar expand="lg" data-bs-theme="dark" fixed="top">
         <Container>
           <Navbar.Brand as={Link} to="/">
             <Image src={logo} />

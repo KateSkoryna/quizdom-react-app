@@ -1,0 +1,28 @@
+:root {
+    --primary-color: #F7941D;
+    --secondary-color: #00093C;
+    --text-color: #fff;
+    --transition-duration: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+}
+
+section {
+    margin-top: 100px;
+}
+
+button.btn-primary {
+    background-color: var(--primary-color);
+    border: none;
+    border-radius: 6px;
+    color: var(--text-color);
+    padding: 5px 10px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+button.btn-primary:hover, button.btn-primary:focus {
+    background-color: var(--secondary-color);
+        border: none;
+}

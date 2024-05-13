@@ -51,7 +51,6 @@ export const LoginPage = () => {
           <Form.Control
             type="email"
             placeholder="Enter your email"
-            className="form-date-input"
             autoComplete="email"
             {...register("email", { required: "Email is required" })}
           />
@@ -67,7 +66,6 @@ export const LoginPage = () => {
             type="password"
             placeholder="Enter your password"
             autoComplete="password"
-            className="form-date-input"
             {...register("password", { required: "Password is required" })}
           />
           {errors.password && (

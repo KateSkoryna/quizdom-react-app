@@ -53,15 +53,14 @@ export const SignupPage = () => {
   }, [watch]);
 
   return (
-    <Container className="my-4" fluid="md">
+    <Container className="signup-section" fluid="md">
       <h2 className="form-title">Signup Form</h2>
       <Form onSubmit={handleSubmit(onSubmit, onError)}>
-        <Form.Group className="mb-3" controlId="formBasicName">
+        <Form.Group className="mb-4" controlId="formBasicName">
           <Form.Label>Name</Form.Label>
           <Form.Control
             type="text"
             placeholder="Enter your name"
-            className="form-date-input"
             autoComplete="off"
             {...register("name", { required: "Name is required" })}
           />
@@ -69,12 +68,11 @@ export const SignupPage = () => {
             <Form.Text className="text-danger">{errors.name.message}</Form.Text>
           )}
         </Form.Group>
-        <Form.Group className="mb-3" controlId="formBasicEmail">
+        <Form.Group className="mb-4" controlId="formBasicEmail">
           <Form.Label>Email</Form.Label>
           <Form.Control
             type="email"
             placeholder="Enter your email"
-            className="form-date-input"
             autoComplete="email"
             {...register("email", { required: "Email is required" })}
           />
@@ -86,7 +84,7 @@ export const SignupPage = () => {
         </Form.Group>
         <Row>
           <Col xs={12} sm={12} md={6} lg={6}>
-            <Form.Group className="mb-3" controlId="formBasicDateofBirth">
+            <Form.Group className="mb-4" controlId="formBasicDateofBirth">
               <Form.Label>Date of Birth</Form.Label>
               <Controller
                 name="dateOfBirth"
@@ -111,7 +109,7 @@ export const SignupPage = () => {
             </Form.Group>
           </Col>
           <Col xs={12} sm={12} md={6} lg={6}>
-            <Form.Group className="mb-3" controlId="formBasicGender">
+            <Form.Group className="mb-4" controlId="formBasicGender">
               <Form.Label>Gender</Form.Label>
               <Form.Select
                 className="form-select-custom"
@@ -132,13 +130,12 @@ export const SignupPage = () => {
             </Form.Group>
           </Col>
         </Row>
-        <Form.Group className="mb-3" controlId="formBasicPassword">
+        <Form.Group className="mb-4" controlId="formBasicPassword">
           <Form.Label>Password</Form.Label>
           <Form.Control
             type="password"
             placeholder="Enter your password"
             autoComplete="password"
-            className="form-date-input"
             {...register("password", { required: "Password is required" })}
           />
           {errors.password && (
@@ -152,7 +149,6 @@ export const SignupPage = () => {
           <Form.Control
             type="password"
             placeholder="Enter your password"
-            className="form-date-input"
             autoComplete="new-password"
             {...register("confirmPassword", {
               required: "Password is required",

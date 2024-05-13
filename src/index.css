@@ -1,2 +1,5 @@
+@import "./globalStyles.css";
+@import "../src/components/App/App.css";
 @import "../src/components//NavbarComponent//NavbarComponent.css";
 @import "../src/components/NewsListComponent/NewsListComponent.css";
+@import "../src/pages/SignupPage/SignupPage.css";

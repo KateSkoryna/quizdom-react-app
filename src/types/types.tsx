@@ -1,10 +1,10 @@
-export type Article = {
+export interface Article {
   author: string;
   title: string;
   url: string;
   description?: string;
   image?: string;
-};
+}
 
 export interface currentUser {
   email: string;
