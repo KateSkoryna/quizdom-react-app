@@ -1,8 +1,5 @@
 import Card from "react-bootstrap/Card";
 import { HeroComponentProps } from "../../types/types";
-import hero from "../../assets/hero.jpg";
-import Container from "react-bootstrap/esm/Container";
-
 
 export const HeroComponent = ({ joke, hero, person }: HeroComponentProps) => {
   return (
