@@ -1,0 +1,7 @@
+@media screen and (max-width: 768px) {
+    .card {
+        max-width: 24rem;
+        margin-right: auto;
+        margin-left: auto;
+    }
+}
