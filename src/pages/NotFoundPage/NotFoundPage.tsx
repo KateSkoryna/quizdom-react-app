@@ -7,6 +7,8 @@ export const NotFoundPage = () => {
     message?: string;
   };
 
+  console.log(error);
+
   return (
     <div id="error-page">
       <NavbarComponent />
