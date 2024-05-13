@@ -1,37 +1,33 @@
 import { useState, useEffect } from "react";
 import { Container, Form, Button } from "react-bootstrap";
-
-import { useForm, Controller, FieldErrors } from "react-hook-form";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { FaCalendarDay } from "react-icons/fa";
+import { useForm, Controller, FieldErrors } from "react-hook-form";
+import { UserData } from "../../types/types";
 
-interface FormValues {
-  name: string;
-  email: string;
-  dateOfBirth: string;
-  password: string;
-  confirmPassword: string;
-}
+const initState = {
+  name: "",
+  email: "",
+  dateOfBirth: "",
+  gender: "",
+  password: "",
+  confirmPassword: "",
+};
 
 export const SignupPage = () => {
-  const initState = {
-    name: "",
-    email: "",
-    dateOfBirth: "",
-    password: "",
-    confirmPassword: "",
+  const [userData, setUserData] = useState(initState);
+
+  const onSubmit = (values: UserData): void => {
+    setUserData(values);
+    console.log("Values 32", values);
+    reset(userData);
   };
 
-  const [initialValues, setInitialValues] = useState(initState);
-
-  const onSubmit = (values: FormValues): void => {
-    setInitialValues(values);
-    console.log("Values:::", JSON.stringify(values));
-  };
-
-  const onError = (errors: FieldErrors<FormValues>): void => {
-    console.log("ERROR:::", errors);
+  const onError = (errors: FieldErrors<UserData>): void => {
+    console.log("ERROR:", errors);
   };
 
   const {
@@ -39,16 +35,17 @@ export const SignupPage = () => {
     register,
     handleSubmit,
     watch,
+    reset,
     formState: { errors },
   } = useForm({
     mode: "onTouched",
     reValidateMode: "onSubmit",
-    defaultValues: initialValues,
+    defaultValues: userData,
   });
 
   useEffect(() => {
     const subscription = watch((value, { name, type }) => {
-      console.log(">>", value, name, type);
+      console.log("53", value, name, type);
       // {1: '1', 2: '9'} '2' 'change'
     });
 
@@ -56,13 +53,15 @@ export const SignupPage = () => {
   }, [watch]);
 
   return (
-    <Container className="my-4">
+    <Container className="my-4" fluid="md">
+      <h2 className="form-title">Signup Form</h2>
       <Form onSubmit={handleSubmit(onSubmit, onError)}>
         <Form.Group className="mb-3" controlId="formBasicName">
           <Form.Label>Name</Form.Label>
           <Form.Control
             type="text"
             placeholder="Enter your name"
+            className="form-date-input"
             autoComplete="off"
             {...register("name", { required: "Name is required" })}
           />
@@ -75,6 +74,7 @@ export const SignupPage = () => {
           <Form.Control
             type="email"
             placeholder="Enter your email"
+            className="form-date-input"
             autoComplete="email"
             {...register("email", { required: "Email is required" })}
           />
@@ -84,37 +84,61 @@ export const SignupPage = () => {
             </Form.Text>
           )}
         </Form.Group>
-        <Form.Group className="mb-3" controlId="formBasicDateofBirth">
-          <Form.Label>Date of Birth</Form.Label>
-          <Controller
-            name="dateOfBirth"
-            control={control}
-            render={({ field: { onChange, value } }) => (
-              <DatePicker
-                showIcon
-                icon={<FaCalendarDay />}
-                toggleCalendarOnIconClick
-                isClearable
-                popperPlacement="bottom-start"
-                className="form-date-input"
-                selected={value ? new Date(value) : null}
-                onChange={onChange}
+        <Row>
+          <Col xs={12} sm={12} md={6} lg={6}>
+            <Form.Group className="mb-3" controlId="formBasicDateofBirth">
+              <Form.Label>Date of Birth</Form.Label>
+              <Controller
+                name="dateOfBirth"
+                control={control}
+                render={({ field: { onChange, value } }) => (
+                  <DatePicker
+                    showIcon
+                    icon={<FaCalendarDay />}
+                    toggleCalendarOnIconClick
+                    popperPlacement="bottom-start"
+                    className="form-date-input"
+                    selected={value ? new Date(value) : null}
+                    onChange={onChange}
+                  />
+                )}
               />
-            )}
-          />
-          {errors.dateOfBirth && (
-            <Form.Text className="text-danger">
-              {errors.dateOfBirth.message}
-            </Form.Text>
-          )}
-        </Form.Group>
-
+              {errors.dateOfBirth && (
+                <Form.Text className="text-danger">
+                  {errors.dateOfBirth.message}
+                </Form.Text>
+              )}
+            </Form.Group>
+          </Col>
+          <Col xs={12} sm={12} md={6} lg={6}>
+            <Form.Group className="mb-3" controlId="formBasicGender">
+              <Form.Label>Gender</Form.Label>
+              <Form.Select
+                className="form-select-custom"
+                aria-label="Default select example"
+                {...register("gender", { required: "Gender is required" })}
+              >
+                <option>Choose your identity</option>
+                <option value="human">Human</option>
+                <option value="animal">Animal</option>
+                <option value="bird">Bird</option>
+                <option value="fish">Fish</option>
+              </Form.Select>
+              {errors.gender && (
+                <Form.Text className="text-danger">
+                  {errors.gender.message}
+                </Form.Text>
+              )}
+            </Form.Group>
+          </Col>
+        </Row>
         <Form.Group className="mb-3" controlId="formBasicPassword">
           <Form.Label>Password</Form.Label>
           <Form.Control
             type="password"
             placeholder="Enter your password"
             autoComplete="password"
+            className="form-date-input"
             {...register("password", { required: "Password is required" })}
           />
           {errors.password && (
@@ -123,12 +147,12 @@ export const SignupPage = () => {
             </Form.Text>
           )}
         </Form.Group>
-
-        <Form.Group className="mb-3" controlId="confirmBasicPassword">
+        <Form.Group className="mb-4" controlId="confirmBasicPassword">
           <Form.Label>Confirm Password</Form.Label>
           <Form.Control
             type="password"
             placeholder="Enter your password"
+            className="form-date-input"
             autoComplete="new-password"
             {...register("confirmPassword", {
               required: "Password is required",
@@ -140,7 +164,7 @@ export const SignupPage = () => {
             </Form.Text>
           )}
         </Form.Group>
-        <Button variant="primary" type="submit">
+        <Button variant="primary" type="submit" style={{ width: "100%" }}>
           Submit
         </Button>
       </Form>
