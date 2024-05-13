@@ -24,8 +24,8 @@
 }
 
     .offcanvas {
-    background-color: #00093C ;
-    width: 100%;
+    background-color: #00093C !important ;
+    width: 50%;
 }
 
 .offcanvas-header .btn-close {
