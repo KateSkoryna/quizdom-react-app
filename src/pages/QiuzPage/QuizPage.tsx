@@ -1,10 +1,9 @@
-import { SearchBar } from "../../SearchBar/SearchBar";
+import { SearchComponent } from "../../components/SearchComponent/SearchComponent";
 
 export const QuizPage = () => {
   return (
     <>
-      <h2>Quiz Page</h2>
-      <SearchBar />
+      <SearchComponent />
     </>
   );
 };

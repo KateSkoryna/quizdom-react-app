@@ -11,8 +11,8 @@ import { QuizPage } from "./pages/QiuzPage/QuizPage";
 import { LoginPage } from "./pages/LoginPage/LoginPage";
 import { SignupPage } from "./pages/SignupPage/SignupPage";
 import { BlogsPage } from "./pages/BlogsPage/BlogsPage";
-import { getAllNews } from "./API/api";
 import { AboutComponent } from "./components/About/About";
+import { getAllNews, getJoke } from "./API/api";
 
 const router = createBrowserRouter(
   [
@@ -24,6 +24,9 @@ const router = createBrowserRouter(
         {
           path: "/",
           element: <HomePage />,
+          loader: async () => {
+            return await getJoke();
+          },
         },
         {
           path: "/about",
@@ -37,7 +40,7 @@ const router = createBrowserRouter(
           path: "news",
           element: <NewsPage />,
           loader: async () => {
-            return getAllNews();
+            return await getAllNews();
           },
           children: [
             {
