@@ -23,9 +23,9 @@
     margin-right: 2rem;
 }
 
-.offcanvas-lg .offcanvas-end {
+    .offcanvas {
+    background-color: #00093C ;
     width: 100%;
-    background-color: #00093C;
 }
 
 .offcanvas-header .btn-close {

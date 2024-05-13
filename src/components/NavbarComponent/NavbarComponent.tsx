@@ -24,7 +24,13 @@ export const NavbarComponent = () => {
             aria-controls="basic-navbar-nav"
             onClick={handleShow}
           />
-          <Offcanvas show={show} onHide={handleClose} responsive="lg">
+          <Offcanvas
+            show={show}
+            onHide={handleClose}
+            responsive="lg"
+            placement={"end"}
+            className="offcanvas"
+          >
             <Offcanvas.Header closeButton />
             <Offcanvas.Body>
               <Nav className="me-auto">
