@@ -1,7 +1,5 @@
 .navbar {
     background-color: #00093C;
-    padding-top: 1rem;
-    padding-bottom: 1rem;
 }
 
 .navbar-toggler-icon {
@@ -25,7 +23,7 @@
     margin-right: 2rem;
 }
 
-.offcanvas-lg {
+.offcanvas-lg .offcanvas-end {
     width: 100%;
     background-color: #00093C;
 }
