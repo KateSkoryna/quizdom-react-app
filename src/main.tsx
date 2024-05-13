@@ -25,7 +25,7 @@ const router = createBrowserRouter(
           path: "/",
           element: <HomePage />,
           loader: async () => {
-            return await getJoke();
+            return getJoke();
           },
         },
         {
@@ -40,7 +40,7 @@ const router = createBrowserRouter(
           path: "news",
           element: <NewsPage />,
           loader: async () => {
-            return await getAllNews();
+            return getAllNews();
           },
           children: [
             {

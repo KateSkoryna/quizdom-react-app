@@ -6,6 +6,8 @@ import { Joke } from "../../types/types";
 
 export const HomePage = () => {
   const { joke, setup, delivery } = useLoaderData() as Joke;
+
+  console.log(joke, setup, delivery);
   return (
     <>
       <HeroComponent
