@@ -16,12 +16,17 @@
   border-bottom: 2px solid transparent;
 }
 
-.nav-link:hover {
+.nav-link.active, .nav-link:hover {
   border-bottom: 2px solid #F7941D;
 }
 
 .nav-link:not(:last-child) {
   margin-right: 2rem;
+}
+
+.btn-primary {
+  background-color: #F7941D;
+  border-color: #F7941D;
 }
 
 .carousel-list {
