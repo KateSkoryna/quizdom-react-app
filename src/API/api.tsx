@@ -8,8 +8,7 @@ const JOKES_BASE_URL = import.meta.env.VITE_JOKE_BASE_URL;
 //======================== NEWS  ==========================
 
 export async function getAllNews() {
-  const url = `${NEWS_BASE_URL}` + `${CATEGORY.TECHNOLOGY}&apikey=${API_KEY}`;
-
+  const url = `${NEWS_BASE_URL}category${CATEGORY.TECHNOLOGY}&apikey=${API_KEY}`;
   try {
     const { data } = await axios.get(url);
 
