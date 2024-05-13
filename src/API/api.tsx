@@ -11,7 +11,6 @@ export async function getAllNews() {
   const url = `${NEWS_BASE_URL}category${CATEGORY.TECHNOLOGY}&apikey=${API_KEY}`;
   try {
     const { data } = await axios.get(url);
-
     return data.articles;
   } catch (error: unknown) {
     if (error instanceof Error) {
