@@ -1,0 +1,39 @@
+.navbar {
+    background-color: #00093C;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+}
+
+.navbar-toggler-icon {
+    background-image: url('../../assets/burger.svg');
+}
+
+.navbar-collapse {
+    margin-left: 2rem;
+    padding-right: 12px;
+}
+
+.nav-link {
+    border-bottom: 2px solid transparent;
+}
+
+.nav-link:hover {
+    border-bottom: 2px solid #F7941D;
+}
+
+.nav-link:not(:last-child) {
+    margin-right: 2rem;
+}
+
+.offcanvas-lg {
+    width: 100%;
+    background-color: #00093C;
+}
+
+.offcanvas-header .btn-close {
+    --bs-btn-close-bg: url('../../assets//close.svg');
+}
+
+.nav-link .offcanvas-link {
+    height: 50px;
+}

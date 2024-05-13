@@ -7,10 +7,6 @@ import logo from "../../assets/logo.svg";
 import Offcanvas from "react-bootstrap/Offcanvas";
 import { useState } from "react";
 
-// const navbar = {
-//   backgroundColor: "#00093C",
-// };
-
 export const NavbarComponent = () => {
   const [show, setShow] = useState(false);
 
@@ -28,13 +24,7 @@ export const NavbarComponent = () => {
             aria-controls="basic-navbar-nav"
             onClick={handleShow}
           />
-          <Offcanvas
-            show={show}
-            onHide={handleClose}
-            responsive="lg"
-            style={{ backgroundColor: "#00093C" }}
-            placement={"end"}
-          >
+          <Offcanvas show={show} onHide={handleClose} responsive="lg">
             <Offcanvas.Header closeButton />
             <Offcanvas.Body>
               <Nav className="me-auto">
