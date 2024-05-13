@@ -25,4 +25,5 @@ const getPerson = (): string => {
   return famousPersons[Math.floor(Math.random() * famousPersons.length)];
 };
 
-export const person: string = getPerson();
+// eslint-disable-next-line react-refresh/only-export-components
+export const PERSON: string = getPerson();
