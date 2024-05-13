@@ -19,11 +19,11 @@ const router = createBrowserRouter(
     {
       path: "/",
       element: <App />,
-      errorElement: <NotFoundPage />,
       children: [
         {
           path: "/",
           element: <HomePage />,
+          errorElement: <NotFoundPage />,
           loader: async () => {
             return getJoke();
           },
@@ -35,10 +35,12 @@ const router = createBrowserRouter(
         {
           path: "quizes",
           element: <QuizPage />,
+          errorElement: <NotFoundPage />,
         },
         {
           path: "news",
           element: <NewsPage />,
+          errorElement: <NotFoundPage />,
           loader: async () => {
             return getAllNews();
           },
@@ -46,12 +48,14 @@ const router = createBrowserRouter(
             {
               path: "news/:news_id",
               element: <NewsComponent />,
+              errorElement: <NotFoundPage />,
             },
           ],
         },
         {
           path: "blogs",
           element: <BlogsPage />,
+          errorElement: <NotFoundPage />,
         },
         {
           path: "signup",
