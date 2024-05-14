@@ -12,7 +12,7 @@ import { LoginPage } from "./pages/LoginPage/LoginPage";
 import { SignupPage } from "./pages/SignupPage/SignupPage";
 import { BlogsPage } from "./pages/BlogsPage/BlogsPage";
 import { AboutComponent } from "./components/About/About";
-import { getAllNews, getJoke } from "./API/api";
+import { getAllNews } from "./API/api";
 
 const router = createBrowserRouter(
   [
@@ -24,9 +24,6 @@ const router = createBrowserRouter(
           path: "/",
           element: <HomePage />,
           errorElement: <NotFoundPage />,
-          loader: async () => {
-            return getJoke();
-          },
         },
         {
           path: "/about",

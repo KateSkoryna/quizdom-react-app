@@ -7,9 +7,7 @@ function App() {
   return (
     <>
       <NavbarComponent />
-      <div className="main">
-        <Outlet />
-      </div>
+      <Outlet />
       <Footer />
     </>
   );

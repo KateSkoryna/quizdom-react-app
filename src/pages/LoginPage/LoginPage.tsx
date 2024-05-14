@@ -43,7 +43,7 @@ export const LoginPage = () => {
   }, [watch]);
 
   return (
-    <Container className="my-4" fluid="md">
+    <Container className="form-container" fluid="md">
       <h2 className="form-title">Log In</h2>
       <Form onSubmit={handleSubmit(onSubmit, onError)}>
         <Form.Group className="mb-3" controlId="formBasicEmail">

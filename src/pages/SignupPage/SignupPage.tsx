@@ -53,10 +53,10 @@ export const SignupPage = () => {
   }, [watch]);
 
   return (
-    <Container className="signup-section" fluid="md">
+    <Container className="form-container">
       <h2 className="form-title">Signup Form</h2>
       <Form onSubmit={handleSubmit(onSubmit, onError)}>
-        <Form.Group className="mb-4" controlId="formBasicName">
+        <Form.Group controlId="formBasicName">
           <Form.Label>Name</Form.Label>
           <Form.Control
             type="text"

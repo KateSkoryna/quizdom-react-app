@@ -8,7 +8,7 @@ import Form from "react-bootstrap/Form";
 export const SearchComponent = () => {
   const values = Object.values(CATEGORY);
   return (
-    <Container className="my-5">
+    <Container className="form-container">
       <Form className="d-flex mx-auto mb-4">
         <FormControl
           type="search"

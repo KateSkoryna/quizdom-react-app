@@ -5,12 +5,8 @@
     --transition-duration: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
 }
 
-section {
-    margin-top: 100px;
-}
-
 body {
-    color: var(--text-color);
+    font-family: "Montserrat", sans-serif;
 }
 
 button.btn-primary {

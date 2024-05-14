@@ -1,7 +1,31 @@
-@media screen and (max-width: 768px) {
-    .card {
-        max-width: 24rem;
-        margin-right: auto;
-        margin-left: auto;
-    }
+.news-container {
+    margin-bottom: 120px;
+}
+
+
+.news-card-title {
+    font-size: 18px;
+}
+
+.news-card-body {
+    max-height: 240px;
+}
+
+.news-card {
+    margin-top: 0;
+    width: 300px;
+}
+.card-img {
+    max-width: 100%;
+    max-height: 160px;
+}
+
+.news-link {
+    background-color: var(--primary-color);
+    color: var(--text-color);
+    border: none;
+}
+
+.news-link:hover {
+    background-color: var(--secondary-color);
 }
