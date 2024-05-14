@@ -9,7 +9,7 @@ body {
     font-family: "Montserrat", sans-serif;
 }
 
-button.btn-primary {
+.btn.btn-primary {
     background-color: var(--primary-color);
     border: none;
     border-radius: 6px;
@@ -22,7 +22,7 @@ button.btn-primary {
     cursor: pointer;
 }
 
-button.btn-primary:hover, button.btn-primary:focus {
+.btn.btn-primary:hover, .btn.btn-primary:focus {
     background-color: var(--secondary-color);
     color: var(--text-color);
     border: none;

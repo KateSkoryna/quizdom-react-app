@@ -21,12 +21,12 @@ export const NewsListComponent = ({ news }: { news: Article[] }) => {
                 <Card.Title>{truncateString(title, 52)}</Card.Title>
                 <Card.Text>
                   {description
-                    ? truncateString(description, 68)
+                    ? truncateString(description, 90)
                     : "No description available"}
                 </Card.Text>
               </Card.Body>
               <Card.Footer>
-                <Button as="a" href={url} className="news-link w-100">
+                <Button href={url} target="_blank" className="w-100">
                   Read More
                 </Button>
               </Card.Footer>
