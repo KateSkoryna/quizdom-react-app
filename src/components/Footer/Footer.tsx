@@ -10,32 +10,53 @@ import { Container, Navbar } from "react-bootstrap";
 
 export const Footer = () => {
   return (
-    <Navbar expand="lg" data-bs-theme="dark" fixed="bottom">
-      <Container>
+    <Navbar
+      expand="lg"
+      data-bs-theme="dark"
+      fixed="bottom"
+      className="footer-navbar"
+    >
+      <Container className="footer-container">
         <Nav>
           <Nav.Link as={Link} to="/about" className="text-light">
             About us
           </Nav.Link>
         </Nav>
-        <Nav>
-          <Col xs={12} sm={12} md={3}>
-            <Nav.Link as={Link} to="/contact" className="text-light">
-              <FaLinkedin />
+        <Nav className="footer-contact-navbar">
+          <Col xs={3} sm={3} md={3}>
+            <Nav.Link
+              as={Link}
+              to="/contact"
+              className="text-light footer-link"
+            >
+              <FaLinkedin className="footer-icon" />
             </Nav.Link>
           </Col>
-          <Col xs={12} sm={12} md={3}>
-            <Nav.Link as={Link} to="/contact" className="text-light">
-              <FaGithub />
+          <Col xs={3} sm={3} md={3}>
+            <Nav.Link
+              as={Link}
+              to="/contact"
+              className="text-light footer-link"
+            >
+              <FaGithub className="footer-icon" />
             </Nav.Link>
           </Col>
-          <Col xs={12} sm={12} md={3}>
-            <Nav.Link as={Link} to="/contact" className="text-light">
-              <FaPhoneSquareAlt />
+          <Col xs={3} sm={3} md={3}>
+            <Nav.Link
+              as={Link}
+              to="/contact"
+              className="text-light footer-link"
+            >
+              <FaPhoneSquareAlt className="footer-icon" />
             </Nav.Link>
           </Col>
-          <Col xs={12} sm={12} md={3}>
-            <Nav.Link as={Link} to="/contact" className="text-light">
-              <MdEmail />
+          <Col xs={3} sm={3} md={3}>
+            <Nav.Link
+              as={Link}
+              to="/contact"
+              className="text-light footer-link"
+            >
+              <MdEmail className="footer-icon" />
             </Nav.Link>
           </Col>
         </Nav>

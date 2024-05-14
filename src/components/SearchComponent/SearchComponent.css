@@ -1,0 +1,15 @@
+.category-btn {
+    width: 120px;
+}
+
+.search-navbar {
+    display: flex;
+    justify-items: center;
+    width: 100%;
+
+    @media screen and (min-width: 768px) {  
+        width: 600px;
+        margin-right: auto;
+        margin-left: auto;
+    }
+}

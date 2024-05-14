@@ -9,6 +9,10 @@ section {
     margin-top: 100px;
 }
 
+body {
+    color: var(--text-color);
+}
+
 button.btn-primary {
     background-color: var(--primary-color);
     border: none;
@@ -24,5 +28,6 @@ button.btn-primary {
 
 button.btn-primary:hover, button.btn-primary:focus {
     background-color: var(--secondary-color);
-        border: none;
+    color: var(--text-color);
+    border: none;
 }

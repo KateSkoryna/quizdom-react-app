@@ -9,7 +9,7 @@ export const SearchComponent = () => {
   const values = Object.values(CATEGORY);
   return (
     <Container className="my-5">
-      <Form className="d-flex mx-auto mb-5">
+      <Form className="d-flex mx-auto mb-4">
         <FormControl
           type="search"
           placeholder="Search"
@@ -18,10 +18,10 @@ export const SearchComponent = () => {
         />
         <Button type="submit">Search</Button>
       </Form>
-      <Nav className="d-flex justify-content-center gap-5">
+      <Nav className="search-navbar">
         {values.map((category: string) => (
           <Nav.Item key={category}>
-            <Nav.Link as={Button} style={{ width: "10rem", color: "white" }}>
+            <Nav.Link as={Button} className="category-btn">
               {category}
             </Nav.Link>
           </Nav.Item>
