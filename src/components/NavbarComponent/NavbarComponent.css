@@ -2,8 +2,13 @@
     background-color: #00093C;
 }
 
-.navbar-toggler-icon {
-    background-image: url('../../assets/burger.svg');
+.navbar-toggler-icon{
+    background-image: url('../../assets/burger.svg') !important;
+}
+
+.navbar-toggler:hover {
+    border-color: var(--text-color) !important;
+    transition: var(--transition-duration);
 }
 
 .navbar-collapse {
