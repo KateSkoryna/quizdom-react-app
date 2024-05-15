@@ -7,6 +7,7 @@ import { FaGithub } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
 import { FaPhoneSquareAlt } from "react-icons/fa";
 import { Container, Navbar } from "react-bootstrap";
+import styles from "./Footer.module.css";
 
 export const Footer = () => {
   return (
@@ -14,55 +15,51 @@ export const Footer = () => {
       expand="lg"
       data-bs-theme="dark"
       fixed="bottom"
-      className="footer-navbar"
+      className={styles.footerNavbar}
     >
-      <Container className="footer-container">
-        <Nav>
-          <Nav.Link as={Link} to="/about" className="text-light">
-            About us
-          </Nav.Link>
-        </Nav>
-        <Nav className="footer-contact-navbar">
+      <Container className={styles.footerContainer}>
+        <Nav.Link as={Link} to="/about" className={styles.footerLink}>
+          About us
+        </Nav.Link>
+        <Nav className={styles.footerContactNavbar}>
           <Col xs={3} sm={3} md={3}>
             <Nav.Link
               as={Link}
               to="/contact"
-              className="text-light footer-link"
+              className={styles.footerContactLink}
             >
-              <FaLinkedin className="footer-icon" />
+              <FaLinkedin className={styles.footerIcon} />
             </Nav.Link>
           </Col>
           <Col xs={3} sm={3} md={3}>
             <Nav.Link
               as={Link}
               to="/contact"
-              className="text-light footer-link"
+              className={styles.footerContactLink}
             >
-              <FaGithub className="footer-icon" />
+              <FaGithub className={styles.footerIcon} />
             </Nav.Link>
           </Col>
           <Col xs={3} sm={3} md={3}>
             <Nav.Link
               as={Link}
               to="/contact"
-              className="text-light footer-link"
+              className={styles.footerContactLink}
             >
-              <FaPhoneSquareAlt className="footer-icon" />
+              <FaPhoneSquareAlt className={styles.footerIcon} />
             </Nav.Link>
           </Col>
           <Col xs={3} sm={3} md={3}>
             <Nav.Link
               as={Link}
               to="/contact"
-              className="text-light footer-link"
+              className={styles.footerContactLink}
             >
-              <MdEmail className="footer-icon" />
+              <MdEmail className={styles.footerIcon} />
             </Nav.Link>
           </Col>
         </Nav>
-        <Card.Footer className="text-light">
-          Copyright © 2024 by Kate Skoryna.
-        </Card.Footer>
+        <Card.Text>Copyright © 2024 by Kate Skoryna.</Card.Text>
       </Container>
     </Navbar>
   );

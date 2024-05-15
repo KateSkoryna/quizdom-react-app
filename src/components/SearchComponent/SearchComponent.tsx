@@ -4,24 +4,27 @@ import { CATEGORY } from "../../const/const";
 import Container from "react-bootstrap/esm/Container";
 import FormControl from "react-bootstrap/esm/FormControl";
 import Form from "react-bootstrap/Form";
+import styles from "./SearchComponent.module.css";
 
 export const SearchComponent = () => {
   const values = Object.values(CATEGORY);
   return (
-    <Container className="form-container">
-      <Form className="d-flex mx-auto mb-4">
+    <Container className={styles.formContainer}>
+      <Form className="d-flex w-50 mb-4 mx-auto">
         <FormControl
           type="search"
           placeholder="Search"
           className="me-2"
           aria-label="Search"
         />
-        <Button type="submit">Search</Button>
+        <Button className={styles.searchBtn} type="submit">
+          Search
+        </Button>
       </Form>
-      <Nav className="search-navbar">
+      <Nav className={styles.searchNavbar}>
         {values.map((category: string) => (
           <Nav.Item key={category}>
-            <Nav.Link as={Button} className="category-btn">
+            <Nav.Link as={Button} className={styles.categoryBtn}>
               {category}
             </Nav.Link>
           </Nav.Item>

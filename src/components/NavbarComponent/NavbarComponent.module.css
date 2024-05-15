@@ -1,0 +1,46 @@
+.navbar {
+    background-color: #00093C;
+}
+
+.navLink {
+    border-bottom: 2px solid transparent;
+    color: rgb(255, 255, 255, 0.8)
+}
+
+.navLink:hover {
+    border-bottom: 2px solid #F7941D;
+    color: #fff;
+}
+
+.offcanvasNavbar {
+    background-color: #00093C;
+    width: 100%;
+}
+
+.navbarToggle:hover, .navbarToggle:focus {
+    border-color: #F7941D;
+    scale: 1.1;
+    transition: scale 0.2s ease-in-out;
+    outline: none;
+    box-shadow: 0;
+}
+
+.closeBtn {
+    background-image: url("../../assets/close.svg");
+}
+
+.offcanvasHeader {
+    justify-content: end;
+}
+
+.offcanvasNav {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.closeBtn:hover, .closeBtn:focus {
+    scale: 1.1;
+    transition: scale 0.2s ease-in-out;
+    outline: none;
+}

@@ -7,6 +7,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { FaCalendarDay } from "react-icons/fa";
 import { useForm, Controller, FieldErrors } from "react-hook-form";
 import { UserData } from "../../types/types";
+import styles from "./SignupPage.module.css";
 
 const initState = {
   name: "",
@@ -53,9 +54,9 @@ export const SignupPage = () => {
   }, [watch]);
 
   return (
-    <Container className="form-container">
-      <h2 className="form-title">Signup Form</h2>
-      <Form onSubmit={handleSubmit(onSubmit, onError)}>
+    <Container className={styles.signupSection}>
+      <Form className={styles.form} onSubmit={handleSubmit(onSubmit, onError)}>
+        <h2 className={styles.formTitle}>Signup Form</h2>
         <Form.Group controlId="formBasicName">
           <Form.Label>Name</Form.Label>
           <Form.Control
@@ -64,8 +65,11 @@ export const SignupPage = () => {
             autoComplete="off"
             {...register("name", { required: "Name is required" })}
           />
-          {errors.name && (
+
+          {errors.name ? (
             <Form.Text className="text-danger">{errors.name.message}</Form.Text>
+          ) : (
+            <Form.Text className={styles.errorText}>Empty space</Form.Text>
           )}
         </Form.Group>
         <Form.Group className="mb-4" controlId="formBasicEmail">
@@ -76,16 +80,18 @@ export const SignupPage = () => {
             autoComplete="email"
             {...register("email", { required: "Email is required" })}
           />
-          {errors.email && (
+          {errors.email ? (
             <Form.Text className="text-danger">
               {errors.email.message}
             </Form.Text>
+          ) : (
+            <Form.Text className={styles.errorText}>Empty space</Form.Text>
           )}
         </Form.Group>
         <Row>
           <Col xs={12} sm={12} md={6} lg={6}>
             <Form.Group className="mb-4" controlId="formBasicDateofBirth">
-              <Form.Label>Date of Birth</Form.Label>
+              <Form.Label className="d-block">Date of Birth</Form.Label>
               <Controller
                 name="dateOfBirth"
                 control={control}
@@ -95,16 +101,18 @@ export const SignupPage = () => {
                     icon={<FaCalendarDay />}
                     toggleCalendarOnIconClick
                     popperPlacement="bottom-start"
-                    className="form-date-input"
+                    className={styles.formDateInput}
                     selected={value ? new Date(value) : null}
                     onChange={onChange}
                   />
                 )}
               />
-              {errors.dateOfBirth && (
+              {errors.dateOfBirth ? (
                 <Form.Text className="text-danger">
                   {errors.dateOfBirth.message}
                 </Form.Text>
+              ) : (
+                <Form.Text className={styles.errorText}>Empty space</Form.Text>
               )}
             </Form.Group>
           </Col>
@@ -122,10 +130,12 @@ export const SignupPage = () => {
                 <option value="bird">Bird</option>
                 <option value="fish">Fish</option>
               </Form.Select>
-              {errors.gender && (
+              {errors.gender ? (
                 <Form.Text className="text-danger">
                   {errors.gender.message}
                 </Form.Text>
+              ) : (
+                <Form.Text className={styles.errorText}>Empty space</Form.Text>
               )}
             </Form.Group>
           </Col>
@@ -138,10 +148,12 @@ export const SignupPage = () => {
             autoComplete="password"
             {...register("password", { required: "Password is required" })}
           />
-          {errors.password && (
+          {errors.password ? (
             <Form.Text className="text-danger">
               {errors.password.message}
             </Form.Text>
+          ) : (
+            <Form.Text className={styles.errorText}>Empty space</Form.Text>
           )}
         </Form.Group>
         <Form.Group className="mb-4" controlId="confirmBasicPassword">
@@ -154,13 +166,15 @@ export const SignupPage = () => {
               required: "Password is required",
             })}
           />
-          {errors.confirmPassword && (
+          {errors.confirmPassword ? (
             <Form.Text className="text-danger">
               {errors.confirmPassword.message}
             </Form.Text>
+          ) : (
+            <Form.Text className={styles.errorText}>Empty space</Form.Text>
           )}
         </Form.Group>
-        <Button variant="primary" type="submit" style={{ width: "100%" }}>
+        <Button variant="primary" type="submit" className={styles.formBtn}>
           Submit
         </Button>
       </Form>

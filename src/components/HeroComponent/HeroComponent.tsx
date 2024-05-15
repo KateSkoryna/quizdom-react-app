@@ -1,17 +1,18 @@
 import Card from "react-bootstrap/Card";
 import { Container } from "react-bootstrap";
-import hero from "../../assets/hero.jpg";
 import { JOKE } from "../../helpers/jokes";
+import styles from "./HeroComponent.module.css";
 
 export const HeroComponent = () => {
   return (
-    <Card className="bg-light text-dark hero-card">
-      <Card.Img src={hero} alt="Card image" />
+    <Card className={styles.heroCard}>
       <Card.ImgOverlay>
         <Container>
-          <Card.Title className="hero-card-title">Dive into the Depths of Coding Wisdom</Card.Title>
-          <Card.Text>{JOKE.joke}</Card.Text>
-          <Card.Text>{JOKE.author}</Card.Text>
+          <Card.Title className={styles.heroCardTitle}>
+            Dive into the Depths of Coding Wisdom
+          </Card.Title>
+          <Card.Text className={styles.heroText}>{JOKE.joke}</Card.Text>
+          <Card.Text className={styles.heroText}>{JOKE.author}</Card.Text>
         </Container>
       </Card.ImgOverlay>
     </Card>

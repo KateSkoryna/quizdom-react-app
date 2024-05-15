@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import App from "./components/App/App";
+
 import { NewsComponent } from "./components/NewsComponent/NewsComponents";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./index.css";
@@ -11,7 +11,8 @@ import { QuizPage } from "./pages/QiuzPage/QuizPage";
 import { LoginPage } from "./pages/LoginPage/LoginPage";
 import { SignupPage } from "./pages/SignupPage/SignupPage";
 import { BlogsPage } from "./pages/BlogsPage/BlogsPage";
-import { AboutComponent } from "./components/About/About";
+import { AboutPage } from "./pages/AboutPage/AboutPage";
+import App from "./components/App/App";
 import { getAllNews } from "./API/api";
 
 const router = createBrowserRouter(
@@ -19,6 +20,7 @@ const router = createBrowserRouter(
     {
       path: "/",
       element: <App />,
+      errorElement: <NotFoundPage />,
       children: [
         {
           path: "/",
@@ -27,7 +29,7 @@ const router = createBrowserRouter(
         },
         {
           path: "/about",
-          element: <AboutComponent />,
+          element: <AboutPage />,
         },
         {
           path: "quizes",

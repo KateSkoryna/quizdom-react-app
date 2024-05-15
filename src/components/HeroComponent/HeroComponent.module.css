@@ -1,0 +1,18 @@
+
+.heroCard {
+    background-image: url("../../assets/hero.jpg");
+    background-size: cover;
+    background-position: center;
+    height: 400px;
+    margin-top: 60px;
+}
+
+.heroCardTitle {   
+    font-size: 30px;
+}
+
+.heroText {
+    color: black;
+    font-size: 28px;
+}
+

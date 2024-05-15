@@ -1,8 +1,17 @@
-@import "./globalStyles.css";
-@import "../src/components/App/App.css";
-@import "../src/components/HeroComponent/HeroComponent.css";
-@import "../src/components//NavbarComponent//NavbarComponent.css";
-@import "../src/components/SearchComponent/SearchComponent.css";
-@import "../src/components/NewsListComponent/NewsListComponent.css";
-@import "../src/pages/SignupPage/SignupPage.css";
-@import "../src/components/Footer/Footer.css"
+:root {
+    --primary-color: #F7941D;
+    --secondary-color: #00093C;
+    --text-color: #fff;
+    --transition-duration: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+    --primary-font: "Montserrat", sans-serif;
+}
+
+body {
+    font-family: "Montserrat", "Bebas Neue", sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6, p, a {
+    margin: 0;
+    padding: 0;
+    color: var(--text-color);
+}

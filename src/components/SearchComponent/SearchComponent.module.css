@@ -1,0 +1,33 @@
+.formContainer {
+    margin-top: 60px;
+    padding-top: 60px;
+    margin-bottom: 30px;
+}
+
+.searchNavbar {
+    display: flex;
+    justify-content:space-between;
+    width: 100%;
+    max-width: 600px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.searchBtn, .categoryBtn {
+    width: 120px;
+    background-color: #F7941D;
+        border: none;
+        border-radius: 6px;
+        color: #FFF;
+        padding: 5px 10px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        cursor: pointer;
+}
+
+.searchBtn:hover, .categoryBtn:hover {
+    background-color: #00093C;
+    color: #FFF;
+}
