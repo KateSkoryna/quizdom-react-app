@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Container, Form, Button } from "react-bootstrap";
 import { useForm, FieldErrors } from "react-hook-form";
-import { currentUser } from "../../types/types";
+import { CurrentUser } from "../../types/types";
 import styles from "./LoginPage.module.css";
 
 const initState = {
@@ -12,13 +12,13 @@ const initState = {
 export const LoginPage = () => {
   const [currentUser, setCurrentUser] = useState(initState);
 
-  const onSubmit = (values: currentUser): void => {
+  const onSubmit = (values: CurrentUser): void => {
     setCurrentUser(values);
     console.log("Values 32", values);
     reset(currentUser);
   };
 
-  const onError = (errors: FieldErrors<currentUser>): void => {
+  const onError = (errors: FieldErrors<CurrentUser>): void => {
     console.log("ERROR:", errors);
   };
 

@@ -6,12 +6,12 @@ export interface Article {
   image?: string;
 }
 
-export interface currentUser {
+export interface CurrentUser {
   email: string;
   password: string;
 }
 
-export interface UserData extends currentUser {
+export interface UserData extends CurrentUser {
   name: string;
   dateOfBirth: string;
   gender: string;
