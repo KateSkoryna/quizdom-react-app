@@ -1,5 +1,4 @@
 import Card from "react-bootstrap/Card";
-import { Container } from "react-bootstrap";
 import { JOKE } from "../../helpers/jokes";
 import styles from "./HeroComponent.module.css";
 
@@ -7,13 +6,17 @@ export const HeroComponent = () => {
   return (
     <Card className={styles.heroCard}>
       <Card.ImgOverlay>
-        <Container>
+        <Card.Body className=" h-100 d-flex flex-column justify-content-between">
           <Card.Title className={styles.heroCardTitle}>
-            Dive into the Depths of Coding Wisdom
+            Dive into the Depths <br /> of Coding Wisdom
           </Card.Title>
-          <Card.Text className={styles.heroText}>{JOKE.joke}</Card.Text>
-          <Card.Text className={styles.heroText}>{JOKE.author}</Card.Text>
-        </Container>
+          <blockquote className="mb-0 fs-4">
+            <p className={styles.heroJokeText}>{JOKE.joke}</p>
+            <footer
+              className={styles.heroJokeAuthor}
+            >{`— ${JOKE.author}`}</footer>
+          </blockquote>
+        </Card.Body>
       </Card.ImgOverlay>
     </Card>
   );
