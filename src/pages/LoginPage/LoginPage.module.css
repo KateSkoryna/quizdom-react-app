@@ -1,0 +1,44 @@
+.loginSection {
+    margin-top: 65px;
+    padding-top: 30px;
+    padding-bottom: 30px;
+    margin-bottom: 150px;
+}
+
+.form {
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+    max-width: 600px;
+}
+
+.errorText {
+    visibility: hidden;
+}
+
+.formTitle {
+    width: 100%;
+    max-width: 200px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 30px;
+    text-align: center;
+    color: black;
+}
+
+.errorText {
+    visibility: hidden;
+}
+
+.formBtn {
+    width: 100%;
+    border-color: #F7941D;
+    background-color: #F7941D;
+    color: rgb(255, 255, 255)
+}
+
+.formBtn:hover {
+    background-color: #00093C;
+    border-color: #00093C;
+    color: rgb(255, 255, 255)
+}

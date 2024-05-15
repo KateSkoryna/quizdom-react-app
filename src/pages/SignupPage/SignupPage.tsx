@@ -102,6 +102,8 @@ export const SignupPage = () => {
                     toggleCalendarOnIconClick
                     popperPlacement="bottom-start"
                     className={styles.formDateInput}
+                    showYearDropdown
+                    showMonthDropdown
                     selected={value ? new Date(value) : null}
                     onChange={onChange}
                   />

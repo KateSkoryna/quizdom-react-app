@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Container, Form, Button } from "react-bootstrap";
 import { useForm, FieldErrors } from "react-hook-form";
 import { currentUser } from "../../types/types";
+import styles from "./LoginPage.module.css";
 
 const initState = {
   email: "",
@@ -43,9 +44,9 @@ export const LoginPage = () => {
   }, [watch]);
 
   return (
-    <Container className="form-container" fluid="md">
-      <h2 className="form-title">Log In</h2>
-      <Form onSubmit={handleSubmit(onSubmit, onError)}>
+    <Container className={styles.loginSection}>
+      <h2 className={styles.formTitle}>Log In</h2>
+      <Form className={styles.form} onSubmit={handleSubmit(onSubmit, onError)}>
         <Form.Group className="mb-3" controlId="formBasicEmail">
           <Form.Label>Email</Form.Label>
           <Form.Control
@@ -54,10 +55,12 @@ export const LoginPage = () => {
             autoComplete="email"
             {...register("email", { required: "Email is required" })}
           />
-          {errors.email && (
+          {errors.email ? (
             <Form.Text className="text-danger">
               {errors.email.message}
             </Form.Text>
+          ) : (
+            <Form.Text className={styles.errorText}>Empty space</Form.Text>
           )}
         </Form.Group>
         <Form.Group className="mb-3" controlId="formBasicPassword">
@@ -68,13 +71,15 @@ export const LoginPage = () => {
             autoComplete="password"
             {...register("password", { required: "Password is required" })}
           />
-          {errors.password && (
+          {errors.password ? (
             <Form.Text className="text-danger">
               {errors.password.message}
             </Form.Text>
+          ) : (
+            <Form.Text className={styles.errorText}>Empty space</Form.Text>
           )}
         </Form.Group>
-        <Button variant="primary" type="submit" style={{ width: "100%" }}>
+        <Button variant="primary" type="submit" className={styles.formBtn}>
           Submit
         </Button>
       </Form>
