@@ -5,13 +5,19 @@
     border: 0;
     background-image: url("../../assets/hero.jpg");
     background-repeat: no-repeat;
-    background-position: center;
+    background-position: 40% 60%;
     background-size: cover;
     border-radius: 0;
-min-height: 50vh;
+    min-height: 50vh;
 
-@media screen and (min-width: 768px) {
-    min-height: 40vh;
+    @media screen and (min-width: 768px) {
+        min-height: 40vh;
+        background-position: 75% 25%;
+    }
+
+        @media screen and (min-width: 998px) {
+        background-image: url("../../assets/hero-big.jpg");
+        background-position: 75% 25%;
 }
 }
 
@@ -29,6 +35,13 @@ min-height: 50vh;
             
 }
 
+.overlay {
+    max-width: 1140px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 20px;
+}
+
 
 .heroCardTitle {
     font-size: 24px;
@@ -36,19 +49,42 @@ min-height: 50vh;
     @media screen and (min-width: 768px) {
         font-size: 28px;
     }
+
+        @media screen and (min-width: 998px) {
+              font-size: 42px;
+        }
 }
 
 .heroJokeText {
-    font-size: 28px;
+    font-size: 22px;
     line-height: 1.2;
     font-family: "bebas neue";
     text-align: center;
     color: black;
+
+
+    @media screen and (min-width: 768px) {
+            font-size: 38px;
+            height: 180px;
+        }
+
+                 @media screen and (min-width: 998px) {
+                     font-size: 58px;
+                    height: 280px;
+                 }
 }
 
 .heroJokeAuthor {
-    margin-top: 14px;
+    font-size: 12px;
     text-align: center;
     color: #fff;
+
+    @media screen and (min-width: 768px) {
+            font-size: 16px;
+        }
+
+                 @media screen and (min-width: 998px) {
+                     font-size: 24px;
+                 }
 }
 

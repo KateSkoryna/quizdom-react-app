@@ -3,9 +3,9 @@
     flex-direction: column;
     color: #fff;
 
-    @media screen and (min-width: 768px) {      
+    @media screen and (min-width: 998px) {
         flex-direction: row;
-        justify-content: space-between;
+        justify-content: space-between;;
     }
 }
 
@@ -36,7 +36,7 @@
 
 .footerLink {
     border-bottom: 2px solid transparent;
-    color: rgb(255, 255, 255, 0.8);
+    color: rgb(255, 255, 255);
     padding: 8px;
 }
 

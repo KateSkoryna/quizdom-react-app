@@ -5,7 +5,7 @@ import styles from "./HeroComponent.module.css";
 export const HeroComponent = () => {
   return (
     <Card className={styles.heroCard}>
-      <Card.ImgOverlay>
+      <Card.ImgOverlay className={styles.overlay}>
         <Card.Body className=" h-100 d-flex flex-column justify-content-between">
           <Card.Title className={styles.heroCardTitle}>
             Dive into the Depths <br /> of Coding Wisdom
