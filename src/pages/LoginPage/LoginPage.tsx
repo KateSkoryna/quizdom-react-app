@@ -1,52 +1,47 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Container, Form, Button } from "react-bootstrap";
-import { useForm, FieldErrors } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { CurrentUser } from "../../types/types";
 import styles from "./LoginPage.module.css";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
 
 const initState = {
   email: "",
   password: "",
 };
 
+const schema = yup
+  .object({
+    email: yup.string().email().required("Email is required"),
+    password: yup.string().required("Password is required").min(8),
+  })
+  .required();
+
 export const LoginPage = () => {
   const [currentUser, setCurrentUser] = useState(initState);
 
   const onSubmit = (values: CurrentUser): void => {
     setCurrentUser(values);
-    console.log("Values 32", values);
     reset(currentUser);
-  };
-
-  const onError = (errors: FieldErrors<CurrentUser>): void => {
-    console.log("ERROR:", errors);
   };
 
   const {
     register,
     handleSubmit,
-    watch,
     reset,
     formState: { errors },
   } = useForm({
     mode: "onTouched",
     reValidateMode: "onSubmit",
     defaultValues: currentUser,
+    resolver: yupResolver(schema),
   });
-
-  useEffect(() => {
-    const subscription = watch((value, { name, type }) => {
-      console.log("53", value, name, type);
-      // {1: '1', 2: '9'} '2' 'change'
-    });
-
-    return () => subscription.unsubscribe();
-  }, [watch]);
 
   return (
     <Container className={styles.loginSection}>
       <h2 className={styles.formTitle}>Log In</h2>
-      <Form className={styles.form} onSubmit={handleSubmit(onSubmit, onError)}>
+      <Form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
         <Form.Group className="mb-3" controlId="formBasicEmail">
           <Form.Label>Email</Form.Label>
           <Form.Control

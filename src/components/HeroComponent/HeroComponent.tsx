@@ -6,7 +6,7 @@ export const HeroComponent = () => {
   return (
     <Card className={styles.heroCard}>
       <Card.ImgOverlay className={styles.overlay}>
-        <Card.Body className=" h-100 d-flex flex-column justify-content-between">
+        <Card.Body className=" h-100 p-0 d-flex flex-column justify-content-evenly align-items-start">
           <Card.Title className={styles.heroCardTitle}>
             Dive into the Depths <br /> of Coding Wisdom
           </Card.Title>
