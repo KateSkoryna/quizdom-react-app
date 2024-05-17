@@ -5,17 +5,20 @@ import { DEFAULT_IMG } from "../../const/const";
 import Container from "react-bootstrap/esm/Container";
 import { Row, Col } from "react-bootstrap";
 import styles from "./NewsListComponent.module.css";
+import uuid from 'react-uuid';
 
 const truncateString = (s: string, w: number): string =>
   s.length > w ? s.slice(0, w) + "..." : s;
 
 export const NewsListComponent = ({ news }: { news: Article[] }) => {
+
+  const newsArr = news.map(article => ({...article, id: uuid()}))
   return (
     <Container className={styles.newsContainer}>
       <Row className="g-3">
-        {news.map(({ title, image, description, url }: Article) => (
-          <Col xs={12} sm={6} md={4} lg={3}>
-            <Card className="h-100" key={title}>
+        {newsArr.map(({ id, title, image, description, url }: Article) => (
+          <Col xs={12} sm={6} md={4} lg={3} key={id}>
+            <Card className="h-100">
               <Card.Img
                 className="object-fit-cover h-50 w-100"
                 src={image !== null ? image : DEFAULT_IMG}

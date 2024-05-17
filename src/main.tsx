@@ -40,8 +40,17 @@ const router = createBrowserRouter(
           path: "news",
           element: <NewsPage />,
           errorElement: <NotFoundPage />,
-          loader: async () => {
-            return getAllNews();
+          loader: async ({ request }) => {
+            const url = new URL(request.url);
+            let searchQuery = url.searchParams.get("query");
+            let searchCategory = url.searchParams.get("category");
+            if (!searchQuery) {
+              searchQuery = "none";
+            }
+            if (!searchCategory) {
+              searchCategory = "technology";
+            }
+            return getAllNews(searchQuery, searchCategory);
           },
           children: [
             {
