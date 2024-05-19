@@ -1,7 +1,5 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-
-import { NewsComponent } from "./components/NewsComponent/NewsComponents";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./index.css";
 import { NotFoundPage } from "./pages/NotFoundPage/NotFoundPage";
@@ -12,6 +10,7 @@ import { LoginPage } from "./pages/LoginPage/LoginPage";
 import { SignupPage } from "./pages/SignupPage/SignupPage";
 import { BlogsPage } from "./pages/BlogsPage/BlogsPage";
 import { AboutPage } from "./pages/AboutPage/AboutPage";
+import { UserPage } from "./pages/UserPage/UserPage";
 import App from "./components/App/App";
 import { getAllNews } from "./API/api";
 
@@ -43,13 +42,6 @@ const router = createBrowserRouter(
           loader: async () => {
             return getAllNews();
           },
-          children: [
-            {
-              path: "news/:news_id",
-              element: <NewsComponent />,
-              errorElement: <NotFoundPage />,
-            },
-          ],
         },
         {
           path: "blogs",
@@ -63,6 +55,10 @@ const router = createBrowserRouter(
         {
           path: "login",
           element: <LoginPage />,
+        },
+        {
+          path: "user/:user_id",
+          element: <UserPage />,
         },
       ],
     },
