@@ -13,9 +13,9 @@ export const NewsListComponent = ({ news }: { news: Article[] }) => {
   return (
     <Container className={styles.newsContainer}>
       <Row className="g-3">
-        {news.map(({ title, image, description, url }: Article) => (
-          <Col xs={12} sm={6} md={4} lg={3}>
-            <Card className="h-100" key={title}>
+        {news.map(({ id, title, image, description, url }: Article) => (
+          <Col key={id} xs={12} sm={6} md={4} lg={3}>
+            <Card className="h-100">
               <Card.Img
                 className="object-fit-cover h-50 w-100"
                 src={image !== null ? image : DEFAULT_IMG}

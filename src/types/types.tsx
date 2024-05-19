@@ -1,4 +1,5 @@
 export interface Article {
+  id: string;
   author: string;
   title: string;
   url: string;
@@ -24,6 +25,11 @@ export interface Joke {
   joke?: string;
   setup?: string;
   delivery?: string;
+}
+
+export interface Category {
+  id: number;
+  type: string;
 }
 
 export interface HeroComponentProps {

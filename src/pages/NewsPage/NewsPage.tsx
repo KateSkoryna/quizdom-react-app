@@ -2,10 +2,12 @@ import { NewsListComponent } from "../../components/NewsListComponent/NewsListCo
 import { useLoaderData } from "react-router-dom";
 import { Article } from "../../types/types";
 import { SearchComponent } from "../../components/SearchComponent/SearchComponent";
-// import { HeroComponent } from "../../components/HeroComponent/HeroComponent";
+import uuid from "react-uuid";
 
 export const NewsPage = () => {
-  const news: Article[] = useLoaderData() as Article[];
+  const newsArr: Article[] = useLoaderData() as Article[];
+  const news = newsArr.map((article) => ({ ...article, id: uuid() }));
+
   return (
     <>
       <SearchComponent />

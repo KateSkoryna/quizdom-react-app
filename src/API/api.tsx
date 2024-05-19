@@ -1,13 +1,12 @@
 import axios from "axios";
-import { CATEGORY } from "../const/const";
 
 const API_KEY = import.meta.env.VITE_NEWS_API_KEY;
 const NEWS_BASE_URL = import.meta.env.VITE_NEWS_BASE_URL;
 
 //======================== NEWS  ==========================
 
-export async function getAllNews() {
-  const url = `${NEWS_BASE_URL}?category=${CATEGORY.TECHNOLOGY}&lang=en&apikey=${API_KEY}`;
+export async function getAllNews(query: string, category: string) {
+  const url = `${NEWS_BASE_URL}?q=${query}&category=${category}&max=12&lang=en&apikey=${API_KEY}`;
   try {
     const { data } = await axios.get(url);
     return data.articles;
