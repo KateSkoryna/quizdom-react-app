@@ -10,7 +10,10 @@ import { useForm, Controller } from "react-hook-form";
 import { UserData } from "../../types/types";
 import styles from "./SignupPage.module.css";
 import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
+import { signupSchema } from "../../helpers/schema";
+import { auth } from "../../firebase";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { AvatarGenerator } from "random-avatar-generator";
 
 const initState = {
   name: "",
@@ -21,27 +24,25 @@ const initState = {
   confirmPassword: "",
 };
 
-const schema = yup
-  .object({
-    name: yup.string().required("Name is required"),
-    email: yup.string().email().required("Email is required"),
-    dateOfBirth: yup
-      .date()
-      .max(new Date(Date.now() - 567648000000), "You must be at least 18 years")
-      .required("Date of Birth is required"),
-    gender: yup.string().required("Gender is required"),
-    password: yup.string().required("Password is required").min(8),
-    confirmPassword: yup
-      .string()
-      .required("Please retype your password.")
-      .oneOf([yup.ref("password")], "Your passwords do not match."),
-  })
-  .required();
-
 export const SignupPage = () => {
   const [userData, setUserData] = useState(initState);
+  const generator = new AvatarGenerator();
+  const avatar = generator.generateRandomAvatar();
 
-  const onSubmit = (values: UserData): void => {
+  const onSubmit = async (values: UserData): Promise<void> => {
+    const { user } = await createUserWithEmailAndPassword(
+      auth,
+      values.email,
+      values.password
+    );
+
+    // Update the user object with the custom fields
+    await updateProfile(auth.currentUser!, {
+      displayName: values.name,
+      photoURL: avatar,
+    });
+
+    console.log(user);
     setUserData(values);
     reset(userData);
   };
@@ -56,7 +57,7 @@ export const SignupPage = () => {
     mode: "onTouched",
     reValidateMode: "onSubmit",
     defaultValues: userData,
-    resolver: yupResolver(schema),
+    resolver: yupResolver(signupSchema),
   });
 
   return (
@@ -137,10 +138,8 @@ export const SignupPage = () => {
                 {...register("gender")}
               >
                 <option>Choose your identity</option>
-                <option value="human">Human</option>
-                <option value="animal">Animal</option>
-                <option value="bird">Bird</option>
-                <option value="fish">Fish</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
               </Form.Select>
               {errors.gender ? (
                 <Form.Text className="text-danger">

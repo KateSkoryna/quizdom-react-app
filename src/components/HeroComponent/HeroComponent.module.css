@@ -68,10 +68,10 @@
             font-size: 38px;
         }
 
-                 @media screen and (min-width: 998px) {
-                     font-size: 52px;
+            @media screen and (min-width: 998px) {
+                font-size: 52px;
 
-                 }
+                }
 }
 
 .heroJokeAuthor {

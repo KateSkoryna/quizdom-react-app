@@ -8,7 +8,6 @@ export const NewsPage = () => {
   const news: Article[] = useLoaderData() as Article[];
   return (
     <>
-      {/* <HeroComponent /> */}
       <SearchComponent />
       <NewsListComponent news={news} />
     </>

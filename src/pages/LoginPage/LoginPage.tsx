@@ -4,38 +4,49 @@ import { useForm } from "react-hook-form";
 import { CurrentUser } from "../../types/types";
 import styles from "./LoginPage.module.css";
 import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
+import { loginSschema } from "../../helpers/schema";
+import { auth } from "../../firebase";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { Link, useNavigate } from "react-router-dom";
 
 const initState = {
   email: "",
   password: "",
 };
 
-const schema = yup
-  .object({
-    email: yup.string().email().required("Email is required"),
-    password: yup.string().required("Password is required").min(8),
-  })
-  .required();
-
 export const LoginPage = () => {
-  const [currentUser, setCurrentUser] = useState(initState);
+  const [currentFormData, setCurrentFormData] = useState(initState);
+  const navigate = useNavigate();
 
-  const onSubmit = (values: CurrentUser): void => {
-    setCurrentUser(values);
-    reset(currentUser);
+  const onSubmit = async (values: CurrentUser): Promise<void> => {
+    try {
+      const { user } = await signInWithEmailAndPassword(
+        auth,
+        values.email,
+        values.password
+      );
+      console.log(user);
+      setCurrentFormData(values);
+      reset(currentFormData);
+      navigate("/user/:user_id");
+    } catch (error) {
+      setError("root", {
+        message: "Invalid email or password",
+      });
+    }
   };
 
   const {
     register,
     handleSubmit,
     reset,
+    setError,
     formState: { errors },
   } = useForm({
     mode: "onTouched",
     reValidateMode: "onSubmit",
-    defaultValues: currentUser,
-    resolver: yupResolver(schema),
+    defaultValues: currentFormData,
+    resolver: yupResolver(loginSschema),
   });
 
   return (
@@ -58,7 +69,7 @@ export const LoginPage = () => {
             <Form.Text className={styles.errorText}>Empty space</Form.Text>
           )}
         </Form.Group>
-        <Form.Group className="mb-3" controlId="formBasicPassword">
+        <Form.Group controlId="formBasicPassword">
           <Form.Label>Password</Form.Label>
           <Form.Control
             type="password"
@@ -74,9 +85,20 @@ export const LoginPage = () => {
             <Form.Text className={styles.errorText}>Empty space</Form.Text>
           )}
         </Form.Group>
+        {errors.root ? (
+          <Form.Text className="text-danger">{errors.root.message}</Form.Text>
+        ) : (
+          <Form.Text className={styles.errorText}>Empty space</Form.Text>
+        )}
         <Button variant="primary" type="submit" className={styles.formBtn}>
           Submit
         </Button>
+        <Form.Text className="d-block ms-auto">
+          {`Don't have an account? `}
+          <Link className="text-primary" to="/signup">
+            Sing up
+          </Link>
+        </Form.Text>
       </Form>
     </Container>
   );
