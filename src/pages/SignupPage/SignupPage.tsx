@@ -1,18 +1,24 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Container, Form, Button } from "react-bootstrap";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import DatePicker from "react-datepicker";
+import { subYears } from "date-fns";
 import "react-datepicker/dist/react-datepicker.css";
 import { FaCalendarDay } from "react-icons/fa";
-import { useForm, Controller, FieldErrors } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import { UserData } from "../../types/types";
 import styles from "./SignupPage.module.css";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { signupSchema } from "../../helpers/schema";
+import { auth } from "../../firebase";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { AvatarGenerator } from "random-avatar-generator";
 
 const initState = {
   name: "",
   email: "",
-  dateOfBirth: "",
+  dateOfBirth: new Date(),
   gender: "",
   password: "",
   confirmPassword: "",
@@ -20,42 +26,43 @@ const initState = {
 
 export const SignupPage = () => {
   const [userData, setUserData] = useState(initState);
+  const generator = new AvatarGenerator();
+  const avatar = generator.generateRandomAvatar();
 
-  const onSubmit = (values: UserData): void => {
+  const onSubmit = async (values: UserData): Promise<void> => {
+    const { user } = await createUserWithEmailAndPassword(
+      auth,
+      values.email,
+      values.password
+    );
+
+    // Update the user object with the custom fields
+    await updateProfile(auth.currentUser!, {
+      displayName: values.name,
+      photoURL: avatar,
+    });
+
+    console.log(user);
     setUserData(values);
-    console.log("Values 32", values);
     reset(userData);
-  };
-
-  const onError = (errors: FieldErrors<UserData>): void => {
-    console.log("ERROR:", errors);
   };
 
   const {
     control,
     register,
     handleSubmit,
-    watch,
     reset,
     formState: { errors },
   } = useForm({
     mode: "onTouched",
     reValidateMode: "onSubmit",
     defaultValues: userData,
+    resolver: yupResolver(signupSchema),
   });
-
-  useEffect(() => {
-    const subscription = watch((value, { name, type }) => {
-      console.log("53", value, name, type);
-      // {1: '1', 2: '9'} '2' 'change'
-    });
-
-    return () => subscription.unsubscribe();
-  }, [watch]);
 
   return (
     <Container className={styles.signupSection}>
-      <Form className={styles.form} onSubmit={handleSubmit(onSubmit, onError)}>
+      <Form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
         <h2 className={styles.formTitle}>Signup Form</h2>
         <Form.Group controlId="formBasicName">
           <Form.Label>Name</Form.Label>
@@ -63,7 +70,7 @@ export const SignupPage = () => {
             type="text"
             placeholder="Enter your name"
             autoComplete="off"
-            {...register("name", { required: "Name is required" })}
+            {...register("name")}
           />
 
           {errors.name ? (
@@ -78,7 +85,7 @@ export const SignupPage = () => {
             type="email"
             placeholder="Enter your email"
             autoComplete="email"
-            {...register("email", { required: "Email is required" })}
+            {...register("email")}
           />
           {errors.email ? (
             <Form.Text className="text-danger">
@@ -103,6 +110,10 @@ export const SignupPage = () => {
                     popperPlacement="bottom-start"
                     className={styles.formDateInput}
                     showYearDropdown
+                    scrollableYearDropdown
+                    maxDate={subYears(new Date(), 18)}
+                    minDate={subYears(new Date(), 100)}
+                    dropdownMode="select"
                     showMonthDropdown
                     selected={value ? new Date(value) : null}
                     onChange={onChange}
@@ -124,13 +135,11 @@ export const SignupPage = () => {
               <Form.Select
                 className="form-select-custom"
                 aria-label="Default select example"
-                {...register("gender", { required: "Gender is required" })}
+                {...register("gender")}
               >
                 <option>Choose your identity</option>
-                <option value="human">Human</option>
-                <option value="animal">Animal</option>
-                <option value="bird">Bird</option>
-                <option value="fish">Fish</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
               </Form.Select>
               {errors.gender ? (
                 <Form.Text className="text-danger">
@@ -148,7 +157,7 @@ export const SignupPage = () => {
             type="password"
             placeholder="Enter your password"
             autoComplete="password"
-            {...register("password", { required: "Password is required" })}
+            {...register("password")}
           />
           {errors.password ? (
             <Form.Text className="text-danger">
@@ -164,9 +173,7 @@ export const SignupPage = () => {
             type="password"
             placeholder="Enter your password"
             autoComplete="new-password"
-            {...register("confirmPassword", {
-              required: "Password is required",
-            })}
+            {...register("confirmPassword")}
           />
           {errors.confirmPassword ? (
             <Form.Text className="text-danger">

@@ -12,10 +12,12 @@ export interface CurrentUser {
   password: string;
 }
 
-export interface UserData extends CurrentUser {
+export interface UserData {
   name: string;
-  dateOfBirth: string;
+  email: string;
+  dateOfBirth: Date;
   gender: string;
+  password: string;
   confirmPassword: string;
 }
 
