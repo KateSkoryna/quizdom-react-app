@@ -28,7 +28,7 @@ export const LoginPage = () => {
       console.log(user);
       setCurrentFormData(values);
       reset(currentFormData);
-      navigate("/user/:user_id");
+      navigate("/user");
     } catch (error) {
       setError("root", {
         message: "Invalid email or password",
