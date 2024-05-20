@@ -11,9 +11,10 @@ import { UserData } from "../../types/types";
 import styles from "./SignupPage.module.css";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { signupSchema } from "../../helpers/schema";
-import { auth } from "../../firebase";
-import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { AvatarGenerator } from "random-avatar-generator";
+import { useAuth } from "../../context/AuthContext";
+import { updateProfile } from "firebase/auth";
+import { auth } from "../../firebase";
 
 const initState = {
   name: "",
@@ -25,38 +26,40 @@ const initState = {
 };
 
 export const SignupPage = () => {
-  const [userData, setUserData] = useState(initState);
+  const [userData, setUserData] = useState<UserData | null>(null);
   const generator = new AvatarGenerator();
   const avatar = generator.generateRandomAvatar();
+  const { signup } = useAuth();
 
   const onSubmit = async (values: UserData): Promise<void> => {
-    const { user } = await createUserWithEmailAndPassword(
-      auth,
-      values.email,
-      values.password
-    );
-
-    // Update the user object with the custom fields
-    await updateProfile(auth.currentUser!, {
-      displayName: values.name,
-      photoURL: avatar,
-    });
-
-    console.log(user);
-    setUserData(values);
-    reset(userData);
+    try {
+      await signup(values);
+      await updateProfile(auth.currentUser!, {
+        displayName: values.name,
+        photoURL: avatar,
+      });
+      setUserData(values);
+      if (userData) {
+        reset(userData);
+      }
+    } catch (error) {
+      setError("root", {
+        message: "Faid to create an account",
+      });
+    }
   };
 
   const {
     control,
     register,
     handleSubmit,
+    setError,
     reset,
     formState: { errors },
   } = useForm({
     mode: "onTouched",
     reValidateMode: "onSubmit",
-    defaultValues: userData,
+    defaultValues: initState,
     resolver: yupResolver(signupSchema),
   });
 
