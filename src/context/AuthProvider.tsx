@@ -6,6 +6,7 @@ import {
   UserCredential,
   onAuthStateChanged,
   signInWithEmailAndPassword,
+  signOut,
 } from "firebase/auth";
 import { AuthContext } from "./AuthContext";
 
@@ -21,9 +22,9 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     return signInWithEmailAndPassword(auth, email, password);
   };
 
-  // const logout = () => {
-  //   return signOut(auth);
-  // };
+  const logout = () => {
+    return signOut(auth);
+  };
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (data) => {
       if (data) {
@@ -43,6 +44,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     currentUser,
     signup,
     login,
+    logout,
   };
 
   return (
