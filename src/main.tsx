@@ -13,12 +13,17 @@ import { AboutPage } from "./pages/AboutPage/AboutPage";
 import { UserPage } from "./pages/UserPage/UserPage";
 import App from "./components/App/App";
 import { getAllNews } from "./API/api";
+import { AuthProvider } from "./context/AuthProvider";
 
 const router = createBrowserRouter(
   [
     {
       path: "/",
-      element: <App />,
+      element: (
+        <AuthProvider>
+          <App />
+        </AuthProvider>
+      ),
       errorElement: <NotFoundPage />,
       children: [
         {

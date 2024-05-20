@@ -8,9 +8,12 @@ import Offcanvas from "react-bootstrap/Offcanvas";
 import { useState } from "react";
 import styles from "./NavbarComponent.module.css";
 import CloseButton from "react-bootstrap/CloseButton";
+import { useAuth } from "../../context/AuthContext";
+import { LogoutComponent } from "../LogoutComponent/LogoutComponent";
 
 export const NavbarComponent = () => {
   const [show, setShow] = useState(false);
+  const { currentUser } = useAuth();
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -55,14 +58,18 @@ export const NavbarComponent = () => {
                   Blogs
                 </Nav.Link>
               </Nav>
-              <Nav className={styles.offcanvasNav}>
-                <Nav.Link as={Link} to="/signup" className={styles.navLink}>
-                  Sign Up
-                </Nav.Link>
-                <Nav.Link as={Link} to="/login" className={styles.navLink}>
-                  Log In
-                </Nav.Link>
-              </Nav>
+              {currentUser ? (
+                <LogoutComponent avatar={currentUser?.avatar} />
+              ) : (
+                <Nav className={styles.offcanvasNav}>
+                  <Nav.Link as={Link} to="/signup" className={styles.navLink}>
+                    Sign Up
+                  </Nav.Link>
+                  <Nav.Link as={Link} to="/login" className={styles.navLink}>
+                    Log In
+                  </Nav.Link>
+                </Nav>
+              )}
             </Offcanvas.Body>
           </Offcanvas>
         </Container>

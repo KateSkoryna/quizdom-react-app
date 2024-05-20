@@ -1,4 +1,5 @@
 import { UserCredential } from "firebase/auth";
+import React from "react";
 
 export interface Article {
   id: string;
@@ -48,7 +49,7 @@ export interface AuthContextValue {
   currentUser: CurrentUser | null;
   login: (email: string, password: string) => Promise<UserCredential>;
   signup: (values: UserData) => Promise<UserCredential>;
-  // logout: () => Promise<void>;
+  logout: () => Promise<void>;
 }
 
 export interface AuthProviderProps {

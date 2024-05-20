@@ -1,15 +1,16 @@
 import Button from "react-bootstrap/Button";
-// import { useAuth } from "../../context/AuthContext";
+import { useAuth } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { Col, Image, Row } from "react-bootstrap";
 import styles from "./LogoutComponent.module.css";
 
 export const LogoutComponent = ({ avatar }: { avatar?: string }) => {
-  // const { logout } = useAuth();
+  console.log(avatar);
+  const { logout } = useAuth();
   const navigate = useNavigate();
   const handleLogout = async () => {
     try {
-      // await logout();
+      await logout();
       navigate("/");
     } catch (error) {
       console.log(error);

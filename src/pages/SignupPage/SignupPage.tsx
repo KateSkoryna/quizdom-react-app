@@ -15,6 +15,7 @@ import { AvatarGenerator } from "random-avatar-generator";
 import { useAuth } from "../../context/AuthContext";
 import { updateProfile } from "firebase/auth";
 import { auth } from "../../firebase";
+import { useNavigate } from "react-router-dom";
 
 const initState = {
   name: "",
@@ -30,6 +31,7 @@ export const SignupPage = () => {
   const generator = new AvatarGenerator();
   const avatar = generator.generateRandomAvatar();
   const { signup } = useAuth();
+  const navigate = useNavigate();
 
   const onSubmit = async (values: UserData): Promise<void> => {
     try {
@@ -42,6 +44,7 @@ export const SignupPage = () => {
       if (userData) {
         reset(userData);
       }
+      navigate("/user");
     } catch (error) {
       setError("root", {
         message: "Faid to create an account",
