@@ -55,3 +55,11 @@ export interface AuthContextValue {
 export interface AuthProviderProps {
   children: React.ReactNode;
 }
+
+export interface FormFooterProps 
+  {
+  mainText: string;
+  text: string;
+  path: string;
+}
+

@@ -1,15 +1,14 @@
 .loginSection {
-    margin-top: 65px;
+    margin-top: 70px;
     padding-top: 30px;
     padding-bottom: 30px;
-    margin-bottom: 150px;
 }
 
-.form {
+.loginCard {
+    max-width: 600px;
     margin-left: auto;
     margin-right: auto;
-    width: 100%;
-    max-width: 600px;
+    padding: 20px;
 }
 
 .errorText {

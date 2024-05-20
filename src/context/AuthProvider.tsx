@@ -23,11 +23,11 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   };
 
   const logout = () => {
+    setCurrentUser(null);
     return signOut(auth);
   };
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (data) => {
-      console.log(data);
       if (data) {
         const user: CurrentUser = {
           name: data.displayName || "",
@@ -35,8 +35,6 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
           avatar: data.photoURL || "",
         };
         setCurrentUser(user);
-      } else {
-        setCurrentUser(null);
       }
       setLoading(false);
     });

@@ -55,6 +55,31 @@ const jokes: Joke[] = [
     joke: 'A SQL statement walks into a bar and sees two tables.\nIt approaches, and asks "may I join you?"',
     author: "John F. Kennedy",
   },
+  {
+    id: 11,
+    joke: "Why do programmers prefer dark mode? Because light attracts bugs.",
+    author: "Clint Eastwood",
+  },
+  {
+    id: 12,
+    joke: "Perfect tech stack like a perfect partner. It just does not exist, so let's get to work",
+    author: "Elon Musk",
+  },
+  {
+    id: 13,
+    joke: "Technical confidence comes from one of two things: ignorance or experience",
+    author: "Bill Gates",
+  },
+  {
+    id: 14,
+    joke: "Copypaste is the fastest way to create bugs.",
+    author: "Galileo Galilei",
+  },
+  {
+    id: 15,
+    joke: "My wife complained that I care more about coding than her. I told her that in my array of interests, she is at [1](position 1). She was satisfied.",
+    author: "Bill Clinton",
+  },
 ];
 
 const getJoke = () => {

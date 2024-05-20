@@ -1,12 +1,13 @@
 import { useState } from "react";
-import { Container, Form, Button } from "react-bootstrap";
+import { Container, Form, Button, Card } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { LoginUser } from "../../types/types";
 import styles from "./LoginPage.module.css";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { loginSschema } from "../../helpers/schema";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
+import { FormFooter } from "../../components/FormFooter/FormFooter";
 
 const initState = {
   email: "",
@@ -46,55 +47,56 @@ export const LoginPage = () => {
 
   return (
     <Container className={styles.loginSection}>
-      <h2 className={styles.formTitle}>Log In</h2>
-      <Form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
-        <Form.Group className="mb-3" controlId="formBasicEmail">
-          <Form.Label>Email</Form.Label>
-          <Form.Control
-            type="email"
-            placeholder="Enter your email"
-            autoComplete="email"
-            {...register("email", { required: "Email is required" })}
-          />
-          {errors.email ? (
-            <Form.Text className="text-danger">
-              {errors.email.message}
-            </Form.Text>
+      <Card className={styles.loginCard}>
+        <h2 className={styles.formTitle}>Log In</h2>
+        <Form onSubmit={handleSubmit(onSubmit)}>
+          <Form.Group className="mb-3" controlId="formBasicEmail">
+            <Form.Label>Email</Form.Label>
+            <Form.Control
+              type="email"
+              placeholder="Enter your email"
+              autoComplete="email"
+              {...register("email", { required: "Email is required" })}
+            />
+            {errors.email ? (
+              <Form.Text className="text-danger">
+                {errors.email.message}
+              </Form.Text>
+            ) : (
+              <Form.Text className={styles.errorText}>Empty space</Form.Text>
+            )}
+          </Form.Group>
+          <Form.Group controlId="formBasicPassword">
+            <Form.Label>Password</Form.Label>
+            <Form.Control
+              type="password"
+              placeholder="Enter your password"
+              autoComplete="password"
+              {...register("password", { required: "Password is required" })}
+            />
+            {errors.password ? (
+              <Form.Text className="text-danger">
+                {errors.password.message}
+              </Form.Text>
+            ) : (
+              <Form.Text className={styles.errorText}>Empty space</Form.Text>
+            )}
+          </Form.Group>
+          {errors.root ? (
+            <Form.Text className="text-danger">{errors.root.message}</Form.Text>
           ) : (
             <Form.Text className={styles.errorText}>Empty space</Form.Text>
           )}
-        </Form.Group>
-        <Form.Group controlId="formBasicPassword">
-          <Form.Label>Password</Form.Label>
-          <Form.Control
-            type="password"
-            placeholder="Enter your password"
-            autoComplete="password"
-            {...register("password", { required: "Password is required" })}
+          <Button variant="primary" type="submit" className={styles.formBtn}>
+            Submit
+          </Button>
+          <FormFooter
+            mainText="Dont have an account? "
+            text="Sign Up"
+            path="/signup"
           />
-          {errors.password ? (
-            <Form.Text className="text-danger">
-              {errors.password.message}
-            </Form.Text>
-          ) : (
-            <Form.Text className={styles.errorText}>Empty space</Form.Text>
-          )}
-        </Form.Group>
-        {errors.root ? (
-          <Form.Text className="text-danger">{errors.root.message}</Form.Text>
-        ) : (
-          <Form.Text className={styles.errorText}>Empty space</Form.Text>
-        )}
-        <Button variant="primary" type="submit" className={styles.formBtn}>
-          Submit
-        </Button>
-        <Form.Text className="d-block ms-auto">
-          {`Don't have an account? `}
-          <Link className="text-primary" to="/signup">
-            Sing up
-          </Link>
-        </Form.Text>
-      </Form>
+        </Form>
+      </Card>
     </Container>
   );
 };
