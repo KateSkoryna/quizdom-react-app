@@ -10,7 +10,7 @@ export const LogoutComponent = ({ avatar }: { avatar?: string }) => {
   const handleLogout = async () => {
     try {
       await logout();
-      navigate("/login");
+      navigate("/");
     } catch (error) {
       console.log(error);
     }
