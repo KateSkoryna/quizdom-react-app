@@ -1,3 +1,5 @@
+import { UserCredential } from "firebase/auth";
+
 export interface Article {
   id: string;
   author: string;
@@ -7,14 +9,18 @@ export interface Article {
   image?: string;
 }
 
-export interface CurrentUser {
+export interface LoginUser {
   email: string;
   password: string;
 }
 
-export interface UserData {
+export interface CurrentUser {
   name: string;
   email: string;
+  avatar?: string;
+}
+
+export interface UserData extends CurrentUser {
   dateOfBirth: Date;
   gender: string;
   password: string;
@@ -36,4 +42,14 @@ export interface HeroComponentProps {
   joke: string;
   hero: string;
   person: string;
+}
+
+export interface AuthContextValue {
+  currentUser: CurrentUser | null;
+  login: (email: string, password: string) => Promise<UserCredential>;
+  signup: (values: UserData) => Promise<UserCredential>;
+}
+
+export interface AuthProviderProps {
+  children: React.ReactNode;
 }

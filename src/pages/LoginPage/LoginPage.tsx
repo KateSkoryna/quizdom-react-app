@@ -1,13 +1,12 @@
 import { useState } from "react";
 import { Container, Form, Button } from "react-bootstrap";
 import { useForm } from "react-hook-form";
-import { CurrentUser } from "../../types/types";
+import { LoginUser } from "../../types/types";
 import styles from "./LoginPage.module.css";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { loginSschema } from "../../helpers/schema";
-import { auth } from "../../firebase";
-import { signInWithEmailAndPassword } from "firebase/auth";
 import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
 
 const initState = {
   email: "",
@@ -17,15 +16,11 @@ const initState = {
 export const LoginPage = () => {
   const [currentFormData, setCurrentFormData] = useState(initState);
   const navigate = useNavigate();
+  const { login } = useAuth();
 
-  const onSubmit = async (values: CurrentUser): Promise<void> => {
+  const onSubmit = async (values: LoginUser): Promise<void> => {
     try {
-      const { user } = await signInWithEmailAndPassword(
-        auth,
-        values.email,
-        values.password
-      );
-      console.log(user);
+      await login(values.email, values.password);
       setCurrentFormData(values);
       reset(currentFormData);
       navigate("/user");
