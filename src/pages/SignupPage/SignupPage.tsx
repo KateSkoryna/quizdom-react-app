@@ -12,7 +12,7 @@ import styles from "./SignupPage.module.css";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { signupSchema } from "../../helpers/schema";
 import { AvatarGenerator } from "random-avatar-generator";
-import {useAuth} from "../../context/AuthContext";
+import { useAuth } from "../../context/AuthContext";
 import { updateProfile } from "firebase/auth";
 import { auth } from "../../firebase";
 
@@ -26,7 +26,7 @@ const initState = {
 };
 
 export const SignupPage = () => {
-  const [userData, setUserData] = useState(initState);
+  const [userData, setUserData] = useState<UserData | null>(null);
   const generator = new AvatarGenerator();
   const avatar = generator.generateRandomAvatar();
   const { signup } = useAuth();
@@ -39,7 +39,9 @@ export const SignupPage = () => {
         photoURL: avatar,
       });
       setUserData(values);
-      reset(userData);
+      if (userData) {
+        reset(userData);
+      }
     } catch (error) {
       setError("root", {
         message: "Faid to create an account",
@@ -57,7 +59,7 @@ export const SignupPage = () => {
   } = useForm({
     mode: "onTouched",
     reValidateMode: "onSubmit",
-    defaultValues: userData,
+    defaultValues: initState,
     resolver: yupResolver(signupSchema),
   });
 
