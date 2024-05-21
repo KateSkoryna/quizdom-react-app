@@ -1,6 +1,7 @@
 import { Button, Card } from "react-bootstrap";
 import { useAuth } from "../../context/AuthContext";
 import styles from "./UserCard.module.css";
+import { Loader } from "../Loader/Loader";
 
 export const UserCard = () => {
   const { currentUser } = useAuth();
@@ -10,7 +11,7 @@ export const UserCard = () => {
     .split("/")
     .join(".");
 
-  return (
+  return currentUser ? (
     <Card className={styles.card}>
       <Card.Body className="p-0">
         <Card.Img src={currentUser?.avatar} className={styles.cardImg} />
@@ -25,5 +26,7 @@ export const UserCard = () => {
         </Card.Footer>
       </Card.Body>
     </Card>
+  ) : (
+    <Loader />
   );
 };

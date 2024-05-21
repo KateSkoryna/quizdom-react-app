@@ -10,6 +10,7 @@ import {
 } from "firebase/auth";
 import { AuthContext } from "./AuthContext";
 import { doc, getDoc } from "firebase/firestore";
+import { Loader } from "../components/Loader/Loader";
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [currentUser, setCurrentUser] = useState<CurrentUser | null>(null);
@@ -62,7 +63,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
   return (
     <AuthContext.Provider value={value}>
-      {!loading && children}
+      {loading ? <Loader /> : children}
     </AuthContext.Provider>
   );
 };
