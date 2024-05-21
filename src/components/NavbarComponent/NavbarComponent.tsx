@@ -45,7 +45,6 @@ export const NavbarComponent = () => {
             <Offcanvas.Header className={styles.offcanvasHeader}>
               <CloseButton className={styles.closeBtn} onClick={handleClose} />
             </Offcanvas.Header>
-
             <Offcanvas.Body className="d-flex flex-column flex-lg-row justify-content-lg-between">
               <Nav className={styles.offcanvasNav}>
                 <Nav.Link as={Link} to="/quizes" className={styles.navLink}>

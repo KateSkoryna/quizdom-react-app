@@ -1,6 +1,6 @@
 import { AuthProviderProps, CurrentUser, UserData } from "../types/types";
 import { useState, useEffect } from "react";
-import { auth } from "../firebase";
+import { auth, db } from "../firebase";
 import {
   createUserWithEmailAndPassword,
   UserCredential,
@@ -9,6 +9,7 @@ import {
   signOut,
 } from "firebase/auth";
 import { AuthContext } from "./AuthContext";
+import { doc, getDoc } from "firebase/firestore";
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [currentUser, setCurrentUser] = useState<CurrentUser | null>(null);
@@ -26,18 +27,24 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     setCurrentUser(null);
     return signOut(auth);
   };
+
+  const getUser = async () => {
+    const ref = doc(db, "users", auth.currentUser!.uid);
+    const snapshot = await getDoc(ref);
+    if (snapshot.exists()) {
+      setCurrentUser(snapshot.data() as CurrentUser);
+    }
+  };
+
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (data) => {
-      if (data) {
-        const user: CurrentUser = {
-          name: data.displayName || "",
-          email: data.email || "",
-          avatar: data.photoURL || "",
-        };
-        setCurrentUser(user);
+    const fetchUser = async () => {
+      if (auth.currentUser) {
+        await getUser();
       }
       setLoading(false);
-    });
+    };
+
+    const unsubscribe = onAuthStateChanged(auth, fetchUser);
     return () => unsubscribe();
   }, []);
 

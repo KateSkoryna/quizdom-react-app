@@ -19,11 +19,11 @@ export interface CurrentUser {
   name: string;
   email: string;
   avatar?: string;
+  dateOfBirth: Date;
+  gender: string;
 }
 
 export interface UserData extends CurrentUser {
-  dateOfBirth: Date;
-  gender: string;
   password: string;
   confirmPassword: string;
 }
@@ -56,10 +56,8 @@ export interface AuthProviderProps {
   children: React.ReactNode;
 }
 
-export interface FormFooterProps 
-  {
+export interface FormFooterProps {
   mainText: string;
   text: string;
   path: string;
 }
-

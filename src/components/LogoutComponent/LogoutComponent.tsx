@@ -5,7 +5,6 @@ import { Col, Image, Row } from "react-bootstrap";
 import styles from "./LogoutComponent.module.css";
 
 export const LogoutComponent = ({ avatar }: { avatar?: string }) => {
-  console.log(avatar);
   const { logout } = useAuth();
   const navigate = useNavigate();
   const handleLogout = async () => {

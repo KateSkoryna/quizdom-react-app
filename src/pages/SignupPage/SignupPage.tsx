@@ -9,8 +9,8 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { signupSchema } from "../../helpers/schema";
 import { AvatarGenerator } from "random-avatar-generator";
 import { useAuth } from "../../context/AuthContext";
-import { updateProfile } from "firebase/auth";
-import { auth } from "../../firebase";
+import { doc, setDoc } from "firebase/firestore";
+import { auth, db } from "../../firebase";
 import { useNavigate } from "react-router-dom";
 import { FormFooter } from "../../components/FormFooter/FormFooter";
 import { DatePickerComponent } from "../../components/DatePickerComponent/DatePickerComponent";
@@ -38,9 +38,14 @@ export const SignupPage = () => {
   const onSubmit = async (values: UserData): Promise<void> => {
     try {
       await signup(values);
-      await updateProfile(auth.currentUser!, {
-        displayName: values.name,
-        photoURL: avatar,
+      const ref = doc(db, "users", auth.currentUser!.uid);
+      await setDoc(ref, {
+        name: values.name,
+        email: values.email,
+        avatar: avatar,
+        dateOfBirth: values.dateOfBirth,
+        gender: values.gender,
+        password: values.password,
       });
       setUserData(values);
       if (userData) {
