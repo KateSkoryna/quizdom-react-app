@@ -1,6 +1,16 @@
 .userSection {
     margin-top: 65px;
-    padding-top: 30px;
-    padding-bottom: 30px;
+    padding: 20px;
     margin-bottom: 150px;
+
+}
+
+.userSectionCard {
+    display: flex;
+    flex-direction: row;
+    padding: 10px;
+}
+
+.userCardInfo:first-child {
+    margin-right: 10px;
 }

@@ -1,6 +1,6 @@
 import Button from "react-bootstrap/Button";
-import { useNavigate } from "react-router-dom";
-import { Card, Col, Image, Row } from "react-bootstrap";
+import { Link, useNavigate } from "react-router-dom";
+import { Nav, Col, Image, Row } from "react-bootstrap";
 import styles from "./LogoutComponent.module.css";
 import { useAuth } from "../../context/AuthContext";
 
@@ -22,10 +22,14 @@ export const LogoutComponent = ({
     }
   };
   return (
-    <div>
+    <Nav>
       <Row className={styles.logoutNavbar}>
         <Col xs={12} md={4} className={styles.logoutNavbarContainer}>
-          <Card.Text className={styles.cardText}>{`Hi, ${name}`}</Card.Text>
+          <Nav.Link
+            as={Link}
+            to="/user"
+            className={styles.userPageLink}
+          >{`Hi, ${name}`}</Nav.Link>
         </Col>
         <Col xs={12} md={3} className={styles.logoutNavbarContainer}>
           <Image src={avatar} className={styles.userIcon} rounded />
@@ -36,6 +40,6 @@ export const LogoutComponent = ({
           </Button>
         </Col>
       </Row>
-    </div>
+    </Nav>
   );
 };

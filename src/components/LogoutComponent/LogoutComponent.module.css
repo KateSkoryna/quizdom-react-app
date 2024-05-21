@@ -9,7 +9,7 @@
     margin-right: auto;
 
     @media screen and (min-width: 913.99px) {
-        min-width: 320px;
+        min-width: 340px;
         flex-direction: row;
         text-align: center;
         justify-content: end;
@@ -31,8 +31,16 @@ text-align: center;
     }
 }
 
-.cardText {
-    min-width: 120px;
+.userPageLink {
+    text-decoration: none;
+    border-bottom: 2px solid transparent;
+    color: rgb(255, 255, 255, 0.8);
+    padding: 8px;
+}
+
+.userPageLink:hover {
+    border-bottom: 2px solid #F7941D;
+    color: #fff;
 }
 
 .userIcon {
@@ -61,4 +69,6 @@ text-align: center;
     box-shadow: 0;
     color: #FFF;
 }
+
+
 

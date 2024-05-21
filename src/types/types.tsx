@@ -10,6 +10,8 @@ export interface Article {
   image?: string;
 }
 
+type Gender = "male" | "female";
+
 export interface LoginUser {
   email: string;
   password: string;
@@ -20,7 +22,7 @@ export interface CurrentUser {
   email: string;
   avatar: string;
   dateOfBirth: Date;
-  gender: string;
+  gender: Gender;
   password: string;
 }
 
