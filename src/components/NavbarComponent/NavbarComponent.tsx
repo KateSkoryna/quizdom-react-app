@@ -15,6 +15,8 @@ export const NavbarComponent = () => {
   const [show, setShow] = useState(false);
   const { currentUser } = useAuth();
 
+  const userName = currentUser?.name.split(" ")[0];
+
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
@@ -58,7 +60,10 @@ export const NavbarComponent = () => {
                 </Nav.Link>
               </Nav>
               {currentUser ? (
-                <LogoutComponent avatar={currentUser?.avatar} />
+                <LogoutComponent
+                  avatar={currentUser.avatar ?? ""}
+                  name={userName ?? ""}
+                />
               ) : (
                 <Nav className={styles.offcanvasNav}>
                   <Nav.Link as={Link} to="/signup" className={styles.navLink}>

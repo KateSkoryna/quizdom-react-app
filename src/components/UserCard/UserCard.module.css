@@ -1,0 +1,25 @@
+.card {
+    width: 100%;
+    @media screen and (min-width: 768px) {
+        width: 50%;
+    }
+
+    @media screen and (min-width: 998px) {
+        width: 30%;
+    }
+}
+
+.cardTitle {
+    font-size: 24px;
+    font-weight: 700;
+}
+
+.cardText {
+    color: #000;
+    font-size: 18px;
+}
+
+.cardImg {
+    width: 260px;
+    height: 260px;
+}

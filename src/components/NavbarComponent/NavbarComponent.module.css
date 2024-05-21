@@ -37,6 +37,10 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+
+    @media screen and (max-width: 932px) {
+        margin-bottom: 20px;
+    }
 }
 
 .closeBtn:hover, .closeBtn:focus {

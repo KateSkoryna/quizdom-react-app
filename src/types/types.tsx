@@ -18,12 +18,17 @@ export interface LoginUser {
 export interface CurrentUser {
   name: string;
   email: string;
-  avatar?: string;
+  avatar: string;
   dateOfBirth: Date;
   gender: string;
+  password: string;
 }
 
-export interface UserData extends CurrentUser {
+export interface UserData {
+  name: string;
+  email: string;
+  dateOfBirth: Date;
+  gender: string;
   password: string;
   confirmPassword: string;
 }
