@@ -1,9 +1,10 @@
 import { Button, Card } from "react-bootstrap";
 import { useAuth } from "../../context/AuthContext";
-import styles from "./UserCard.module.css";
-import { Loader } from "../Loader/Loader";
+import { MdOutlineAddAPhoto } from "react-icons/md";
 
-export const UserCard = () => {
+import styles from "./UserCardData.module.css";
+
+export const UserCardData = () => {
   const { currentUser } = useAuth();
 
   const dateOfBirth = currentUser?.dateOfBirth
@@ -11,10 +12,15 @@ export const UserCard = () => {
     .split("/")
     .join(".");
 
-  return currentUser ? (
+  return (
     <Card className={styles.card}>
       <Card.Body className="p-0">
-        <Card.Img src={currentUser?.avatar} className={styles.cardImg} />
+        <div className={styles.imgChangeContainer}>
+          <Button className={styles.imgChangeBtn}>
+            <MdOutlineAddAPhoto className={styles.imgChgangeIcon} />
+          </Button>
+          <Card.Img src={currentUser?.avatar} className={styles.cardImg} />
+        </div>
         <Card.Title className={styles.cardTitle}>
           {currentUser?.name}
         </Card.Title>
@@ -26,7 +32,5 @@ export const UserCard = () => {
         </Card.Footer>
       </Card.Body>
     </Card>
-  ) : (
-    <Loader />
   );
 };

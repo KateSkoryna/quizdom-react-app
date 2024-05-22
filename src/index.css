@@ -21,13 +21,20 @@ h6 {
     color: #000;
 }
 
- p, a {
+p, a {
     margin: 0;
     padding: 0;
     color: var(--text-color);
 }
 
-.btn {
+.btn.btn-primary {
     background-color: var(--primary-color);
     border-color: var(--primary-color);
+}
+
+.btn:hover,
+.btn:focus {
+    scale: 1.1;
+    transition: scale 0.2s ease-in-out;
+    outline: none;
 }

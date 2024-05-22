@@ -14,6 +14,7 @@ import { UserPage } from "./pages/UserPage/UserPage";
 import App from "./components/App/App";
 import { getAllNews } from "./API/api";
 import { AuthProvider } from "./context/AuthProvider";
+import { ProtectedRoute } from "./pages/ProtectedRoute";
 
 const router = createBrowserRouter(
   [
@@ -72,7 +73,11 @@ const router = createBrowserRouter(
         },
         {
           path: "user",
-          element: <UserPage />,
+          element: (
+            <ProtectedRoute>
+              <UserPage />
+            </ProtectedRoute>
+          ),
         },
       ],
     },
