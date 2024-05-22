@@ -26,3 +26,8 @@ h6 {
     padding: 0;
     color: var(--text-color);
 }
+
+.btn {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
