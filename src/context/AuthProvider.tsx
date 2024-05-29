@@ -16,7 +16,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [currentUser, setCurrentUser] = useState<CurrentUser | null>(null);
   const [loading, setLoading] = useState(true);
 
-  const signup = async (values: UserData): Promise<UserCredential> => {
+  const signup = (values: UserData): Promise<UserCredential> => {
     return createUserWithEmailAndPassword(auth, values.email, values.password);
   };
 

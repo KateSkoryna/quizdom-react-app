@@ -12,7 +12,6 @@ import { UserPage } from "../../pages/UserPage/UserPage";
 import { getAllNews } from "../../API/api";
 import { ProtectedRoute } from "../../pages/ProtectedRoute";
 import Layout from "../Layout/Layout";
-import { AuthProvider } from "../../context/AuthProvider";
 
 const router = createBrowserRouter(
   [
@@ -80,11 +79,7 @@ const router = createBrowserRouter(
 );
 
 function App() {
-  return (
-    <AuthProvider>
-      <RouterProvider router={router} />
-    </AuthProvider>
-  );
+  return <RouterProvider router={router} />;
 }
 
 export default App;

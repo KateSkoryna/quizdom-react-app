@@ -15,8 +15,6 @@ export const NavbarComponent = () => {
   const [show, setShow] = useState(false);
   const { currentUser } = useAuth();
 
-  console.log(currentUser);
-
   const userName = currentUser?.name.split(" ")[0];
 
   const handleClose = () => setShow(false);
