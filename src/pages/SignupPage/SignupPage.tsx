@@ -133,15 +133,9 @@ export const SignupPage = () => {
                   <option value="male">Male</option>
                   <option value="female">Female</option>
                 </Form.Select>
-                {errors.gender ? (
-                  <Form.Text className="text-danger">
-                    {errors.gender.message}
-                  </Form.Text>
-                ) : (
-                  <Form.Text className={styles.errorText}>
-                    Empty space
-                  </Form.Text>
-                )}
+                {errors.gender
+                  ? addClassnameToText("text-danger", errors.gender.message)
+                  : addClassnameToText(styles.errorText)}
               </Form.Group>
             </Col>
           </Row>
