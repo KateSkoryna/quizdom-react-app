@@ -8,6 +8,8 @@ import { loginSschema } from "../../helpers/schema";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { FormFooter } from "../../components/FormFooter/FormFooter";
+import { auth, db } from "../../firebase";
+import { doc, getDoc } from "firebase/firestore";
 
 const initState = {
   email: "",
@@ -23,8 +25,11 @@ export const LoginPage = () => {
     try {
       await login(values.email, values.password);
       setCurrentFormData(values);
-      reset(currentFormData);
-      navigate("/user");
+      const ref = doc(db, "users", auth.currentUser!.uid);
+      const user = await getDoc(ref);
+      if (user) {
+        navigate("/user");
+      }
     } catch (error) {
       setError("root", {
         message: "Invalid email or password",
@@ -35,7 +40,6 @@ export const LoginPage = () => {
   const {
     register,
     handleSubmit,
-    reset,
     setError,
     formState: { errors },
   } = useForm({

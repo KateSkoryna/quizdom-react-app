@@ -13,6 +13,7 @@ export const LogoutComponent = ({
 }) => {
   const { logout } = useAuth();
   const navigate = useNavigate();
+
   const handleLogout = async () => {
     try {
       await logout();
