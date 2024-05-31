@@ -1,31 +1,29 @@
-import Button from "react-bootstrap/Button";
-import Card from "react-bootstrap/Card";
-import Nav from "react-bootstrap/Nav";
-import styles from "./UserCardInfo.module.css";
+import { Card } from "react-bootstrap";
+import Tab from "react-bootstrap/Tab";
+import Tabs from "react-bootstrap/Tabs";
+import { StatisticsUserComponent } from "../StatisticsUserComponent/StatisticsUserComponent";
+import { UserQuizesComponent } from "../UserQuizesComponent/UserQuizesComponent";
+import { UserFavoritesComponent } from "../UserFavoritesComponent/UserFavoritesComponent";
 
 export const UserCardInfo = () => {
   return (
-    <Card className={styles.userCardInfo}>
-      <Card.Header>
-        <Nav variant="tabs" defaultActiveKey="#first">
-          <Nav.Item>
-            <Nav.Link href="#first">About me</Nav.Link>
-          </Nav.Item>
-          <Nav.Item>
-            <Nav.Link href="#quizes">My quizes</Nav.Link>
-          </Nav.Item>
-          <Nav.Item>
-            <Nav.Link href="#favorites">Favorites</Nav.Link>
-          </Nav.Item>
-        </Nav>
-      </Card.Header>
-      <Card.Body>
-        <Card.Title>Special title treatment</Card.Title>
-        <Card.Text>
-          With supporting text below as a natural lead-in to additional content.
-        </Card.Text>
-        <Button variant="primary">Go somewhere</Button>
-      </Card.Body>
+    <Card className="flex-grow-1">
+      <Tabs
+        defaultActiveKey="statistics"
+        id="justify-tab-example"
+        className="mb-3"
+        justify
+      >
+        <Tab eventKey="statistics" title="Statistics">
+          <StatisticsUserComponent />
+        </Tab>
+        <Tab eventKey="my-quizes" title="My Quizes">
+          <UserQuizesComponent />
+        </Tab>
+        <Tab eventKey="favorites" title="Favorites">
+          <UserFavoritesComponent />
+        </Tab>
+      </Tabs>
     </Card>
   );
 };

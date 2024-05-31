@@ -10,6 +10,7 @@ import { useAuth } from "../../context/AuthContext";
 import { FormFooter } from "../../components/FormFooter/FormFooter";
 import { auth, db } from "../../firebase";
 import { doc, getDoc } from "firebase/firestore";
+import bcrypt from "bcryptjs-react";
 
 const initState = {
   email: "",
@@ -27,7 +28,11 @@ export const LoginPage = () => {
       setCurrentFormData(values);
       const ref = doc(db, "users", auth.currentUser!.uid);
       const user = await getDoc(ref);
-      if (user) {
+      const comparedPassword = bcrypt.compareSync(
+        values.password,
+        user.data()?.password
+      );
+      if (comparedPassword) {
         navigate("/user");
       }
     } catch (error) {

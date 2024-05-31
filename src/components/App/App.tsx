@@ -12,6 +12,8 @@ import { UserPage } from "../../pages/UserPage/UserPage";
 import { getAllNews } from "../../API/api";
 import { ProtectedRoute } from "../../pages/ProtectedRoute";
 import Layout from "../Layout/Layout";
+// import { AboutUserComponent } from "../AboutUserComponent/AboutUserComponent";
+// import { UserQuizesComponent } from "../UserQuizesComponent/UserQuizesComponent";
 
 const router = createBrowserRouter(
   [
