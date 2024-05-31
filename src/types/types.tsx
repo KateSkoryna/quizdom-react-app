@@ -24,6 +24,9 @@ export interface CurrentUser {
   dateOfBirth: Date;
   gender: Gender;
   password: string;
+  avarageScore: number;
+  userInfo: string;
+  favorites: string[];
 }
 
 export interface UserData {

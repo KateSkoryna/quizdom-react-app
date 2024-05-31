@@ -14,6 +14,7 @@ import { auth, db } from "../../firebase";
 import { useNavigate } from "react-router-dom";
 import { FormFooter } from "../../components/FormFooter/FormFooter";
 import { DatePickerComponent } from "../../components/DatePickerComponent/DatePickerComponent";
+import bcrypt from "bcryptjs-react";
 
 const initState = {
   name: "",
@@ -24,18 +25,23 @@ const initState = {
   confirmPassword: "",
 };
 
+// add classnames to error text
 const addClassnameToText = (classNameText: string, message = "No errors") => {
   return <Form.Text className={classNameText}>{message}</Form.Text>;
 };
+// create random avatar
+const generator = new AvatarGenerator();
+const avatar = generator.generateRandomAvatar();
 
 export const SignupPage = () => {
   const [userData, setUserData] = useState<UserData | null>(null);
-  const generator = new AvatarGenerator();
-  const avatar = generator.generateRandomAvatar();
+
   const { signup } = useAuth();
   const navigate = useNavigate();
 
   const onSubmit = async (values: UserData): Promise<void> => {
+    const hashedPassword = bcrypt.hashSync(values.password, 10);
+
     try {
       await signup(values);
       const ref = doc(db, "users", auth.currentUser!.uid);
@@ -45,7 +51,10 @@ export const SignupPage = () => {
         avatar: avatar,
         dateOfBirth: values.dateOfBirth,
         gender: values.gender,
-        password: values.password,
+        password: hashedPassword,
+        avarageScore: 0,
+        favorites: [],
+        userInfo: "I'm a new user and I don't have a bio yet.",
       });
       setUserData(values);
       if (userData) {

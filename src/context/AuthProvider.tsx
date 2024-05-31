@@ -29,28 +29,24 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     return signOut(auth);
   };
 
-  const getUser = async () => {
-    const ref = doc(db, "users", auth.currentUser!.uid);
-    const snapshot = await getDoc(ref);
-    if (snapshot.exists()) {
-      const userData = snapshot.data() as CurrentUser;
-      const user: CurrentUser = {
-        ...userData,
-        dateOfBirth: snapshot.data().dateOfBirth.toDate(),
-      };
-      setCurrentUser(user);
-    }
-  };
-
   useEffect(() => {
-    const fetchUser = async () => {
-      if (auth.currentUser) {
-        await getUser();
+    const unsubscribe = onAuthStateChanged(auth, async () => {
+      if (!auth.currentUser) {
+        setLoading(false);
+        return;
+      }
+      const ref = doc(db, "users", auth.currentUser!.uid);
+      const snapshot = await getDoc(ref);
+      if (snapshot.exists()) {
+        const userData = snapshot.data() as CurrentUser;
+        const user: CurrentUser = {
+          ...userData,
+          dateOfBirth: snapshot.data().dateOfBirth.toDate(),
+        };
+        setCurrentUser(user);
       }
       setLoading(false);
-    };
-
-    const unsubscribe = onAuthStateChanged(auth, fetchUser);
+    });
     return () => unsubscribe();
   }, []);
 
