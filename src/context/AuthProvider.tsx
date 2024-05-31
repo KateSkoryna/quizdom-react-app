@@ -39,8 +39,10 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       const snapshot = await getDoc(ref);
       if (snapshot.exists()) {
         const userData = snapshot.data() as CurrentUser;
+
         const user: CurrentUser = {
           ...userData,
+          id: auth.currentUser!.uid,
           dateOfBirth: snapshot.data().dateOfBirth.toDate(),
         };
         setCurrentUser(user);

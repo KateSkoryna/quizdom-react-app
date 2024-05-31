@@ -5,7 +5,6 @@ import { UserAboutComponent } from "../UserAboutComponent/UserAboutComponent";
 
 export const StatisticsUserComponent = () => {
   const { currentUser } = useAuth();
-  console.log(currentUser);
   return (
     <div>
       <Container>

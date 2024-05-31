@@ -32,7 +32,7 @@ export const LoginPage = () => {
         values.password,
         user.data()?.password
       );
-      if (comparedPassword) {
+      if (comparedPassword && user) {
         navigate("/user");
       }
     } catch (error) {

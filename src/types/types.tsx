@@ -18,6 +18,7 @@ export interface LoginUser {
 }
 
 export interface CurrentUser {
+  id: string;
   name: string;
   email: string;
   avatar: string;
@@ -44,7 +45,7 @@ export interface Joke {
   delivery?: string;
 }
 
-export interface Category {
+export interface NewsCategory {
   id: number;
   type: string;
 }
@@ -70,4 +71,42 @@ export interface FormFooterProps {
   mainText: string;
   text: string;
   path: string;
+}
+
+export interface QuizFormProps {
+  handleClose: () => void;
+}
+
+interface Answer {
+  answer: string;
+  isCorrect: boolean;
+}
+
+interface Question {
+  questionTitle: string;
+  answers: Answer[];
+}
+
+export enum QuizCategory {
+  JS = "JavaScript",
+  TS = "TypeScript",
+  REACT = "React",
+  NEXT = "NextJS",
+  NODE_JS = "NodeJS",
+  JEST = "Jest",
+}
+
+export enum Complexity {
+  BEGINNER = "beginner",
+  MEDIUM = "medium",
+  ADVANCED = "advanced",
+  EXPERT = "expert",
+}
+
+export interface QuizFormState {
+  title: string;
+  description: string;
+  complexity: Complexity;
+  category: QuizCategory;
+  questions: Question[];
 }
