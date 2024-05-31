@@ -11,7 +11,7 @@ export const StatisticsUserComponent = () => {
       <Container>
         <h1>Statistics</h1>
         <StarComponent rating={currentUser?.avarageScore || 0} />
-        <UserAboutComponent info={currentUser?.about || ""} />
+        <UserAboutComponent info={currentUser?.userInfo || ""} />
       </Container>
     </div>
   );
