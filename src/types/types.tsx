@@ -45,9 +45,11 @@ export interface Joke {
   delivery?: string;
 }
 
-export interface NewsCategory {
-  id: number;
-  type: string;
+export enum NewsCategory {
+  TECHNOLOGY = "technology",
+  HEALTH = "health",
+  SCIENCE = "science",
+  BUSINESS = "business",
 }
 
 export interface HeroComponentProps {
@@ -86,12 +88,11 @@ interface Question {
   questionTitle: string;
   answers: Answer[];
 }
-
 export enum QuizCategory {
   JS = "JavaScript",
   TS = "TypeScript",
   REACT = "React",
-  NEXT = "NextJS",
+  NEXT_JS = "NextJS",
   NODE_JS = "NodeJS",
   JEST = "Jest",
 }
