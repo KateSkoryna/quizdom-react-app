@@ -12,11 +12,12 @@ export const FormRangeComponent = ({ fieldName }: { fieldName: string }) => {
         <Form.Group className="mb-3" controlId={fieldName}>
           <Form.Label>Complexity level: {convertComplexity(value)}</Form.Label>
           <Form.Range
-            onChange={onChange}
+            onChange={(e) => {
+              onChange(e.target.value);
+            }}
             min={1}
             max={4}
             step={1}
-            defaultValue={1}
             value={value}
           />
         </Form.Group>

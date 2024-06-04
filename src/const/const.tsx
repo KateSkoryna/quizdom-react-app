@@ -11,10 +11,10 @@ export const NEWS_CATEGORY = {
 };
 
 export const COMPLEXITY_VALUES = {
-  "1": Complexity.BEGINNER,
-  "2": Complexity.MEDIUM,
-  "3": Complexity.ADVANCED,
-  "4": Complexity.EXPERT,
+  [Complexity.BEGINNER]: "beginner",
+  [Complexity.MEDIUM]: "medium",
+  [Complexity.ADVANCED]: "advanced",
+  [Complexity.EXPERT]: "expert",
 };
 
 export const QUIZ_CATEGORY = {

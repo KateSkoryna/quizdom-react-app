@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Form from "react-bootstrap/Form";
-import { useForm, FormProvider } from "react-hook-form";
+import { useForm, FormProvider, useFieldArray } from "react-hook-form";
 import {
   QuizFormState,
   Complexity,
@@ -11,6 +11,7 @@ import { Button } from "react-bootstrap";
 import { useAuth } from "../../context/AuthContext";
 import { FormRangeComponent } from "../FormRangeComponent/FormRangeComponent";
 import { FormCategoryComponent } from "../FormCategoryComponent/FormCategoryComponent";
+import { v4 as uuid } from "uuid";
 
 const initState: QuizFormState = {
   title: "",
@@ -19,24 +20,13 @@ const initState: QuizFormState = {
   category: QuizCategory.JS,
   questions: [
     {
+      id: uuid(),
       questionTitle: "",
       answers: [
-        {
-          answer: "",
-          isCorrect: false,
-        },
-        {
-          answer: "",
-          isCorrect: false,
-        },
-        {
-          answer: "",
-          isCorrect: false,
-        },
-        {
-          answer: "",
-          isCorrect: false,
-        },
+        { id: 1, answer: "", isCorrect: false },
+        { id: 2, answer: "", isCorrect: false },
+        { id: 3, answer: "", isCorrect: false },
+        { id: 4, answer: "", isCorrect: false },
       ],
     },
   ],
@@ -52,6 +42,43 @@ export const QuizFormComponent = ({ handleClose }: QuizFormProps) => {
     reValidateMode: "onSubmit",
     defaultValues: initState,
   });
+
+  const {
+    fields: questions,
+    append,
+    remove,
+  } = useFieldArray({
+    control: methods.control,
+    name: "questions",
+  });
+  const { fields: answers } = useFieldArray({
+    control: methods.control,
+    name: "questions.0.answers",
+  });
+
+  const addQuestion = () => {
+    const question = {
+      id: uuid(),
+      questionTitle: "",
+      answers: [
+        { id: 1, answer: "", isCorrect: false },
+        { id: 2, answer: "", isCorrect: false },
+        { id: 3, answer: "", isCorrect: false },
+        { id: 4, answer: "", isCorrect: false },
+      ],
+    };
+    append(question);
+
+    console.log(questions);
+  };
+
+  const removeQuestion = (index: number) => {
+    console.log(index);
+    if (questions.length === 1) {
+      return;
+    }
+    remove(index);
+  };
 
   const handleFormSubmit = (data: QuizFormState) => {
     console.log(currentUser?.id);
@@ -81,6 +108,58 @@ export const QuizFormComponent = ({ handleClose }: QuizFormProps) => {
         </Form.Group>
         <FormRangeComponent fieldName="complexity" />
         <FormCategoryComponent fieldName="category" />
+        <Form.Group className="mb-3" controlId="questions">
+          <Form.Text className="text-muted">Add your questions</Form.Text>
+          {questions.map((field, index) => (
+            <>
+              <Form.Group
+                className="mb-3"
+                controlId={`question-${index}`}
+                key={field.id}
+              >
+                <Form.Label>Question {index + 1}</Form.Label>
+                <Form.Control
+                  {...methods.register(
+                    `questions.${index}.questionTitle` as const
+                  )}
+                  type="text"
+                  placeholder="Add question ..."
+                />
+                <Form.Group className="mb-3" controlId="answers">
+                  <Form.Text className="text-muted">Add your answers</Form.Text>
+                  {answers.map((answer, index) => (
+                    <Form.Group
+                      className="mb-3"
+                      controlId={`answer-${field.id}-${index}`}
+                      key={answer.id}
+                    >
+                      <Form.Control
+                        {...methods.register(
+                          `questions.${index}.answers.${index}.answer` as const
+                        )}
+                        type="text"
+                        placeholder="Add answer ..."
+                      />
+                      <Form.Check
+                        {...methods.register(
+                          `questions.${index}.answers.${index}.isCorrect` as const
+                        )}
+                        id={`checkbox-isCorrect-${field.id}-${index}`}
+                        label="Choose correct answer"
+                      />
+                    </Form.Group>
+                  ))}
+                </Form.Group>
+                {index > 0 && (
+                  <Button onClick={() => removeQuestion(index)}>
+                    Remove Question
+                  </Button>
+                )}
+              </Form.Group>
+            </>
+          ))}
+          <Button onClick={addQuestion}>Add Question</Button>
+        </Form.Group>
         <Button variant="secondary" onClick={handleClose}>
           Close
         </Button>

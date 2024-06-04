@@ -1,16 +1,17 @@
+import { COMPLEXITY_VALUES } from "../const/const";
 import { Complexity } from "../types/types";
 
 export const convertComplexity = (complexity: string) => {
   switch (complexity) {
     case "1":
-      return Complexity.BEGINNER;
+      return COMPLEXITY_VALUES[Complexity.BEGINNER];
     case "2":
-      return Complexity.MEDIUM;
+      return COMPLEXITY_VALUES[Complexity.MEDIUM];
     case "3":
-      return Complexity.ADVANCED;
+      return COMPLEXITY_VALUES[Complexity.ADVANCED];
     case "4":
-      return Complexity.EXPERT;
+      return COMPLEXITY_VALUES[Complexity.EXPERT];
     default:
-      return Complexity.BEGINNER;
+      return COMPLEXITY_VALUES[Complexity.BEGINNER];
   }
 };
