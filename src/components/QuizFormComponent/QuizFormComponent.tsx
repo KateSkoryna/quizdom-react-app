@@ -51,10 +51,6 @@ export const QuizFormComponent = ({ handleClose }: QuizFormProps) => {
     control: methods.control,
     name: "questions",
   });
-  const { fields: answers } = useFieldArray({
-    control: methods.control,
-    name: "questions.0.answers",
-  });
 
   const addQuestion = () => {
     const question = {
@@ -127,7 +123,7 @@ export const QuizFormComponent = ({ handleClose }: QuizFormProps) => {
                 />
                 <Form.Group className="mb-3" controlId="answers">
                   <Form.Text className="text-muted">Add your answers</Form.Text>
-                  {answers.map((answer, index) => (
+                  {field.answers.map((answer, index) => (
                     <Form.Group
                       className="mb-3"
                       controlId={`answer-${field.id}-${index}`}
@@ -146,7 +142,7 @@ export const QuizFormComponent = ({ handleClose }: QuizFormProps) => {
                         )}
                         id={`checkbox-isCorrect-${field.id}-${index}`}
                         label="Choose correct answer"
-                      />
+                      ></Form.Check>
                     </Form.Group>
                   ))}
                 </Form.Group>
