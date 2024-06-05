@@ -79,17 +79,17 @@ export interface QuizFormProps {
   handleClose: () => void;
 }
 
-interface Answer {
-  id: number;
+export interface Answer {
+  id: string;
   answer: string;
   isCorrect: boolean;
 }
 
-interface Question {
+export interface Question {
   id: string;
-  questionTitle: string;
-  answers: Answer[];
+  question: string;
 }
+
 export enum QuizCategory {
   JS = "JavaScript",
   TS = "TypeScript",
@@ -112,4 +112,5 @@ export interface QuizFormState {
   complexity: Complexity;
   category: QuizCategory;
   questions: Question[];
+  answers: Answer[];
 }

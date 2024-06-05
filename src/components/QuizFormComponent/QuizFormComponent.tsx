@@ -6,9 +6,9 @@ import {
   Complexity,
   QuizCategory,
   QuizFormProps,
+  Question,
 } from "../../types/types";
 import { Button } from "react-bootstrap";
-import { useAuth } from "../../context/AuthContext";
 import { FormRangeComponent } from "../FormRangeComponent/FormRangeComponent";
 import { FormCategoryComponent } from "../FormCategoryComponent/FormCategoryComponent";
 import { v4 as uuid } from "uuid";
@@ -21,21 +21,19 @@ const initState: QuizFormState = {
   questions: [
     {
       id: uuid(),
-      questionTitle: "",
-      answers: [
-        { id: 1, answer: "", isCorrect: false },
-        { id: 2, answer: "", isCorrect: false },
-        { id: 3, answer: "", isCorrect: false },
-        { id: 4, answer: "", isCorrect: false },
-      ],
+      question: "",
     },
+  ],
+  answers: [
+    { id: uuid(), answer: "", isCorrect: false },
+    { id: uuid(), answer: "", isCorrect: false },
+    { id: uuid(), answer: "", isCorrect: false },
+    { id: uuid(), answer: "", isCorrect: false },
   ],
 };
 
 export const QuizFormComponent = ({ handleClose }: QuizFormProps) => {
-  const [formData, setFormData] = useState<QuizFormState>(initState);
-
-  const { currentUser } = useAuth();
+  const [, setFormData] = useState<QuizFormState>(initState);
 
   const methods = useForm({
     mode: "onTouched",
@@ -52,24 +50,24 @@ export const QuizFormComponent = ({ handleClose }: QuizFormProps) => {
     name: "questions",
   });
 
-  const addQuestion = () => {
-    const question = {
-      id: uuid(),
-      questionTitle: "",
-      answers: [
-        { id: 1, answer: "", isCorrect: false },
-        { id: 2, answer: "", isCorrect: false },
-        { id: 3, answer: "", isCorrect: false },
-        { id: 4, answer: "", isCorrect: false },
-      ],
-    };
-    append(question);
+  const { fields: answers } = useFieldArray({
+    control: methods.control,
+    name: "answers",
+  });
 
-    console.log(questions);
+  const addQuestion = () => {
+    const question: Question = {
+      id: uuid(),
+      question: "",
+    };
+
+    console.log(answers);
+    console.log(question);
+
+    append(question);
   };
 
   const removeQuestion = (index: number) => {
-    console.log(index);
     if (questions.length === 1) {
       return;
     }
@@ -77,11 +75,10 @@ export const QuizFormComponent = ({ handleClose }: QuizFormProps) => {
   };
 
   const handleFormSubmit = (data: QuizFormState) => {
-    console.log(currentUser?.id);
     console.log(data);
     setFormData(data);
-    console.log(formData);
   };
+
   return (
     <FormProvider {...methods}>
       <Form onSubmit={methods.handleSubmit(handleFormSubmit)}>
@@ -107,7 +104,7 @@ export const QuizFormComponent = ({ handleClose }: QuizFormProps) => {
         <Form.Group className="mb-3" controlId="questions">
           <Form.Text className="text-muted">Add your questions</Form.Text>
           {questions.map((field, index) => (
-            <>
+            <Form.Group>
               <Form.Group
                 className="mb-3"
                 controlId={`question-${index}`}
@@ -115,15 +112,13 @@ export const QuizFormComponent = ({ handleClose }: QuizFormProps) => {
               >
                 <Form.Label>Question {index + 1}</Form.Label>
                 <Form.Control
-                  {...methods.register(
-                    `questions.${index}.questionTitle` as const
-                  )}
+                  {...methods.register(`questions.${index}.question` as const)}
                   type="text"
                   placeholder="Add question ..."
                 />
                 <Form.Group className="mb-3" controlId="answers">
                   <Form.Text className="text-muted">Add your answers</Form.Text>
-                  {field.answers.map((answer, index) => (
+                  {answers.map((answer, index) => (
                     <Form.Group
                       className="mb-3"
                       controlId={`answer-${field.id}-${index}`}
@@ -131,18 +126,18 @@ export const QuizFormComponent = ({ handleClose }: QuizFormProps) => {
                     >
                       <Form.Control
                         {...methods.register(
-                          `questions.${index}.answers.${index}.answer` as const
+                          `answers.${index}.answer` as const
                         )}
                         type="text"
                         placeholder="Add answer ..."
                       />
                       <Form.Check
                         {...methods.register(
-                          `questions.${index}.answers.${index}.isCorrect` as const
+                          `answers.${index}.isCorrect` as const
                         )}
-                        id={`checkbox-isCorrect-${field.id}-${index}`}
+                        id={`checkbox-isCorrect-${field.id}`}
                         label="Choose correct answer"
-                      ></Form.Check>
+                      />
                     </Form.Group>
                   ))}
                 </Form.Group>
@@ -152,9 +147,11 @@ export const QuizFormComponent = ({ handleClose }: QuizFormProps) => {
                   </Button>
                 )}
               </Form.Group>
-            </>
+            </Form.Group>
           ))}
-          <Button onClick={addQuestion}>Add Question</Button>
+          <Button type="button" onClick={addQuestion}>
+            Add Question
+          </Button>
         </Form.Group>
         <Button variant="secondary" onClick={handleClose}>
           Close
