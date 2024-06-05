@@ -80,14 +80,13 @@ export interface QuizFormProps {
 }
 
 export interface Answer {
-  id: string;
   answer: string;
   isCorrect: boolean;
 }
 
 export interface Question {
-  id: string;
-  question: string;
+  questionTitle: string;
+  answers: Answer[];
 }
 
 export enum QuizCategory {
@@ -112,5 +111,4 @@ export interface QuizFormState {
   complexity: Complexity;
   category: QuizCategory;
   questions: Question[];
-  answers: Answer[];
 }
