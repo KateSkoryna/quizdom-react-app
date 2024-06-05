@@ -15,6 +15,7 @@ import { useNavigate } from "react-router-dom";
 import { FormFooter } from "../../components/FormFooter/FormFooter";
 import { DatePickerComponent } from "../../components/DatePickerComponent/DatePickerComponent";
 import bcrypt from "bcryptjs-react";
+import addClassnameToText from "../../helpers/addClassnameToText";
 
 const initState = {
   name: "",
@@ -24,11 +25,8 @@ const initState = {
   password: "",
   confirmPassword: "",
 };
-
 // add classnames to error text
-const addClassnameToText = (classNameText: string, message = "No errors") => {
-  return <Form.Text className={classNameText}>{message}</Form.Text>;
-};
+
 // create random avatar
 const generator = new AvatarGenerator();
 const avatar = generator.generateRandomAvatar();

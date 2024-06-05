@@ -18,6 +18,7 @@ export interface LoginUser {
 }
 
 export interface CurrentUser {
+  id: string;
   name: string;
   email: string;
   avatar: string;
@@ -44,9 +45,11 @@ export interface Joke {
   delivery?: string;
 }
 
-export interface Category {
-  id: number;
-  type: string;
+export enum NewsCategory {
+  TECHNOLOGY = "technology",
+  HEALTH = "health",
+  SCIENCE = "science",
+  BUSINESS = "business",
 }
 
 export interface HeroComponentProps {
@@ -70,4 +73,42 @@ export interface FormFooterProps {
   mainText: string;
   text: string;
   path: string;
+}
+
+export interface QuizFormProps {
+  handleClose: () => void;
+}
+
+export interface Answer {
+  answer: string;
+  isCorrect: boolean;
+}
+
+export interface Question {
+  questionTitle: string;
+  answers: Answer[];
+}
+
+export enum QuizCategory {
+  JS = "JavaScript",
+  TS = "TypeScript",
+  REACT = "React",
+  NEXT_JS = "NextJS",
+  NODE_JS = "NodeJS",
+  JEST = "Jest",
+}
+
+export enum Complexity {
+  BEGINNER = "1",
+  MEDIUM = "2",
+  ADVANCED = "3",
+  EXPERT = "4",
+}
+
+export interface QuizFormState {
+  title: string;
+  description: string;
+  complexity: Complexity;
+  category: QuizCategory;
+  questions: Question[];
 }

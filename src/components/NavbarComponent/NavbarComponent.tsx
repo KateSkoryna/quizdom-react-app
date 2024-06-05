@@ -10,9 +10,12 @@ import styles from "./NavbarComponent.module.css";
 import CloseButton from "react-bootstrap/CloseButton";
 import { useAuth } from "../../context/AuthContext";
 import { LogoutComponent } from "../LogoutComponent/LogoutComponent";
+import { useActiveNavStore } from "../../store/store";
 
 export const NavbarComponent = () => {
   const [show, setShow] = useState(false);
+  const active = useActiveNavStore((state) => state.active);
+  const setActive = useActiveNavStore((state) => state.setActive);
   const { currentUser } = useAuth();
 
   const userName = currentUser?.name.split(" ")[0];
@@ -48,14 +51,35 @@ export const NavbarComponent = () => {
               <CloseButton className={styles.closeBtn} onClick={handleClose} />
             </Offcanvas.Header>
             <Offcanvas.Body className="d-flex flex-column flex-lg-row justify-content-lg-between">
-              <Nav className={styles.offcanvasNav}>
-                <Nav.Link as={Link} to="/quizes" className={styles.navLink}>
+              <Nav
+                className={styles.offcanvasNav}
+                activeKey={active}
+                onSelect={(selectedKey) =>
+                  selectedKey !== null && setActive(selectedKey)
+                }
+              >
+                <Nav.Link
+                  as={Link}
+                  to="/"
+                  className={styles.navLink}
+                  eventKey="quizes"
+                >
                   Quizes
                 </Nav.Link>
-                <Nav.Link as={Link} to="/news" className={styles.navLink}>
+                <Nav.Link
+                  as={Link}
+                  to="/news"
+                  className={styles.navLink}
+                  eventKey="news"
+                >
                   News
                 </Nav.Link>
-                <Nav.Link as={Link} to="/blogs" className={styles.navLink}>
+                <Nav.Link
+                  as={Link}
+                  to="/blogs"
+                  className={styles.navLink}
+                  eventKey="blogs"
+                >
                   Blogs
                 </Nav.Link>
               </Nav>
@@ -65,11 +89,27 @@ export const NavbarComponent = () => {
                   name={userName ?? ""}
                 />
               ) : (
-                <Nav className={styles.offcanvasNav}>
-                  <Nav.Link as={Link} to="/signup" className={styles.navLink}>
+                <Nav
+                  className={styles.offcanvasNav}
+                  activeKey={active}
+                  onSelect={(selectedKey) =>
+                    selectedKey !== null && setActive(selectedKey)
+                  }
+                >
+                  <Nav.Link
+                    as={Link}
+                    to="/signup"
+                    className={styles.navLink}
+                    eventKey="signup"
+                  >
                     Sign Up
                   </Nav.Link>
-                  <Nav.Link as={Link} to="/login" className={styles.navLink}>
+                  <Nav.Link
+                    as={Link}
+                    to="/login"
+                    className={styles.navLink}
+                    eventKey="login"
+                  >
                     Log In
                   </Nav.Link>
                 </Nav>
