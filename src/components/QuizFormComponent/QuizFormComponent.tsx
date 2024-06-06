@@ -31,6 +31,7 @@ const defaultValues: QuizFormState = {
 
 export const QuizFormComponent = ({ handleClose }: QuizFormProps) => {
   const [, setFormData] = useState<QuizFormState>(defaultValues);
+  const [isSending, setIsSending] = useState(false);
 
   const methods = useForm({
     mode: "onChange",
@@ -46,6 +47,7 @@ export const QuizFormComponent = ({ handleClose }: QuizFormProps) => {
   } = methods;
 
   const handleFormSubmit = async (data: QuizFormState): Promise<void> => {
+    setIsSending(true);
     try {
       const quizRef = doc(db, "quizzes", auth.currentUser!.uid);
       await setDoc(quizRef, {
@@ -53,6 +55,7 @@ export const QuizFormComponent = ({ handleClose }: QuizFormProps) => {
         author: auth.currentUser!.uid,
       });
       setFormData(data);
+      setIsSending(false);
       reset();
     } catch (error) {
       setError("root", {
@@ -101,7 +104,7 @@ export const QuizFormComponent = ({ handleClose }: QuizFormProps) => {
           Close
         </Button>
         <Button type="submit" disabled={!isDirty}>
-          Save Changes
+          {isSending ? "Sending..." : "Save Quiz"}
         </Button>
       </Form>
     </FormProvider>

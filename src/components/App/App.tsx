@@ -3,7 +3,7 @@ import "../../index.css";
 import { NotFoundPage } from "../../pages/NotFoundPage/NotFoundPage";
 import { NewsPage } from "../../pages/NewsPage/NewsPage";
 import { HomePage } from "../../pages/HomePage/HomePage";
-import { QuizPage } from "../../pages/QiuzPage/QuizPage";
+import { QuizMainComponent } from "../QiuzMainComponent/QuizMainComponent";
 import { LoginPage } from "../../pages/LoginPage/LoginPage";
 import { SignupPage } from "../../pages/SignupPage/SignupPage";
 import { BlogsPage } from "../../pages/BlogsPage/BlogsPage";
@@ -12,8 +12,6 @@ import { UserPage } from "../../pages/UserPage/UserPage";
 import { getAllNews } from "../../API/api";
 import { ProtectedRoute } from "../../pages/ProtectedRoute";
 import Layout from "../Layout/Layout";
-// import { AboutUserComponent } from "../AboutUserComponent/AboutUserComponent";
-// import { UserQuizesComponent } from "../UserQuizesComponent/UserQuizesComponent";
 
 const router = createBrowserRouter(
   [
@@ -29,7 +27,7 @@ const router = createBrowserRouter(
           children: [
             {
               path: "/",
-              element: <QuizPage />,
+              element: <QuizMainComponent />,
               errorElement: <NotFoundPage />,
             },
           ],
