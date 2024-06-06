@@ -1,12 +1,17 @@
 import { Button, Form } from "react-bootstrap";
 import { useFieldArray, useFormContext } from "react-hook-form";
+import { FormCheckboxComponent } from "../FormCheckboxComponent/FormCheckboxComponent";
+import { FormContextType } from "../../types/types";
+import addClassnameToText from "../../helpers/addClassnameToText";
+import styles from "./AnswersFormComponent.module.css";
 
 export const AnswersFormComponent = ({ nestIndex }: { nestIndex: number }) => {
-  const { control, register, getValues } = useFormContext();
+  const {
+    control,
+    register,
+    formState: { errors },
+  } = useFormContext<FormContextType>();
 
-  console.log(getValues());
-
-  console.log(nestIndex);
   const {
     fields: answers,
     remove,
@@ -15,6 +20,8 @@ export const AnswersFormComponent = ({ nestIndex }: { nestIndex: number }) => {
     control,
     name: `questions[${nestIndex}].answers`,
   });
+
+  console.log(errors);
 
   return (
     <Form.Group className="mb-3" controlId="div-questions">
@@ -27,21 +34,30 @@ export const AnswersFormComponent = ({ nestIndex }: { nestIndex: number }) => {
           <Form.Control
             {...register(`questions[${nestIndex}].answers[${index}].answer`, {
               required: "Answer is required",
-              minLength: 8,
+              minLength: {
+                value: 3,
+                message: "Answer must be at least 4 characters",
+              },
             } as const)}
             type="text"
             placeholder="Add answer ..."
             key={answer.id}
           />
+          {errors?.questions?.[nestIndex]?.answers?.[index]?.answer?.message
+            ? addClassnameToText(
+                "text-danger",
+                errors?.questions?.[nestIndex]?.answers?.[index]?.answer
+                  ?.message as string
+              )
+            : addClassnameToText(styles.errorText)}
           <Form.Group
             className="mb-3"
             controlId={`isCorrect-${index}-${answer.id}`}
           >
-            <Form.Check
-              {...register(
-                `questions[${nestIndex}].answers[${index}].isCorrect` as const
-              )}
+            <FormCheckboxComponent
               label="Choose correct answer"
+              nestIndex={nestIndex}
+              index={index}
             />
           </Form.Group>
           <Button type="button" onClick={() => remove(index)}>

@@ -1,4 +1,5 @@
 import { UserCredential } from "firebase/auth";
+import { UseFormReturn } from "react-hook-form";
 import React from "react";
 
 export interface Article {
@@ -112,3 +113,5 @@ export interface QuizFormState {
   category: QuizCategory;
   questions: Question[];
 }
+
+export type FormContextType = UseFormReturn<QuizFormState>;
