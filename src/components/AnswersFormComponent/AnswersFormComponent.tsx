@@ -2,7 +2,11 @@ import { Button, Form } from "react-bootstrap";
 import { useFieldArray, useFormContext } from "react-hook-form";
 
 export const AnswersFormComponent = ({ nestIndex }: { nestIndex: number }) => {
-  const { control, register } = useFormContext();
+  const { control, register, getValues } = useFormContext();
+
+  console.log(getValues());
+
+  console.log(nestIndex);
   const {
     fields: answers,
     remove,
@@ -21,7 +25,10 @@ export const AnswersFormComponent = ({ nestIndex }: { nestIndex: number }) => {
           key={answer.id}
         >
           <Form.Control
-            {...register(`questions.${index}.answers.${index}.answer` as const)}
+            {...register(`questions[${nestIndex}].answers[${index}].answer`, {
+              required: "Answer is required",
+              minLength: 8,
+            } as const)}
             type="text"
             placeholder="Add answer ..."
             key={answer.id}
@@ -32,7 +39,7 @@ export const AnswersFormComponent = ({ nestIndex }: { nestIndex: number }) => {
           >
             <Form.Check
               {...register(
-                `questions.${index}.answers.${index}.isCorrect` as const
+                `questions[${nestIndex}].answers[${index}].isCorrect` as const
               )}
               label="Choose correct answer"
             />

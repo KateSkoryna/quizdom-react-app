@@ -11,6 +11,7 @@ import { Button } from "react-bootstrap";
 import { FormRangeComponent } from "../FormRangeComponent/FormRangeComponent";
 import { FormCategoryComponent } from "../FormCategoryComponent/FormCategoryComponent";
 import { QuestionsFormComponent } from "../QuestionsFormComponent/QuestionsFormComponent";
+// import { DevTool } from "@hookform/devtools";
 
 const defaultValues: QuizFormState = {
   title: "",
@@ -29,12 +30,16 @@ export const QuizFormComponent = ({ handleClose }: QuizFormProps) => {
   const [, setFormData] = useState<QuizFormState>(defaultValues);
 
   const methods = useForm({
-    mode: "onTouched",
-    reValidateMode: "onSubmit",
+    mode: "onChange",
     defaultValues,
   });
 
-  const { register, handleSubmit, formState } = methods;
+  const {
+    register,
+    handleSubmit,
+    formState: { isDirty },
+    // control,
+  } = methods;
 
   const handleFormSubmit = (data: QuizFormState) => {
     console.log(data);
@@ -43,31 +48,44 @@ export const QuizFormComponent = ({ handleClose }: QuizFormProps) => {
 
   return (
     <FormProvider {...methods}>
-      <Form onSubmit={handleSubmit(handleFormSubmit)}>
-        <Form.Group className="mb-3" controlId="div-title">
-          <Form.Label>Quiz Title</Form.Label>
-          <Form.Control
-            {...register("title")}
-            type="text"
-            placeholder="Best Quiz ever..."
-            autoFocus
-          />
-        </Form.Group>
-        <Form.Group className="mb-3" controlId="div-description">
-          <Form.Label>Quiz Description</Form.Label>
-          <Form.Control {...register("description")} as="textarea" rows={3} />
-        </Form.Group>
-        <FormRangeComponent fieldName="complexity" />
-        <FormCategoryComponent fieldName="category" />
-        <Form.Text className="text-muted">Add your questions</Form.Text>
-        <QuestionsFormComponent />
-        <Button variant="secondary" onClick={handleClose}>
-          Close
-        </Button>
-        <Button type="submit" disabled={!formState.isValid}>
-          Save Changes
-        </Button>
-      </Form>
+      <div>
+        <Form onSubmit={handleSubmit(handleFormSubmit)}>
+          <Form.Group className="mb-3" controlId="div-title">
+            <Form.Label>Quiz Title</Form.Label>
+            <Form.Control
+              {...register("title", {
+                required: "Title is required",
+                minLength: 8,
+              })}
+              type="text"
+              placeholder="Best Quiz ever..."
+              autoFocus
+            />
+          </Form.Group>
+          <Form.Group className="mb-3" controlId="div-description">
+            <Form.Label>Quiz Description</Form.Label>
+            <Form.Control
+              {...register("description", {
+                required: "Description is required",
+                minLength: 10,
+              })}
+              as="textarea"
+              rows={3}
+            />
+          </Form.Group>
+          <FormRangeComponent fieldName="complexity" />
+          <FormCategoryComponent fieldName="category" />
+          <Form.Text className="text-muted">Add your questions</Form.Text>
+          <QuestionsFormComponent />
+          <Button variant="secondary" onClick={handleClose}>
+            Close
+          </Button>
+          <Button type="submit" disabled={!isDirty}>
+            Save Changes
+          </Button>
+        </Form>
+        {/* <DevTool control={control} /> */}
+      </div>
     </FormProvider>
   );
 };

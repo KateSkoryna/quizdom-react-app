@@ -23,7 +23,7 @@ export const QuestionsFormComponent = () => {
         >
           <Form.Label>Question {index + 1}</Form.Label>
           <Form.Control
-            {...register(`questions.${index}.questionTitle` as const)}
+            {...register(`questions.${index}.questionTitle`, { required: "Question title is required", minLength: 8 } as const)}
             type="text"
             placeholder="Add question ..."
           />
