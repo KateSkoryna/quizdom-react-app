@@ -113,5 +113,3 @@ export interface QuizFormState {
   category: QuizCategory;
   questions: Question[];
 }
-
-export type FormContextType = UseFormReturn<QuizFormState>;

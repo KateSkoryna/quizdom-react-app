@@ -1,7 +1,6 @@
 import { Button, Form } from "react-bootstrap";
 import { useFieldArray, useFormContext } from "react-hook-form";
 import { FormCheckboxComponent } from "../FormCheckboxComponent/FormCheckboxComponent";
-import { FormContextType } from "../../types/types";
 import addClassnameToText from "../../helpers/addClassnameToText";
 import styles from "./AnswersFormComponent.module.css";
 
@@ -10,7 +9,7 @@ export const AnswersFormComponent = ({ nestIndex }: { nestIndex: number }) => {
     control,
     register,
     formState: { errors },
-  } = useFormContext<FormContextType>();
+  } = useFormContext();
 
   const {
     fields: answers,

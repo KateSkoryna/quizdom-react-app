@@ -3,15 +3,13 @@ import { AnswersFormComponent } from "../AnswersFormComponent/AnswersFormCompone
 import { Button, Form } from "react-bootstrap";
 import addClassnameToText from "../../helpers/addClassnameToText";
 import styles from "./QuestionsFormComponent.module.css";
-import { FormContextType } from "../../types/types";
-
 
 export const QuestionsFormComponent = () => {
   const {
     control,
     register,
     formState: { errors },
-  } = useFormContext<FormContextType>();
+  } = useFormContext();
   const {
     fields: questions,
     append,
