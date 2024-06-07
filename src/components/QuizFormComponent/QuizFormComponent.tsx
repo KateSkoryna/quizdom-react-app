@@ -11,6 +11,10 @@ import { Button } from "react-bootstrap";
 import { FormRangeComponent } from "../FormRangeComponent/FormRangeComponent";
 import { FormCategoryComponent } from "../FormCategoryComponent/FormCategoryComponent";
 import { QuestionsFormComponent } from "../QuestionsFormComponent/QuestionsFormComponent";
+import addClassnameToText from "../../helpers/addClassnameToText";
+import styles from "./QuizFormComponent.module.css";
+import { db, auth } from "../../firebase";
+import { doc, setDoc } from "firebase/firestore";
 
 const defaultValues: QuizFormState = {
   title: "",
@@ -27,18 +31,37 @@ const defaultValues: QuizFormState = {
 
 export const QuizFormComponent = ({ handleClose }: QuizFormProps) => {
   const [, setFormData] = useState<QuizFormState>(defaultValues);
+  const [isSending, setIsSending] = useState(false);
 
   const methods = useForm({
-    mode: "onTouched",
-    reValidateMode: "onSubmit",
+    mode: "onChange",
     defaultValues,
   });
 
-  const { register, handleSubmit, formState } = methods;
+  const {
+    register,
+    handleSubmit,
+    setError,
+    reset,
+    formState: { errors, isDirty },
+  } = methods;
 
-  const handleFormSubmit = (data: QuizFormState) => {
-    console.log(data);
-    setFormData(data);
+  const handleFormSubmit = async (data: QuizFormState): Promise<void> => {
+    setIsSending(true);
+    try {
+      const quizRef = doc(db, "quizzes", auth.currentUser!.uid);
+      await setDoc(quizRef, {
+        ...data,
+        author: auth.currentUser!.uid,
+      });
+      setFormData(data);
+      setIsSending(false);
+      reset();
+    } catch (error) {
+      setError("root", {
+        message: "Failed to create a quiz",
+      });
+    }
   };
 
   return (
@@ -47,15 +70,31 @@ export const QuizFormComponent = ({ handleClose }: QuizFormProps) => {
         <Form.Group className="mb-3" controlId="div-title">
           <Form.Label>Quiz Title</Form.Label>
           <Form.Control
-            {...register("title")}
+            {...register("title", {
+              required: "Title is required",
+              minLength: 8,
+            })}
             type="text"
             placeholder="Best Quiz ever..."
             autoFocus
           />
+          {errors.title
+            ? addClassnameToText("text-danger", errors.title.message)
+            : addClassnameToText(styles.errorText)}
         </Form.Group>
         <Form.Group className="mb-3" controlId="div-description">
           <Form.Label>Quiz Description</Form.Label>
-          <Form.Control {...register("description")} as="textarea" rows={3} />
+          <Form.Control
+            {...register("description", {
+              required: "Description is required",
+              minLength: 8,
+            })}
+            as="textarea"
+            rows={3}
+          />
+          {errors.description
+            ? addClassnameToText("text-danger", errors.description.message)
+            : addClassnameToText(styles.errorText)}
         </Form.Group>
         <FormRangeComponent fieldName="complexity" />
         <FormCategoryComponent fieldName="category" />
@@ -64,8 +103,8 @@ export const QuizFormComponent = ({ handleClose }: QuizFormProps) => {
         <Button variant="secondary" onClick={handleClose}>
           Close
         </Button>
-        <Button type="submit" disabled={!formState.isValid}>
-          Save Changes
+        <Button type="submit" disabled={!isDirty}>
+          {isSending ? "Sending..." : "Save Quiz"}
         </Button>
       </Form>
     </FormProvider>

@@ -25,7 +25,6 @@ const initState = {
   password: "",
   confirmPassword: "",
 };
-// add classnames to error text
 
 // create random avatar
 const generator = new AvatarGenerator();
