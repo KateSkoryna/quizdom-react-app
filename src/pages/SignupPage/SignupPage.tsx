@@ -3,11 +3,10 @@ import { Container, Form, Button, Card } from "react-bootstrap";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import { useForm, Controller } from "react-hook-form";
-import { UserData } from "../../types/types";
+import { Gender, UserData } from "../../types/types";
 import styles from "./SignupPage.module.css";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { signupSchema } from "../../helpers/schema";
-import { AvatarGenerator } from "random-avatar-generator";
 import { useAuth } from "../../context/AuthContext";
 import { doc, setDoc } from "firebase/firestore";
 import { auth, db } from "../../firebase";
@@ -16,19 +15,16 @@ import { FormFooter } from "../../components/FormFooter/FormFooter";
 import { DatePickerComponent } from "../../components/DatePickerComponent/DatePickerComponent";
 import bcrypt from "bcryptjs-react";
 import addClassnameToText from "../../helpers/addClassnameToText";
+import { avatar } from "../../helpers/generateRandomAvatar";
 
 const initState = {
   name: "",
   email: "",
   dateOfBirth: new Date(),
-  gender: "",
+  gender: "male" as Gender,
   password: "",
   confirmPassword: "",
 };
-
-// create random avatar
-const generator = new AvatarGenerator();
-const avatar = generator.generateRandomAvatar();
 
 export const SignupPage = () => {
   const [userData, setUserData] = useState<UserData | null>(null);
@@ -47,7 +43,7 @@ export const SignupPage = () => {
         email: values.email,
         avatar: avatar,
         dateOfBirth: values.dateOfBirth,
-        gender: values.gender,
+        gender: values.gender as Gender,
         password: hashedPassword,
         avarageScore: 0,
         favorites: [],
@@ -55,7 +51,7 @@ export const SignupPage = () => {
       });
       setUserData(values);
       if (userData) {
-        reset(userData);
+        reset();
       }
       navigate("/user");
     } catch (error) {
@@ -110,7 +106,7 @@ export const SignupPage = () => {
           </Form.Group>
           <Row>
             <Col xs={12} sm={12} md={6} lg={6}>
-              <Form.Group className="mb-2" controlId="formBasicDateofBirth">
+              <Form.Group className="mb-2" controlId="dateOfBirth">
                 <Form.Label className="d-block">Date of Birth</Form.Label>
                 <Controller
                   name="dateOfBirth"

@@ -23,14 +23,22 @@ export const QuestionsFormComponent = () => {
     <Form.Group className="mb-3" controlId="div-questions">
       {questions.map((question, index) => {
         // @ts-ignore
-        const error = errors?.questions?.[index]?.questionTitle?.message
+        const error = errors?.questions?.[index]?.questionTitle?.message;
         return (
           <Form.Group
             key={question.id}
             className="mb-3"
             controlId={`question-${index}`}
           >
-            <Form.Label>Question {index + 1}</Form.Label>
+            <div className="d-flex justify-content-between mb-3">
+              <Form.Label className="mb-0 align-self-center">
+                Question {index + 1}
+              </Form.Label>
+              {index > 0 && (
+                <Button onClick={() => remove(index)}>Remove Question</Button>
+              )}
+            </div>
+
             <Form.Control
               {...register(`questions[${index}].questionTitle`, {
                 required: "Question title is required",
@@ -43,24 +51,27 @@ export const QuestionsFormComponent = () => {
               placeholder="Add question ..."
             />
             {error
-              ? addClassnameToText(
-                "text-danger",
-                error
-              )
+              ? addClassnameToText("text-danger", error)
               : addClassnameToText(styles.errorText)}
-            <Form.Text className="text-muted">
-              Add answers to your question
-            </Form.Text>
             <AnswersFormComponent nestIndex={index} />
-            {index > 0 && (
-              <Button onClick={() => remove(index)}>Remove Question</Button>
-            )}
           </Form.Group>
-        )
+        );
       })}
-      <Button onClick={() => append({ questionTitle: "" })}>
-        Add Question
-      </Button>
+      <Form.Group className="text-center">
+        <Button
+          onClick={() =>
+            append({
+              questionTitle: "",
+              answers: [
+                { answer: "", isCorrect: false },
+                { answer: "", isCorrect: false },
+              ],
+            })
+          }
+        >
+          Add Question
+        </Button>
+      </Form.Group>
     </Form.Group>
   );
 };

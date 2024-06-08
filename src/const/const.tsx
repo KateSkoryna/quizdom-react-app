@@ -16,7 +16,6 @@ export const COMPLEXITY_VALUES = {
   [Complexity.ADVANCED]: "advanced",
   [Complexity.EXPERT]: "expert",
 };
-
 export const QUIZ_CATEGORY = {
   [QuizCategory.JS]: "JavaScript",
   [QuizCategory.TS]: "TypeScript",
