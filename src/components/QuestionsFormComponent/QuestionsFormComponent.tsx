@@ -22,6 +22,7 @@ export const QuestionsFormComponent = () => {
   return (
     <Form.Group className="mb-3" controlId="div-questions">
       {questions.map((question, index) => {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         const error = errors?.questions?.[index]?.questionTitle?.message;
         return (

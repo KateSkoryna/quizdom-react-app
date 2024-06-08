@@ -23,6 +23,7 @@ export const AnswersFormComponent = ({ nestIndex }: { nestIndex: number }) => {
   return (
     <Form.Group className="mb-3" controlId="div-questions">
       {answers.map((answer, index) => {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         const error =
           errors?.questions?.[nestIndex]?.answers?.[index]?.answer?.message;
