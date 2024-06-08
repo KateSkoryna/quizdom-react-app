@@ -10,7 +10,7 @@ export interface Article {
   image?: string;
 }
 
-type Gender = "male" | "female";
+export type Gender = "male" | "female";
 
 export interface LoginUser {
   email: string;

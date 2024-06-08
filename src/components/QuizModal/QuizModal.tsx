@@ -16,7 +16,7 @@ export const QuizModal = ({ showModal, handleCloseModal }: QuizModalProps) => {
       dialogClassName="h-75"
     >
       <Modal.Header closeButton>
-        <Modal.Title>Create your own Quiz</Modal.Title>
+        <Modal.Title as="h2">Create your own Quiz</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <QuizFormComponent handleClose={handleCloseModal} />

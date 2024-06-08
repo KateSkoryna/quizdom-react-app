@@ -1,4 +1,5 @@
 import * as yup from "yup";
+import { Gender } from "../types/types";
 
 export const loginSschema = yup
   .object({
@@ -15,7 +16,10 @@ export const signupSchema = yup
       .date()
       .max(new Date(Date.now() - 567648000000), "You must be at least 18 years")
       .required("Date of Birth is required"),
-    gender: yup.string().required("Gender is required"),
+    gender: yup
+      .mixed<Gender>()
+      .oneOf(["male", "female"])
+      .required("Gender is required"),
     password: yup.string().required("Password is required").min(8),
     confirmPassword: yup
       .string()

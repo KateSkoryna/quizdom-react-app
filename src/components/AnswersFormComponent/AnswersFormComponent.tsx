@@ -24,7 +24,8 @@ export const AnswersFormComponent = ({ nestIndex }: { nestIndex: number }) => {
     <Form.Group className="mb-3" controlId="div-questions">
       {answers.map((answer, index) => {
         // @ts-ignore
-        const error = errors?.questions?.[nestIndex]?.answers?.[index]?.answer?.message
+        const error =
+          errors?.questions?.[nestIndex]?.answers?.[index]?.answer?.message;
         return (
           <Form.Group
             className="mb-3"
@@ -46,13 +47,13 @@ export const AnswersFormComponent = ({ nestIndex }: { nestIndex: number }) => {
 
             {error
               ? addClassnameToText(
-                "text-danger",
+                  "text-danger",
 
-                error
-              )
+                  error
+                )
               : addClassnameToText(styles.errorText)}
             <Form.Group
-              className="mb-3"
+              className="d-flex justify-content-between"
               controlId={`isCorrect-${index}-${answer.id}`}
             >
               <FormCheckboxComponent
@@ -60,12 +61,12 @@ export const AnswersFormComponent = ({ nestIndex }: { nestIndex: number }) => {
                 nestIndex={nestIndex}
                 index={index}
               />
+              <Button type="button" onClick={() => remove(index)}>
+                Remove answer
+              </Button>
             </Form.Group>
-            <Button type="button" onClick={() => remove(index)}>
-              Remove
-            </Button>
           </Form.Group>
-        )
+        );
       })}
       <Button
         type="button"
