@@ -1,11 +1,7 @@
-import { Container } from "react-bootstrap";
-
 export const UserFavoritesComponent = () => {
   return (
-    <div>
-      <Container>
-        <h1>User Favorites</h1>
-      </Container>
+    <div className="pt-3 text-center">
+      <h5>User Favorites</h5>
     </div>
   );
 };

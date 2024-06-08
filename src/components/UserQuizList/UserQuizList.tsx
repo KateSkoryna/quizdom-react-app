@@ -1,11 +1,7 @@
-import { Container } from "react-bootstrap";
-
 export const UserQuizList = () => {
   return (
-    <div>
-      <Container>
-        <h1>User Quiz List</h1>
-      </Container>
+    <div className="pt-3 text-center">
+      <h5>User Quiz List</h5>
     </div>
   );
 };

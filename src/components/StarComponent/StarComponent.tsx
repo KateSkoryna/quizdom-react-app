@@ -1,7 +1,7 @@
 function StarComponent({ rating }: { rating: number }) {
   return (
     <div>
-      <h4>Rating: {rating}</h4>
+      <h5>Rating: {rating}</h5>
 
       {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((star) => {
         return (
