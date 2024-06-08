@@ -24,8 +24,8 @@ export const AnswersFormComponent = ({ nestIndex }: { nestIndex: number }) => {
     <Form.Group className="mb-3" controlId="div-questions">
       {answers.map((answer, index) => {
         // @ts-ignore
-        const error =
-          errors?.questions?.[nestIndex]?.answers?.[index]?.answer?.message;
+        const error = errors?.questions?.[nestIndex]?.answers?.[index]?.answer
+          ?.message as string;
         return (
           <Form.Group
             className="mb-3"
