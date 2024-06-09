@@ -3,7 +3,7 @@ import "../../index.css";
 import { NotFoundPage } from "../../pages/NotFoundPage/NotFoundPage";
 import { NewsPage } from "../../pages/NewsPage/NewsPage";
 import { HomePage } from "../../pages/HomePage/HomePage";
-import { QuizMainComponent } from "../QiuzMainComponent/QuizMainComponent";
+import { QuizPage } from "../../pages/QiuzPage/QuizPage";
 import { LoginPage } from "../../pages/LoginPage/LoginPage";
 import { SignupPage } from "../../pages/SignupPage/SignupPage";
 import { BlogsPage } from "../../pages/BlogsPage/BlogsPage";
@@ -24,13 +24,11 @@ const router = createBrowserRouter(
           path: "/",
           element: <HomePage />,
           errorElement: <NotFoundPage />,
-          children: [
-            {
-              path: "/",
-              element: <QuizMainComponent />,
-              errorElement: <NotFoundPage />,
-            },
-          ],
+        },
+        {
+          path: "/quizes",
+          element: <QuizPage />,
+          errorElement: <NotFoundPage />,
         },
         {
           path: "about",

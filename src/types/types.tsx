@@ -112,3 +112,14 @@ export interface QuizFormState {
   category: QuizCategory;
   questions: Question[];
 }
+
+export type UserQuiz = {
+  id: string;
+  title: string;
+  description: string;
+  complexity: Complexity;
+  category: QuizCategory;
+  questions: Question[];
+  author: string;
+  publishedAt: Date;
+};

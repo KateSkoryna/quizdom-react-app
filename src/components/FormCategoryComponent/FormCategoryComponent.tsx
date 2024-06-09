@@ -2,8 +2,9 @@ import { useFormContext } from "react-hook-form";
 import { Form } from "react-bootstrap";
 import { QUIZ_CATEGORY } from "../../const/const";
 
+const entries = Object.entries(QUIZ_CATEGORY);
+
 export const FormCategoryComponent = ({ fieldName }: { fieldName: string }) => {
-  const entries = Object.entries(QUIZ_CATEGORY);
   const { register } = useFormContext();
   return (
     <Form.Group className="mb-2" controlId="category">

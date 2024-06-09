@@ -10,6 +10,7 @@ export const UserQuizesComponent = () => {
   const handleShow = () => setShow(true);
   return (
     <div className="pt-3 text-end">
+      <h5 className="mb-3 text-center">My Quizes</h5>
       <Button onClick={handleShow}>Add Quiz</Button>
       <QuizModal showModal={show} handleCloseModal={handleClose} />
       <UserQuizList />

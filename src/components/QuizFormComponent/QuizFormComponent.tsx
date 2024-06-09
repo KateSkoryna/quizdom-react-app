@@ -15,6 +15,7 @@ import addClassnameToText from "../../helpers/addClassnameToText";
 import styles from "./QuizFormComponent.module.css";
 import { db, auth } from "../../firebase";
 import { collection, addDoc } from "firebase/firestore";
+import { COMPLEXITY_VALUES } from "../../const/const";
 
 const defaultValues: QuizFormState = {
   title: "",
@@ -53,6 +54,8 @@ export const QuizFormComponent = ({ handleClose }: QuizFormProps) => {
       await addDoc(collection(db, "quizes"), {
         ...data,
         author: auth.currentUser!.uid,
+        publishedAt: new Date(),
+        complexity: COMPLEXITY_VALUES[data.complexity],
       });
       setFormData(data);
       reset();

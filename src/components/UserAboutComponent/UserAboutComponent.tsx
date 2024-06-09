@@ -24,7 +24,9 @@ export const UserAboutComponent = ({ info }: { info: string }) => {
             value={input}
             onChange={(e) => setInput(e.target.value)}
           />
-          <Button onClick={handleSaveButtonClick}>Save</Button>
+          <Button className="mt-3" onClick={handleSaveButtonClick}>
+            Save
+          </Button>
         </div>
       ) : (
         <div className="d-flex justify-content-between align-items-center">

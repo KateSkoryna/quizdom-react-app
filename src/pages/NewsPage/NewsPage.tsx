@@ -4,16 +4,18 @@ import { Article } from "../../types/types";
 import { SearchComponent } from "../../components/SearchComponent/SearchComponent";
 import uuid from "react-uuid";
 import { Loader } from "../../components/Loader/Loader";
+import { NEWS_CATEGORY } from "../../const/const";
 
 export const NewsPage = () => {
   const navigation = useNavigation();
 
   const newsArr: Article[] = useLoaderData() as Article[];
   const news = newsArr.map((article) => ({ ...article, id: uuid() }));
+  const values: string[] = Object.values(NEWS_CATEGORY);
 
   return (
     <>
-      <SearchComponent />
+      <SearchComponent categories={values} />
       {navigation.state === "loading" ? (
         <Loader />
       ) : (

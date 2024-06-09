@@ -1,6 +1,5 @@
 import Nav from "react-bootstrap/Nav";
 import Button from "react-bootstrap/esm/Button";
-import { NEWS_CATEGORY } from "../../const/const";
 import Container from "react-bootstrap/esm/Container";
 import FormControl from "react-bootstrap/esm/FormControl";
 import Form from "react-bootstrap/Form";
@@ -13,13 +12,11 @@ const initState = {
   category: "",
 };
 
-export const SearchComponent = () => {
+export const SearchComponent = ({ categories }: { categories: string[] }) => {
   const [searchParams, setSearchParams] = useSearchParams(initState);
   const [query, setQuery] = useState(searchParams.get("query") ?? "");
   const [category, setCategory] = useState(searchParams.get("category") ?? "");
   const [error, setError] = useState(false);
-
-  const values: string[] = Object.values(NEWS_CATEGORY);
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -46,11 +43,11 @@ export const SearchComponent = () => {
   return (
     <Container className={styles.formContainer}>
       <Form onSubmit={handleSubmit} className="mb-4">
-        <div className="d-flex w-50 mb-1 mx-auto">
+        <div className="d-flex justify-content-center">
           <FormControl
             type="search"
             placeholder="Search"
-            className="me-2"
+            className="me-2 w-75"
             aria-label="Search"
             value={query || ""}
             onChange={(event: ChangeEvent<HTMLInputElement>) =>
@@ -68,7 +65,7 @@ export const SearchComponent = () => {
         )}
       </Form>
       <Nav className={styles.searchNavbar}>
-        {values.map((category) => (
+        {categories.map((category) => (
           <Nav.Item key={category}>
             <Nav.Link
               as={Button}

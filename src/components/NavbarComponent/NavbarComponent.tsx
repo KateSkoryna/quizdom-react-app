@@ -60,7 +60,7 @@ export const NavbarComponent = () => {
               >
                 <Nav.Link
                   as={Link}
-                  to="/"
+                  to="/quizes"
                   className={styles.navLink}
                   eventKey="quizes"
                 >
