@@ -1,3 +1,17 @@
 .aboutText {
     color: black;
 }
+
+.editIcon {
+    cursor: pointer;
+    width: 30px;
+    height: 30px;
+}
+
+.editIcon:hover, .editIcon:focus {
+    color: #F7941D;
+    scale: 1.1;
+    transition: scale 0.2s ease-in-out;
+    outline: none;
+    box-shadow: 0;
+}

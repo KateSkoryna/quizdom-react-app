@@ -6,9 +6,15 @@
 }
 
 .userSectionCard {
-    display: flex;
-    flex-direction: row;
-    padding: 10px;
+display: column;
+
+
+    @media screen and (min-width: 768px) {
+            display: flex;
+                flex-direction: row;
+                padding: 10px;
+        
+    }
 }
 
 .userCardInfo:first-child {

@@ -14,13 +14,13 @@ export const UserCardData = () => {
 
   return (
     <Card className={styles.card}>
-      <Card.Body className="p-0">
-        <div className={styles.imgChangeContainer}>
+      <Card.Body className={styles.imgChangeContainer}>
+
           <Button className={styles.imgChangeBtn}>
             <MdOutlineAddAPhoto className={styles.imgChgangeIcon} />
           </Button>
           <Card.Img src={currentUser?.avatar} className={styles.cardImg} />
-        </div>
+
         <Card.Title className={styles.cardTitle}>
           {currentUser?.name}
         </Card.Title>

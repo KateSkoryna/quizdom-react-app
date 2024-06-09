@@ -22,6 +22,11 @@ const defaultValues: QuizFormState = {
   ],
 };
 
+type OpenQuizModal = {
+  show: boolean;
+  setShow: (show: boolean) => void;
+};
+
 type SetQuizForm = {
   newQuizData: QuizFormState;
   setNewQuizData: (newQuizData: QuizFormState) => void;
@@ -35,4 +40,9 @@ export const useActiveNavStore = create<ActiveNavStore>((set) => ({
 export const useSetQuizForm = create<SetQuizForm>((set) => ({
   newQuizData: defaultValues,
   setNewQuizData: (newQuizData) => set({ newQuizData }),
+}));
+
+export const useOpenQuizModal = create<OpenQuizModal>((set) => ({
+  show: false,
+  setShow: (show) => set({ show }),
 }));

@@ -1,6 +1,7 @@
 import { Button, Form } from "react-bootstrap";
 import { useState } from "react";
 import styles from "./UserAboutComponent.module.css";
+import { CiEdit } from "react-icons/ci";
 
 export const UserAboutComponent = ({ info }: { info: string }) => {
   const [isEdit, setIsEdit] = useState(false);
@@ -11,12 +12,14 @@ export const UserAboutComponent = ({ info }: { info: string }) => {
   };
 
   const handleSaveButtonClick = () => {
-    console.log(input);
     setIsEdit(!isEdit);
   };
   return (
     <div className="mt-3">
-      <h4 className="mb-3">About me</h4>
+      <h4 className="mb-3">
+        About me <CiEdit className={styles.editIcon} onClick={handleEdit} />
+      </h4>
+
       {isEdit ? (
         <div>
           <Form.Control
@@ -29,10 +32,7 @@ export const UserAboutComponent = ({ info }: { info: string }) => {
           </Button>
         </div>
       ) : (
-        <div className="d-flex justify-content-between align-items-center">
-          <p className={styles.aboutText}>{info}</p>
-          <Button onClick={handleEdit}>Edit you story</Button>
-        </div>
+        <p className={styles.aboutText}>{info}</p>
       )}
     </div>
   );

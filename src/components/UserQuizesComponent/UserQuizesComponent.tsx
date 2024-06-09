@@ -1,18 +1,12 @@
-import { Button } from "react-bootstrap";
+import { AddQuizComponent } from "../AddQuizComponent/AddQuizComponent";
 import { UserQuizList } from "../UserQuizList/UserQuizList";
-import { useState } from "react";
-import { QuizModal } from "../QuizModal/QuizModal";
+import styles from "./UserQuizesComponent.module.css";
 
 export const UserQuizesComponent = () => {
-  const [show, setShow] = useState(false);
-
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
   return (
-    <div className="pt-3 text-end">
+    <div className={styles.container}>
       <h5 className="mb-3 text-center">My Quizes</h5>
-      <Button onClick={handleShow}>Add Quiz</Button>
-      <QuizModal showModal={show} handleCloseModal={handleClose} />
+      <AddQuizComponent />
       <UserQuizList />
     </div>
   );
