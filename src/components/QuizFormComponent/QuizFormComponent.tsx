@@ -1,12 +1,6 @@
-import { useState } from "react";
 import Form from "react-bootstrap/Form";
 import { useForm, FormProvider } from "react-hook-form";
-import {
-  QuizFormState,
-  Complexity,
-  QuizCategory,
-  QuizFormProps,
-} from "../../types/types";
+import { QuizFormState, QuizFormProps } from "../../types/types";
 import { Button, Container } from "react-bootstrap";
 import { FormRangeComponent } from "../FormRangeComponent/FormRangeComponent";
 import { FormCategoryComponent } from "../FormCategoryComponent/FormCategoryComponent";
@@ -16,29 +10,15 @@ import styles from "./QuizFormComponent.module.css";
 import { db, auth } from "../../firebase";
 import { collection, addDoc } from "firebase/firestore";
 import { COMPLEXITY_VALUES } from "../../const/const";
-
-const defaultValues: QuizFormState = {
-  title: "",
-  description: "",
-  complexity: Complexity.BEGINNER,
-  category: QuizCategory.JS,
-  questions: [
-    {
-      questionTitle: "",
-      answers: [
-        { answer: "", isCorrect: false },
-        { answer: "", isCorrect: false },
-      ],
-    },
-  ],
-};
+import { useSetQuizForm } from "../../store/store";
 
 export const QuizFormComponent = ({ handleClose }: QuizFormProps) => {
-  const [, setFormData] = useState<QuizFormState>(defaultValues);
+  const quizData = useSetQuizForm((state) => state.newQuizData);
+  const setQuizFormData = useSetQuizForm((state) => state.setNewQuizData);
 
   const methods = useForm({
     mode: "onChange",
-    defaultValues,
+    defaultValues: quizData,
   });
 
   const {
@@ -57,7 +37,7 @@ export const QuizFormComponent = ({ handleClose }: QuizFormProps) => {
         publishedAt: new Date(),
         complexity: COMPLEXITY_VALUES[data.complexity],
       });
-      setFormData(data);
+      setQuizFormData(data);
       reset();
     } catch (error) {
       setError("root", {

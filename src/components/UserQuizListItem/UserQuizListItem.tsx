@@ -16,16 +16,15 @@ export const UserQuizListItem = ({
     <Accordion.Item eventKey={eventKey}>
       <Accordion.Header>{title}</Accordion.Header>
       <Accordion.Body className="text-start">
-        <p className={styles.itemText}>Description: {description}</p>
-        <p className={styles.itemText}>Category: {category}</p>
-        <p className={styles.itemText}>Complexity: {complexity}</p>
-
-        <p className={styles.itemText}>
-          Amount of question: {questions.length}
-        </p>
         <small className={styles.itemSmalltext}>
           Published at: {publishedAt.toLocaleDateString()}
         </small>
+        <p className={styles.itemText}>Description: {description}</p>
+        <p className={styles.itemText}>Category: {category}</p>
+        <p className={styles.itemText}>Complexity: {complexity}</p>
+        <p className={styles.itemText}>
+          Amount of question: {questions.length}
+        </p>
       </Accordion.Body>
     </Accordion.Item>
   );

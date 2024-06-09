@@ -1,14 +1,17 @@
 import { Accordion } from "react-bootstrap";
 import { UserQuizListItem } from "../UserQuizListItem/UserQuizListItem";
 import { useEffect, useState } from "react";
-import { getQuizesById } from "../../API/api";
 import { useAuth } from "../../context/AuthContext";
 import { Loader } from "../Loader/Loader";
 import { UserQuiz } from "../../types/types";
+import { useSetQuizForm } from "../../store/store";
+import { getQuizesById } from "../../API/api";
 
 export const UserQuizList = () => {
   const [userQuizes, setUserQuizes] = useState<UserQuiz[] | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+
+  const quizData = useSetQuizForm((state) => state.newQuizData);
 
   const { currentUser } = useAuth();
 
@@ -18,7 +21,6 @@ export const UserQuizList = () => {
       try {
         if (currentUser) {
           const quizes = await getQuizesById(currentUser.id);
-          console.log(quizes);
           setUserQuizes(quizes ?? null);
           setIsLoading(false);
         }
@@ -30,7 +32,7 @@ export const UserQuizList = () => {
     };
 
     getQuizes();
-  }, []);
+  }, [quizData]);
 
   return (
     <div className="pt-3 text-center">
