@@ -40,6 +40,10 @@ export const SearchComponent = ({ categories }: { categories: string[] }) => {
     setSearchParams({ category });
   }
 
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setQuery(event.target.value);
+  };
+
   return (
     <Container className={styles.formContainer}>
       <Form onSubmit={handleSubmit} className="mb-4">
@@ -50,9 +54,7 @@ export const SearchComponent = ({ categories }: { categories: string[] }) => {
             className="me-2 w-75"
             aria-label="Search"
             value={query || ""}
-            onChange={(event: ChangeEvent<HTMLInputElement>) =>
-              setQuery(event.target.value)
-            }
+            onChange={handleChange}
           />
           <Button className={styles.searchBtn} type="submit">
             Search

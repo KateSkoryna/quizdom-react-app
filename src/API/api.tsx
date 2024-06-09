@@ -97,3 +97,75 @@ export async function getQuizesById(userId: string) {
     }
   }
 }
+
+//======================== GET QUIZES BY CATEGORY  ======================
+
+export async function getQuizByCategoryAndComplexity(queryData: {
+  category: string | null;
+  complexity: string | null;
+}) {
+  let q = query(
+    collection(db, "quizes"),
+    where("category", "==", queryData.category)
+  );
+
+  try {
+    if (!queryData.category || queryData.complexity) {
+      q = query(
+        collection(db, "quizes"),
+        where("complexity", "==", queryData.complexity)
+      );
+    }
+    if (queryData.category && queryData.complexity) {
+      q = query(
+        collection(db, "quizes"),
+        where("category", "==", queryData.category),
+        where("complexity", "==", queryData.complexity)
+      );
+    }
+
+    const querySnapshot = await getDocs(q);
+    const quizes = querySnapshot.docs.map((doc) => {
+      return {
+        ...(doc.data() as UserQuiz),
+        id: doc.id,
+        publishedAt: doc.data().publishedAt.toDate(),
+      };
+    });
+    return quizes;
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      throw new Error(error.message);
+    }
+  }
+}
+
+//======================== GET QUIZES BY CATEGORY AND QUERY  ====================
+
+// export async function getQuizByQueryAndCategory(
+//   queryData: string,
+//   category: string
+// ) {
+//   console.log(category);
+//   try {
+//     const q = query(
+//       collection(db, "quizes"),
+//       where("category", "==", category),
+//       where("title", "in", queryData)
+//     );
+//     const querySnapshot = await getDocs(q);
+//     console.log(querySnapshot);
+//     const quizes = querySnapshot.docs.map((doc) => {
+//       return {
+//         ...(doc.data() as UserQuiz),
+//         id: doc.id,
+//         publishedAt: doc.data().publishedAt.toDate(),
+//       };
+//     });
+//     return quizes;
+//   } catch (error: unknown) {
+//     if (error instanceof Error) {
+//       throw new Error(error.message);
+//     }
+//   }
+// }

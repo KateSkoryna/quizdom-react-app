@@ -9,7 +9,11 @@ import { SignupPage } from "../../pages/SignupPage/SignupPage";
 import { BlogsPage } from "../../pages/BlogsPage/BlogsPage";
 import { AboutPage } from "../../pages/AboutPage/AboutPage";
 import { UserPage } from "../../pages/UserPage/UserPage";
-import { getAllNews, getAllQuizes } from "../../API/api";
+import {
+  getAllNews,
+  getAllQuizes,
+  getQuizByCategoryAndComplexity,
+} from "../../API/api";
 import { ProtectedRoute } from "../../pages/ProtectedRoute";
 import Layout from "../Layout/Layout";
 
@@ -29,8 +33,19 @@ const router = createBrowserRouter(
           path: "/quizes",
           element: <QuizPage />,
           errorElement: <NotFoundPage />,
-          loader: async () => {
-            return getAllQuizes();
+          loader: async ({ request }) => {
+            const url = new URL(request.url);
+            const searchCategory = url.searchParams.get("category");
+            const searchComplexity = url.searchParams.get("complexity");
+
+            const queryData = {
+              category: searchCategory,
+              complexity: searchComplexity,
+            };
+            if (!searchCategory && !searchComplexity) {
+              return getAllQuizes();
+            }
+            return getQuizByCategoryAndComplexity(queryData);
           },
         },
         {

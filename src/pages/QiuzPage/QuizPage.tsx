@@ -1,17 +1,19 @@
 import { useLoaderData } from "react-router-dom";
 import { QuizMainList } from "../../components/QuizMainList/QuizMainList";
-import { SearchComponent } from "../../components/SearchComponent/SearchComponent";
-import { QUIZ_CATEGORY } from "../../const/const";
 import { UserQuiz } from "../../types/types";
-
-const values = Object.values(QUIZ_CATEGORY);
+import { AddQuizComponent } from "../../components/AddQuizComponent/AddQuizComponent";
+import { useAuth } from "../../context/AuthContext";
+import { SearchQuizComponent } from "../../components/SearchQuizComponent/SearchQuizComponent";
+import { Container } from "react-bootstrap";
 
 export const QuizPage = () => {
   const quizes = useLoaderData() as UserQuiz[];
+  const { currentUser } = useAuth();
   return (
-    <div>
-      <SearchComponent categories={values} />
+    <Container>
+      <SearchQuizComponent />
+      {currentUser && <AddQuizComponent />}
       <QuizMainList quizes={quizes} />
-    </div>
+    </Container>
   );
 };

@@ -1,6 +1,6 @@
 import { useOpenQuizModal } from "../../store/store";
 import { QuizModal } from "../QuizModal/QuizModal";
-import { Button } from "react-bootstrap";
+import { Button, Container } from "react-bootstrap";
 
 export const AddQuizComponent = () => {
   const show = useOpenQuizModal((state) => state.show);
@@ -13,9 +13,9 @@ export const AddQuizComponent = () => {
     handleModal(true);
   };
   return (
-    <>
+    <Container className="text-end">
       <Button onClick={handleShowModal}>Add Quiz</Button>
       <QuizModal showModal={show} handleCloseModal={handleCloseModal} />
-    </>
+    </Container>
   );
 };
