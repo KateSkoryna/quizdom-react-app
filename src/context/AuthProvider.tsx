@@ -1,6 +1,6 @@
 import { AuthProviderProps, CurrentUser, UserData } from "../types/types";
 import { useState, useEffect } from "react";
-import { auth, db } from "../firebase";
+import { auth } from "../firebase";
 import {
   createUserWithEmailAndPassword,
   UserCredential,
@@ -9,12 +9,13 @@ import {
   signOut,
 } from "firebase/auth";
 import { AuthContext } from "./AuthContext";
-import { doc, getDoc } from "firebase/firestore";
 import { Loader } from "../components/Loader/Loader";
+import { getUser } from "../API/api";
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [currentUser, setCurrentUser] = useState<CurrentUser | null>(null);
   const [loading, setLoading] = useState(true);
+  const [, setError] = useState<string | null>(null);
 
   const signup = (values: UserData): Promise<UserCredential> => {
     return createUserWithEmailAndPassword(auth, values.email, values.password);
@@ -31,23 +32,27 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async () => {
-      if (!auth.currentUser) {
+      try {
+        if (!auth.currentUser) {
+          setLoading(false);
+          return;
+        }
+        const user = await getUser(auth.currentUser.uid);
+        if (user && user.exists()) {
+          const currentUser: CurrentUser = {
+            ...(user.data() as CurrentUser),
+            id: auth.currentUser!.uid,
+            dateOfBirth: user.data().dateOfBirth.toDate(),
+          };
+          setCurrentUser(currentUser);
+        }
         setLoading(false);
-        return;
+      } catch (error: unknown) {
+        if (error instanceof Error) {
+          setLoading(false);
+          setError(error.message);
+        }
       }
-      const ref = doc(db, "users", auth.currentUser!.uid);
-      const snapshot = await getDoc(ref);
-      if (snapshot.exists()) {
-        const userData = snapshot.data() as CurrentUser;
-
-        const user: CurrentUser = {
-          ...userData,
-          id: auth.currentUser!.uid,
-          dateOfBirth: snapshot.data().dateOfBirth.toDate(),
-        };
-        setCurrentUser(user);
-      }
-      setLoading(false);
     });
     return () => unsubscribe();
   }, []);

@@ -4,13 +4,13 @@ import { useForm } from "react-hook-form";
 import { LoginUser } from "../../types/types";
 import styles from "./LoginPage.module.css";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { loginSschema } from "../../helpers/schema";
+import { loginSchema } from "../../helpers/schema";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { FormFooter } from "../../components/FormFooter/FormFooter";
-import { auth, db } from "../../firebase";
-import { doc, getDoc } from "firebase/firestore";
+import { auth } from "../../firebase";
 import bcrypt from "bcryptjs-react";
+import { getUser } from "../../API/api";
 
 const initState = {
   email: "",
@@ -26,14 +26,15 @@ export const LoginPage = () => {
     try {
       await login(values.email, values.password);
       setCurrentFormData(values);
-      const ref = doc(db, "users", auth.currentUser!.uid);
-      const user = await getDoc(ref);
-      const comparedPassword = bcrypt.compareSync(
-        values.password,
-        user.data()?.password
-      );
-      if (comparedPassword && user) {
-        navigate("/user");
+      const user = await getUser(auth.currentUser!.uid);
+      if (user) {
+        const comparedPassword = bcrypt.compareSync(
+          values.password,
+          user.data()?.password
+        );
+        if (comparedPassword && user) {
+          navigate("/user");
+        }
       }
     } catch (error) {
       setError("root", {
@@ -51,7 +52,7 @@ export const LoginPage = () => {
     mode: "onTouched",
     reValidateMode: "onSubmit",
     defaultValues: currentFormData,
-    resolver: yupResolver(loginSschema),
+    resolver: yupResolver(loginSchema),
   });
 
   return (
