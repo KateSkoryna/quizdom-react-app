@@ -1,0 +1,23 @@
+.titleContainer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.favoriteIcon {
+    margin-left: auto;
+    cursor: pointer;
+    width: 30px;
+    height: 30px;
+}
+
+.itemSmalltext {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    display: block;
+    font-size: 10px;
+    color: gray;
+    text-align: end;
+    margin-left: auto;
+}

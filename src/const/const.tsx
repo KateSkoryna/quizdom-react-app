@@ -19,7 +19,7 @@ export const COMPLEXITY_VALUES = {
 export const QUIZ_CATEGORY = {
   [QuizCategory.JS]: "JavaScript",
   [QuizCategory.TS]: "TypeScript",
-  [QuizCategory.REACT]: "React",
+  [QuizCategory.REACT]: "ReactJS",
   [QuizCategory.NEXT_JS]: "NextJS",
   [QuizCategory.NODE_JS]: "NodeJS",
   [QuizCategory.JEST]: "Jest",

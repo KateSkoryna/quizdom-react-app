@@ -9,7 +9,7 @@ import { SignupPage } from "../../pages/SignupPage/SignupPage";
 import { BlogsPage } from "../../pages/BlogsPage/BlogsPage";
 import { AboutPage } from "../../pages/AboutPage/AboutPage";
 import { UserPage } from "../../pages/UserPage/UserPage";
-import { getAllNews } from "../../API/api";
+import { getAllNews, getAllQuizes } from "../../API/api";
 import { ProtectedRoute } from "../../pages/ProtectedRoute";
 import Layout from "../Layout/Layout";
 
@@ -29,6 +29,9 @@ const router = createBrowserRouter(
           path: "/quizes",
           element: <QuizPage />,
           errorElement: <NotFoundPage />,
+          loader: async () => {
+            return getAllQuizes();
+          },
         },
         {
           path: "about",

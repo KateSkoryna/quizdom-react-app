@@ -15,7 +15,7 @@ export const NewsListItem = ({
 }) => {
   return (
     <Card className="h-100">
-      <Card.Img className="object-fit-cover h-25 w-100" src={image} />
+      <Card.Img className="object-fit-cover h-50 w-100" src={image} />
       <Card.Body className={styles.cardBody}>
         <Card.Title className="mb-4">{truncateString(title, 64)}</Card.Title>
         <Card.Text className={styles.cardText}>{description}</Card.Text>

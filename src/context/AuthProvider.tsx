@@ -10,7 +10,7 @@ import {
 } from "firebase/auth";
 import { AuthContext } from "./AuthContext";
 import { Loader } from "../components/Loader/Loader";
-import { getUser } from "../API/api";
+import { getCurrentUser } from "../API/api";
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [currentUser, setCurrentUser] = useState<CurrentUser | null>(null);
@@ -37,7 +37,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
           setLoading(false);
           return;
         }
-        const user = await getUser(auth.currentUser.uid);
+        const user = await getCurrentUser(auth.currentUser.uid);
         if (user && user.exists()) {
           const currentUser: CurrentUser = {
             ...(user.data() as CurrentUser),

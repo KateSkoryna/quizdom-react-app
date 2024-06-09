@@ -10,7 +10,7 @@ import { useAuth } from "../../context/AuthContext";
 import { FormFooter } from "../../components/FormFooter/FormFooter";
 import { auth } from "../../firebase";
 import bcrypt from "bcryptjs-react";
-import { getUser } from "../../API/api";
+import { getCurrentUser } from "../../API/api";
 
 const initState = {
   email: "",
@@ -26,7 +26,7 @@ export const LoginPage = () => {
     try {
       await login(values.email, values.password);
       setCurrentFormData(values);
-      const user = await getUser(auth.currentUser!.uid);
+      const user = await getCurrentUser(auth.currentUser!.uid);
       if (user) {
         const comparedPassword = bcrypt.compareSync(
           values.password,

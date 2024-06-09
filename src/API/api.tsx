@@ -30,7 +30,7 @@ export async function getAllNews(query: string, category: string) {
 
 //======================== GET USER  ==========================
 
-export async function getUser(userId: string) {
+export async function getCurrentUser(userId: string) {
   try {
     const ref = doc(db, "users", userId);
     const user = await getDoc(ref);
@@ -42,7 +42,40 @@ export async function getUser(userId: string) {
   }
 }
 
+//======================== GET AUTHOR NAME  =========================
+
+export async function getAuthorName(userId: string) {
+  try {
+    const ref = doc(db, "users", userId);
+    const user = await getDoc(ref);
+    return user.data()?.name;
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new Error(error.message);
+    }
+  }
+}
+
 //======================== GET ALL QUIZES  ==========================
+
+export async function getAllQuizes() {
+  try {
+    const snapshot = await getDocs(collection(db, "quizes"));
+    const quizes = snapshot.docs.map((doc) => {
+      return {
+        ...(doc.data() as UserQuiz),
+        id: doc.id,
+        publishedAt: doc.data().publishedAt.toDate(),
+      };
+    });
+    return quizes;
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new Error(error.message);
+    }
+  }
+}
+
 //======================== GET QUIZES BY USER  ======================
 
 export async function getQuizesById(userId: string) {

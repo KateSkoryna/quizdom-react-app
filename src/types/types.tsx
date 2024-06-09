@@ -92,7 +92,7 @@ export interface Question {
 export enum QuizCategory {
   JS = "JavaScript",
   TS = "TypeScript",
-  REACT = "React",
+  REACT = "ReactJS",
   NEXT_JS = "NextJS",
   NODE_JS = "NodeJS",
   JEST = "Jest",
