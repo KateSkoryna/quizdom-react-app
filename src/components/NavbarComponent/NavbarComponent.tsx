@@ -9,7 +9,7 @@ import { useState } from "react";
 import styles from "./NavbarComponent.module.css";
 import CloseButton from "react-bootstrap/CloseButton";
 import { useAuth } from "../../context/AuthContext";
-import { LogoutComponent } from "../LogoutComponent/LogoutComponent";
+import { LogoutComponent } from "../UserPageComponents/LogoutComponent/LogoutComponent";
 import { useActiveNavStore } from "../../store/store";
 
 export const NavbarComponent = () => {

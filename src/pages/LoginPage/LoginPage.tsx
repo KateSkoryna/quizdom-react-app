@@ -7,7 +7,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { loginSchema } from "../../helpers/schema";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
-import { FormFooter } from "../../components/FormFooter/FormFooter";
+import { FormFooter } from "../../components/FooterComponents/FormFooter/FormFooter";
 import { auth } from "../../firebase";
 import bcrypt from "bcryptjs-react";
 import { getCurrentUser } from "../../API/api";

@@ -1,7 +1,7 @@
-import { NewsListComponent } from "../../components/NewsListComponent/NewsListComponent";
+import { NewsListComponent } from "../../components/NewsPageComponents/NewsListComponent/NewsListComponent";
 import { useLoaderData, useNavigation } from "react-router-dom";
 import { Article } from "../../types/types";
-import { SearchComponent } from "../../components/SearchComponent/SearchComponent";
+import { SearchComponent } from "../../components/NewsPageComponents/SearchComponent/SearchComponent";
 import uuid from "react-uuid";
 import { Loader } from "../../components/Loader/Loader";
 import { NEWS_CATEGORY } from "../../const/const";

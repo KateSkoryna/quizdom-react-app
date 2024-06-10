@@ -172,3 +172,6 @@ export async function toggleFavorites(
     }
   }
 }
+
+//======================== GET FAVORITE QUIZES  ====================
+
