@@ -23,10 +23,10 @@ export const StartQuizModal = ({
   const [score, setScore] = useState(0);
   const [result, setResult] = useState(false);
 
-  const Option1 = useRef(null);
-  const Option2 = useRef(null);
-  const Option3 = useRef(null);
-  const Option4 = useRef(null);
+  const Option1 = useRef<HTMLLIElement | null>(null);
+  const Option2 = useRef<HTMLLIElement | null>(null);
+  const Option3 = useRef<HTMLLIElement | null>(null);
+  const Option4 = useRef<HTMLLIElement | null>(null);
 
   const optionArray = [Option1, Option2, Option3, Option4];
 
@@ -42,10 +42,9 @@ export const StartQuizModal = ({
       } else {
         event.currentTarget.classList.add(styles.isFalse);
         setLock(true);
-        answers.map((answer, index) => {
-          if (optionArray[index].current && answer.isCorrect) {
-            //ts-ignore
-            optionArray[index].current.classList.add(styles.isCorrect);
+        answers.forEach((answer, index) => {
+          if (optionArray[index]?.current && answer.isCorrect) {
+            optionArray[index]?.current?.classList.add(styles.isCorrect);
           }
         });
       }
@@ -62,10 +61,9 @@ export const StartQuizModal = ({
       setQuestion(questions[index + 1]);
       setAnswers(questions[index + 1].answers);
       setLock(false);
-      answers.map((answer, index) => {
-        if (answer.isCorrect) {
-          //ts-ignore
-          optionArray[index].current.classList.remove(styles.isCorrect);
+      answers.forEach((answer, index) => {
+        if (optionArray[index]?.current && answer.isCorrect) {
+          optionArray[index]?.current?.classList.remove(styles.isCorrect);
         }
       });
     }
@@ -76,9 +74,9 @@ export const StartQuizModal = ({
     setQuestion(questions[index - 1]);
     setAnswers(questions[index - 1].answers);
     setLock(false);
-    answers.map((answer, index) => {
-      if (answer.isCorrect) {
-        optionArray[index].current.classList.remove(styles.isCorrect);
+    answers.forEach((answer, index) => {
+      if (optionArray[index]?.current && answer.isCorrect) {
+        optionArray[index]?.current?.classList.remove(styles.isCorrect);
       }
     });
   };
