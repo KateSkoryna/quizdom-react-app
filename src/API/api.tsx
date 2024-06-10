@@ -10,6 +10,7 @@ import {
   updateDoc,
   arrayUnion,
   arrayRemove,
+  documentId,
 } from "firebase/firestore";
 import { UserQuiz } from "../types/types";
 
@@ -175,3 +176,25 @@ export async function toggleFavorites(
 
 //======================== GET FAVORITE QUIZES  ====================
 
+export async function getFavoriteQuizes(quizIds: string[]) {
+  console.log(quizIds);
+  try {
+    const q = query(
+      collection(db, "quizes"),
+      where(documentId(), "in", quizIds)
+    );
+    const querySnapshot = await getDocs(q);
+    const quizes = querySnapshot.docs.map((doc) => {
+      return {
+        ...(doc.data() as UserQuiz),
+        id: doc.id,
+        publishedAt: doc.data().publishedAt.toDate(),
+      };
+    });
+    return quizes;
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new Error(error.message);
+    }
+  }
+}
