@@ -1,0 +1,11 @@
+.starZero {
+    cursor: pointer;
+    color: gray;
+    font-size: 15px;
+}
+
+.starRating {
+    cursor: pointer;
+    color: gold;
+    font-size: 15px;
+}
