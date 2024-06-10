@@ -1,3 +1,8 @@
+.cardBody {
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
 .titleContainer {
     display: flex;
     align-items: center;
@@ -12,12 +17,26 @@
 }
 
 .itemSmalltext {
-    position: absolute;
-    bottom: 10px;
-    right: 10px;
     display: block;
     font-size: 10px;
     color: gray;
     text-align: end;
     margin-left: auto;
+}
+
+.buttonContainer {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px;
+
+    @media screen and (min-width: 768px) {  
+        justify-content: start;
+        
+    }
+}
+
+.quizDescription {
+    color: black;
+    font-size: 12px;
+    margin-bottom: 10px;
 }

@@ -33,7 +33,7 @@ export const QuizMainListItem = ({
   }, []);
 
   return (
-    <Card.Body className="position-relative">
+    <Card.Body className={styles.cardBody}>
       <Card.Title className={styles.titleContainer}>
         <h5>{title}</h5>
         <MdFavoriteBorder
@@ -42,11 +42,13 @@ export const QuizMainListItem = ({
         />
       </Card.Title>
       <Card.Subtitle className="mb-2 text-muted">{complexity}</Card.Subtitle>
-      <Card.Text>{description}</Card.Text>
-      <Card.Link as={Button}>Start Quiz</Card.Link>
-      <Card.Link as={Button}>Share Quiz</Card.Link>
+      <Card.Text className={styles.quizDescription}>{description}</Card.Text>
+      <div className={styles.buttonContainer}>
+        <Card.Link as={Button}>Start Quiz</Card.Link>
+        <Card.Link as={Button}>Share Quiz</Card.Link>
+      </div>
       <small className={styles.itemSmalltext}>
-        Published at: {publishedAt.toLocaleDateString()} by {authorName}
+        Published on: {publishedAt.toLocaleDateString()} by {authorName}
       </small>
     </Card.Body>
   );
