@@ -7,6 +7,9 @@ import {
   query,
   where,
   getDocs,
+  updateDoc,
+  arrayUnion,
+  arrayRemove,
 } from "firebase/firestore";
 import { UserQuiz } from "../types/types";
 
@@ -140,32 +143,32 @@ export async function getQuizByCategoryAndComplexity(queryData: {
   }
 }
 
-//======================== GET QUIZES BY CATEGORY AND QUERY  ====================
+//======================== TOGGLE FAVORITE QUIZ  ====================
 
-// export async function getQuizByQueryAndCategory(
-//   queryData: string,
-//   category: string
-// ) {
-//   console.log(category);
-//   try {
-//     const q = query(
-//       collection(db, "quizes"),
-//       where("category", "==", category),
-//       where("title", "in", queryData)
-//     );
-//     const querySnapshot = await getDocs(q);
-//     console.log(querySnapshot);
-//     const quizes = querySnapshot.docs.map((doc) => {
-//       return {
-//         ...(doc.data() as UserQuiz),
-//         id: doc.id,
-//         publishedAt: doc.data().publishedAt.toDate(),
-//       };
-//     });
-//     return quizes;
-//   } catch (error: unknown) {
-//     if (error instanceof Error) {
-//       throw new Error(error.message);
-//     }
-//   }
-// }
+export async function toggleFavorites(
+  quizId: string,
+  userId: string,
+  action: string
+) {
+  try {
+    const ref = doc(db, "users", userId);
+    switch (action) {
+      case "add":
+        await updateDoc(ref, {
+          favorites: arrayUnion(quizId),
+        });
+        break;
+      case "remove":
+        await updateDoc(ref, {
+          favorites: arrayRemove(quizId),
+        });
+        break;
+      default:
+        break;
+    }
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new Error(error.message);
+    }
+  }
+}

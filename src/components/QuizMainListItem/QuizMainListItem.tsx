@@ -7,39 +7,56 @@ import { useEffect, useState } from "react";
 import { getAuthorName } from "../../API/api";
 import { StartQuizModal } from "../StartQuizModal/StartQuizModal";
 import { MdOutlineFavorite } from "react-icons/md";
+import { useAuth } from "../../context/AuthContext";
+import { toggleFavorites } from "../../API/api";
 
 type QuizMainListItemProps = {
   quiz: UserQuiz;
-  handleFavoriteClick: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  checked: boolean;
 };
 
 export const QuizMainListItem = ({
-  quiz,
-  handleFavoriteClick,
-  checked,
+  quiz: { title, complexity, description, id, author, publishedAt, questions },
 }: QuizMainListItemProps) => {
   const [authorName, setAuthorName] = useState<string>("");
   const [startQuiz, setStartQuiz] = useState(false);
+  const [checked, setChecked] = useState(false);
 
   const handleEnd = () => setStartQuiz(false);
   const handleStart = () => setStartQuiz(true);
 
-  const { title, complexity, description, id, author, publishedAt, questions } =
-    quiz;
+  const { currentUser } = useAuth();
+  const handleFavoriteClick = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    if (!currentUser) {
+      return;
+    }
+    if (!event.target.checked) {
+      await toggleFavorites(event.target.id, currentUser.id, "remove");
+      setChecked(false);
+      return;
+    }
+    await toggleFavorites(event.target.id, currentUser.id, "add");
+    setChecked(true);
+  };
 
   useEffect(() => {
-    const getUserById = async () => {
+    const getUser = async () => {
       try {
         const authorFetchName = await getAuthorName(author);
         setAuthorName(authorFetchName);
+        if (currentUser) {
+          if (currentUser.favorites.includes(id)) {
+            setChecked(true);
+          }
+        }
       } catch (error) {
         if (error instanceof Error) {
           throw new Error(error.message);
         }
       }
     };
-    getUserById();
+    getUser();
   }, []);
 
   return (

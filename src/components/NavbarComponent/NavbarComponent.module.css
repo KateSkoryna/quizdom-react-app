@@ -8,7 +8,6 @@
 }
 
 .navLink:hover {
-    border-bottom: 2px solid #F7941D;
     color: #fff;
 }
 
@@ -18,7 +17,6 @@
 }
 
 .navbarToggle:hover, .navbarToggle:focus {
-    border-color: #F7941D;
     scale: 1.1;
     transition: scale 0.2s ease-in-out;
     outline: none;
