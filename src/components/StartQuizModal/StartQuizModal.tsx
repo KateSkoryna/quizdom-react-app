@@ -30,7 +30,10 @@ export const StartQuizModal = ({
 
   const optionArray = [Option1, Option2, Option3, Option4];
 
-  const handleCorrectAnswer = (event, isCorrect: boolean) => {
+  const handleCorrectAnswer = (
+    event: React.MouseEvent<HTMLElement>,
+    isCorrect: boolean
+  ) => {
     if (!lock) {
       if (isCorrect) {
         event.currentTarget.classList.add(styles.isCorrect);
@@ -40,7 +43,7 @@ export const StartQuizModal = ({
         event.currentTarget.classList.add(styles.isFalse);
         setLock(true);
         answers.map((answer, index) => {
-          if (answer.isCorrect) {
+          if (optionArray[index].current && answer.isCorrect) {
             //ts-ignore
             optionArray[index].current.classList.add(styles.isCorrect);
           }
@@ -122,7 +125,10 @@ export const StartQuizModal = ({
                   className="d-flex justify-content-between align-items-start"
                   key={answer.answer}
                   onClick={(event) =>
-                    handleCorrectAnswer(event, answer.isCorrect)
+                    handleCorrectAnswer(
+                      event as React.MouseEvent<HTMLElement>,
+                      answer.isCorrect
+                    )
                   }
                 >
                   <div className="ms-2 me-auto">
