@@ -1,0 +1,23 @@
+.isCorrect {
+    background-color: #B8EFCF;
+}
+
+.isFalse {
+    background-color: #F11212;
+}
+
+.questionTitle {
+    margin-bottom: 20px;
+}
+
+.resultBody {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 20px;
+
+    @media screen and (min-width: 768px) {
+        padding-bottom: 20px;
+    }
+}

@@ -2,7 +2,8 @@ import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import { Answer, Question } from "../../types/types";
 import { ListGroup } from "react-bootstrap";
-import { useState } from "react";
+import { useRef, useState } from "react";
+import styles from "./StartQuizModal.module.css";
 
 type StartQuizModalProps = {
   show: boolean;
@@ -18,35 +19,134 @@ export const StartQuizModal = ({
   const [index, setIndex] = useState(0);
   const [question, setQuestion] = useState<Question>(questions[index]);
   const [answers, setAnswers] = useState<Answer[]>(questions[index].answers);
-  console.log(questions);
+  const [lock, setLock] = useState(false);
+  const [score, setScore] = useState(0);
+  const [result, setResult] = useState(false);
+
+  const Option1 = useRef(null);
+  const Option2 = useRef(null);
+  const Option3 = useRef(null);
+  const Option4 = useRef(null);
+
+  const optionArray = [Option1, Option2, Option3, Option4];
+
+  const handleCorrectAnswer = (event, isCorrect: boolean) => {
+    if (!lock) {
+      if (isCorrect) {
+        event.currentTarget.classList.add(styles.isCorrect);
+        setLock(true);
+        setScore((prev) => prev + 1);
+      } else {
+        event.currentTarget.classList.add(styles.isFalse);
+        setLock(true);
+        answers.map((answer, index) => {
+          if (answer.isCorrect) {
+            optionArray[index].current.classList.add(styles.isCorrect);
+          }
+        });
+      }
+    }
+  };
+
+  const handleNextQuestion = () => {
+    if (lock) {
+      if (index === questions.length - 1) {
+        setResult(true);
+        return 0;
+      }
+      setIndex((prev) => prev + 1);
+      setQuestion(questions[index + 1]);
+      setAnswers(questions[index + 1].answers);
+      setLock(false);
+      answers.map((answer, index) => {
+        if (answer.isCorrect) {
+          optionArray[index].current.classList.remove(styles.isCorrect);
+        }
+      });
+    }
+  };
+
+  const handlePreviousQuestion = () => {
+    setIndex((prev) => prev - 1);
+    setQuestion(questions[index - 1]);
+    setAnswers(questions[index - 1].answers);
+    setLock(false);
+    answers.map((answer, index) => {
+      if (answer.isCorrect) {
+        optionArray[index].current.classList.remove(styles.isCorrect);
+      }
+    });
+  };
+
+  const handleReset = () => {
+    setIndex(0);
+    setQuestion(questions[0]);
+    setAnswers(questions[0].answers);
+    setLock(false);
+    setScore(0);
+    setResult(false);
+  };
+
   return (
-    <Modal show={show} onHide={handleClose}>
-      <Modal.Header closeButton>
-        <Modal.Title>Question {index + 1}</Modal.Title>
-      </Modal.Header>
-      <Modal.Body>
-        <h5>{questions[index].questionTitle}</h5>
-        <ListGroup>
-          {answers.map((answer) => (
-            <ListGroup.Item
-              as="li"
-              className="d-flex justify-content-between align-items-start"
-              key={answer.answer}
+    <Modal show={show} onHide={handleClose} fullscreen="md-down" centered>
+      {result ? (
+        <>
+          <Modal.Header closeButton>
+            <Modal.Title>Quiz Result</Modal.Title>
+          </Modal.Header>
+          <Modal.Body className={styles.resultBody}>
+            <h5>
+              Your score is {score} out of {questions.length}
+            </h5>
+            <h6>Correct answers: {(score / questions.length) * 100}%</h6>
+            <h5>Thank you for taking the quiz!</h5>
+            <Button onClick={handleReset} className={styles.button}>
+              Reset Quiz
+            </Button>
+          </Modal.Body>
+        </>
+      ) : (
+        <>
+          <Modal.Header closeButton>
+            <Modal.Title>Question {index + 1}</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <h5 className={styles.questionTitle}>{question.questionTitle}</h5>
+            <ListGroup>
+              {answers.map((answer, index) => (
+                <ListGroup.Item
+                  ref={optionArray[index]}
+                  as="li"
+                  className="d-flex justify-content-between align-items-start"
+                  key={answer.answer}
+                  onClick={(event) =>
+                    handleCorrectAnswer(event, answer.isCorrect)
+                  }
+                >
+                  <div className="ms-2 me-auto">
+                    <div className="fw-bold">{answer.answer}</div>
+                  </div>
+                </ListGroup.Item>
+              ))}
+            </ListGroup>
+          </Modal.Body>
+          <Modal.Footer className="d-flex justify-content-center">
+            <Button
+              variant="secondary"
+              disabled={index === 0}
+              onClick={handlePreviousQuestion}
             >
-              <div className="ms-2 me-auto">
-                <div className="fw-bold">{answer.answer}</div>
-              </div>
-            </ListGroup.Item>
-          ))}
-        </ListGroup>
-      </Modal.Body>
-      <Modal.Footer>
-        <Button variant="secondary">Previous Question</Button>
-        <Button variant="primary">Next Question</Button>
-        <h6>
-          Total Questions: {index + 1}/{questions.length}
-        </h6>
-      </Modal.Footer>
+              Previous Question
+            </Button>
+            <Button onClick={handleNextQuestion} variant="primary">
+              Next Question
+            </Button>
+            <h6>
+              Total Questions: {index + 1} of {questions.length}
+            </h6>
+          </Modal.Footer>
+        </>
+      )}
     </Modal>
   );
 };
