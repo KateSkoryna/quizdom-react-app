@@ -41,6 +41,7 @@ export const StartQuizModal = ({
         setLock(true);
         answers.map((answer, index) => {
           if (answer.isCorrect) {
+            //ts-ignore
             optionArray[index].current.classList.add(styles.isCorrect);
           }
         });
@@ -60,6 +61,7 @@ export const StartQuizModal = ({
       setLock(false);
       answers.map((answer, index) => {
         if (answer.isCorrect) {
+          //ts-ignore
           optionArray[index].current.classList.remove(styles.isCorrect);
         }
       });
