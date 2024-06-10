@@ -9,11 +9,26 @@
     flex-direction: column;
     justify-content: center;
     width: 100%;
-    max-width: 600px;
-    margin-right: auto;
-    margin-left: auto;
+    max-width: 900px;
 
     @media screen and (min-width: 768px) {
         flex-direction: row;
+        margin-bottom: 10px;
     }
+}
+
+.button {
+    width: 100%;
+    margin-bottom: 10px;
+
+    @media screen and (min-width: 768px) {
+        width: 200px;
+        margin-bottom: 0;
+        
+    }
+}
+
+.error {
+    display: block;
+        color: red;
 }

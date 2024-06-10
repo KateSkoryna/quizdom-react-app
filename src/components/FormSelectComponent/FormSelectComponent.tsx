@@ -14,6 +14,7 @@ export const FormSelectComponent = ({
     <Form.Select
       className={styles.selectCategory}
       onChange={(e) => handleChange(e.target.value)}
+      defaultValue={`Open ${fieldsName} menu`}
     >
       <option>{`Open ${fieldsName} menu`}</option>
       {fields.map((field) => (

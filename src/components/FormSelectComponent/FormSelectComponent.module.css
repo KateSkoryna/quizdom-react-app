@@ -1,16 +1,10 @@
 .selectCategory {
     width: 100%;
+        margin-bottom: 10px;
 
     @media screen and (min-width: 768px) {
         width: 50%;
-    }
-}
-
-.selectCategory:first-child {
-    margin-bottom: 10px;
-
-    @media screen and (min-width: 768px) {
         margin-right: 10px;
-        margin-bottom: 0;
+            margin-bottom: 0;
     }
 }

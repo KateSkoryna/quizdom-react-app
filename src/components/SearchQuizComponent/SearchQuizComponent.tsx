@@ -1,4 +1,4 @@
-import { Container, Form } from "react-bootstrap";
+import { Button, Container, Form } from "react-bootstrap";
 import styles from "./SearchQuizComponent.module.css";
 import { QUIZ_CATEGORY, COMPLEXITY_VALUES } from "../../const/const";
 import { FormSelectComponent } from "../FormSelectComponent/FormSelectComponent";
@@ -11,32 +11,44 @@ const initState = { category: "", complexity: "" };
 
 export const SearchQuizComponent = () => {
   const [searchParams, setSearchParams] = useSearchParams(initState);
-  const [, setCategory] = useState(searchParams.get("category") ?? "");
-  const [, setComplexity] = useState(searchParams.get("complexity") ?? "");
+  const [category, setCategory] = useState(searchParams.get("category") ?? "");
+  const [complexity, setComplexity] = useState(
+    searchParams.get("complexity") ?? ""
+  );
+  const [error, setError] = useState(false);
 
-  const handleChangeCategory = (value: string) => {
-    if (value === "Open category menu") {
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (!category && !complexity) {
+      setError(true);
       return;
     }
+    setSearchParams({ category, complexity });
+  };
+
+  const handleChangeCategory = (value: string) => {
+    console.log(value);
+    if (value === "Open category menu") {
+      setCategory("");
+      return;
+    }
+    setError(false);
     setCategory(value);
-    setSearchParams((prev) => {
-      return { ...prev, category: value };
-    });
   };
 
   const handleChangeComplexity = (value: string) => {
-    if (value === "Open category menu") {
+    console.log(value);
+    if (value === "Open complexity menu") {
+      setComplexity("");
       return;
     }
+    setError(false);
     setComplexity(value);
-    setSearchParams((prev) => {
-      return { ...prev, complexity: value };
-    });
   };
 
   return (
     <Container className={styles.container}>
-      <Form className={styles.form}>
+      <Form className={styles.form} onSubmit={handleSubmit}>
         <FormSelectComponent
           fields={categories}
           fieldsName="category"
@@ -47,7 +59,11 @@ export const SearchQuizComponent = () => {
           fieldsName="complexity"
           handleChange={handleChangeComplexity}
         />
+        <Button className={styles.button} type="submit">
+          Search
+        </Button>
       </Form>
+      {error && <p className={styles.error}>Please select search query</p>}
     </Container>
   );
 };
