@@ -177,7 +177,6 @@ export async function toggleFavorites(
 //======================== GET FAVORITE QUIZES  ====================
 
 export async function getFavoriteQuizes(quizIds: string[]) {
-  console.log(quizIds);
   try {
     const q = query(
       collection(db, "quizes"),

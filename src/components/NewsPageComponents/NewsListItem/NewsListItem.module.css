@@ -23,3 +23,9 @@
 .cardBtn:hover {
     background-color: #00093C;
 }
+
+.cardImg {
+    height: 50%;
+    width: 100%;
+    object-fit: cover;
+}

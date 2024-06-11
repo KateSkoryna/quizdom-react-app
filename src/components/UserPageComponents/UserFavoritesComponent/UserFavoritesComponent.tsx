@@ -15,7 +15,6 @@ export const UserFavoritesComponent = () => {
         setIsLoading(true);
         if (currentUser) {
           const favorites = await getFavoriteQuizes(currentUser?.favorites);
-          console.log(favorites);
           if (favorites) {
             setUserFavorites(favorites);
           }
