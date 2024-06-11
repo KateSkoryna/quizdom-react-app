@@ -56,24 +56,5 @@ export const UserCardInfo = () => {
         </Tab.Content>
       </Col>
     </Tab.Container>
-    // <Card className="flex-grow-1">
-    //   <Tabs
-    //     defaultActiveKey="statistics"
-    //     id="justify-tab-example"
-    //     className="mb-3"
-    //     justify
-    //     fill
-    //   >
-    //     <Tab eventKey="statistics" title="Statistics">
-    //       <StatisticsUserComponent />
-    //     </Tab>
-    //     <Tab eventKey="my-quizes" title="My Quizes">
-    //       <UserQuizesComponent />
-    //     </Tab>
-    //     <Tab eventKey="favorites" title="Favorites">
-    //       <UserFavoritesComponent />
-    //     </Tab>
-    //   </Tabs>
-    // </Card>
   );
 };

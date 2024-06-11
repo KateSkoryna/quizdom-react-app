@@ -197,3 +197,18 @@ export async function getFavoriteQuizes(quizIds: string[]) {
     }
   }
 }
+
+//======================== EDIT USER INFO  ====================
+
+export async function editUserInfo(userId: string, info: string) {
+  try {
+    const ref = doc(db, "users", userId);
+    await updateDoc(ref, {
+      userInfo: info,
+    });
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new Error(error.message);
+    }
+  }
+}
