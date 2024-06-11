@@ -1,21 +1,26 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "../../index.css";
-import { NotFoundPage } from "../../pages/NotFoundPage/NotFoundPage";
-import { NewsPage } from "../../pages/NewsPage/NewsPage";
-import { HomePage } from "../../pages/HomePage/HomePage";
-import { QuizPage } from "../../pages/QiuzPage/QuizPage";
-import { LoginPage } from "../../pages/LoginPage/LoginPage";
-import { SignupPage } from "../../pages/SignupPage/SignupPage";
-import { BlogsPage } from "../../pages/BlogsPage/BlogsPage";
-import { AboutPage } from "../../pages/AboutPage/AboutPage";
-import { UserPage } from "../../pages/UserPage/UserPage";
+
 import {
   getAllNews,
   getAllQuizes,
   getQuizByCategoryAndComplexity,
 } from "../../API/api";
-import { ProtectedRoute } from "../../pages/ProtectedRoute";
-import Layout from "../Layout/Layout";
+import { lazy } from "react";
+
+const Layout = lazy(() => import("../Layout/Layout"));
+const UserPage = lazy(() => import("../../pages/UserPage/UserPage"));
+const SignupPage = lazy(() => import("../../pages/SignupPage/SignupPage"));
+const LoginPage = lazy(() => import("../../pages/LoginPage/LoginPage"));
+const QuizPage = lazy(() => import("../../pages/QiuzPage/QuizPage"));
+const HomePage = lazy(() => import("../../pages/HomePage/HomePage"));
+const NewsPage = lazy(() => import("../../pages/NewsPage/NewsPage"));
+const NotFoundPage = lazy(
+  () => import("../../pages/NotFoundPage/NotFoundPage")
+);
+const BlogsPage = lazy(() => import("../../pages/BlogsPage/BlogsPage"));
+const AboutPage = lazy(() => import("../../pages/AboutPage/AboutPage"));
+const ProtectedRoute = lazy(() => import("../../pages/ProtectedRoute"));
 
 const router = createBrowserRouter(
   [
@@ -27,12 +32,10 @@ const router = createBrowserRouter(
         {
           path: "/",
           element: <HomePage />,
-          errorElement: <NotFoundPage />,
         },
         {
           path: "/quizes",
           element: <QuizPage />,
-          errorElement: <NotFoundPage />,
           loader: async ({ request }) => {
             const url = new URL(request.url);
             const searchCategory = url.searchParams.get("category");
@@ -55,7 +58,6 @@ const router = createBrowserRouter(
         {
           path: "news",
           element: <NewsPage />,
-          errorElement: <NotFoundPage />,
           loader: async ({ request }) => {
             const url = new URL(request.url);
             let searchQuery = url.searchParams.get("query");
@@ -72,7 +74,6 @@ const router = createBrowserRouter(
         {
           path: "blogs",
           element: <BlogsPage />,
-          errorElement: <NotFoundPage />,
         },
         {
           path: "signup",

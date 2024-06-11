@@ -9,12 +9,10 @@ import {
   signOut,
 } from "firebase/auth";
 import { AuthContext } from "./AuthContext";
-import { Loader } from "../components/Loader/Loader";
 import { getCurrentUser } from "../API/api";
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [currentUser, setCurrentUser] = useState<CurrentUser | null>(null);
-  const [loading, setLoading] = useState(true);
   const [, setError] = useState<string | null>(null);
 
   const signup = (values: UserData): Promise<UserCredential> => {
@@ -34,7 +32,6 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     const unsubscribe = onAuthStateChanged(auth, async () => {
       try {
         if (!auth.currentUser) {
-          setLoading(false);
           return;
         }
         const user = await getCurrentUser(auth.currentUser.uid);
@@ -46,10 +43,8 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
           };
           setCurrentUser(currentUser);
         }
-        setLoading(false);
       } catch (error: unknown) {
         if (error instanceof Error) {
-          setLoading(false);
           setError(error.message);
         }
       }
@@ -64,9 +59,5 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     logout,
   };
 
-  return (
-    <AuthContext.Provider value={value}>
-      {loading ? <Loader /> : children}
-    </AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };

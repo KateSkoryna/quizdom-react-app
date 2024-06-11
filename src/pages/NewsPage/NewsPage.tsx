@@ -3,10 +3,10 @@ import { useLoaderData, useNavigation } from "react-router-dom";
 import { Article } from "../../types/types";
 import { SearchComponent } from "../../components/NewsPageComponents/SearchComponent/SearchComponent";
 import uuid from "react-uuid";
-import { Loader } from "../../components/Loader/Loader";
 import { NEWS_CATEGORY } from "../../const/const";
+import Loader from "../../components/Loader/Loader";
 
-export const NewsPage = () => {
+const NewsPage = () => {
   const navigation = useNavigation();
 
   const newsArr: Article[] = useLoaderData() as Article[];
@@ -24,3 +24,5 @@ export const NewsPage = () => {
     </>
   );
 };
+
+export default NewsPage;

@@ -3,7 +3,7 @@ import { Card, Container } from "react-bootstrap";
 import { UserCardData } from "../../components/UserPageComponents/UserCardData/UserCardData";
 import { UserCardInfo } from "../../components/UserPageComponents/UserCardInfo/UserCardInfo";
 
-export const UserPage = () => {
+const UserPage = () => {
   return (
     <Container className={styles.userSection}>
       <Card className={styles.userSectionCard}>
@@ -13,3 +13,5 @@ export const UserPage = () => {
     </Container>
   );
 };
+
+export default UserPage;

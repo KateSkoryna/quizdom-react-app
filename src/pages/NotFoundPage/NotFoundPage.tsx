@@ -1,7 +1,7 @@
 import { useRouteError } from "react-router-dom";
 import { NavbarComponent } from "../../components/NavbarComponent/NavbarComponent";
 
-export const NotFoundPage = () => {
+const NotFoundPage = () => {
   const error: { statusText?: string; message?: string } = useRouteError() as {
     statusText?: string;
     message?: string;
@@ -20,3 +20,5 @@ export const NotFoundPage = () => {
     </div>
   );
 };
+
+export default NotFoundPage;

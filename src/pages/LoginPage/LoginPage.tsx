@@ -17,7 +17,7 @@ const initState = {
   password: "",
 };
 
-export const LoginPage = () => {
+const LoginPage = () => {
   const [currentFormData, setCurrentFormData] = useState(initState);
   const navigate = useNavigate();
   const { login } = useAuth();
@@ -110,3 +110,5 @@ export const LoginPage = () => {
     </Container>
   );
 };
+
+export default LoginPage;

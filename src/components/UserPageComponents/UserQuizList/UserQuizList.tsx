@@ -1,7 +1,7 @@
 import { Accordion } from "react-bootstrap";
 import { UserQuizListItem } from "../UserQuizListItem/UserQuizListItem";
 
-import { Loader } from "../../Loader/Loader";
+import Loader from "../../Loader/Loader";
 import { UserQuiz } from "../../../types/types";
 
 export const UserQuizList = ({

@@ -26,7 +26,7 @@ const initState = {
   confirmPassword: "",
 };
 
-export const SignupPage = () => {
+const SignupPage = () => {
   const [userData, setUserData] = useState<UserData | null>(null);
 
   const { signup } = useAuth();
@@ -181,3 +181,5 @@ export const SignupPage = () => {
     </Container>
   );
 };
+
+export default SignupPage;
