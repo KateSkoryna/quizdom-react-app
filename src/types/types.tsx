@@ -60,6 +60,7 @@ export interface HeroComponentProps {
 
 export interface AuthContextValue {
   currentUser: CurrentUser | null;
+  setCurrentUser: React.Dispatch<React.SetStateAction<CurrentUser | null>>;
   login: (email: string, password: string) => Promise<UserCredential>;
   signup: (values: UserData) => Promise<UserCredential>;
   logout: () => Promise<void>;

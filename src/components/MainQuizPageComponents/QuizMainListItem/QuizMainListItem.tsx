@@ -2,7 +2,7 @@ import { Button } from "react-bootstrap";
 import Card from "react-bootstrap/Card";
 import { MdFavoriteBorder } from "react-icons/md";
 import styles from "./QuizMainListItem.module.css";
-import { UserQuiz } from "../../../types/types";
+import { CurrentUser, UserQuiz } from "../../../types/types";
 import { useEffect, useState } from "react";
 import { getAuthorName } from "../../../API/api";
 import { StartQuizModal } from "../StartQuizModal/StartQuizModal";
@@ -24,7 +24,7 @@ export const QuizMainListItem = ({
   const handleEnd = () => setStartQuiz(false);
   const handleStart = () => setStartQuiz(true);
 
-  const { currentUser } = useAuth();
+  const { currentUser, setCurrentUser } = useAuth();
   const handleFavoriteClick = async (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
@@ -34,10 +34,25 @@ export const QuizMainListItem = ({
     if (!event.target.checked) {
       await toggleFavorites(event.target.id, currentUser.id, "remove");
       setChecked(false);
+      setCurrentUser((prev) => {
+        return {
+          ...((prev as CurrentUser) ?? {}),
+          favorites: currentUser.favorites.filter(
+            (item: string) => item !== event.target.id
+          ),
+        };
+      });
+
       return;
     }
     await toggleFavorites(event.target.id, currentUser.id, "add");
     setChecked(true);
+    setCurrentUser((prev) => {
+      return {
+        ...((prev as CurrentUser) ?? {}),
+        favorites: [...currentUser.favorites, event.target.id],
+      };
+    });
   };
 
   useEffect(() => {
