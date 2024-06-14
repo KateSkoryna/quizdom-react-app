@@ -3,8 +3,7 @@ import Card from "react-bootstrap/Card";
 import { MdFavoriteBorder } from "react-icons/md";
 import styles from "./QuizMainListItem.module.css";
 import { CurrentUser, UserQuiz } from "../../../types/types";
-import { useEffect, useState } from "react";
-import { getAuthorName } from "../../../API/api";
+import { useState } from "react";
 import { StartQuizModal } from "../StartQuizModal/StartQuizModal";
 import { MdOutlineFavorite } from "react-icons/md";
 import { useAuth } from "../../../context/AuthContext";
@@ -15,9 +14,16 @@ type QuizMainListItemProps = {
 };
 
 export const QuizMainListItem = ({
-  quiz: { title, complexity, description, id, author, publishedAt, questions },
+  quiz: {
+    title,
+    complexity,
+    description,
+    id,
+    authorName,
+    publishedAt,
+    questions,
+  },
 }: QuizMainListItemProps) => {
-  const [authorName, setAuthorName] = useState<string>("");
   const [startQuiz, setStartQuiz] = useState(false);
   const [checked, setChecked] = useState(false);
 
@@ -54,25 +60,6 @@ export const QuizMainListItem = ({
       };
     });
   };
-
-  useEffect(() => {
-    const getUser = async () => {
-      try {
-        const authorFetchName = await getAuthorName(author);
-        setAuthorName(authorFetchName);
-        if (currentUser) {
-          if (currentUser.favorites.includes(id)) {
-            setChecked(true);
-          }
-        }
-      } catch (error) {
-        if (error instanceof Error) {
-          throw new Error(error.message);
-        }
-      }
-    };
-    getUser();
-  }, []);
 
   return (
     <Card.Body className={styles.cardBody}>

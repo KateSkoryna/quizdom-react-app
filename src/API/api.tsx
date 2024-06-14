@@ -46,20 +46,6 @@ export async function getCurrentUser(userId: string) {
   }
 }
 
-//======================== GET AUTHOR NAME  =========================
-
-export async function getAuthorName(userId: string) {
-  try {
-    const ref = doc(db, "users", userId);
-    const user = await getDoc(ref);
-    return user.data()?.name;
-  } catch (error) {
-    if (error instanceof Error) {
-      throw new Error(error.message);
-    }
-  }
-}
-
 //======================== GET ALL QUIZES  ==========================
 
 export async function getAllQuizes() {
@@ -84,7 +70,7 @@ export async function getAllQuizes() {
 
 export async function getQuizesById(userId: string) {
   try {
-    const q = query(collection(db, "quizes"), where("author", "==", userId));
+    const q = query(collection(db, "quizes"), where("authorId", "==", userId));
     const querySnapshot = await getDocs(q);
 
     const quizes = querySnapshot.docs.map((doc) => {
@@ -108,13 +94,12 @@ export async function getQuizByCategoryAndComplexity(queryData: {
   category: string | null;
   complexity: string | null;
 }) {
-  let q = query(
-    collection(db, "quizes"),
-    where("category", "==", queryData.category)
-  );
-
   try {
-    if (!queryData.category || queryData.complexity) {
+    let q = query(
+      collection(db, "quizes"),
+      where("category", "==", queryData.category)
+    );
+    if (!queryData.category ?? queryData.complexity) {
       q = query(
         collection(db, "quizes"),
         where("complexity", "==", queryData.complexity)

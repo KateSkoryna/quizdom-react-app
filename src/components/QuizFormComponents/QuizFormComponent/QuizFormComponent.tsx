@@ -7,14 +7,17 @@ import { FormCategoryComponent } from "../../MainQuizPageComponents/FormCategory
 import { QuestionsFormComponent } from "../QuestionsFormComponent/QuestionsFormComponent";
 import addClassnameToText from "../../../helpers/addClassnameToText";
 import styles from "./QuizFormComponent.module.css";
-import { db, auth } from "../../../firebase";
+import { db } from "../../../firebase";
 import { collection, addDoc } from "firebase/firestore";
 import { COMPLEXITY_VALUES } from "../../../const/const";
 import { useSetQuizForm } from "../../../store/store";
+import { useAuth } from "../../../context/AuthContext";
 
 export const QuizFormComponent = ({ handleClose }: QuizFormProps) => {
   const quizData = useSetQuizForm((state) => state.newQuizData);
   const setQuizFormData = useSetQuizForm((state) => state.setNewQuizData);
+
+  const { currentUser } = useAuth();
 
   const methods = useForm({
     mode: "onChange",
@@ -33,7 +36,8 @@ export const QuizFormComponent = ({ handleClose }: QuizFormProps) => {
     try {
       await addDoc(collection(db, "quizes"), {
         ...data,
-        author: auth.currentUser!.uid,
+        authorId: currentUser!.id,
+        authorName: currentUser!.name,
         publishedAt: new Date(),
         complexity: COMPLEXITY_VALUES[data.complexity],
       });

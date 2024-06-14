@@ -4,7 +4,6 @@ import { Nav, Col, Image, Row } from "react-bootstrap";
 import styles from "./LogoutComponent.module.css";
 import { useAuth } from "../../../context/AuthContext";
 import { useActiveNavStore } from "../../../store/store";
-import { useEffect } from "react";
 
 export const LogoutComponent = ({
   avatar,
@@ -26,10 +25,6 @@ export const LogoutComponent = ({
       console.log(error);
     }
   };
-
-  useEffect(() => {
-    setActive("user");
-  }, [setActive]);
 
   return (
     <Nav

@@ -28,27 +28,29 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     return signOut(auth);
   };
 
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async () => {
-      try {
-        if (!auth.currentUser) {
-          return;
-        }
-        const user = await getCurrentUser(auth.currentUser.uid);
-        if (user && user.exists()) {
-          const currentUser: CurrentUser = {
-            ...(user.data() as CurrentUser),
-            id: auth.currentUser!.uid,
-            dateOfBirth: user.data().dateOfBirth.toDate(),
-          };
-          setCurrentUser(currentUser);
-        }
-      } catch (error: unknown) {
-        if (error instanceof Error) {
-          setError(error.message);
-        }
+  const getUser = async () => {
+    try {
+      if (!auth.currentUser) {
+        return;
       }
-    });
+      const user = await getCurrentUser(auth.currentUser.uid);
+      if (user && user.exists()) {
+        const currentUser: CurrentUser = {
+          ...(user.data() as CurrentUser),
+          id: auth.currentUser!.uid,
+          dateOfBirth: user.data().dateOfBirth.toDate(),
+        };
+        setCurrentUser(currentUser);
+      }
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        setError(error.message);
+      }
+    }
+  };
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, getUser);
     return () => unsubscribe();
   }, []);
 

@@ -6,11 +6,14 @@ import { useAuth } from "../../../context/AuthContext";
 import { CurrentUser } from "../../../types/types";
 import { editUserInfo } from "../../../API/api";
 
-export const UserAboutComponent = ({ info }: { info: string }) => {
+export const UserAboutComponent = () => {
   const [isEdit, setIsEdit] = useState(false);
-  const [value, setValue] = useState(info);
 
   const { setCurrentUser, currentUser } = useAuth();
+
+  const [value, setValue] = useState(
+    currentUser?.userInfo || "I'm a new user and I don't have a bio yet"
+  );
 
   const handleEdit = () => {
     setIsEdit(!isEdit);
@@ -49,7 +52,7 @@ export const UserAboutComponent = ({ info }: { info: string }) => {
           </Button>
         </div>
       ) : (
-        <p className={styles.aboutText}>{info}</p>
+        <p className={styles.aboutText}>{currentUser?.userInfo}</p>
       )}
     </div>
   );

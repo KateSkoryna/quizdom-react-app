@@ -83,6 +83,24 @@
                 }
 }
 
+.heroJokeTextBig {
+    font-size: 26px;
+    line-height: 1.2;
+    font-family: "bebas neue";
+    text-align: center;
+    color: black;
+    margin-bottom: 10px;
+
+
+    @media screen and (min-width: 768px) {
+        font-size:32px;
+    }
+
+    @media screen and (min-width: 998px) {
+        font-size: 40px;
+    }
+}
+
 .heroJokeAuthor {
     font-size: 14px;
     text-align: center;

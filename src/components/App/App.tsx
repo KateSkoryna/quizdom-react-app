@@ -46,9 +46,11 @@ const router = createBrowserRouter(
               complexity: searchComplexity,
             };
             if (!searchCategory && !searchComplexity) {
-              return getAllQuizes();
+              return await getAllQuizes();
             }
-            return getQuizByCategoryAndComplexity(queryData);
+            if (searchCategory || searchComplexity) {
+              return await getQuizByCategoryAndComplexity(queryData);
+            }
           },
         },
         {
@@ -68,7 +70,7 @@ const router = createBrowserRouter(
             if (!searchCategory) {
               searchCategory = "technology";
             }
-            return getAllNews(searchQuery, searchCategory);
+            return await getAllNews(searchQuery, searchCategory);
           },
         },
         {

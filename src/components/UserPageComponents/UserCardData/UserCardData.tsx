@@ -1,7 +1,6 @@
 import { Button, Card } from "react-bootstrap";
 import { useAuth } from "../../../context/AuthContext";
 import { MdOutlineAddAPhoto } from "react-icons/md";
-
 import styles from "./UserCardData.module.css";
 
 export const UserCardData = () => {

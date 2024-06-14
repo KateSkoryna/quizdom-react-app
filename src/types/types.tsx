@@ -121,6 +121,7 @@ export type UserQuiz = {
   complexity: Complexity;
   category: QuizCategory;
   questions: Question[];
-  author: string;
+  authorId: string;
+  authorName: string;
   publishedAt: Date;
 };

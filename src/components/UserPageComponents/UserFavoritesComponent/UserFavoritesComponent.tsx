@@ -2,12 +2,14 @@ import { useEffect, useState } from "react";
 import { getFavoriteQuizes } from "../../../API/api";
 import { useAuth } from "../../../context/AuthContext";
 import { UserQuiz } from "../../../types/types";
-import { UserQuizList } from "../UserQuizList/UserQuizList";
+import UserQuizList from "../UserQuizList/UserQuizList";
 
 export const UserFavoritesComponent = () => {
   const [userFavorites, setUserFavorites] = useState<UserQuiz[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const { currentUser } = useAuth();
+
+  console.log("Im Favorites");
 
   useEffect(() => {
     const getFavorites = async (): Promise<void> => {
@@ -15,6 +17,7 @@ export const UserFavoritesComponent = () => {
         setIsLoading(true);
         if (currentUser) {
           const favorites = await getFavoriteQuizes(currentUser?.favorites);
+          console.log(favorites);
           if (favorites) {
             setUserFavorites(favorites);
           }
@@ -27,7 +30,7 @@ export const UserFavoritesComponent = () => {
       }
     };
     getFavorites();
-  }, []);
+  }, [currentUser]);
 
   return (
     <div className="pt-3 text-center">

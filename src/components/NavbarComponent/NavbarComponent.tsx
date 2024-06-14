@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import Image from "react-bootstrap/Image";
 import logo from "../../assets/logo.svg";
 import Offcanvas from "react-bootstrap/Offcanvas";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./NavbarComponent.module.css";
 import CloseButton from "react-bootstrap/CloseButton";
 import { useAuth } from "../../context/AuthContext";
@@ -23,6 +23,10 @@ export const NavbarComponent = () => {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
+  useEffect(() => {
+    setActive("/");
+  }, [setActive]);
+
   return (
     <>
       <Navbar
@@ -32,7 +36,7 @@ export const NavbarComponent = () => {
         fixed="top"
       >
         <Container>
-          <Navbar.Brand as={Link} to="/">
+          <Navbar.Brand as={Link} to="/" onClick={() => setActive("/")}>
             <Image src={logo} />
           </Navbar.Brand>
           <Navbar.Toggle
