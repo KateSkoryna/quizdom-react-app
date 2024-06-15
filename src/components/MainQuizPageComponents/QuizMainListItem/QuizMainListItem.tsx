@@ -3,7 +3,7 @@ import Card from "react-bootstrap/Card";
 import { MdFavoriteBorder } from "react-icons/md";
 import styles from "./QuizMainListItem.module.css";
 import { CurrentUser, UserQuiz } from "../../../types/types";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { StartQuizModal } from "../StartQuizModal/StartQuizModal";
 import { MdOutlineFavorite } from "react-icons/md";
 import { useAuth } from "../../../context/AuthContext";
@@ -60,6 +60,14 @@ export const QuizMainListItem = ({
       };
     });
   };
+
+  useEffect(() => {
+    if (currentUser) {
+      if (currentUser.favorites.includes(id)) {
+        setChecked(true);
+      }
+    }
+  }, []);
 
   return (
     <Card.Body className={styles.cardBody}>

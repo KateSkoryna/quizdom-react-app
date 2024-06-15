@@ -71,8 +71,6 @@ export const UserCardData = () => {
     imageFile && handleUploadFile();
   }, [imageFile]);
 
-  console.log(progressUpload);
-
   const handleSaveButton = async () => {
     setLoading(true);
     try {
