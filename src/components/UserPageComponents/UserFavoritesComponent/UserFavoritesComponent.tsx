@@ -9,15 +9,12 @@ export const UserFavoritesComponent = () => {
   const [isLoading, setIsLoading] = useState(true);
   const { currentUser } = useAuth();
 
-  console.log("Im Favorites");
-
   useEffect(() => {
     const getFavorites = async (): Promise<void> => {
+      setIsLoading(true);
       try {
-        setIsLoading(true);
         if (currentUser) {
           const favorites = await getFavoriteQuizes(currentUser?.favorites);
-          console.log(favorites);
           if (favorites) {
             setUserFavorites(favorites);
           }

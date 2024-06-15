@@ -4,7 +4,7 @@ import styles from "./UserAboutComponent.module.css";
 import { CiEdit } from "react-icons/ci";
 import { useAuth } from "../../../context/AuthContext";
 import { CurrentUser } from "../../../types/types";
-import { editUserInfo } from "../../../API/api";
+import { editUser } from "../../../API/api";
 
 export const UserAboutComponent = () => {
   const [isEdit, setIsEdit] = useState(false);
@@ -25,7 +25,7 @@ export const UserAboutComponent = () => {
 
   const handleSaveButtonClick = async () => {
     if (currentUser) {
-      await editUserInfo(currentUser?.id, value);
+      await editUser(currentUser?.id, "userInfo", value);
       setCurrentUser((prev) => {
         return {
           ...((prev as CurrentUser) ?? {}),
@@ -45,6 +45,7 @@ export const UserAboutComponent = () => {
         <div>
           <Form.Control
             as="textarea"
+            value={value}
             onChange={(e) => handleSave(e.target.value)}
           />
           <Button className="mt-3" onClick={handleSaveButtonClick}>

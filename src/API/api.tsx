@@ -183,13 +183,17 @@ export async function getFavoriteQuizes(quizIds: string[]) {
   }
 }
 
-//======================== EDIT USER INFO  ====================
+//======================== EDIT USER  ====================
 
-export async function editUserInfo(userId: string, info: string) {
+export async function editUser(
+  userId: string,
+  field: string,
+  value: string
+) {
   try {
     const ref = doc(db, "users", userId);
     await updateDoc(ref, {
-      userInfo: info,
+      [field]: value,
     });
   } catch (error) {
     if (error instanceof Error) {

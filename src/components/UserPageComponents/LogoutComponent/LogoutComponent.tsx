@@ -41,7 +41,7 @@ export const LogoutComponent = ({
           >{`Hi, ${name}`}</Nav.Link>
         </Col>
         <Col xs={12} md={3} className={styles.logoutNavbarContainer}>
-          <Image src={avatar} className={styles.userIcon} rounded />
+          <Image src={avatar} className={styles.userIcon} />
         </Col>
         <Col xs={12} md={3} className={styles.logoutNavbarContainer}>
           <Button onClick={handleLogout} className={styles.logoutBtn}>

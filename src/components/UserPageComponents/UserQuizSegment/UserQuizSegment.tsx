@@ -10,15 +10,12 @@ export const UserQuizSegment = () => {
 
   const { currentUser } = useAuth();
 
-  console.log("Here is User Quiz Segment");
-
   useEffect(() => {
     const getQuizes = async (): Promise<void> => {
+      setIsLoading(true);
       try {
-        setIsLoading(true);
         if (currentUser) {
           const quizes = await getQuizesById(currentUser.id);
-          console.log(quizes);
           if (quizes) {
             setUserQuizes(quizes);
             setIsLoading(false);
