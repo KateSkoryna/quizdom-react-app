@@ -123,7 +123,7 @@ export const UserCardData = () => {
           <ProgressBar animated now={progressUpload} />
           <Button
             className="w-100 mt-3"
-            disabled={progressUpload !== 0 && progressUpload < 100}
+            disabled={progressUpload !== 100}
             onClick={handleSaveButton}
           >
             {loading ? "Saving..." : "Save"}
