@@ -47,14 +47,14 @@ export const SearchComponent = ({ categories }: { categories: string[] }) => {
   return (
     <Container className={styles.formContainer}>
       <Form onSubmit={handleSubmit} className="mb-4">
-        <div className="d-flex justify-content-center">
+        <div className={styles.serchContainer}>
           <FormControl
             type="search"
             placeholder="Search"
-            className="me-2 w-75"
             aria-label="Search"
             value={query || ""}
             onChange={handleChange}
+            className={styles.searchInput}
           />
           <Button className={styles.searchBtn} type="submit">
             Search

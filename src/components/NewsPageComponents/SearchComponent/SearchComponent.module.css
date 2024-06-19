@@ -5,16 +5,23 @@
 }
 
 .searchNavbar {
-    display: flex;
-    justify-content: space-evenly;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 20px;
+    row-gap: 10px;
     width: 100%;
     max-width: 800px;
-    margin-right: auto;
-    margin-left: auto;
+
+    @media screen and (min-width: 768px) {
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+        margin-left: auto;
+        margin-right: auto;
+    }
 }
 
-.searchBtn, .categoryBtn {
-    width: 120px;
+
+.categoryBtn {
+width: 100%;
     background-color: #F7941D;
         border: none;
         border-radius: 6px;
@@ -25,6 +32,20 @@
         display: inline-block;
         font-size: 16px;
         cursor: pointer;
+}
+
+.serchContainer {
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+    column-gap: 10px;
+}
+
+.searchInput {
+    width: 100%;
+}
+
+.searchBtn {
+    width: 100%;
 }
 
 .searchBtn:hover, .categoryBtn:hover {
