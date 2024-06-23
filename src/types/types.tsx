@@ -114,8 +114,11 @@ export interface QuizFormState {
   questions: Question[];
 }
 
-export type UserQuiz = {
+export type QuizId = {
   id: string;
+};
+
+export type UserLocalQuiz = {
   title: string;
   description: string;
   complexity: Complexity;
@@ -125,3 +128,5 @@ export type UserQuiz = {
   authorName: string;
   publishedAt: Date;
 };
+
+export type UserQuiz = UserLocalQuiz & QuizId;

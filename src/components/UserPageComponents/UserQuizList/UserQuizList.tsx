@@ -16,13 +16,16 @@ const UserQuizList = ({
       {isLoading ? (
         <Loader />
       ) : quizes ? (
-        quizes.map((quiz, index) => (
-          <UserQuizListItem
-            key={quiz.id}
-            quiz={quiz}
-            eventKey={index.toString()}
-          />
-        ))
+        quizes.map((quiz, index) => {
+          const { id, ...rest } = quiz;
+          return (
+            <UserQuizListItem
+              key={id}
+              quiz={rest}
+              eventKey={index.toString()}
+            />
+          );
+        })
       ) : (
         <p>No quizes yet</p>
       )}
