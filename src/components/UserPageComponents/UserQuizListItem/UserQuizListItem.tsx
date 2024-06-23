@@ -2,7 +2,7 @@ import Accordion from "react-bootstrap/Accordion";
 import { UserLocalQuiz } from "../../../types/types";
 import styles from "./UserQuizListItem.module.css";
 import { useAuth } from "../../../context/AuthContext";
-import DeleteQuizComponent from "../../DeleteQuizButton/DeleteQuizComponent";
+import DeleteQuizComponent from "../../DeleteQuizComponent/DeleteQuizComponent";
 
 export const UserQuizListItem = ({
   quiz,
