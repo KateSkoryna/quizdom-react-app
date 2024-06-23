@@ -11,8 +11,11 @@ import {
   arrayUnion,
   arrayRemove,
   documentId,
+  deleteDoc,
+  addDoc,
 } from "firebase/firestore";
-import { UserQuiz } from "../types/types";
+import { QuizFormState, UserQuiz } from "../types/types";
+import { COMPLEXITY_VALUES } from "../const/const";
 
 const API_KEY = import.meta.env.VITE_NEWS_API_KEY;
 const NEWS_BASE_URL = import.meta.env.VITE_NEWS_BASE_URL;
@@ -129,6 +132,41 @@ export async function getQuizByCategoryAndComplexity(queryData: {
   }
 }
 
+//======================== ADD QUIZ  ====================
+
+export async function addQuiz(
+  data: QuizFormState,
+  userId: string,
+  userName: string
+) {
+  try {
+    await addDoc(collection(db, "quizes"), {
+      ...data,
+      authorId: userId,
+      authorName: userName,
+      publishedAt: new Date(),
+      complexity: COMPLEXITY_VALUES[data.complexity],
+    });
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new Error(error.message);
+    }
+  }
+}
+
+//======================== REMOVE QUIZ  ====================
+
+export async function removeQuiz(quizId: string) {
+  try {
+    await deleteDoc(doc(db, "quizes", quizId));
+    console.log("quiz is seccessfuly deleted!");
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new Error(error.message);
+    }
+  }
+}
+
 //======================== TOGGLE FAVORITE QUIZ  ====================
 
 export async function toggleFavorites(
@@ -185,11 +223,7 @@ export async function getFavoriteQuizes(quizIds: string[]) {
 
 //======================== EDIT USER  ====================
 
-export async function editUser(
-  userId: string,
-  field: string,
-  value: string
-) {
+export async function editUser(userId: string, field: string, value: string) {
   try {
     const ref = doc(db, "users", userId);
     await updateDoc(ref, {

@@ -1,0 +1,22 @@
+.deleteBtn {
+    background-color: transparent !important;
+    color: gray;
+    border: none;
+    position: absolute;
+    bottom: 20px;
+    right: 10px;
+    cursor: pointer;
+}
+
+.deleteBtn:hover, .deleteBtn:focus {
+    color: #F7941D;
+    scale: 1.1;
+    transition: scale 0.2s ease-in-out;
+    outline: none;
+    box-shadow: 0;
+}
+
+.deleteBtnIcon {
+    width: 20px;
+    height: 20px;
+}

@@ -21,8 +21,6 @@ export const UserCardData = () => {
   const handleSelectedFile = (files: any) => {
     if (files && files[0].size < 10000000) {
       setImageFile(files[0]);
-
-      console.log(files[0]);
     } else {
       console.log("File is too big");
     }
@@ -40,7 +38,6 @@ export const UserCardData = () => {
           (snapshot) => {
             const progress =
               (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-            console.log("Upload is " + progress + "% done");
             setProgressUpload(progress); // to show progress upload
 
             switch (snapshot.state) {
@@ -59,7 +56,6 @@ export const UserCardData = () => {
             getDownloadURL(uploadTask.snapshot.ref).then((url) => {
               //url is download url of file
               setDownloadURL(url);
-              console.log(url);
             });
           }
         );
@@ -99,7 +95,7 @@ export const UserCardData = () => {
 
   return (
     <Card className={styles.card}>
-      <Card.Body className={styles.imgChangeContainer}>
+      <Card.Body>
         <label className={styles.inputUpload}>
           <MdOutlineAddAPhoto className={styles.imgChgangeIcon} />
           <input

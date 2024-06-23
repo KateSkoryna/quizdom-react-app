@@ -7,11 +7,9 @@ import { FormCategoryComponent } from "../../MainQuizPageComponents/FormCategory
 import { QuestionsFormComponent } from "../QuestionsFormComponent/QuestionsFormComponent";
 import addClassnameToText from "../../../helpers/addClassnameToText";
 import styles from "./QuizFormComponent.module.css";
-import { db } from "../../../firebase";
-import { collection, addDoc } from "firebase/firestore";
-import { COMPLEXITY_VALUES } from "../../../const/const";
 import { useSetQuizForm } from "../../../store/store";
 import { useAuth } from "../../../context/AuthContext";
+import { addQuiz } from "../../../API/api";
 
 export const QuizFormComponent = ({ handleClose }: QuizFormProps) => {
   const quizData = useSetQuizForm((state) => state.newQuizData);
@@ -34,15 +32,11 @@ export const QuizFormComponent = ({ handleClose }: QuizFormProps) => {
 
   const handleFormSubmit = async (data: QuizFormState): Promise<void> => {
     try {
-      await addDoc(collection(db, "quizes"), {
-        ...data,
-        authorId: currentUser!.id,
-        authorName: currentUser!.name,
-        publishedAt: new Date(),
-        complexity: COMPLEXITY_VALUES[data.complexity],
-      });
-      setQuizFormData(data);
-      reset();
+      if (currentUser) {
+        await addQuiz(data, currentUser?.id, currentUser?.name);
+        setQuizFormData(data);
+        reset();
+      }
     } catch (error) {
       setError("root", {
         message: "Failed to create a quiz",

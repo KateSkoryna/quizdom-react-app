@@ -9,6 +9,7 @@ import { MdOutlineFavorite } from "react-icons/md";
 import { useAuth } from "../../../context/AuthContext";
 import { toggleFavorites } from "../../../API/api";
 import { truncateString } from "../../../helpers/truncateString";
+import StartQuizButton from "../StartQuizButton/StartQuizButton";
 
 type QuizMainListItemProps = {
   quiz: UserQuiz;
@@ -99,9 +100,7 @@ export const QuizMainListItem = ({
         {truncateString(description, 80)}
       </Card.Text>
       <div className={styles.buttonContainer}>
-        <Card.Link onClick={handleStart} as={Button}>
-          Start Quiz
-        </Card.Link>
+        <StartQuizButton handleModal={handleStart} />
         <Card.Link as={Button}>Share Quiz</Card.Link>
       </div>
       <small className={styles.itemSmalltext}>
