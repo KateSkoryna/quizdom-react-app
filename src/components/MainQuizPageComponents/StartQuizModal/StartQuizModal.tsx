@@ -4,6 +4,8 @@ import { Answer, Question } from "../../../types/types";
 import { ListGroup } from "react-bootstrap";
 import { useRef, useState } from "react";
 import styles from "./StartQuizModal.module.css";
+import { useAuth } from "../../../context/AuthContext";
+import WarnUserText from "../../WarnUserText/WarnUserText";
 
 type StartQuizModalProps = {
   show: boolean;
@@ -90,22 +92,35 @@ export const StartQuizModal = ({
     setResult(false);
   };
 
+  const { currentUser } = useAuth();
+
   return (
     <Modal show={show} onHide={handleClose} fullscreen="md-down" centered>
       {result ? (
         <>
           <Modal.Header closeButton>
-            <Modal.Title>Quiz Result</Modal.Title>
+            <Modal.Title as="h5">
+              {currentUser ? "Quiz Results" : "Sorry! You havn't logged in yet"}
+            </Modal.Title>
           </Modal.Header>
           <Modal.Body className={styles.resultBody}>
-            <h5>
-              Your score is {score} out of {questions.length}
-            </h5>
-            <h6>Correct answers: {(score / questions.length) * 100}%</h6>
-            <h5>Thank you for taking the quiz!</h5>
-            <Button onClick={handleReset} className={styles.button}>
-              Reset Quiz
-            </Button>
+            {currentUser ? (
+              <>
+                <h5>
+                  Your score is {score} out of {questions.length}
+                </h5>
+                <h6>
+                  Correct answers:{" "}
+                  {((score / questions.length) * 100).toFixed(1)}%
+                </h6>
+                <h5>Thank you for taking the quiz!</h5>
+                <Button onClick={handleReset} className={styles.button}>
+                  Reset Quiz
+                </Button>
+              </>
+            ) : (
+              <WarnUserText text={"see your results"} />
+            )}
           </Modal.Body>
         </>
       ) : (
