@@ -28,21 +28,10 @@ justify-content: center;
 text-align: center;
 }
 
-.logoutNavbarContainer:last-child {
+.logoutNavbarContainer:not(:first-child) {
     @media screen and (max-width: 949.99px) {
         margin-top: 10px;
     }
-}
-
-.userPageLink {
-    text-decoration: none;
-    border-bottom: 2px solid transparent;
-    color: rgb(255, 255, 255, 0.8);
-    padding: 8px;
-}
-
-.userPageLink:hover {
-    color: #fff;
 }
 
 .userIcon {

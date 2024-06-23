@@ -1,15 +1,3 @@
-.navbar {
-    background-color: #00093C;
-}
-
-.navLink {
-    border-bottom: 2px solid transparent;
-    color: rgb(255, 255, 255, 0.8)
-}
-
-.navLink:hover {
-    color: #fff;
-}
 
 .offcanvasNavbar {
     background-color: #00093C;

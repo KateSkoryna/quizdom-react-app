@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { Nav, Col, Image, Row } from "react-bootstrap";
 import styles from "./LogoutComponent.module.css";
 import { useAuth } from "../../../context/AuthContext";
-import { useActiveNavStore } from "../../../store/store";
+import { useActiveNavStore, useOpenOffCanvas } from "../../../store/store";
 
 export const LogoutComponent = ({
   avatar,
@@ -14,8 +14,12 @@ export const LogoutComponent = ({
 }) => {
   const active = useActiveNavStore((state) => state.active);
   const setActive = useActiveNavStore((state) => state.setActive);
+  const setShow = useOpenOffCanvas((state) => state.setShow);
+
   const { logout } = useAuth();
   const navigate = useNavigate();
+
+  const handleClose = () => setShow(false);
 
   const handleLogout = async () => {
     try {
@@ -36,8 +40,8 @@ export const LogoutComponent = ({
           <Nav.Link
             as={Link}
             to="/user"
-            className={styles.userPageLink}
             eventKey="user"
+            onClick={handleClose}
           >{`Hi, ${name}`}</Nav.Link>
         </Col>
         <Col xs={12} md={3} className={styles.logoutNavbarContainer}>

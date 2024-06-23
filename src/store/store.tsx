@@ -46,3 +46,8 @@ export const useOpenQuizModal = create<OpenQuizModal>((set) => ({
   show: false,
   setShow: (show) => set({ show }),
 }));
+
+export const useOpenOffCanvas = create<OpenQuizModal>((set) => ({
+  show: false,
+  setShow: (show) => set({ show }),
+}));

@@ -5,17 +5,19 @@ import { Link } from "react-router-dom";
 import Image from "react-bootstrap/Image";
 import logo from "../../assets/logo.svg";
 import Offcanvas from "react-bootstrap/Offcanvas";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import styles from "./NavbarComponent.module.css";
 import CloseButton from "react-bootstrap/CloseButton";
 import { useAuth } from "../../context/AuthContext";
 import { LogoutComponent } from "../UserPageComponents/LogoutComponent/LogoutComponent";
-import { useActiveNavStore } from "../../store/store";
+import { useActiveNavStore, useOpenOffCanvas } from "../../store/store";
 
 export const NavbarComponent = () => {
-  const [show, setShow] = useState(false);
+  // const [show, setShow] = useState(false);
   const active = useActiveNavStore((state) => state.active);
   const setActive = useActiveNavStore((state) => state.setActive);
+  const show = useOpenOffCanvas((state) => state.show);
+  const setShow = useOpenOffCanvas((state) => state.setShow);
   const { currentUser } = useAuth();
 
   const userName = currentUser?.name.split(" ")[0];
@@ -29,12 +31,7 @@ export const NavbarComponent = () => {
 
   return (
     <>
-      <Navbar
-        className={styles.navbar}
-        expand="lg"
-        data-bs-theme="dark"
-        fixed="top"
-      >
+      <Navbar expand="lg" data-bs-theme="dark" fixed="top">
         <Container>
           <Navbar.Brand as={Link} to="/" onClick={() => setActive("/")}>
             <Image src={logo} />
@@ -65,24 +62,24 @@ export const NavbarComponent = () => {
                 <Nav.Link
                   as={Link}
                   to="/quizes"
-                  className={styles.navLink}
                   eventKey="quizes"
+                  onClick={handleClose}
                 >
                   Quizes
                 </Nav.Link>
                 <Nav.Link
                   as={Link}
                   to="/news"
-                  className={styles.navLink}
                   eventKey="news"
+                  onClick={handleClose}
                 >
                   News
                 </Nav.Link>
                 <Nav.Link
                   as={Link}
                   to="/blogs"
-                  className={styles.navLink}
                   eventKey="blogs"
+                  onClick={handleClose}
                 >
                   Blogs
                 </Nav.Link>
@@ -105,6 +102,7 @@ export const NavbarComponent = () => {
                     to="/signup"
                     className={styles.navLink}
                     eventKey="signup"
+                    onClick={handleClose}
                   >
                     Sign Up
                   </Nav.Link>
@@ -113,6 +111,7 @@ export const NavbarComponent = () => {
                     to="/login"
                     className={styles.navLink}
                     eventKey="login"
+                    onClick={handleClose}
                   >
                     Log In
                   </Nav.Link>
