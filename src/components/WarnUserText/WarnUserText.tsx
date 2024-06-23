@@ -1,8 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import styles from "./WarnUserText.module.css";
 import { useActiveNavStore } from "../../store/store";
-import owl from "../../assets/owl.svg";
-import { Card } from "react-bootstrap";
+import OwlComponent from "../OwlComponent/OwlComponent";
 
 const WarnUserText = ({ text }: { text: string }) => {
   const navidate = useNavigate();
@@ -34,7 +33,7 @@ const WarnUserText = ({ text }: { text: string }) => {
           to {text}.
         </p>
       </div>
-      <Card.Img src={owl} className={styles.img} />
+      <OwlComponent />
     </div>
   );
 };

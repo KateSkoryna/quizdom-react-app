@@ -6,6 +6,7 @@ import { useRef, useState } from "react";
 import styles from "./StartQuizModal.module.css";
 import { useAuth } from "../../../context/AuthContext";
 import WarnUserText from "../../WarnUserText/WarnUserText";
+import OwlComponent from "../../OwlComponent/OwlComponent";
 
 type StartQuizModalProps = {
   show: boolean;
@@ -106,14 +107,19 @@ export const StartQuizModal = ({
           <Modal.Body className={styles.resultBody}>
             {currentUser ? (
               <>
-                <h5>
-                  Your score is {score} out of {questions.length}
-                </h5>
-                <h6>
-                  Correct answers:{" "}
-                  {((score / questions.length) * 100).toFixed(1)}%
-                </h6>
-                <h5>Thank you for taking the quiz!</h5>
+                <div className={styles.resultText}>
+                  <h5 className="text-center mb-1">
+                    Thank you for taking the quiz!
+                  </h5>
+                  <h5 className="mb-2">
+                    Your score is {score} out of {questions.length}
+                  </h5>
+                  <h6>
+                    Correct answers:{" "}
+                    {((score / questions.length) * 100).toFixed(1)}%
+                  </h6>
+                </div>
+                <OwlComponent />
                 <Button onClick={handleReset} className={styles.button}>
                   Reset Quiz
                 </Button>
