@@ -10,6 +10,7 @@ import { useAuth } from "../../../context/AuthContext";
 import { toggleFavorites } from "../../../API/api";
 import { truncateString } from "../../../helpers/truncateString";
 import StartQuizButton from "../StartQuizButton/StartQuizButton";
+import NavigateUserModal from "../../NavigateUserModal/NavigateUserModal";
 
 type QuizMainListItemProps = {
   quiz: UserQuiz;
@@ -28,15 +29,18 @@ export const QuizMainListItem = ({
 }: QuizMainListItemProps) => {
   const [startQuiz, setStartQuiz] = useState(false);
   const [checked, setChecked] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleEnd = () => setStartQuiz(false);
   const handleStart = () => setStartQuiz(true);
+  const handleModalClose = () => setIsModalOpen(false);
 
   const { currentUser, setCurrentUser } = useAuth();
   const handleFavoriteClick = async (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     if (!currentUser) {
+      setIsModalOpen(true);
       return;
     }
     if (!event.target.checked) {
@@ -112,6 +116,9 @@ export const QuizMainListItem = ({
           handleClose={handleEnd}
           questions={questions}
         />
+      )}
+      {isModalOpen && (
+        <NavigateUserModal handleClose={handleModalClose} show={isModalOpen} />
       )}
     </Card.Body>
   );
