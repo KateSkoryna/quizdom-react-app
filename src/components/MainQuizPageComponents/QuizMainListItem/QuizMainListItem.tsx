@@ -8,6 +8,7 @@ import { StartQuizModal } from "../StartQuizModal/StartQuizModal";
 import { MdOutlineFavorite } from "react-icons/md";
 import { useAuth } from "../../../context/AuthContext";
 import { toggleFavorites } from "../../../API/api";
+import { truncateString } from "../../../helpers/truncateString";
 
 type QuizMainListItemProps = {
   quiz: UserQuiz;
@@ -71,32 +72,32 @@ export const QuizMainListItem = ({
 
   return (
     <Card.Body className={styles.cardBody}>
-      <Card.Title className={styles.titleContainer}>
-        <h5>{title}</h5>
-        <div className={styles.checkbox}>
-          <label>
-            <input
-              type="checkbox"
-              checked={checked}
-              onChange={(e) => handleFavoriteClick(e)}
-              id={id}
+      <div className={styles.checkbox}>
+        <label>
+          <input
+            type="checkbox"
+            checked={checked}
+            onChange={(e) => handleFavoriteClick(e)}
+            id={id}
+          />
+          {checked ? (
+            <MdOutlineFavorite
+              className={styles.favoriteIcon}
+              style={{ fill: "#F7941D" }}
             />
-            {checked ? (
-              <MdOutlineFavorite
-                className={styles.favoriteIcon}
-                style={{ fill: "#F7941D" }}
-              />
-            ) : (
-              <MdFavoriteBorder
-                className={styles.favoriteIcon}
-                style={{ fill: "gray" }}
-              />
-            )}
-          </label>
-        </div>
-      </Card.Title>
+          ) : (
+            <MdFavoriteBorder
+              className={styles.favoriteIcon}
+              style={{ fill: "gray" }}
+            />
+          )}
+        </label>
+      </div>
+      <Card.Title>{truncateString(title, 40)}</Card.Title>
       <Card.Subtitle className="mb-2 text-muted">{complexity}</Card.Subtitle>
-      <Card.Text className={styles.quizDescription}>{description}</Card.Text>
+      <Card.Text className={styles.quizDescription}>
+        {truncateString(description, 80)}
+      </Card.Text>
       <div className={styles.buttonContainer}>
         <Card.Link onClick={handleStart} as={Button}>
           Start Quiz
