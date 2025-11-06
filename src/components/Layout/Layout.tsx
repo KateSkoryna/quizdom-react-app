@@ -1,10 +1,10 @@
-import { NavbarComponent } from "../NavbarComponent/NavbarComponent";
+import NavbarContainer from "./Navbar";
 import { Outlet, useNavigate } from "react-router-dom";
-import { Footer } from "../FooterComponents/Footer/Footer";
+import { Footer } from "./Footer";
 import { Suspense } from "react";
-import Loader from "../Loader/Loader";
+import Loader from "../common/Loader";
 import { ErrorBoundary } from "react-error-boundary";
-import ErrorFallbackComponent from "../ErrorFallbackComponent/ErrorFallbackComponent";
+import ErrorFallbackComponent from "../common/ErrorFallbackComponent";
 
 function Layout() {
   const navigate = useNavigate();
@@ -14,7 +14,7 @@ function Layout() {
       onReset={() => navigate("/")}
     >
       <Suspense fallback={<Loader />}>
-        <NavbarComponent />
+        <NavbarContainer />
         <Outlet />
         <Footer />
       </Suspense>

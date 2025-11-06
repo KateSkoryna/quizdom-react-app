@@ -1,25 +1,21 @@
 import React, { lazy } from "react";
 import ReactDOM from "react-dom/client";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import "./index.css";
+import { createBrowserRouter, RouterProvider, Navigate } from "react-router-dom";
+import "./styles/index.scss";
 import {
   getAllQuizes,
   getMediaNews,
   getQuizByCategoryAndComplexity,
 } from "./API/api";
 
-const Layout = lazy(() => import("./components/Layout/Layout"));
-const UserPage = lazy(() => import("./pages/UserPage/UserPage"));
-const SignupPage = lazy(() => import("./pages/SignupPage/SignupPage"));
-const LoginPage = lazy(() => import("./pages/LoginPage/LoginPage"));
-const QuizPage = lazy(() => import("./pages/QiuzPage/QuizPage"));
-const HomePage = lazy(() => import("./pages/HomePage/HomePage"));
-const NewsPage = lazy(() => import("./pages/NewsPage/NewsPage"));
-const NotFoundPage = lazy(
-  () => import("./pages/NotFoundPage/NotFoundPage")
-);
-const BlogsPage = lazy(() => import("./pages/BlogsPage/BlogsPage"));
-const AboutPage = lazy(() => import("./pages/AboutPage/AboutPage"));
+const Layout = lazy(() => import("./components/layout/Layout"));
+const UserPage = lazy(() => import("./pages/UserPage"));
+const SignupPage = lazy(() => import("./pages/SignupPage"));
+const LoginPage = lazy(() => import("./pages/LoginPage"));
+const HomePage = lazy(() => import("./pages/HomePage"));
+const NewsPage = lazy(() => import("./pages/NewsPage"));
+const NotFoundPage = lazy(() => import("./pages/NotFoundPage"));
+const AboutPage = lazy(() => import("./pages/AboutPage"));
 const ProtectedRoute = lazy(() => import("./pages/ProtectedRoute"));
 
 const router = createBrowserRouter(
@@ -30,12 +26,12 @@ const router = createBrowserRouter(
       errorElement: <NotFoundPage />,
       children: [
         {
-          path: "/",
-          element: <HomePage />,
+          index: true,
+          element: <Navigate to="/quizes" replace />,
         },
         {
           path: "/quizes",
-          element: <QuizPage />,
+          element: <HomePage />,
           loader: async ({ request }) => {
             const url = new URL(request.url);
             const searchCategory = url.searchParams.get("category");
@@ -72,10 +68,6 @@ const router = createBrowserRouter(
             }
             return await getMediaNews(searchCategory, searchQuery);
           },
-        },
-        {
-          path: "blogs",
-          element: <BlogsPage />,
         },
         {
           path: "signup",
