@@ -1,10 +1,106 @@
-import React from "react";
+import React, { lazy } from "react";
 import ReactDOM from "react-dom/client";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./index.css";
-import App from "./components/App/App";
+import {
+  getAllQuizes,
+  getMediaNews,
+  getQuizByCategoryAndComplexity,
+} from "./API/api";
+
+const Layout = lazy(() => import("./components/Layout/Layout"));
+const UserPage = lazy(() => import("./pages/UserPage/UserPage"));
+const SignupPage = lazy(() => import("./pages/SignupPage/SignupPage"));
+const LoginPage = lazy(() => import("./pages/LoginPage/LoginPage"));
+const QuizPage = lazy(() => import("./pages/QiuzPage/QuizPage"));
+const HomePage = lazy(() => import("./pages/HomePage/HomePage"));
+const NewsPage = lazy(() => import("./pages/NewsPage/NewsPage"));
+const NotFoundPage = lazy(
+  () => import("./pages/NotFoundPage/NotFoundPage")
+);
+const BlogsPage = lazy(() => import("./pages/BlogsPage/BlogsPage"));
+const AboutPage = lazy(() => import("./pages/AboutPage/AboutPage"));
+const ProtectedRoute = lazy(() => import("./pages/ProtectedRoute"));
+
+const router = createBrowserRouter(
+  [
+    {
+      path: "/",
+      element: <Layout />,
+      errorElement: <NotFoundPage />,
+      children: [
+        {
+          path: "/",
+          element: <HomePage />,
+        },
+        {
+          path: "/quizes",
+          element: <QuizPage />,
+          loader: async ({ request }) => {
+            const url = new URL(request.url);
+            const searchCategory = url.searchParams.get("category");
+            const searchComplexity = url.searchParams.get("complexity");
+
+            const queryData = {
+              category: searchCategory,
+              complexity: searchComplexity,
+            };
+            if (!searchCategory && !searchComplexity) {
+              return await getAllQuizes();
+            }
+            if (searchCategory || searchComplexity) {
+              return await getQuizByCategoryAndComplexity(queryData);
+            }
+          },
+        },
+        {
+          path: "about",
+          element: <AboutPage />,
+        },
+        {
+          path: "news",
+          element: <NewsPage />,
+          loader: async ({ request }) => {
+            const url = new URL(request.url);
+            let searchQuery = url.searchParams.get("query") || "";
+            let searchCategory = url.searchParams.get("category");
+            if (!searchQuery) {
+              searchQuery = "none";
+            }
+            if (!searchCategory) {
+              searchCategory = "technology";
+            }
+            return await getMediaNews(searchCategory, searchQuery);
+          },
+        },
+        {
+          path: "blogs",
+          element: <BlogsPage />,
+        },
+        {
+          path: "signup",
+          element: <SignupPage />,
+        },
+        {
+          path: "login",
+          element: <LoginPage />,
+        },
+        {
+          path: "user",
+          element: (
+            <ProtectedRoute>
+              <UserPage />
+            </ProtectedRoute>
+          ),
+        },
+      ],
+    },
+  ],
+  { basename: "/quizdom-react-app" }
+);
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <App />
+    <RouterProvider router={router} />
   </React.StrictMode>
 );
