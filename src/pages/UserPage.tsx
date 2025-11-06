@@ -1,4 +1,4 @@
-import styles from "../styles/pages/UserPage.module.scss";
+import styles from "../styles/pages/user.module.scss";
 import { Card, Container } from "react-bootstrap";
 import { UserCardData } from "../components/user/UserCardData";
 import { UserCardInfo } from "../components/user/UserCardInfo";

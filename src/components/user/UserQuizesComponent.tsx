@@ -1,6 +1,6 @@
 import { AddQuizComponent } from "../quiz/AddQuizComponent";
 import { UserQuizSegment } from "./UserQuizSegment";
-import styles from "../../styles/components/UserQuizesComponent.module.scss";
+import styles from "../../styles/components/userQuize.module.scss";
 
 export const UserQuizesComponent = () => {
   return (

@@ -1,5 +1,5 @@
 import { TfiTrash } from "react-icons/tfi";
-import styles from "../../styles/components/DeleteQuizComponent.module.scss";
+import styles from "../../styles/components/userQuiz.module.scss";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import { useState } from "react";

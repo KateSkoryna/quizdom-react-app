@@ -1,5 +1,5 @@
 import { useFormContext } from "react-hook-form";
-import styles from "../../styles/components/FormCheckboxComponent.module.scss";
+import styles from "../../styles/components/quizform.module.scss";
 import { FaCheck } from "react-icons/fa";
 
 export const FormCheckboxComponent = ({

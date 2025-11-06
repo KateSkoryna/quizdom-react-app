@@ -5,7 +5,7 @@ import { UserFavoritesComponent } from "./UserFavoritesComponent";
 import Col from "react-bootstrap/Col";
 import Nav from "react-bootstrap/Nav";
 import { Link } from "react-router-dom";
-import styles from "../../styles/components/UserCardInfo.module.scss";
+import styles from "../../styles/components/userCard.module.scss";
 
 export const UserCardInfo = () => {
   return (

@@ -6,7 +6,7 @@ import { FaGithub } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
 import { FaPhoneSquareAlt } from "react-icons/fa";
 import { Container, Navbar } from "react-bootstrap";
-import styles from "../../styles/components/Footer.module.scss";
+import styles from "../../styles/components/footer.module.scss";
 import { Link } from "react-router-dom";
 
 export const Footer = () => {

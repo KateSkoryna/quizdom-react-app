@@ -2,7 +2,7 @@ import { useFieldArray, useFormContext } from "react-hook-form";
 import { AnswersFormComponent } from "./AnswersFormComponent";
 import { Button, Form } from "react-bootstrap";
 import addClassnameToText from "../../helpers/addClassnameToText";
-import styles from "../../styles/components/QuestionsFormComponent.module.scss";
+import styles from "../../styles/components/quizform.module.scss";
 
 export const QuestionsFormComponent = () => {
   const {

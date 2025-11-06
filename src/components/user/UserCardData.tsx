@@ -1,7 +1,7 @@
 import { Button, Card } from "react-bootstrap";
 import { useAuthStore } from "../../store/AuthStore";
 import { MdOutlineAddAPhoto } from "react-icons/md";
-import styles from "../../styles/components/UserCardData.module.scss";
+import styles from "../../styles/components/userCard.module.scss";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { storage } from "../../firebase";
 import { useEffect, useState } from "react";

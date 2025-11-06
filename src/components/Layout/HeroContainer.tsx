@@ -1,6 +1,6 @@
 import Card from "react-bootstrap/Card";
 import { JOKE } from "../../helpers/jokes";
-import styles from "../../styles/components/HeroComponent.module.scss";
+import styles from "../../styles/pages/home.module.scss";
 import hero from "../../assets/hero-big.jpg";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 
@@ -10,7 +10,7 @@ const HeroContainer = () => {
       <LazyLoadImage src={hero} className={styles.heroImg} alt="hero" />
       <Card.ImgOverlay className={styles.overlay}>
         <div className={styles.heroBodyContainer}>
-          <Card.Body className={styles.cardBody}>
+          <Card.Body className={styles.heroCardBody}>
             <Card.Title className={styles.heroCardTitle}>
               Dive into the Depths <br /> of Coding Wisdom
             </Card.Title>

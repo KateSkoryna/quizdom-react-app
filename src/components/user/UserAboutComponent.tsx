@@ -1,6 +1,6 @@
 import { Button, Form } from "react-bootstrap";
 import { useState } from "react";
-import styles from "../../styles/components/UserAboutComponent.module.scss";
+import styles from "../../styles/components/aboutComponent.module.scss";
 import { CiEdit } from "react-icons/ci";
 import { useAuthStore } from "../../store/AuthStore";
 import { editUser } from "../../API/api";

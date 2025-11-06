@@ -1,8 +1,8 @@
 import { useAuthStore } from "../../store/AuthStore";
-import styles from "../../styles/components/StarComponent.module.scss";
+import styles from "../../styles/components/starComponent.module.scss";
+
 function StarComponent() {
   const currentUser = useAuthStore((state) => state.currentUser);
-
   const score: number = Number(currentUser?.avarageScore);
 
   return (

@@ -3,7 +3,7 @@ import Modal from "react-bootstrap/Modal";
 import { Answer, Question } from "../../types/types";
 import { ListGroup } from "react-bootstrap";
 import { useRef, useState } from "react";
-import styles from "../../styles/components/StartQuizModal.module.scss";
+import styles from "../../styles/components/startQuizModal.module.scss";
 import { useAuthStore } from "../../store/AuthStore";
 import WarnUserText from "../common/WarnUserText";
 import OwlComponent from "../common/OwlComponent";

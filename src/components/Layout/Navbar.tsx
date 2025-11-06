@@ -1,18 +1,19 @@
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import Image from "react-bootstrap/Image";
 import logo from "../../assets/logo.svg";
 import Offcanvas from "react-bootstrap/Offcanvas";
 import { useEffect } from "react";
-import styles from "../../styles/components/NavbarComponent.module.scss";
+import styles from "../../styles/components/navbar.module.scss";
 import CloseButton from "react-bootstrap/CloseButton";
 import { LogoutComponent } from "../user/LogoutComponent";
 import { useActiveNavStore, useOpenOffCanvas } from "../../store/store";
 import { useAuthStore } from "../../store/AuthStore";
 
 const NavbarContainer = () => {
+  const location = useLocation();
   const active = useActiveNavStore((state) => state.active);
   const setActive = useActiveNavStore((state) => state.setActive);
   const show = useOpenOffCanvas((state) => state.show);
@@ -25,8 +26,19 @@ const NavbarContainer = () => {
   const handleShow = () => setShow(true);
 
   useEffect(() => {
-    setActive("/");
-  }, [setActive]);
+    const pathname = location.pathname;
+    if (pathname.includes("/quizes")) {
+      setActive("quizes");
+    } else if (pathname.includes("/news")) {
+      setActive("news");
+    } else if (pathname.includes("/signup")) {
+      setActive("signup");
+    } else if (pathname.includes("/login")) {
+      setActive("login");
+    } else {
+      setActive("/");
+    }
+  }, [location.pathname, setActive]);
 
   return (
     <>

@@ -1,5 +1,5 @@
 import { Form } from "react-bootstrap";
-import styles from "../../styles/components/FormSelectComponent.module.scss";
+import styles from "../../styles/components/quizform.module.scss";
 
 export const FormSelectComponent = ({
   fields,

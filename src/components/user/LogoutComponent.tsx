@@ -1,7 +1,7 @@
 import Button from "react-bootstrap/Button";
 import { Link, useNavigate } from "react-router-dom";
 import { Nav, Col, Image, Row } from "react-bootstrap";
-import styles from "../../styles/components/LogoutComponent.module.scss";
+import styles from "../../styles/components/logout.module.scss";
 import { useActiveNavStore, useOpenOffCanvas } from "../../store/store";
 import { useAuthStore } from "../../store/AuthStore";
 

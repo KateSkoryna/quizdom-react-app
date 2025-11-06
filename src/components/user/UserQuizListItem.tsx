@@ -1,6 +1,6 @@
 import Accordion from "react-bootstrap/Accordion";
 import { UserLocalQuiz } from "../../types/types";
-import styles from "../../styles/components/UserQuizListItem.module.scss";
+import styles from "../../styles/components/userQuiz.module.scss";
 import { useAuthStore } from "../../store/AuthStore";
 import DeleteQuizComponent from "../quiz/DeleteQuizComponent";
 

@@ -2,7 +2,7 @@ import DatePicker from "react-datepicker";
 import { subYears } from "date-fns";
 import "react-datepicker/dist/react-datepicker.css";
 import { FaCalendarDay } from "react-icons/fa";
-import styles from "../../styles/components/DatePickerComponent.module.scss";
+import styles from "../../styles/components/datepicker.module.scss";
 
 const DatepickerContainer = ({
   value,

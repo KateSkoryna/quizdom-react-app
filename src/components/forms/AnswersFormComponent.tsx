@@ -2,7 +2,7 @@ import { Button, Form } from "react-bootstrap";
 import { useFieldArray, useFormContext } from "react-hook-form";
 import { FormCheckboxComponent } from "./FormCheckboxComponent";
 import addClassnameToText from "../../helpers/addClassnameToText";
-import styles from "../../styles/components/AnswersFormComponent.module.scss";
+import styles from "../../styles/components/quizform.module.scss";
 
 export const AnswersFormComponent = ({ nestIndex }: { nestIndex: number }) => {
   const {
