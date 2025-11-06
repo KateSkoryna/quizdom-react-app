@@ -17,13 +17,13 @@ import {
 import { QuizFormState, UserQuiz } from "../types/types";
 import { COMPLEXITY_VALUES } from "../const/const";
 
-const MEDIA_KEY = import.meta.env.VITE_MEDIASTACK_NEWS_API_KEY;
-const MEDIA_NEWS_URL = import.meta.env.VITE_MEDIASTACK_BASE_URL;
+const API_KEY = import.meta.env.VITE_NEWS_API_KEY;
+const NEWS_BASE_URL = import.meta.env.VITE_NEWS_BASE_URL;
 
 //======================== NEWS  ==========================
 
 export async function getMediaNews(category: string, keywords: string) {
-  let url = `${MEDIA_NEWS_URL}?access_key=${MEDIA_KEY}&category=${category}&languages=en&keywords=${keywords}`;
+  let url = `${NEWS_BASE_URL}?access_key=${API_KEY}&category=${category}&languages=en&keywords=${keywords}`;
 
   try {
     const { data } = await axios.get(url);

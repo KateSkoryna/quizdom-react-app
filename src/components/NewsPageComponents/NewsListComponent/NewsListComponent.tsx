@@ -1,6 +1,7 @@
 import { Article } from "../../../types/types";
 import Container from "react-bootstrap/esm/Container";
-import { Row, Col } from "react-bootstrap";
+import Row from "react-bootstrap/esm/Row";
+import Col from "react-bootstrap/esm/Col";
 import styles from "./NewsListComponent.module.css";
 import { NewsListItem } from "../NewsListItem/NewsListItem";
 import { DEFAULT_IMG } from "../../../const/const";
