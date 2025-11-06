@@ -1,6 +1,10 @@
 import React, { lazy } from "react";
 import ReactDOM from "react-dom/client";
-import { createBrowserRouter, RouterProvider, Navigate } from "react-router-dom";
+import {
+  createBrowserRouter,
+  RouterProvider,
+  Navigate,
+} from "react-router-dom";
 import "./styles/index.scss";
 import {
   getAllQuizes,
@@ -23,14 +27,13 @@ const router = createBrowserRouter(
     {
       path: "/",
       element: <Layout />,
-      errorElement: <NotFoundPage />,
       children: [
         {
           index: true,
-          element: <Navigate to="/quizes" replace />,
+          element: <Navigate to="quizes" replace />,
         },
         {
-          path: "/quizes",
+          path: "quizes",
           element: <HomePage />,
           loader: async ({ request }) => {
             const url = new URL(request.url);
@@ -84,6 +87,10 @@ const router = createBrowserRouter(
               <UserPage />
             </ProtectedRoute>
           ),
+        },
+        {
+          path: "*",
+          element: <NotFoundPage />,
         },
       ],
     },
