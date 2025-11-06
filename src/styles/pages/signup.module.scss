@@ -1,3 +1,6 @@
+@import '../settings/index';
+@import '../abstracts/placeholders';
+
 .signupSection {
     margin-top: 70px;
     padding-top: 30px;
@@ -26,14 +29,6 @@
 }
 
 .formBtn {
-    width: 100%;   
-    border-color: #F7941D;
-    background-color: #F7941D;
-    color:rgb(255, 255, 255)
-}
-
-.formBtn:hover {
-    background-color: #00093C;
-    border-color: #00093C;
-    color:rgb(255, 255, 255)
+    @extend %button-base;
+    width: 100%;
 }

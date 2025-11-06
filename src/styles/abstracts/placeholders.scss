@@ -1,0 +1,51 @@
+%flex-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+%flex-column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+%absolute-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+%background-center {
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+%button-base {
+  border: none;
+  border-radius: $border-radius-5;
+  background-color: $primary-color;
+  color: $text-light;
+  padding: $spacing-5 $spacing-10;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: $font-size-16;
+  cursor: pointer;
+  transition: $transition-all;
+
+  &:hover {
+    background-color: $secondary-color;
+    scale: 1.1;
+    outline: none;
+    color: $text-light;
+  }
+}
+
+%container {
+  padding-top: 2rem;
+  margin-bottom: 2rem;
+}

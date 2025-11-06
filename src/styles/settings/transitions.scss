@@ -1,0 +1,10 @@
+// Transition Durations
+$transition-fast: 0.15s;
+$transition-base: 0.2s;
+
+// Common Transitions
+$transition-all: all $transition-base ease-in-out;
+
+// Border Radius (in rem, base 16px)
+$border-radius-5: 0.3125rem; // 5px
+$border-radius-circle: 50%;

@@ -1,0 +1,42 @@
+// Brand Colors
+$primary-color: #f7941d;
+$primary-color-hover: darken($primary-color, 10%);
+$primary-color-light: lighten($primary-color, 10%);
+
+$secondary-color: #00093c;
+$secondary-color-hover: lighten($secondary-color, 10%);
+$secondary-color-light: lighten($secondary-color, 20%);
+
+// Neutral Colors
+$white: #fff;
+$black: #000;
+$gray: gray;
+$gray-dark: darkslategrey;
+$gray-light: lightgray;
+
+// Text Colors
+$text-primary: $black;
+$text-secondary: $gray-dark;
+$text-light: $white;
+$text-muted: rgba(255, 255, 255, 0.8);
+
+// Background Colors
+$bg-primary: $white;
+$bg-secondary: $secondary-color;
+$bg-dark: $secondary-color;
+
+// Border Colors
+$border-color: $white;
+$border-transparent: transparent;
+
+// State Colors
+$color-success: #28a745;
+$color-danger: #dc3545;
+$color-warning: #ffc107;
+$color-info: #17a2b8;
+
+// Opacity variants
+$opacity-full: 1;
+$opacity-high: 0.8;
+$opacity-medium: 0.6;
+$opacity-low: 0.4;

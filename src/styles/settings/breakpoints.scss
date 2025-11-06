@@ -1,0 +1,51 @@
+// Breakpoints
+$breakpoint-xs: 0;
+$breakpoint-sm: 576px;
+$breakpoint-md: 768px;
+$breakpoint-lg: 998px;
+$breakpoint-xl: 1200px;
+
+// Media Query Mixins
+@mixin respond-to-xs {
+  @media screen and (max-width: #{$breakpoint-sm - 1}) {
+    @content;
+  }
+}
+
+@mixin respond-to-sm {
+  @media screen and (min-width: #{$breakpoint-sm}) {
+    @content;
+  }
+}
+
+@mixin respond-to-md {
+  @media screen and (min-width: #{$breakpoint-md}) {
+    @content;
+  }
+}
+
+@mixin respond-to-lg {
+  @media screen and (min-width: #{$breakpoint-lg}) {
+    @content;
+  }
+}
+
+@mixin respond-to-xl {
+  @media screen and (min-width: #{$breakpoint-xl}) {
+    @content;
+  }
+}
+
+// Custom media query for specific breakpoint
+@mixin respond-to($breakpoint) {
+  @media screen and (min-width: $breakpoint) {
+    @content;
+  }
+}
+
+// Media query for max-width
+@mixin respond-to-max($breakpoint) {
+  @media screen and (max-width: $breakpoint) {
+    @content;
+  }
+}

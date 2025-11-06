@@ -1,0 +1,60 @@
+@import './settings/index';
+
+body {
+  font-family: $font-primary;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0;
+  padding: 0;
+  color: $text-primary;
+}
+
+p,
+a {
+  margin: 0;
+  padding: 0;
+  color: $text-light;
+}
+
+.btn.btn-primary {
+  background-color: $primary-color;
+  border-color: $primary-color;
+}
+
+.btn:hover,
+.btn:focus {
+  scale: 1.1;
+  transition: scale $transition-base ease-in-out;
+  outline: none;
+}
+
+.navbar {
+  background-color: $secondary-color;
+}
+
+.nav-link {
+  text-decoration: none;
+  border-bottom: 2px solid transparent;
+  color: $text-muted;
+  padding: $spacing-8;
+}
+
+.nav-link.active,
+.nav-link:hover,
+.nav-link:focus,
+.nav-link:active,
+.nav-link.show {
+  color: $primary-color !important;
+  border-color: $primary-color;
+}
+
+.main {
+  margin-top: $spacing-60;
+  padding-top: $spacing-30;
+}
