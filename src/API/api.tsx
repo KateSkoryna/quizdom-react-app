@@ -17,17 +17,22 @@ import {
 import { QuizFormState, UserQuiz } from "../types/types";
 import { COMPLEXITY_VALUES } from "../const/const";
 
-const API_KEY = import.meta.env.VITE_NEWS_API_KEY;
-const NEWS_BASE_URL = import.meta.env.VITE_NEWS_BASE_URL;
+const MEDIA_KEY = import.meta.env.VITE_MEDIASTACK_NEWS_API_KEY;
+const MEDIA_NEWS_URL = import.meta.env.VITE_MEDIASTACK_BASE_URL;
 
 //======================== NEWS  ==========================
 
-export async function getAllNews(query: string, category: string) {
-  const url = `${NEWS_BASE_URL}?q=${query}&category=${category}&max=12&lang=en&apikey=${API_KEY}`;
+export async function getMediaNews(category: string, keywords: string) {
+  let url = `${MEDIA_NEWS_URL}?access_key=${MEDIA_KEY}&category=${category}&languages=en&keywords=${keywords}`;
+
   try {
     const { data } = await axios.get(url);
-    return data.articles;
+    return data.data;
   } catch (error: unknown) {
+    if (axios.isAxiosError(error)) {
+      console.error("Response data:", error.response?.data);
+      console.error("Status:", error.response?.status);
+    }
     if (error instanceof Error) {
       throw new Error(error.message);
     }
@@ -102,7 +107,7 @@ export async function getQuizByCategoryAndComplexity(queryData: {
       collection(db, "quizes"),
       where("category", "==", queryData.category)
     );
-    if (!queryData.category ?? queryData.complexity) {
+    if (!queryData.category || queryData.complexity) {
       q = query(
         collection(db, "quizes"),
         where("complexity", "==", queryData.complexity)

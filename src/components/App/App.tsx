@@ -2,8 +2,8 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "../../index.css";
 
 import {
-  getAllNews,
   getAllQuizes,
+  getMediaNews,
   getQuizByCategoryAndComplexity,
 } from "../../API/api";
 import { lazy } from "react";
@@ -62,7 +62,7 @@ const router = createBrowserRouter(
           element: <NewsPage />,
           loader: async ({ request }) => {
             const url = new URL(request.url);
-            let searchQuery = url.searchParams.get("query");
+            let searchQuery = url.searchParams.get("query") || "";
             let searchCategory = url.searchParams.get("category");
             if (!searchQuery) {
               searchQuery = "none";
@@ -70,7 +70,7 @@ const router = createBrowserRouter(
             if (!searchCategory) {
               searchCategory = "technology";
             }
-            return await getAllNews(searchQuery, searchCategory);
+            return await getMediaNews(searchCategory, searchQuery);
           },
         },
         {

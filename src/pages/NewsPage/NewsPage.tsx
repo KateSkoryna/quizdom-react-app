@@ -9,8 +9,8 @@ import Loader from "../../components/Loader/Loader";
 const NewsPage = () => {
   const navigation = useNavigation();
 
-  const newsArr: Article[] = useLoaderData() as Article[];
-  const news = newsArr.map((article) => ({ ...article, id: uuid() }));
+  const newsList: Article[] = useLoaderData() as Article[];
+  const news = newsList.map((article) => ({ ...article, id: uuid() }));
   const values: string[] = Object.values(NEWS_CATEGORY);
 
   return (
