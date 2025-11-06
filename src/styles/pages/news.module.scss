@@ -1,5 +1,5 @@
-@import "../settings/index";
-@import "../abstracts/placeholders";
+@use "../settings" as *;
+@use "../abstracts" as *;
 
 .formContainer {
   @extend %container;

@@ -1,34 +1,34 @@
-@import '../settings/index';
-@import '../abstracts/placeholders';
+@use "../settings" as *;
+@use "../abstracts" as *;
 
 .signupSection {
-    margin-top: 70px;
-    padding-top: 30px;
-    padding-bottom: 30px;
-    margin-bottom: 70px;
+  margin-top: 70px;
+  padding-top: 30px;
+  padding-bottom: 30px;
+  margin-bottom: 70px;
 }
 
 .signupCard {
-    max-width: 600px;
-    margin-left: auto;
-    margin-right: auto;
-    padding: 20px;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 20px;
 }
 
 .errorText {
-    visibility: hidden;
+  visibility: hidden;
 }
 
 .formTitle {
-    width:100%;
-    margin-left: auto;
-    margin-right: auto;
-    margin-bottom: 20px;
-    text-align: center;
-    color: black;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 20px;
+  text-align: center;
+  color: black;
 }
 
 .formBtn {
-    @extend %button-base;
-    width: 100%;
+  @extend %button-base;
+  width: 100%;
 }

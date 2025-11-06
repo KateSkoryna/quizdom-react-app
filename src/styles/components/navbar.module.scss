@@ -1,0 +1,33 @@
+@use "../settings" as *;
+@use "../abstracts" as *;
+
+.offcanvasNavbar {
+  background-color: #00093c;
+  width: 100%;
+}
+
+.navbarToggle:hover,
+.navbarToggle:focus {
+  scale: 1.1;
+  transition: scale 0.2s ease-in-out;
+  outline: none;
+  box-shadow: 0;
+}
+
+.closeBtn {
+  background-image: url("../../assets/close.svg");
+}
+
+.offcanvasHeader {
+  justify-content: end;
+}
+
+.offcanvasNav {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  @media screen and (max-width: 932px) {
+    margin-bottom: 20px;
+  }
+}

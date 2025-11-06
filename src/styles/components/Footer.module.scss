@@ -1,75 +1,77 @@
-.footerContainer {
-    display: flex;
-    flex-direction: column;
-    color: #fff;
+@use "../settings" as *;
+@use "../abstracts" as *;
 
-    @media screen and (min-width: 998px) {
-        flex-direction: row;
-        justify-content: center;
-    }
+.footerContainer {
+  display: flex;
+  flex-direction: column;
+  color: #fff;
+
+  @media screen and (min-width: 998px) {
+    flex-direction: row;
+    justify-content: center;
+  }
 }
 
 .footerNavbar {
-    background-color: #00093C;
-    font-size: 16px;
-    padding-top: 5px;
-    padding-bottom: 5px;
+  background-color: #00093c;
+  font-size: 16px;
+  padding-top: 5px;
+  padding-bottom: 5px;
 
-    @media screen and (min-width: 768px) {      
-        font-size: 14px;
-        padding-top: 10px;
-        padding-bottom: 10px;
-    }
+  @media screen and (min-width: 768px) {
+    font-size: 14px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
 }
 
 .footerContactNavbar {
-    display: flex;
-    flex-direction: row !important;
-    justify-items: center;
-    width: 300px;
+  display: flex;
+  flex-direction: row !important;
+  justify-items: center;
+  width: 300px;
 
-    @media screen and (max-width: 768px) {
-            width: 100%;
-            margin-bottom: 10px;
-    }
+  @media screen and (max-width: 768px) {
+    width: 100%;
+    margin-bottom: 10px;
+  }
 }
 
 .footerLink {
-    border-bottom: 2px solid transparent;
-    color: rgb(255, 255, 255);
-    padding: 8px;
-    
-    @media screen and (max-width: 768px) {
-        margin-bottom: 5px;
-    }
+  border-bottom: 2px solid transparent;
+  color: rgb(255, 255, 255);
+  padding: 8px;
+
+  @media screen and (max-width: 768px) {
+    margin-bottom: 5px;
+  }
 }
 
-
 .footerLink:hover {
-    border-bottom: 2px solid #F7941D;
+  border-bottom: 2px solid #f7941d;
 }
 
 .footerContactLink {
-    color: #fff;
-    text-align: center;
-    padding: 0;
-    border: transparent;
+  color: #fff;
+  text-align: center;
+  padding: 0;
+  border: transparent;
 }
 
 .footerContactLink:hover {
-    border: transparent;
+  border: transparent;
 }
 
 .footerIcon {
-    width: 30px;
-    height: 30px;
+  width: 30px;
+  height: 30px;
 
-    @media screen and (min-width: 768px) {      
-        width: 20px;
-        height: 20px;
-    }
+  @media screen and (min-width: 768px) {
+    width: 20px;
+    height: 20px;
+  }
 }
 
 .footerIcon:hover {
-    color: #F7941D;
+  color: #f7941d;
 }

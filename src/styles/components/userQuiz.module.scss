@@ -1,0 +1,58 @@
+@use "../settings" as *;
+@use "../abstracts" as *;
+
+.itemText {
+  color: black;
+}
+
+.itemSmalltext {
+  display: block;
+  font-size: 10px;
+  color: gray;
+  text-align: end;
+  margin-left: auto;
+  margin-bottom: 10px;
+}
+
+.container {
+  padding-top: 20px;
+  padding-right: 10px;
+  padding-left: 10px;
+  text-align: end;
+}
+
+.deleteBtn {
+  background-color: transparent !important;
+  color: gray;
+  border: none;
+  position: absolute;
+  bottom: 20px;
+  right: 10px;
+  cursor: pointer;
+}
+
+.deleteBtn:hover,
+.deleteBtn:focus {
+  color: #f7941d;
+  scale: 1.1;
+  transition: scale 0.2s ease-in-out;
+  outline: none;
+  box-shadow: 0;
+}
+
+.deleteBtnIcon {
+  width: 20px;
+  height: 20px;
+}
+
+.starZero {
+  cursor: pointer;
+  color: gray;
+  font-size: 15px;
+}
+
+.starRating {
+  cursor: pointer;
+  color: gold;
+  font-size: 15px;
+}

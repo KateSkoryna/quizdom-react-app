@@ -1,4 +1,4 @@
-@import './settings/index';
+@use "./settings" as *;
 
 body {
   font-family: $font-primary;
@@ -42,12 +42,15 @@ a {
   text-decoration: none;
   border-bottom: 2px solid transparent;
   color: $text-muted;
-  padding: $spacing-8;
+  padding: calc($spacing-8/2);
+}
+
+.nav-link:hover,
+.nav-link:focus {
+  color: $primary-color !important;
 }
 
 .nav-link.active,
-.nav-link:hover,
-.nav-link:focus,
 .nav-link:active,
 .nav-link.show {
   color: $primary-color !important;
@@ -57,4 +60,8 @@ a {
 .main {
   margin-top: $spacing-60;
   padding-top: $spacing-30;
+}
+
+.error-text {
+  visibility: hidden;
 }

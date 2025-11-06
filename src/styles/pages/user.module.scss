@@ -1,0 +1,19 @@
+.userSection {
+  margin-top: 65px;
+  padding: 20px;
+  margin-bottom: 150px;
+}
+
+.userSectionCard {
+  display: column;
+
+  @media screen and (min-width: 768px) {
+    display: flex;
+    flex-direction: row;
+    padding: 10px;
+  }
+}
+
+.userCardInfo:first-child {
+  margin-right: 10px;
+}

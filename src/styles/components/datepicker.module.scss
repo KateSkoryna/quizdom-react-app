@@ -1,0 +1,8 @@
+@use "../settings" as *;
+@use "../abstracts" as *;
+
+.formDateInput {
+  width: 100%;
+  border: var(--bs-border-width) solid var(--bs-border-color);
+  border-radius: var(--bs-border-radius);
+}

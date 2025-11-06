@@ -1,6 +1,6 @@
-import dotenv from 'dotenv';
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react-swc'
+import dotenv from "dotenv";
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react-swc";
 
 dotenv.config();
 
@@ -8,7 +8,14 @@ dotenv.config();
 export default defineConfig({
   plugins: [react()],
   base: "/quizdom-react-app/",
-   define: {
-    'process.env': process.env
-  }
-})
+  define: {
+    "process.env": process.env,
+  },
+  css: {
+    preprocessorOptions: {
+      scss: {
+        api: "modern-compiler",
+      },
+    },
+  },
+});
