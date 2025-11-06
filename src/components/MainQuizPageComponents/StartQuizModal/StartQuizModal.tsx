@@ -4,7 +4,7 @@ import { Answer, Question } from "../../../types/types";
 import { ListGroup } from "react-bootstrap";
 import { useRef, useState } from "react";
 import styles from "./StartQuizModal.module.css";
-import { useAuth } from "../../../context/AuthContext";
+import { useAuthStore } from "../../../store/AuthStore";
 import WarnUserText from "../../WarnUserText/WarnUserText";
 import OwlComponent from "../../OwlComponent/OwlComponent";
 
@@ -93,7 +93,7 @@ export const StartQuizModal = ({
     setResult(false);
   };
 
-  const { currentUser } = useAuth();
+  const currentUser = useAuthStore((state) => state.currentUser);
 
   return (
     <Modal show={show} onHide={handleClose} fullscreen="md-down" centered>

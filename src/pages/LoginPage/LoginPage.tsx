@@ -6,7 +6,7 @@ import styles from "./LoginPage.module.css";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { loginSchema } from "../../helpers/schema";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../context/AuthContext";
+import { useAuthStore } from "../../store/AuthStore";
 import { FormFooter } from "../../components/FooterComponents/FormFooter/FormFooter";
 import { auth } from "../../firebase";
 import bcrypt from "bcryptjs-react";
@@ -20,7 +20,7 @@ const initState = {
 const LoginPage = () => {
   const [currentFormData, setCurrentFormData] = useState(initState);
   const navigate = useNavigate();
-  const { login } = useAuth();
+  const login = useAuthStore((state) => state.login);
 
   const onSubmit = async (values: LoginUser): Promise<void> => {
     try {

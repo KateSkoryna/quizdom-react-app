@@ -7,7 +7,7 @@ import { Gender, UserData } from "../../types/types";
 import styles from "./SignupPage.module.css";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { signupSchema } from "../../helpers/schema";
-import { useAuth } from "../../context/AuthContext";
+import { useAuthStore } from "../../store/AuthStore";
 import { doc, setDoc } from "firebase/firestore";
 import { auth, db } from "../../firebase";
 import { useNavigate } from "react-router-dom";
@@ -29,7 +29,7 @@ const initState = {
 const SignupPage = () => {
   const [userData, setUserData] = useState<UserData | null>(null);
 
-  const { signup } = useAuth();
+  const signup = useAuthStore((state) => state.signup);
   const navigate = useNavigate();
 
   const onSubmit = async (values: UserData): Promise<void> => {

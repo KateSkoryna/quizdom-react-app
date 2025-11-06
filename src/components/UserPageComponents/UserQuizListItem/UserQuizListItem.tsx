@@ -1,7 +1,7 @@
 import Accordion from "react-bootstrap/Accordion";
 import { UserLocalQuiz } from "../../../types/types";
 import styles from "./UserQuizListItem.module.css";
-import { useAuth } from "../../../context/AuthContext";
+import { useAuthStore } from "../../../store/AuthStore";
 import DeleteQuizComponent from "../../DeleteQuizComponent/DeleteQuizComponent";
 
 export const UserQuizListItem = ({
@@ -12,7 +12,7 @@ export const UserQuizListItem = ({
   eventKey: string;
 }) => {
   const { title, authorId, authorName, publishedAt, ...rest } = quiz;
-  const { currentUser } = useAuth();
+  const currentUser = useAuthStore((state) => state.currentUser);
 
   return (
     <Accordion.Item eventKey={eventKey}>

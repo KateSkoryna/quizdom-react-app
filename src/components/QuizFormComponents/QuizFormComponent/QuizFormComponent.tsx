@@ -8,14 +8,14 @@ import { QuestionsFormComponent } from "../QuestionsFormComponent/QuestionsFormC
 import addClassnameToText from "../../../helpers/addClassnameToText";
 import styles from "./QuizFormComponent.module.css";
 import { useSetQuizForm } from "../../../store/store";
-import { useAuth } from "../../../context/AuthContext";
+import { useAuthStore } from "../../../store/AuthStore";
 import { addQuiz } from "../../../API/api";
 
 export const QuizFormComponent = ({ handleClose }: QuizFormProps) => {
   const quizData = useSetQuizForm((state) => state.newQuizData);
   const setQuizFormData = useSetQuizForm((state) => state.setNewQuizData);
 
-  const { currentUser } = useAuth();
+  const currentUser = useAuthStore((state) => state.currentUser);
 
   const methods = useForm({
     mode: "onChange",

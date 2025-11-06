@@ -8,9 +8,9 @@ import Offcanvas from "react-bootstrap/Offcanvas";
 import { useEffect } from "react";
 import styles from "./NavbarComponent.module.css";
 import CloseButton from "react-bootstrap/CloseButton";
-import { useAuth } from "../../context/AuthContext";
 import { LogoutComponent } from "../UserPageComponents/LogoutComponent/LogoutComponent";
 import { useActiveNavStore, useOpenOffCanvas } from "../../store/store";
+import { useAuthStore } from "../../store/AuthStore";
 
 export const NavbarComponent = () => {
   // const [show, setShow] = useState(false);
@@ -18,7 +18,7 @@ export const NavbarComponent = () => {
   const setActive = useActiveNavStore((state) => state.setActive);
   const show = useOpenOffCanvas((state) => state.show);
   const setShow = useOpenOffCanvas((state) => state.setShow);
-  const { currentUser } = useAuth();
+  const currentUser = useAuthStore((state) => state.currentUser);
 
   const userName = currentUser?.name.split(" ")[0];
 

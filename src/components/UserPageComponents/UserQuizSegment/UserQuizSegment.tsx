@@ -1,14 +1,14 @@
 import { UserQuiz } from "../../../types/types";
 import { getQuizesById } from "../../../API/api";
 import { useEffect, useState } from "react";
-import { useAuth } from "../../../context/AuthContext";
+import { useAuthStore } from "../../../store/AuthStore";
 import UserQuizList from "../UserQuizList/UserQuizList";
 
 export const UserQuizSegment = () => {
   const [userQuizes, setUserQuizes] = useState<UserQuiz[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  const { currentUser } = useAuth();
+  const currentUser = useAuthStore((state) => state.currentUser);
 
   useEffect(() => {
     const getQuizes = async (): Promise<void> => {

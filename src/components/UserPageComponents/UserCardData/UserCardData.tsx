@@ -1,12 +1,11 @@
 import { Button, Card } from "react-bootstrap";
-import { useAuth } from "../../../context/AuthContext";
+import { useAuthStore } from "../../../store/AuthStore";
 import { MdOutlineAddAPhoto } from "react-icons/md";
 import styles from "./UserCardData.module.css";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { storage } from "../../../firebase";
 import { useEffect, useState } from "react";
 import ProgressBar from "react-bootstrap/ProgressBar";
-import { CurrentUser } from "../../../types/types";
 import { editUser } from "../../../API/api";
 
 export const UserCardData = () => {
@@ -15,7 +14,8 @@ export const UserCardData = () => {
   const [progressUpload, setProgressUpload] = useState(0);
   const [loading, setLoading] = useState(false);
 
-  const { currentUser, setCurrentUser } = useAuth();
+  const currentUser = useAuthStore((state) => state.currentUser);
+  const setCurrentUser = useAuthStore((state) => state.setCurrentUser);
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleSelectedFile = (files: any) => {
@@ -72,11 +72,9 @@ export const UserCardData = () => {
     try {
       if (currentUser) {
         await editUser(currentUser?.id, "avatar", downloadURL);
-        setCurrentUser((prev) => {
-          return {
-            ...((prev as CurrentUser) ?? {}),
-            avatar: downloadURL,
-          };
+        setCurrentUser({
+          ...currentUser,
+          avatar: downloadURL,
         });
       }
       setProgressUpload(0);

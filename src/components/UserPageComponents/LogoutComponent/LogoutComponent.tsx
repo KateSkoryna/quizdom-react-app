@@ -2,8 +2,8 @@ import Button from "react-bootstrap/Button";
 import { Link, useNavigate } from "react-router-dom";
 import { Nav, Col, Image, Row } from "react-bootstrap";
 import styles from "./LogoutComponent.module.css";
-import { useAuth } from "../../../context/AuthContext";
 import { useActiveNavStore, useOpenOffCanvas } from "../../../store/store";
+import { useAuthStore } from "../../../store/AuthStore";
 
 export const LogoutComponent = ({
   avatar,
@@ -16,7 +16,7 @@ export const LogoutComponent = ({
   const setActive = useActiveNavStore((state) => state.setActive);
   const setShow = useOpenOffCanvas((state) => state.setShow);
 
-  const { logout } = useAuth();
+  const logout = useAuthStore((state) => state.logout);
   const navigate = useNavigate();
 
   const handleClose = () => setShow(false);

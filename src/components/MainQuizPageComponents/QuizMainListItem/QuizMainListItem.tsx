@@ -2,11 +2,11 @@ import { Button } from "react-bootstrap";
 import Card from "react-bootstrap/Card";
 import { MdFavoriteBorder } from "react-icons/md";
 import styles from "./QuizMainListItem.module.css";
-import { CurrentUser, UserQuiz } from "../../../types/types";
+import { UserQuiz } from "../../../types/types";
 import { useEffect, useState } from "react";
 import { StartQuizModal } from "../StartQuizModal/StartQuizModal";
 import { MdOutlineFavorite } from "react-icons/md";
-import { useAuth } from "../../../context/AuthContext";
+import { useAuthStore } from "../../../store/AuthStore";
 import { toggleFavorites } from "../../../API/api";
 import { truncateString } from "../../../helpers/truncateString";
 import StartQuizButton from "../StartQuizButton/StartQuizButton";
@@ -35,7 +35,8 @@ export const QuizMainListItem = ({
   const handleStart = () => setStartQuiz(true);
   const handleModalClose = () => setIsModalOpen(false);
 
-  const { currentUser, setCurrentUser } = useAuth();
+  const currentUser = useAuthStore((state) => state.currentUser);
+  const setCurrentUser = useAuthStore((state) => state.setCurrentUser);
   const handleFavoriteClick = async (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
@@ -46,24 +47,20 @@ export const QuizMainListItem = ({
     if (!event.target.checked) {
       await toggleFavorites(event.target.id, currentUser.id, "remove");
       setChecked(false);
-      setCurrentUser((prev) => {
-        return {
-          ...((prev as CurrentUser) ?? {}),
-          favorites: currentUser.favorites.filter(
-            (item: string) => item !== event.target.id
-          ),
-        };
+      setCurrentUser({
+        ...currentUser,
+        favorites: currentUser.favorites.filter(
+          (item: string) => item !== event.target.id
+        ),
       });
 
       return;
     }
     await toggleFavorites(event.target.id, currentUser.id, "add");
     setChecked(true);
-    setCurrentUser((prev) => {
-      return {
-        ...((prev as CurrentUser) ?? {}),
-        favorites: [...currentUser.favorites, event.target.id],
-      };
+    setCurrentUser({
+      ...currentUser,
+      favorites: [...currentUser.favorites, event.target.id],
     });
   };
 

@@ -2,14 +2,14 @@ import { Button, Form } from "react-bootstrap";
 import { useState } from "react";
 import styles from "./UserAboutComponent.module.css";
 import { CiEdit } from "react-icons/ci";
-import { useAuth } from "../../../context/AuthContext";
-import { CurrentUser } from "../../../types/types";
+import { useAuthStore } from "../../../store/AuthStore";
 import { editUser } from "../../../API/api";
 
 export const UserAboutComponent = () => {
   const [isEdit, setIsEdit] = useState(false);
 
-  const { setCurrentUser, currentUser } = useAuth();
+  const setCurrentUser = useAuthStore((state) => state.setCurrentUser);
+  const currentUser = useAuthStore((state) => state.currentUser);
 
   const [value, setValue] = useState(
     currentUser?.userInfo || "I'm a new user and I don't have a bio yet"
@@ -26,11 +26,9 @@ export const UserAboutComponent = () => {
   const handleSaveButtonClick = async () => {
     if (currentUser) {
       await editUser(currentUser?.id, "userInfo", value);
-      setCurrentUser((prev) => {
-        return {
-          ...((prev as CurrentUser) ?? {}),
-          userInfo: value,
-        };
+      setCurrentUser({
+        ...currentUser,
+        userInfo: value,
       });
     }
     setIsEdit(!isEdit);

@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import { getFavoriteQuizes } from "../../../API/api";
-import { useAuth } from "../../../context/AuthContext";
+import { useAuthStore } from "../../../store/AuthStore";
 import { UserQuiz } from "../../../types/types";
 import UserQuizList from "../UserQuizList/UserQuizList";
 
 export const UserFavoritesComponent = () => {
   const [userFavorites, setUserFavorites] = useState<UserQuiz[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const { currentUser } = useAuth();
+  const currentUser = useAuthStore((state) => state.currentUser);
 
   useEffect(() => {
     const getFavorites = async (): Promise<void> => {
