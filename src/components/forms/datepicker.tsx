@@ -4,13 +4,12 @@ import "react-datepicker/dist/react-datepicker.css";
 import { FaCalendarDay } from "react-icons/fa";
 import styles from "../../styles/components/datepicker.module.scss";
 
-const DatepickerContainer = ({
-  value,
-  callback,
-}: {
+type DatepickerProps = {
   value: Date;
   callback: (date: Date) => void;
-}) => {
+};
+
+const DatepickerContainer = ({ value, callback }: DatepickerProps) => {
   return (
     <DatePicker
       showIcon

@@ -5,13 +5,12 @@ import styles from "../../styles/components/logout.module.scss";
 import { useActiveNavStore, useOpenOffCanvas } from "../../store/store";
 import { useAuthStore } from "../../store/AuthStore";
 
-const LogoutComponent = ({
-  avatar,
-  name,
-}: {
+type LogoutProps = {
   avatar: string;
   name: string;
-}) => {
+};
+
+const LogoutComponent = ({ avatar, name }: LogoutProps) => {
   const active = useActiveNavStore((state) => state.active);
   const setActive = useActiveNavStore((state) => state.setActive);
   const setShow = useOpenOffCanvas((state) => state.setShow);

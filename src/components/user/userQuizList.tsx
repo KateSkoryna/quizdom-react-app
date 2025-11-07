@@ -1,16 +1,14 @@
 import { Accordion } from "react-bootstrap";
 import UserQuizListItem from "./userQuizListItem";
-
 import Loader from "../common/loader";
 import { UserQuiz } from "../../types/types";
 
-const UserQuizList = ({
-  quizes,
-  isLoading,
-}: {
+type UserQuizListProps = {
   quizes: UserQuiz[] | null;
   isLoading: boolean;
-}) => {
+};
+
+const UserQuizList = ({ quizes, isLoading }: UserQuizListProps) => {
   return (
     <Accordion defaultActiveKey="0" flush>
       {isLoading ? (

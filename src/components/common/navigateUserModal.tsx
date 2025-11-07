@@ -2,13 +2,12 @@ import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import WarnUserText from "./warnUserText";
 
-function NavigateUserModal({
-  handleClose,
-  show,
-}: {
+type NavigateUserModalProps = {
   handleClose: () => void;
   show: boolean;
-}) {
+};
+
+function NavigateUserModal({ handleClose, show }: NavigateUserModalProps) {
   return (
     <Modal show={show} onHide={handleClose} centered>
       <Modal.Header closeButton>
