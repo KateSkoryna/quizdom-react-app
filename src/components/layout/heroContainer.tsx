@@ -3,13 +3,15 @@ import { JOKE } from "../../helpers/jokes";
 import styles from "../../styles/pages/home.module.scss";
 import hero from "../../assets/hero-big.jpg";
 import { LazyLoadImage } from "react-lazy-load-image-component";
+import { Container } from "react-bootstrap";
 
 const HeroContainer = () => {
   return (
     <Card className={styles.heroCard}>
       <LazyLoadImage src={hero} className={styles.heroImg} alt="hero" />
+
       <Card.ImgOverlay className={styles.overlay}>
-        <div className={styles.heroBodyContainer}>
+        <Container>
           <Card.Body className={styles.heroCardBody}>
             <Card.Title className={styles.heroCardTitle}>
               Dive into the Depths <br /> of Coding Wisdom
@@ -29,7 +31,7 @@ const HeroContainer = () => {
               >{`— ${JOKE.author}`}</footer>
             </blockquote>
           </Card.Body>
-        </div>
+        </Container>
       </Card.ImgOverlay>
     </Card>
   );
