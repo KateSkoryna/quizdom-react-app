@@ -60,7 +60,6 @@ const QuizFormComponent = ({ handleClose }: QuizFormProps) => {
               })}
               type="text"
               placeholder="Best Quiz ever..."
-              autoFocus
             />
             {(errorTitle as string)
               ? addClassnameToText("text-danger", errorTitle as string)
