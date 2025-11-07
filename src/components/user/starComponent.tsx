@@ -1,5 +1,5 @@
 import { useAuthStore } from "../../store/AuthStore";
-import styles from "../../styles/components/starComponent.module.scss";
+import styles from "../../styles/components/userQuiz.module.scss";
 
 function StarComponent() {
   const currentUser = useAuthStore((state) => state.currentUser);
