@@ -203,7 +203,10 @@ export async function toggleFavorites(
 
 //======================== GET FAVORITE QUIZES  ====================
 
-export async function getFavoriteQuizes(quizIds: string[]) {
+export async function getFavoriteQuizes(
+  quizIds: string[],
+  setError: (error: string) => void
+) {
   try {
     const q = query(
       collection(db, "quizes"),
@@ -220,6 +223,7 @@ export async function getFavoriteQuizes(quizIds: string[]) {
     return quizes;
   } catch (error) {
     if (error instanceof Error) {
+      setError(error.message);
       throw new Error(error.message);
     }
   }
