@@ -1,20 +1,25 @@
 import { Accordion } from "react-bootstrap";
 import UserQuizListItem from "./userQuizListItem";
 import Loader from "../common/loader";
-import { UserQuiz } from "../../types/types";
+import { useEffect } from "react";
+import { useAuthStore } from "../../store/AuthStore";
+import { useFavoritesStore } from "../../store/FavoritesStore";
 
-type UserQuizListProps = {
-  quizes: UserQuiz[] | null;
-  isLoading: boolean;
-};
+const UserQuizList = () => {
+  const currentUser = useAuthStore((state) => state.currentUser);
+  const { favorites, isLoading, fetchFavorites } = useFavoritesStore();
 
-const UserQuizList = ({ quizes, isLoading }: UserQuizListProps) => {
+  useEffect(() => {
+    if (currentUser?.favorites) {
+      fetchFavorites(currentUser.favorites);
+    }
+  }, [currentUser, fetchFavorites]);
   return (
     <Accordion defaultActiveKey="0" flush>
       {isLoading ? (
         <Loader />
-      ) : quizes ? (
-        quizes.map((quiz, index) => {
+      ) : favorites ? (
+        favorites.map((quiz, index) => {
           const { id, ...rest } = quiz;
           return (
             <UserQuizListItem
