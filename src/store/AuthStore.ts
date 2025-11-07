@@ -35,8 +35,13 @@ export const useAuthStore = create<AuthStore>((set) => ({
   },
 
   logout: async () => {
-    set({ currentUser: null });
-    return signOut(auth);
+    try {
+      signOut(auth);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      set({ currentUser: null });
+    }
   },
 
   getUser: async () => {

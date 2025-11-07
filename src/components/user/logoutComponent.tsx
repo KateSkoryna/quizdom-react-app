@@ -21,12 +21,8 @@ const LogoutComponent = ({ avatar, name }: LogoutProps) => {
   const handleClose = () => setShow(false);
 
   const handleLogout = async () => {
-    try {
-      await logout();
-      navigate("/");
-    } catch (error) {
-      console.log(error);
-    }
+    await logout();
+    navigate("/");
   };
 
   return (
