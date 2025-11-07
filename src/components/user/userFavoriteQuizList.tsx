@@ -1,5 +1,5 @@
 import { Accordion } from "react-bootstrap";
-import UserQuizListItem from "./userQuizListItem";
+import UserQuizListItem from "./userQuizItem";
 import Loader from "../common/loader";
 import { useEffect } from "react";
 import { useAuthStore } from "../../store/AuthStore";

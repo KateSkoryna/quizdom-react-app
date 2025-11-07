@@ -1,5 +1,5 @@
 import { Accordion } from "react-bootstrap";
-import UserQuizListItem from "./userQuizListItem";
+import UserQuizItem from "./userQuizItem";
 import Loader from "../common/loader";
 import { useEffect } from "react";
 import { useAuthStore } from "../../store/AuthStore";
@@ -28,11 +28,7 @@ const UserQuizList = () => {
         userQuizes.map((quiz, index) => {
           const { id, ...rest } = quiz;
           return (
-            <UserQuizListItem
-              key={id}
-              quiz={rest}
-              eventKey={index.toString()}
-            />
+            <UserQuizItem key={id} quiz={rest} eventKey={index.toString()} />
           );
         })
       ) : (
