@@ -20,7 +20,7 @@ const HomePage = lazy(() => import("./pages/home"));
 const NewsPage = lazy(() => import("./pages/news"));
 const NotFoundPage = lazy(() => import("./pages/notFound"));
 const AboutPage = lazy(() => import("./pages/about"));
-const ProtectedRoute = lazy(() => import("./pages/protectedRoute"));
+const ProtectedRoute = lazy(() => import("./components/common/protectedRoute"));
 
 const router = createBrowserRouter(
   [

@@ -1,8 +1,8 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuthStore } from "../store/AuthStore";
+import { useAuthStore } from "../../store/AuthStore";
 import AccessDenied from "./accessDenied";
-import Loader from "../components/common/loader";
+import Loader from "./loader";
 
 const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
   const currentUser = useAuthStore((state) => state.currentUser);
