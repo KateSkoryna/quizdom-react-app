@@ -1,11 +1,10 @@
 import Nav from "react-bootstrap/Nav";
 import Button from "react-bootstrap/esm/Button";
 import Container from "react-bootstrap/esm/Container";
-import FormControl from "react-bootstrap/esm/FormControl";
-import Form from "react-bootstrap/Form";
 import styles from "../../styles/pages/news.module.scss";
 import { useSearchParams } from "react-router-dom";
-import { ChangeEvent, FormEvent, useState } from "react";
+import { useState } from "react";
+import SearchForm from "../forms/searchForm";
 
 const initState = {
   query: "",
@@ -16,23 +15,7 @@ const SearchComponent = ({ categories }: { categories: string[] }) => {
   const [searchParams, setSearchParams] = useSearchParams(initState);
   const [query, setQuery] = useState(searchParams.get("query") ?? "");
   const [category, setCategory] = useState(searchParams.get("category") ?? "");
-  const [error, setError] = useState(false);
-
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    if (!query) {
-      setQuery("");
-      setError(true);
-      return;
-    }
-    if (category) {
-      setError(false);
-      setSearchParams({ query, category });
-    } else {
-      setError(false);
-      setSearchParams({ query });
-    }
-  }
+  const [errorState, setErrorState] = useState(false);
 
   function handleCategoryClick(category: string): void {
     setCategory(category);
@@ -40,32 +23,16 @@ const SearchComponent = ({ categories }: { categories: string[] }) => {
     setSearchParams({ category });
   }
 
-  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setQuery(event.target.value);
-  };
-
   return (
     <Container className={styles.formContainer}>
-      <Form onSubmit={handleSubmit} className="mb-4">
-        <div className={styles.serchContainer}>
-          <FormControl
-            type="search"
-            placeholder="Search"
-            aria-label="Search"
-            value={query || ""}
-            onChange={handleChange}
-            className={styles.searchInput}
-          />
-          <Button className={styles.searchBtn} type="submit">
-            Search
-          </Button>
-        </div>
-        {error && (
-          <Form.Text className={styles.error}>
-            Please enter a search term
-          </Form.Text>
-        )}
-      </Form>
+      <SearchForm
+        query={query}
+        category={category}
+        errorState={errorState}
+        setQuery={setQuery}
+        setSearchParams={setSearchParams}
+        setErrorState={setErrorState}
+      />
       <Nav className={styles.searchNavbar}>
         {categories.map((category) => (
           <Nav.Item key={category}>
