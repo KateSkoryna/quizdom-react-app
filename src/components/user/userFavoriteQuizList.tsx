@@ -3,29 +3,24 @@ import UserQuizListItem from "./userQuizListItem";
 import Loader from "../common/loader";
 import { useEffect } from "react";
 import { useAuthStore } from "../../store/AuthStore";
-import { useQuizesStore } from "../../store/quizeStore";
+import { useFavoritesStore } from "../../store/FavoritesStore";
 
-const UserQuizList = () => {
+const UserFavoriteQuizList = () => {
   const currentUser = useAuthStore((state) => state.currentUser);
-  const getQuizesById = useQuizesStore((state) => state.getQuizesById);
-  const userQuizes = useQuizesStore((state) => state.userQuizes);
-  const isLoading = useQuizesStore((state) => state.isLoading);
+  const { favorites, isLoading, fetchFavorites } = useFavoritesStore();
 
   useEffect(() => {
-    const getQuizes = async (): Promise<void> => {
-      if (currentUser) {
-        await getQuizesById(currentUser.id);
-      }
-    };
+    if (currentUser?.favorites) {
+      fetchFavorites(currentUser.favorites);
+    }
+  }, [currentUser, fetchFavorites]);
 
-    getQuizes();
-  }, [currentUser]);
   return isLoading ? (
     <Loader />
   ) : (
     <Accordion defaultActiveKey="0" flush>
-      {userQuizes ? (
-        userQuizes.map((quiz, index) => {
+      {favorites ? (
+        favorites.map((quiz, index) => {
           const { id, ...rest } = quiz;
           return (
             <UserQuizListItem
@@ -42,4 +37,4 @@ const UserQuizList = () => {
   );
 };
 
-export default UserQuizList;
+export default UserFavoriteQuizList;

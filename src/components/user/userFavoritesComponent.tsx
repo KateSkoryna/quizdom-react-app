@@ -1,5 +1,5 @@
 import { useFavoritesStore } from "../../store/FavoritesStore";
-import UserQuizList from "./userQuizList";
+import UserFavoriteQuizList from "./userFavoriteQuizList";
 
 const UserFavoritesComponent = () => {
   const { error } = useFavoritesStore();
@@ -8,7 +8,7 @@ const UserFavoritesComponent = () => {
     <div className="pt-3 text-center">
       <h5 className="mb-3">User Favorites</h5>
       {error && <div className="alert alert-danger">{error}</div>}
-      <UserQuizList />
+      <UserFavoriteQuizList />
     </div>
   );
 };

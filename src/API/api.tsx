@@ -56,7 +56,7 @@ export async function getCurrentUser(userId: string) {
 
 //======================== GET ALL QUIZES  ==========================
 
-export async function getAllQuizes() {
+export async function getAllQuizes(setError: (error: string) => void) {
   try {
     const snapshot = await getDocs(collection(db, "quizes"));
     const quizes = snapshot.docs.map((doc) => {
@@ -69,6 +69,7 @@ export async function getAllQuizes() {
     return quizes;
   } catch (error) {
     if (error instanceof Error) {
+      setError(error.message);
       throw new Error(error.message);
     }
   }
@@ -76,7 +77,10 @@ export async function getAllQuizes() {
 
 //======================== GET QUIZES BY USER  ======================
 
-export async function getQuizesById(userId: string) {
+export async function getQuizesById(
+  userId: string,
+  setError: (error: string) => void
+) {
   try {
     const q = query(collection(db, "quizes"), where("authorId", "==", userId));
     const querySnapshot = await getDocs(q);
@@ -91,6 +95,7 @@ export async function getQuizesById(userId: string) {
     return quizes;
   } catch (error) {
     if (error instanceof Error) {
+      setError(error.message);
       throw new Error(error.message);
     }
   }
