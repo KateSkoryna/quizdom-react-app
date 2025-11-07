@@ -100,10 +100,12 @@ const QuizMainListItem = ({
       <Card.Text className={styles.quizDescription}>
         {truncateString(description, 80)}
       </Card.Text>
-      <div className={styles.buttonContainer}>
-        <StartQuizButton handleModal={handleStart} />
-        <Card.Link as={Button}>Share Quiz</Card.Link>
-      </div>
+      {currentUser && (
+        <div className={styles.buttonContainer}>
+          <StartQuizButton handleModal={handleStart} />
+          <Card.Link as={Button}>Share Quiz</Card.Link>
+        </div>
+      )}
       <small className={styles.itemSmalltext}>
         Published on: {publishedAt.toLocaleDateString()} by {authorName}
       </small>
