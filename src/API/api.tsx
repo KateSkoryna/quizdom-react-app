@@ -23,7 +23,7 @@ const NEWS_BASE_URL = import.meta.env.VITE_NEWS_BASE_URL;
 //======================== NEWS  ==========================
 
 export async function getMediaNews(category: string, keywords: string) {
-  let url = `${NEWS_BASE_URL}?access_key=${API_KEY}&category=${category}&languages=en&keywords=${keywords}`;
+  const url = `${NEWS_BASE_URL}?access_key=${API_KEY}&category=${category}&languages=en&keywords=${keywords}`;
 
   try {
     const { data } = await axios.get(url);
@@ -164,7 +164,6 @@ export async function addQuiz(
 export async function removeQuiz(quizId: string) {
   try {
     await deleteDoc(doc(db, "quizes", quizId));
-    console.log("quiz is seccessfuly deleted!");
   } catch (error) {
     if (error instanceof Error) {
       throw new Error(error.message);

@@ -26,7 +26,10 @@ const LoginPage = () => {
     try {
       await login(values.email, values.password);
       setCurrentFormData(values);
-      const user = await getCurrentUser(auth.currentUser!.uid);
+      if (!auth.currentUser) {
+        throw new Error("Authentication failed");
+      }
+      const user = await getCurrentUser(auth.currentUser.uid);
       if (user) {
         const comparedPassword = bcrypt.compareSync(
           values.password,
