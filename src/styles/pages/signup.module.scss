@@ -2,10 +2,8 @@
 @use "../abstracts" as *;
 
 .signupSection {
-  margin-top: 70px;
-  padding-top: 30px;
-  padding-bottom: 30px;
-  margin-bottom: 70px;
+  margin-top: 4rem;
+  @extend %container;
 }
 
 .signupCard {

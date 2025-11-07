@@ -12,15 +12,15 @@ import {
   getQuizByCategoryAndComplexity,
 } from "./API/api";
 
-const Layout = lazy(() => import("./components/layout/Layout"));
-const UserPage = lazy(() => import("./pages/UserPage"));
-const SignupPage = lazy(() => import("./pages/SignupPage"));
-const LoginPage = lazy(() => import("./pages/LoginPage"));
-const HomePage = lazy(() => import("./pages/HomePage"));
-const NewsPage = lazy(() => import("./pages/NewsPage"));
-const NotFoundPage = lazy(() => import("./pages/NotFoundPage"));
-const AboutPage = lazy(() => import("./pages/AboutPage"));
-const ProtectedRoute = lazy(() => import("./pages/ProtectedRoute"));
+const Layout = lazy(() => import("./components/layout/layout"));
+const UserPage = lazy(() => import("./pages/user"));
+const SignupPage = lazy(() => import("./pages/signup"));
+const LoginPage = lazy(() => import("./pages/login"));
+const HomePage = lazy(() => import("./pages/home"));
+const NewsPage = lazy(() => import("./pages/news"));
+const NotFoundPage = lazy(() => import("./pages/notFound"));
+const AboutPage = lazy(() => import("./pages/about"));
+const ProtectedRoute = lazy(() => import("./pages/protectedRoute"));
 
 const router = createBrowserRouter(
   [

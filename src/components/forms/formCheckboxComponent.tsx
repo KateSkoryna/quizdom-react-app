@@ -2,7 +2,7 @@ import { useFormContext } from "react-hook-form";
 import styles from "../../styles/components/quizform.module.scss";
 import { FaCheck } from "react-icons/fa";
 
-export const FormCheckboxComponent = ({
+const FormCheckboxComponent = ({
   label,
   nestIndex,
   index,
@@ -29,3 +29,5 @@ export const FormCheckboxComponent = ({
     </div>
   );
 };
+
+export default FormCheckboxComponent;

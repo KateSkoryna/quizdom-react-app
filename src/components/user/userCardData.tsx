@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 import ProgressBar from "react-bootstrap/ProgressBar";
 import { editUser } from "../../API/api";
 
-export const UserCardData = () => {
+const UserCardData = () => {
   const [imageFile, setImageFile] = useState<File>();
   const [downloadURL, setDownloadURL] = useState("");
   const [progressUpload, setProgressUpload] = useState(0);
@@ -127,3 +127,5 @@ export const UserCardData = () => {
     </Card>
   );
 };
+
+export default UserCardData;

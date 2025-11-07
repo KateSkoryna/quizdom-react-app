@@ -5,7 +5,7 @@ import { CiEdit } from "react-icons/ci";
 import { useAuthStore } from "../../store/AuthStore";
 import { editUser } from "../../API/api";
 
-export const UserAboutComponent = () => {
+const UserAboutComponent = () => {
   const [isEdit, setIsEdit] = useState(false);
 
   const setCurrentUser = useAuthStore((state) => state.setCurrentUser);
@@ -56,3 +56,5 @@ export const UserAboutComponent = () => {
     </div>
   );
 };
+
+export default UserAboutComponent;

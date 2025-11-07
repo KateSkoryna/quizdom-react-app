@@ -3,11 +3,11 @@ import Container from "react-bootstrap/esm/Container";
 import Row from "react-bootstrap/esm/Row";
 import Col from "react-bootstrap/esm/Col";
 import styles from "../../styles/pages/news.module.scss";
-import { NewsListItem } from "./NewsListItem";
+import NewsListItem from "./newsListItem";
 import { DEFAULT_IMG } from "../../const/const";
 import { truncateString } from "../../helpers/truncateString";
 
-export const NewsListComponent = ({ news }: { news: Article[] }) => {
+const NewsListComponent = ({ news }: { news: Article[] }) => {
   return (
     <Container className={styles.newsContainer}>
       <Row className="g-3">
@@ -29,3 +29,5 @@ export const NewsListComponent = ({ news }: { news: Article[] }) => {
     </Container>
   );
 };
+
+export default NewsListComponent;

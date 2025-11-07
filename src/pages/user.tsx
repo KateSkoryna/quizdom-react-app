@@ -1,7 +1,7 @@
 import styles from "../styles/pages/user.module.scss";
 import { Card, Container } from "react-bootstrap";
-import { UserCardData } from "../components/user/UserCardData";
-import { UserCardInfo } from "../components/user/UserCardInfo";
+import UserCardData from "../components/user/userCardData";
+import UserCardInfo from "../components/user/userCardInfo";
 
 const UserPage = () => {
   return (

@@ -1,10 +1,10 @@
 import { useLoaderData, useNavigation } from "react-router-dom";
-import { QuizMainList } from "./QuizMainList";
+import QuizMainList from "./quizMainList";
 import { UserQuiz } from "../../types/types";
-import { AddQuizComponent } from "./AddQuizComponent";
+import AddQuizComponent from "./addQuizComponent";
 import { useAuthStore } from "../../store/AuthStore";
-import { SearchQuizComponent } from "./SearchQuizComponent";
-import Loader from "../common/Loader";
+import SearchQuizComponent from "./searchQuizComponent";
+import Loader from "../common/loader";
 
 const QuizContainer = () => {
   const navigation = useNavigation();

@@ -4,7 +4,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import { Controller, useForm } from "react-hook-form";
 import styles from "../../styles/pages/signup.module.scss";
-import FormFooter from "./FormFooter";
+import FormFooter from "./formFooter";
 import addClassnameToText from "../../helpers/addClassnameToText";
 import { Gender, UserData } from "../../types/types";
 import { useAuthStore } from "../../store/AuthStore";
@@ -15,7 +15,7 @@ import { doc, setDoc } from "firebase/firestore";
 import { auth, db } from "../../firebase";
 import bcrypt from "bcryptjs-react";
 import { avatar } from "../../helpers/generateRandomAvatar";
-import DatepickerContainer from "./Datepicker";
+import DatepickerContainer from "./datepicker";
 
 const initState = {
   name: "",

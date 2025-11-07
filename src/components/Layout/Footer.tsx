@@ -9,7 +9,7 @@ import { Container, Navbar } from "react-bootstrap";
 import styles from "../../styles/components/footer.module.scss";
 import { Link } from "react-router-dom";
 
-export const Footer = () => {
+const Footer = () => {
   return (
     <Navbar
       expand="lg"
@@ -59,8 +59,10 @@ export const Footer = () => {
             </Nav.Link>
           </Col>
         </Nav>
-        <Card.Text>Copyright © 2024 by Kate Skoryna.</Card.Text>
+        <Card.Text>Copyright © 2025 by Kate Skoryna.</Card.Text>
       </Container>
     </Navbar>
   );
 };
+
+export default Footer;

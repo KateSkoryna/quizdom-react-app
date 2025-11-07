@@ -1,12 +1,12 @@
 import Modal from "react-bootstrap/Modal";
-import { QuizFormComponent } from "../forms/QuizFormComponent";
+import QuizFormComponent from "../forms/quizFormComponent";
 
 interface QuizModalProps {
   showModal: boolean;
   handleCloseModal: () => void;
 }
 
-export const QuizModal = ({ showModal, handleCloseModal }: QuizModalProps) => {
+const QuizModal = ({ showModal, handleCloseModal }: QuizModalProps) => {
   return (
     <Modal
       size="lg"
@@ -24,3 +24,5 @@ export const QuizModal = ({ showModal, handleCloseModal }: QuizModalProps) => {
     </Modal>
   );
 };
+
+export default QuizModal;

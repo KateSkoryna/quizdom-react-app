@@ -2,7 +2,7 @@ import { Controller, useFormContext } from "react-hook-form";
 import { convertComplexity } from "../../helpers/convertComplexity";
 import { Form } from "react-bootstrap";
 
-export const FormRangeComponent = ({ fieldName }: { fieldName: string }) => {
+const FormRangeComponent = ({ fieldName }: { fieldName: string }) => {
   const { control } = useFormContext();
   return (
     <Controller
@@ -25,3 +25,5 @@ export const FormRangeComponent = ({ fieldName }: { fieldName: string }) => {
     />
   );
 };
+
+export default FormRangeComponent;

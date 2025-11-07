@@ -1,8 +1,8 @@
 import { UserQuiz } from "../../types/types";
-import { QuizMainListItem } from "./QuizMainListItem";
+import QuizMainListItem from "./quizMainListItem";
 import { Container, Card } from "react-bootstrap";
 
-export const QuizMainList = ({ quizes }: { quizes: UserQuiz[] }) => {
+const QuizMainList = ({ quizes }: { quizes: UserQuiz[] }) => {
   return (
     <Container style={{ paddingBottom: "80px", marginTop: "20px" }}>
       {quizes.map((quiz) => (
@@ -13,3 +13,5 @@ export const QuizMainList = ({ quizes }: { quizes: UserQuiz[] }) => {
     </Container>
   );
 };
+
+export default QuizMainList;

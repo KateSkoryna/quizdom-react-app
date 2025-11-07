@@ -1,13 +1,13 @@
 import Tab from "react-bootstrap/Tab";
-import { StatisticsUserComponent } from "./StatisticsUserComponent";
-import { UserQuizesComponent } from "./UserQuizesComponent";
-import { UserFavoritesComponent } from "./UserFavoritesComponent";
+import StatisticsUserComponent from "./statisticsUserComponent";
+import UserQuizesComponent from "./userQuizesComponent";
+import UserFavoritesComponent from "./userFavoritesComponent";
 import Col from "react-bootstrap/Col";
 import Nav from "react-bootstrap/Nav";
 import { Link } from "react-router-dom";
 import styles from "../../styles/components/userCard.module.scss";
 
-export const UserCardInfo = () => {
+const UserCardInfo = () => {
   return (
     <Tab.Container id="user-card" defaultActiveKey="statistics">
       <Col>
@@ -58,3 +58,5 @@ export const UserCardInfo = () => {
     </Tab.Container>
   );
 };
+
+export default UserCardInfo;

@@ -1,7 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import styles from "../../styles/components/startQuizModal.module.scss";
 import { useActiveNavStore } from "../../store/store";
-import OwlComponent from "./OwlComponent";
+import OwlComponent from "./owlComponent";
 
 const WarnUserText = ({ text }: { text: string }) => {
   const navidate = useNavigate();

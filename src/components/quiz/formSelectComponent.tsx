@@ -1,7 +1,7 @@
 import { Form } from "react-bootstrap";
 import styles from "../../styles/components/quizform.module.scss";
 
-export const FormSelectComponent = ({
+const FormSelectComponent = ({
   fields,
   fieldsName,
   handleChange,
@@ -25,3 +25,5 @@ export const FormSelectComponent = ({
     </Form.Select>
   );
 };
+
+export default FormSelectComponent;

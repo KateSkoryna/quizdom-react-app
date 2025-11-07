@@ -4,19 +4,19 @@ import { MdFavoriteBorder } from "react-icons/md";
 import styles from "../../styles/pages/home.module.scss";
 import { UserQuiz } from "../../types/types";
 import { useEffect, useState } from "react";
-import { StartQuizModal } from "./StartQuizModal";
+import StartQuizModal from "./startQuizModal";
 import { MdOutlineFavorite } from "react-icons/md";
 import { useAuthStore } from "../../store/AuthStore";
 import { toggleFavorites } from "../../API/api";
 import { truncateString } from "../../helpers/truncateString";
-import StartQuizButton from "./StartQuizButton";
-import NavigateUserModal from "../common/NavigateUserModal";
+import StartQuizButton from "./startQuizButton";
+import NavigateUserModal from "../common/navigateUserModal";
 
 type QuizMainListItemProps = {
   quiz: UserQuiz;
 };
 
-export const QuizMainListItem = ({
+const QuizMainListItem = ({
   quiz: {
     title,
     complexity,
@@ -120,3 +120,5 @@ export const QuizMainListItem = ({
     </Card.Body>
   );
 };
+
+export default QuizMainListItem;

@@ -1,10 +1,10 @@
 import { Button, Form } from "react-bootstrap";
 import { useFieldArray, useFormContext } from "react-hook-form";
-import { FormCheckboxComponent } from "./FormCheckboxComponent";
+import FormCheckboxComponent from "./formCheckboxComponent";
 import addClassnameToText from "../../helpers/addClassnameToText";
 import styles from "../../styles/components/quizform.module.scss";
 
-export const AnswersFormComponent = ({ nestIndex }: { nestIndex: number }) => {
+const AnswersFormComponent = ({ nestIndex }: { nestIndex: number }) => {
   const {
     control,
     register,
@@ -77,3 +77,5 @@ export const AnswersFormComponent = ({ nestIndex }: { nestIndex: number }) => {
     </Form.Group>
   );
 };
+
+export default AnswersFormComponent;

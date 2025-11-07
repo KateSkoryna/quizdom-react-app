@@ -2,16 +2,15 @@
 @use "../abstracts" as *;
 
 .loginSection {
-  margin-top: $margin-2xl;
-  padding-top: $padding-lg;
-  padding-bottom: $padding-lg;
+  margin-top: 4rem;
+  @extend %container;
 }
 
 .loginCard {
-  max-width: $container-sm;
+  max-width: 600px;
   margin-left: auto;
   margin-right: auto;
-  padding: $padding-md;
+  padding: 2rem;
 }
 
 .errorText {
@@ -23,8 +22,8 @@
   max-width: 200px;
   margin-left: auto;
   margin-right: auto;
-  margin-bottom: $margin-lg;
-  text-align: $text-center;
+  margin-bottom: 3rem;
+  text-align: center;
   color: $text-primary;
 }
 

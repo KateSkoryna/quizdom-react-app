@@ -8,7 +8,7 @@ import Offcanvas from "react-bootstrap/Offcanvas";
 import { useEffect } from "react";
 import styles from "../../styles/components/navbar.module.scss";
 import CloseButton from "react-bootstrap/CloseButton";
-import { LogoutComponent } from "../user/LogoutComponent";
+import LogoutComponent from "../user/logoutComponent";
 import { useActiveNavStore, useOpenOffCanvas } from "../../store/store";
 import { useAuthStore } from "../../store/AuthStore";
 

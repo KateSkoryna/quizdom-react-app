@@ -1,6 +1,6 @@
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
-import WarnUserText from "./WarnUserText";
+import WarnUserText from "./warnUserText";
 
 function NavigateUserModal({
   handleClose,

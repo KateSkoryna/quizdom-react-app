@@ -3,7 +3,7 @@ import styles from "../../styles/pages/news.module.scss";
 import { truncateString } from "../../helpers/truncateString";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 
-export const NewsListItem = ({
+const NewsListItem = ({
   image,
   title,
   description,
@@ -29,3 +29,5 @@ export const NewsListItem = ({
     </Card>
   );
 };
+
+export default NewsListItem;

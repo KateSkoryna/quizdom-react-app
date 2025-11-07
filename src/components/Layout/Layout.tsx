@@ -1,16 +1,16 @@
-import NavbarContainer from "./Navbar";
+import NavbarContainer from "./navbar";
 import { Outlet, useNavigate } from "react-router-dom";
-import { Footer } from "./Footer";
+import Footer from "./footer";
 import { Suspense } from "react";
-import Loader from "../common/Loader";
+import Loader from "../common/loader";
 import { ErrorBoundary } from "react-error-boundary";
-import ErrorFallbackComponent from "../common/ErrorFallbackComponent";
+import ErrorFallback from "../common/fallback";
 
 function Layout() {
   const navigate = useNavigate();
   return (
     <ErrorBoundary
-      FallbackComponent={ErrorFallbackComponent}
+      FallbackComponent={ErrorFallback}
       onReset={() => navigate("/")}
     >
       <Suspense fallback={<Loader />}>

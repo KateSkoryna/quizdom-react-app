@@ -2,9 +2,9 @@ import Accordion from "react-bootstrap/Accordion";
 import { UserLocalQuiz } from "../../types/types";
 import styles from "../../styles/components/userQuiz.module.scss";
 import { useAuthStore } from "../../store/AuthStore";
-import DeleteQuizComponent from "../quiz/DeleteQuizComponent";
+import DeleteQuizComponent from "../quiz/deleteQuizComponent";
 
-export const UserQuizListItem = ({
+const UserQuizListItem = ({
   quiz,
   eventKey,
 }: {
@@ -37,3 +37,5 @@ export const UserQuizListItem = ({
     </Accordion.Item>
   );
 };
+
+export default UserQuizListItem;

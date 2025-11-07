@@ -4,7 +4,7 @@ import { QUIZ_CATEGORY } from "../../const/const";
 
 const entries = Object.entries(QUIZ_CATEGORY);
 
-export const FormCategoryComponent = ({ fieldName }: { fieldName: string }) => {
+const FormCategoryComponent = ({ fieldName }: { fieldName: string }) => {
   const { register } = useFormContext();
   return (
     <Form.Group className="mb-2" controlId="category">
@@ -20,3 +20,5 @@ export const FormCategoryComponent = ({ fieldName }: { fieldName: string }) => {
     </Form.Group>
   );
 };
+
+export default FormCategoryComponent;

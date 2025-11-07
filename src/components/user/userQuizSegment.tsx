@@ -2,9 +2,9 @@ import { UserQuiz } from "../../types/types";
 import { getQuizesById } from "../../API/api";
 import { useEffect, useState } from "react";
 import { useAuthStore } from "../../store/AuthStore";
-import UserQuizList from "./UserQuizList";
+import UserQuizList from "./userQuizList";
 
-export const UserQuizSegment = () => {
+const UserQuizSegment = () => {
   const [userQuizes, setUserQuizes] = useState<UserQuiz[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -40,3 +40,5 @@ export const UserQuizSegment = () => {
     </>
   );
 };
+
+export default UserQuizSegment;

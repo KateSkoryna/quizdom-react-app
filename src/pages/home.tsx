@@ -1,5 +1,5 @@
-import HeroContainer from "../components/layout/HeroContainer";
-import QuizContainer from "../components/quiz/QuizContainer";
+import HeroContainer from "../components/layout/heroContainer";
+import QuizContainer from "../components/quiz/quizContainer";
 
 const HomePage = () => {
   return (

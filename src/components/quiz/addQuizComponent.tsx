@@ -1,8 +1,8 @@
 import { useOpenQuizModal } from "../../store/store";
-import { QuizModal } from "./QuizModal";
+import QuizModal from "./quizModal";
 import { Button, Container } from "react-bootstrap";
 
-export const AddQuizComponent = () => {
+const AddQuizComponent = () => {
   const show = useOpenQuizModal((state) => state.show);
   const handleModal = useOpenQuizModal((state) => state.setShow);
 
@@ -19,3 +19,5 @@ export const AddQuizComponent = () => {
     </Container>
   );
 };
+
+export default AddQuizComponent;

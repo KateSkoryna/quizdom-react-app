@@ -1,6 +1,6 @@
 import { Container, Card } from "react-bootstrap";
 import SignupForm from "../components/forms/signUpForm";
-import styles from "../../styles/pages/signup.module.scss";
+import styles from "../styles/pages/signup.module.scss";
 
 const SignupPage = () => {
   return (

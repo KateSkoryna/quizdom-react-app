@@ -1,8 +1,8 @@
-import { AddQuizComponent } from "../quiz/AddQuizComponent";
-import { UserQuizSegment } from "./UserQuizSegment";
+import AddQuizComponent from "../quiz/addQuizComponent";
+import UserQuizSegment from "./userQuizSegment";
 import styles from "../../styles/components/userQuize.module.scss";
 
-export const UserQuizesComponent = () => {
+const UserQuizesComponent = () => {
   return (
     <div className={styles.container}>
       <h5 className="mb-3 text-center">My Quizes</h5>
@@ -11,3 +11,5 @@ export const UserQuizesComponent = () => {
     </div>
   );
 };
+
+export default UserQuizesComponent;

@@ -5,8 +5,8 @@ import { ListGroup } from "react-bootstrap";
 import { useRef, useState } from "react";
 import styles from "../../styles/components/startQuizModal.module.scss";
 import { useAuthStore } from "../../store/AuthStore";
-import WarnUserText from "../common/WarnUserText";
-import OwlComponent from "../common/OwlComponent";
+import WarnUserText from "../common/warnUserText";
+import OwlComponent from "../common/owlComponent";
 
 type StartQuizModalProps = {
   show: boolean;
@@ -14,7 +14,7 @@ type StartQuizModalProps = {
   questions: Question[];
 };
 
-export const StartQuizModal = ({
+const StartQuizModal = ({
   show,
   handleClose,
   questions,
@@ -177,3 +177,5 @@ export const StartQuizModal = ({
     </Modal>
   );
 };
+
+export default StartQuizModal;

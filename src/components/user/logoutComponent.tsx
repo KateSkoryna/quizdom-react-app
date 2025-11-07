@@ -5,7 +5,7 @@ import styles from "../../styles/components/logout.module.scss";
 import { useActiveNavStore, useOpenOffCanvas } from "../../store/store";
 import { useAuthStore } from "../../store/AuthStore";
 
-export const LogoutComponent = ({
+const LogoutComponent = ({
   avatar,
   name,
 }: {
@@ -56,3 +56,5 @@ export const LogoutComponent = ({
     </Nav>
   );
 };
+
+export default LogoutComponent;

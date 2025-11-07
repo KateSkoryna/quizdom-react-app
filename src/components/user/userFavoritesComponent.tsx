@@ -2,9 +2,9 @@ import { useEffect, useState } from "react";
 import { getFavoriteQuizes } from "../../API/api";
 import { useAuthStore } from "../../store/AuthStore";
 import { UserQuiz } from "../../types/types";
-import UserQuizList from "./UserQuizList";
+import UserQuizList from "./userQuizList";
 
-export const UserFavoritesComponent = () => {
+const UserFavoritesComponent = () => {
   const [userFavorites, setUserFavorites] = useState<UserQuiz[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const currentUser = useAuthStore((state) => state.currentUser);
@@ -36,3 +36,5 @@ export const UserFavoritesComponent = () => {
     </div>
   );
 };
+
+export default UserFavoritesComponent;

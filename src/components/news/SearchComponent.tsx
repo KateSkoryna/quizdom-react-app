@@ -12,7 +12,7 @@ const initState = {
   category: "",
 };
 
-export const SearchComponent = ({ categories }: { categories: string[] }) => {
+const SearchComponent = ({ categories }: { categories: string[] }) => {
   const [searchParams, setSearchParams] = useSearchParams(initState);
   const [query, setQuery] = useState(searchParams.get("query") ?? "");
   const [category, setCategory] = useState(searchParams.get("category") ?? "");
@@ -82,3 +82,5 @@ export const SearchComponent = ({ categories }: { categories: string[] }) => {
     </Container>
   );
 };
+
+export default SearchComponent;
