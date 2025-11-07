@@ -12,6 +12,7 @@ import { CurrentUser, UserData } from "../types/types";
 
 interface AuthStore {
   currentUser: CurrentUser | null;
+  isAuthLoading: boolean;
   setCurrentUser: (user: CurrentUser | null) => void;
   signup: (values: UserData) => Promise<UserCredential>;
   login: (email: string, password: string) => Promise<UserCredential>;
@@ -21,6 +22,7 @@ interface AuthStore {
 
 export const useAuthStore = create<AuthStore>((set) => ({
   currentUser: null,
+  isAuthLoading: true,
 
   setCurrentUser: (user) => set({ currentUser: user }),
 
@@ -40,6 +42,7 @@ export const useAuthStore = create<AuthStore>((set) => ({
   getUser: async () => {
     try {
       if (!auth.currentUser) {
+        set({ isAuthLoading: false });
         return;
       }
       const user = await getCurrentUser(auth.currentUser.uid);
@@ -49,12 +52,15 @@ export const useAuthStore = create<AuthStore>((set) => ({
           id: auth.currentUser!.uid,
           dateOfBirth: user.data().dateOfBirth.toDate(),
         };
-        set({ currentUser });
+        set({ currentUser, isAuthLoading: false });
+      } else {
+        set({ isAuthLoading: false });
       }
     } catch (error: unknown) {
       if (error instanceof Error) {
         console.error(error.message);
       }
+      set({ isAuthLoading: false });
     }
   },
 }));
