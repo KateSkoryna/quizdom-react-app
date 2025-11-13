@@ -2,11 +2,8 @@ import { Button } from "react-bootstrap";
 import Card from "react-bootstrap/Card";
 
 const StartQuizButton = ({ handleModal }: { handleModal: () => void }) => {
-  const handleShowModal = () => {
-    handleModal();
-  };
   return (
-    <Card.Link onClick={handleShowModal} as={Button}>
+    <Card.Link onClick={handleModal} as={Button}>
       Start Quiz
     </Card.Link>
   );
