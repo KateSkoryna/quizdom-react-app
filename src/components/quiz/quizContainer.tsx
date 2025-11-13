@@ -1,20 +1,20 @@
-import { useLoaderData, useNavigation } from "react-router-dom";
 import QuizMainList from "./quizMainList";
-import { UserQuiz } from "../../types/types";
 import AddQuizComponent from "./addQuizComponent";
 import { useAuthStore } from "../../store/AuthStore";
+import { useQuizesStore } from "../../store/quizeStore";
 import SearchQuizComponent from "./searchQuizComponent";
 import Loader from "../common/loader";
 
 const QuizContainer = () => {
-  const navigation = useNavigation();
-  const quizes = useLoaderData() as UserQuiz[];
+  const quizes = useQuizesStore((state) => state.quizes);
+  const isLoading = useQuizesStore((state) => state.isLoading);
   const currentUser = useAuthStore((state) => state.currentUser);
+
   return (
     <>
       <SearchQuizComponent />
       {currentUser && <AddQuizComponent />}
-      {navigation.state === "loading" ? (
+      {isLoading ? (
         <Loader />
       ) : (
         <QuizMainList quizes={quizes} />
