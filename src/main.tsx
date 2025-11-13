@@ -6,11 +6,7 @@ import {
   Navigate,
 } from "react-router-dom";
 import "./styles/index.scss";
-import {
-  getAllQuizes,
-  getMediaNews,
-  getQuizByCategoryAndComplexity,
-} from "./API/api";
+import { getMediaNews } from "./API/api";
 
 const Layout = lazy(() => import("./components/layout/layout"));
 const UserPage = lazy(() => import("./pages/user"));
@@ -35,22 +31,6 @@ const router = createBrowserRouter(
         {
           path: "quizes",
           element: <HomePage />,
-          loader: async ({ request }) => {
-            const url = new URL(request.url);
-            const searchCategory = url.searchParams.get("category");
-            const searchComplexity = url.searchParams.get("complexity");
-
-            const queryData = {
-              category: searchCategory,
-              complexity: searchComplexity,
-            };
-            if (!searchCategory && !searchComplexity) {
-              return await getAllQuizes();
-            }
-            if (searchCategory || searchComplexity) {
-              return await getQuizByCategoryAndComplexity(queryData);
-            }
-          },
         },
         {
           path: "about",
