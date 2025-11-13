@@ -1,7 +1,6 @@
 import { Button, Card } from "react-bootstrap";
 import { useAuthStore } from "../../store/AuthStore";
-import { MdOutlineAddAPhoto } from "react-icons/md";
-import styles from "../../styles/components/userCard.module.scss";
+import styles from "../../styles/pages/user.module.scss";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { storage } from "../../firebase";
 import { useEffect, useState } from "react";
@@ -95,10 +94,10 @@ const UserCardData = () => {
     <Card className={styles.card}>
       <Card.Body>
         <label className={styles.inputUpload}>
-          <MdOutlineAddAPhoto className={styles.imgChgangeIcon} />
           <input
             type="file"
             onChange={(files) => handleSelectedFile(files.target.files)}
+            aria-label="Upload profile photo"
           />
         </label>
         <Card.Img
