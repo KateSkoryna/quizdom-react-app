@@ -4,6 +4,7 @@
 .footerContainer {
   display: flex;
   flex-direction: column;
+  gap: 10px;
   color: #fff;
 
   @media screen and (min-width: 998px) {
@@ -15,25 +16,28 @@
 .footerNavbar {
   background-color: #00093c;
   font-size: 16px;
-  padding-top: 5px;
-  padding-bottom: 5px;
+  padding-top: 10px;
+  padding-bottom: 10px;
 
   @media screen and (min-width: 768px) {
     font-size: 14px;
-    padding-top: 10px;
-    padding-bottom: 10px;
+    padding-top: 16px;
+    padding-bottom: 16px;
   }
 }
 
 .footerContactNavbar {
   display: flex;
   flex-direction: row !important;
-  justify-items: center;
-  width: 300px;
+  justify-content: space-between;
+  width: 100%;
 
-  @media screen and (max-width: 768px) {
-    width: 100%;
-    margin-bottom: 10px;
+  @media screen and (min-width: 768px) {
+    width: 33.33%;
+  }
+
+  @media screen and (min-width: 998px) {
+    width: 10%;
   }
 }
 
@@ -56,15 +60,12 @@
   text-align: center;
   padding: 0;
   border: transparent;
-}
-
-.footerContactLink:hover {
-  border: transparent;
-}
-
-.footerIcon {
   width: 30px;
   height: 30px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  transition: filter 0.3s ease;
 
   @media screen and (min-width: 768px) {
     width: 20px;
@@ -72,6 +73,24 @@
   }
 }
 
-.footerIcon:hover {
-  color: #f7941d;
+.footerContactLink:hover {
+  border: transparent;
+  filter: brightness(0) saturate(100%) invert(64%) sepia(85%) saturate(1500%)
+    hue-rotate(1deg) brightness(100%) contrast(97%);
+}
+
+.linkedinIcon {
+  background-image: url("../../assets/linkedin.svg");
+}
+
+.githubIcon {
+  background-image: url("../../assets/github.svg");
+}
+
+.phoneIcon {
+  background-image: url("../../assets/telephone.svg");
+}
+
+.emailIcon {
+  background-image: url("../../assets/email.svg");
 }
