@@ -16,10 +16,10 @@ const FormSelectComponent = ({
     <Form.Select
       className={styles.selectCategory}
       onChange={(e) => handleChange(e.target.value)}
-      defaultValue={`Open ${fieldsName} menu`}
-      name="fieldsName"
+      defaultValue="All"
+      name={fieldsName}
     >
-      <option>{`Open ${fieldsName} menu`}</option>
+      <option>All</option>
       {fields.map((field) => (
         <option key={field} value={field}>
           {field}

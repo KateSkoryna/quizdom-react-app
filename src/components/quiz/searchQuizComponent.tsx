@@ -23,11 +23,14 @@ const SearchQuizComponent = () => {
       setError(true);
       return;
     }
-    setSearchParams({ category, complexity });
+    const params: Record<string, string> = {};
+    if (category) params.category = category;
+    if (complexity) params.complexity = complexity;
+    setSearchParams(params);
   };
 
   const handleChangeCategory = (value: string) => {
-    if (value === "Open category menu") {
+    if (value === "All") {
       setCategory("");
       return;
     }
@@ -36,7 +39,7 @@ const SearchQuizComponent = () => {
   };
 
   const handleChangeComplexity = (value: string) => {
-    if (value === "Open complexity menu") {
+    if (value === "All") {
       setComplexity("");
       return;
     }
