@@ -6,8 +6,8 @@ const Loader = () => {
     <div className={styles.loaderContainer}>
       <Grid
         visible={true}
-        height="60"
-        width="60"
+        height="40"
+        width="40"
         color="#F7941D"
         ariaLabel="grid-loading"
         radius="12.5"
