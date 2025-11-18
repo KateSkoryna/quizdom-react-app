@@ -28,6 +28,7 @@ export interface CurrentUser {
   avarageScore: number;
   userInfo: string;
   favorites: string[];
+  location?: string;
 }
 
 export interface UserData {
