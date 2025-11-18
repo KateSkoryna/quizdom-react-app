@@ -1,22 +1,6 @@
 @use "../settings" as *;
 @use "../abstracts" as *;
 
-.errorText {
-  visibility: hidden;
-}
-
-.selectCategory {
-  width: 100%;
-  margin-bottom: 10px;
-
-  @media screen and (min-width: 768px) {
-    width: 50%;
-    margin-right: 10px;
-    margin-bottom: 0;
-  }
-}
-
-
 .checkbox {
   display: inline-block;
 }
@@ -76,4 +60,3 @@
   > .checkboxIcon {
   opacity: 1;
 }
-
