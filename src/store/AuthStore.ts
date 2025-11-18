@@ -55,7 +55,7 @@ export const useAuthStore = create<AuthStore>((set) => ({
         const currentUser: CurrentUser = {
           ...(user.data() as CurrentUser),
           id: auth.currentUser!.uid,
-          dateOfBirth: user.data().dateOfBirth.toDate(),
+          dateOfBirth: new Date(user.data().dateOfBirth),
         };
         set({ currentUser, isAuthLoading: false });
       } else {

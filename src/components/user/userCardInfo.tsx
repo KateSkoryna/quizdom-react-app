@@ -10,11 +10,11 @@ import styles from "../../styles/pages/user.module.scss";
 const UserCardInfo = () => {
   return (
     <Tab.Container id="user-card" defaultActiveKey="statistics">
-      <Col>
+      <Col className={styles.userTabsContainer}>
         <Nav variant="tabs" className="p-0" fill>
           <Nav.Item>
             <Nav.Link
-              className={styles.show}
+              className={styles.inactive}
               as={Link}
               to="#statistics"
               eventKey="statistics"
@@ -24,7 +24,7 @@ const UserCardInfo = () => {
           </Nav.Item>
           <Nav.Item>
             <Nav.Link
-              className={styles.show}
+              className={styles.inactive}
               as={Link}
               to="#my-quizes"
               eventKey="my-quizes"
@@ -34,7 +34,7 @@ const UserCardInfo = () => {
           </Nav.Item>
           <Nav.Item>
             <Nav.Link
-              className={styles.show}
+              className={styles.inactive}
               as={Link}
               to="#favorites"
               eventKey="favorites"

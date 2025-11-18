@@ -2,62 +2,119 @@
 @use "../abstracts" as *;
 
 .userSection {
-  margin-top: 65px;
-  padding: 20px 10px;
-}
+  margin-top: 85px;
+  padding: 0 10px;
+  min-height: calc(100vh - 85px);
 
-.userSectionCard {
-  display: flex;
-  display: column;
-
-  @media screen and (min-width: 768px) {
-    flex-direction: row;
-    padding: 10px 0;
+  @media (max-width: 768px) {
+    padding-bottom: 60px;
   }
 }
 
-.userCardInfo:first-child {
-  margin-right: 10px;
+.userSectionCard {
+  border: none;
+}
+
+.userStatisticContainer {
+  border: none;
 }
 
 .card {
   width: 100%;
-  border-color: #fff;
   text-align: center;
-  margin-bottom: 20px;
   position: relative;
-  @media screen and (min-width: 768px) {
-    width: 50%;
-    margin-right: 10px;
-    margin-bottom: 0;
-  }
-
-  @media screen and (min-width: 998px) {
-    width: 30%;
-  }
 }
 
 .cardTitle {
-  font-size: 24px;
+  font-size: 18px;
   font-weight: 700;
   margin-bottom: 10px;
-  margin-top: 20px;
+
+  @media (min-width: 999px) {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    margin-top: 20px;
+  }
 }
 
 .cardText {
   color: #000;
-  font-size: 18px;
+  font-size: 12px;
+
+  @media (min-width: 768px) {
+    font-size: 16px;
+  }
 }
 
 .cardText:not(:last-child) {
   margin-bottom: 10px;
 }
 
-.cardImg {
-  width: 240px;
-  height: 240px;
-  text-align: center;
-  border-radius: 50%;
+.userImage {
+  position: relative;
+  display: inline-block;
+  border-radius: 10%;
+  width: 200px;
+  height: 200px;
+
+  @media (min-width: 768px) {
+    width: 240px;
+    height: 240px;
+  }
+
+  @media (min-width: 999px) {
+    width: 280px;
+    height: 280px;
+  }
+
+  input[type="file"] {
+    display: none;
+  }
+
+  .cardImg {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 10%;
+  }
+
+  .inputUpload {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    padding: 0;
+    width: 24px;
+    height: 24px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    color: gray;
+    background-image: url("../../assets/photo.svg");
+    background-position: center;
+    background-repeat: no-repeat;
+
+    @media (min-width: 768px) {
+      width: 32px;
+      height: 32px;
+    }
+  }
+}
+.userCardContainer {
+  gap: 20px;
+  @media (max-width: 767px) {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+
+    & > div:not(:last-child) {
+      flex: 1;
+    }
+
+    & > :last-child {
+      flex-basis: 100%;
+    }
+  }
 }
 
 .imgChangeBtn {
@@ -70,40 +127,32 @@
   border: none;
 }
 
-.imgChgangeIcon {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 30px;
-  height: 30px;
-  align-items: center;
+.inactive {
+  color: black;
 }
 
-input[type="file"] {
-  display: none;
-}
-
-.inputUpload {
-  position: absolute;
-  top: 0;
-  left: 10px;
+.editBtn {
   padding: 0;
-  width: 36px;
-  height: 36px;
+  width: 24px;
+  height: 24px;
   border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  color: gray;
-  background-image: url("../../assets/photo.svg");
+  background-color: transparent;
+  background-image: url("../../assets/edit.svg");
   background-position: center;
   background-repeat: no-repeat;
-}
+  background-size: contain;
+  cursor: pointer;
+  margin-left: 8px;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+  z-index: 10;
 
-.userCardInfo {
-  max-width: 100%;
-}
+  &:hover {
+    opacity: 1;
+  }
 
-.show {
-  color: #f7941d;
+  &:focus {
+    outline: 2px solid #0d6efd;
+    outline-offset: 2px;
+  }
 }
