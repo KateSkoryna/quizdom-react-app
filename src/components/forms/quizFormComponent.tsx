@@ -6,7 +6,7 @@ import FormRangeComponent from "./formRangeComponent";
 import FormCategoryComponent from "../quiz/formCategoryComponent";
 import QuestionsFormComponent from "./questionsFormComponent";
 import addClassnameToText from "../../helpers/addClassnameToText";
-import styles from "../../styles/components/quizform.module.scss";
+import styles from "../../styles/pages/home.module.scss";
 import { useSetQuizForm } from "../../store/store";
 import { useAuthStore } from "../../store/AuthStore";
 import { addQuiz } from "../../API/api";
