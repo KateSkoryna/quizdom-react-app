@@ -1,14 +1,13 @@
 import Card from "react-bootstrap/Card";
 import styles from "../../styles/pages/home.module.scss";
-import hero from "../../assets/hero-big.jpg";
-import { LazyLoadImage } from "react-lazy-load-image-component";
 import { Container } from "react-bootstrap";
 import BlockQuote from "../common/blockQuote";
+import ResponsiveImage from "../common/responsiveImage";
 
 const HeroContainer = () => {
   return (
     <Card className={styles.heroCard}>
-      <LazyLoadImage src={hero} className={styles.heroImg} alt="hero" />
+      <ResponsiveImage className={styles.heroImg} alt="hero" />
       <Card.ImgOverlay className={styles.overlay}>
         <Container>
           <Card.Body className={styles.heroCardBody}>
