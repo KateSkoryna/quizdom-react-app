@@ -136,21 +136,33 @@
 .heroCard {
   margin-top: 60px;
   max-height: 60vh;
-  margin-top: 60px;
   border: 0;
 
   @media screen and (min-width: 768px) {
     min-height: 400px;
   }
+
+  // Ensure picture element takes full width
+  picture {
+    display: block;
+    width: 100%;
+  }
 }
 
 .heroImg {
   width: 100%;
-  height: 400px;
-  background-repeat: no-repeat;
-  background-size: contain;
+  height: 300px;
   object-position: 70% 30%;
   object-fit: cover;
+  display: block;
+
+  @media screen and (min-width: 768px) {
+    height: 400px;
+  }
+
+  @media screen and (min-width: 1024px) {
+    height: 500px;
+  }
 }
 
 .overlay {
