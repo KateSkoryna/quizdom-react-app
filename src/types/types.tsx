@@ -10,11 +10,15 @@ export interface Article {
   image?: string;
 }
 
-export type Gender = "male" | "female";
-
 export interface LoginUser {
   email: string;
   password: string;
+}
+
+export enum GENDER {
+  MALE = "male",
+  FEMALE = "female",
+  NEUTRAL = "neutral",
 }
 
 export interface CurrentUser {
@@ -23,7 +27,7 @@ export interface CurrentUser {
   email: string;
   avatar: string;
   dateOfBirth: Date;
-  gender: Gender;
+  gender: GENDER;
   password: string;
   avarageScore: number;
   userInfo: string;
@@ -35,7 +39,7 @@ export interface UserData {
   name: string;
   email: string;
   dateOfBirth: Date;
-  gender: string;
+  gender: GENDER;
   password: string;
   confirmPassword: string;
 }
@@ -131,9 +135,3 @@ export type UserLocalQuiz = {
 };
 
 export type UserQuiz = UserLocalQuiz & QuizId;
-
-export enum GENDER {
-  MALE = "male",
-  FEMALE = "female",
-  NEUTRAL = "neutral",
-}
