@@ -55,8 +55,8 @@
   position: relative;
   display: inline-block;
   border-radius: 10%;
-  width: 200px;
-  height: 200px;
+  width: 120px;
+  height: 120px;
 
   @media (min-width: 768px) {
     width: 240px;
@@ -101,19 +101,14 @@
   }
 }
 .userCardContainer {
-  gap: 20px;
-  @media (max-width: 767px) {
-    display: flex;
-    flex-wrap: wrap;
+  gap: 8px;
+
+  @media (min-width: 998px) {
+    gap: 20px;
+  }
+
+  @media (min-width: 768px) {
     gap: 12px;
-
-    & > div:not(:last-child) {
-      flex: 1;
-    }
-
-    & > :last-child {
-      flex-basis: 100%;
-    }
   }
 }
 
