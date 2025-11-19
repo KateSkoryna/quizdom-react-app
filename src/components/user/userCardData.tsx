@@ -8,7 +8,7 @@ import { useImageUpload } from "../../hooks/useImageUpload";
 import { UserFormField } from "./userFormField";
 import { AvatarUpload } from "./avatarUpload";
 import { UserEditActions } from "./userEditActions";
-import { GENDER, Gender } from "../../types/types";
+import { GENDER } from "../../types/types";
 import { UserBirthFormField } from "./userBirthFormField";
 
 interface UserFormData {
@@ -111,7 +111,7 @@ const UserCardData = () => {
           ...currentUser,
           name: data.name,
           dateOfBirth: data.dateOfBirth,
-          gender: data.gender as Gender,
+          gender: data.gender as GENDER,
           location: data.location,
           avatar: downloadURL || currentUser.avatar,
         });
