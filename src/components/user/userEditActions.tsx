@@ -1,5 +1,6 @@
 import { Button, Card } from "react-bootstrap";
 import ProgressBar from "react-bootstrap/ProgressBar";
+import styles from "../../styles/pages/user.module.scss";
 
 interface UserEditActionsProps {
   isEditMode: boolean;
@@ -52,9 +53,8 @@ export const UserEditActions = ({
         </div>
       ) : (
         <Button
-          className="w-100"
+          className={`w-100 ${styles.editProfileBtn}`}
           onClick={onEdit}
-          variant="outline-primary"
         >
           Edit Profile
         </Button>
