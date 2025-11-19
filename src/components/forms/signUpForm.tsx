@@ -3,10 +3,10 @@ import { Form, Button } from "react-bootstrap";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import { Controller, useForm } from "react-hook-form";
-import styles from "../../styles/pages/signup.module.scss";
+import styles from "../../styles/pages/auth.module.scss";
 import FormFooter from "./formFooter";
 import addClassnameToText from "../../helpers/addClassnameToText";
-import { Gender, UserData } from "../../types/types";
+import { GENDER, UserData } from "../../types/types";
 import { useAuthStore } from "../../store/AuthStore";
 import { useNavigate } from "react-router-dom";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -21,7 +21,7 @@ const initState = {
   name: "",
   email: "",
   dateOfBirth: new Date(),
-  gender: "male" as Gender,
+  gender: GENDER.MALE,
   password: "",
   confirmPassword: "",
 };
@@ -39,7 +39,7 @@ const SignupForm = () => {
     setError,
     reset,
     formState: { errors },
-  } = useForm({
+  } = useForm<UserData>({
     mode: "onTouched",
     reValidateMode: "onSubmit",
     defaultValues: initState,
@@ -56,7 +56,7 @@ const SignupForm = () => {
         email: values.email,
         avatar: avatar,
         dateOfBirth: values.dateOfBirth,
-        gender: values.gender as Gender,
+        gender: values.gender as GENDER,
         password: hashedPassword,
         avarageScore: 0,
         favorites: [],
@@ -87,7 +87,7 @@ const SignupForm = () => {
           ? addClassnameToText("text-danger", errors.name.message)
           : addClassnameToText(styles.errorText)}
       </Form.Group>
-      <Form.Group className="mb-2" controlId="formBasicEmail">
+      <Form.Group controlId="formBasicEmail">
         <Form.Label>Email</Form.Label>
         <Form.Control
           type="email"
@@ -101,7 +101,7 @@ const SignupForm = () => {
       </Form.Group>
       <Row>
         <Col xs={12} sm={12} md={6} lg={6}>
-          <Form.Group className="mb-2" controlId="dateOfBirth">
+          <Form.Group controlId="dateOfBirth">
             <Form.Label className="d-block">Date of Birth</Form.Label>
             <Controller
               name="dateOfBirth"
@@ -116,7 +116,7 @@ const SignupForm = () => {
           </Form.Group>
         </Col>
         <Col xs={12} sm={12} md={6} lg={6}>
-          <Form.Group className="mb-2" controlId="formBasicGender">
+          <Form.Group controlId="formBasicGender">
             <Form.Label>Gender</Form.Label>
             <Form.Select
               className="form-select-custom"
@@ -124,8 +124,9 @@ const SignupForm = () => {
               {...register("gender")}
             >
               <option>Choose your identity</option>
-              <option value="male">Male</option>
-              <option value="female">Female</option>
+              <option value={GENDER.MALE}>Male</option>
+              <option value={GENDER.FEMALE}>Female</option>
+              <option value={GENDER.NEUTRAL}>Neutral</option>
             </Form.Select>
             {errors.gender
               ? addClassnameToText("text-danger", errors.gender.message)
@@ -133,7 +134,7 @@ const SignupForm = () => {
           </Form.Group>
         </Col>
       </Row>
-      <Form.Group className="mb-2" controlId="formBasicPassword">
+      <Form.Group controlId="formBasicPassword">
         <Form.Label>Password</Form.Label>
         <Form.Control
           type="password"
@@ -145,7 +146,7 @@ const SignupForm = () => {
           ? addClassnameToText("text-danger", errors.password.message)
           : addClassnameToText(styles.errorText)}
       </Form.Group>
-      <Form.Group className="mb-2" controlId="confirmBasicPassword">
+      <Form.Group controlId="confirmBasicPassword">
         <Form.Label>Confirm Password</Form.Label>
         <Form.Control
           type="password"
@@ -158,7 +159,7 @@ const SignupForm = () => {
           : addClassnameToText(styles.errorText)}
       </Form.Group>
       <Button variant="primary" type="submit" className={styles.formBtn}>
-        Submit
+        Sign Up
       </Button>
       <FormFooter
         mainText="Already have an account? "

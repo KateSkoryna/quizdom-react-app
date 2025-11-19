@@ -2,15 +2,15 @@ import { useState } from "react";
 import { Container, Form, Button, Card } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { LoginUser } from "../types/types";
-import styles from "../styles/pages/login.module.scss";
+import styles from "../styles/pages/auth.module.scss";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { loginSchema } from "../helpers/schema";
 import { useNavigate } from "react-router-dom";
 import { useAuthStore } from "../store/AuthStore";
-import FormFooter from "../components/forms/formFooter";
 import { auth } from "../firebase";
 import bcrypt from "bcryptjs-react";
 import { getCurrentUser } from "../API/api";
+import eyeIcon from "../assets/eye.svg";
 
 const initState = {
   email: "",
@@ -19,6 +19,7 @@ const initState = {
 
 const LoginPage = () => {
   const [currentFormData, setCurrentFormData] = useState(initState);
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
   const login = useAuthStore((state) => state.login);
 
@@ -50,6 +51,7 @@ const LoginPage = () => {
     register,
     handleSubmit,
     setError,
+    watch,
     formState: { errors },
   } = useForm({
     mode: "onTouched",
@@ -58,12 +60,15 @@ const LoginPage = () => {
     resolver: yupResolver(loginSchema),
   });
 
+  const passwordValue = watch("password");
+
   return (
-    <Container className={styles.loginSection}>
-      <Card className={styles.loginCard}>
+    <Container className={styles.authSection}>
+      <div className={styles.bubble3}></div>
+      <Card className={styles.authCard}>
         <h2 className={styles.formTitle}>Log In</h2>
         <Form onSubmit={handleSubmit(onSubmit)}>
-          <Form.Group className="mb-3" controlId="formBasicEmail">
+          <Form.Group controlId="formBasicEmail">
             <Form.Label>Email</Form.Label>
             <Form.Control
               type="email"
@@ -72,7 +77,7 @@ const LoginPage = () => {
               {...register("email", { required: "Email is required" })}
             />
             {errors.email ? (
-              <Form.Text className="text-danger">
+              <Form.Text className="text-danger mt-1 d-block">
                 {errors.email.message}
               </Form.Text>
             ) : (
@@ -81,14 +86,29 @@ const LoginPage = () => {
           </Form.Group>
           <Form.Group controlId="formBasicPassword">
             <Form.Label>Password</Form.Label>
-            <Form.Control
-              type="password"
-              placeholder="Enter your password"
-              autoComplete="password"
-              {...register("password", { required: "Password is required" })}
-            />
+            <div className={styles.passwordWrapper}>
+              <Form.Control
+                type={showPassword ? "text" : "password"}
+                placeholder="Enter your password"
+                autoComplete="current-password"
+                className={styles.passwordInput}
+                {...register("password", { required: "Password is required" })}
+              />
+              {passwordValue && (
+                <button
+                  onClick={() => setShowPassword(!showPassword)}
+                  className={styles.eyeBtn}
+                  type="button"
+                >
+                  <img
+                    src={eyeIcon}
+                    alt={showPassword ? "Hide password" : "Show password"}
+                  />
+                </button>
+              )}
+            </div>
             {errors.password ? (
-              <Form.Text className="text-danger">
+              <Form.Text className="text-danger mt-1 d-block">
                 {errors.password.message}
               </Form.Text>
             ) : (
@@ -96,18 +116,22 @@ const LoginPage = () => {
             )}
           </Form.Group>
           {errors.root ? (
-            <Form.Text className="text-danger">{errors.root.message}</Form.Text>
+            <Form.Text className="text-danger mt-1 d-block">
+              {errors.root.message}
+            </Form.Text>
           ) : (
             <Form.Text className={styles.errorText}>Empty space</Form.Text>
           )}
           <Button variant="primary" type="submit" className={styles.formBtn}>
-            Submit
+            Login
           </Button>
-          <FormFooter
-            mainText="Dont have an account? "
-            text="Sign Up"
-            path="/signup"
-          />
+          <Button
+            variant="outline-primary"
+            className={styles.signupBtn}
+            onClick={() => navigate("/signup")}
+          >
+            Sign Up
+          </Button>
         </Form>
       </Card>
     </Container>
