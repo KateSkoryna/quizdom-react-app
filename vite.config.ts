@@ -15,7 +15,7 @@ export default defineConfig({
       exclude: ["node_modules", "dist"],
     }),
   ],
-  base: "/quizdom-react-app/",
+  base: "/quizdom-react-app",
   define: {
     "process.env": process.env,
   },
