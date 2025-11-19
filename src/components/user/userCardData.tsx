@@ -9,10 +9,11 @@ import { UserFormField } from "./userFormField";
 import { AvatarUpload } from "./avatarUpload";
 import { UserEditActions } from "./userEditActions";
 import { GENDER, Gender } from "../../types/types";
+import { UserBirthFormField } from "./userBirthFormField";
 
 interface UserFormData {
   name: string;
-  dateOfBirth: string;
+  dateOfBirth: Date;
   gender: string;
   location: string;
   imageFile?: File;
@@ -32,13 +33,14 @@ const UserCardData = () => {
     reset,
     watch,
     setValue,
+    control,
     formState: { isDirty },
   } = useForm<UserFormData>({
     defaultValues: {
       name: currentUser?.name || "",
       dateOfBirth: currentUser?.dateOfBirth
-        ? new Date(currentUser.dateOfBirth).toISOString().split("T")[0]
-        : "",
+        ? new Date(currentUser.dateOfBirth)
+        : new Date(),
       gender: currentUser?.gender || "",
       location: currentUser?.location || "",
       imageFile: undefined,
@@ -72,8 +74,8 @@ const UserCardData = () => {
       reset({
         name: currentUser.name,
         dateOfBirth: currentUser.dateOfBirth
-          ? new Date(currentUser.dateOfBirth).toISOString().split("T")[0]
-          : "",
+          ? new Date(currentUser.dateOfBirth)
+          : new Date(),
         gender: currentUser.gender,
         location: currentUser.location || "",
         imageFile: undefined,
@@ -87,11 +89,13 @@ const UserCardData = () => {
     setLoading(true);
     try {
       if (currentUser) {
-        const newDate = new Date(data.dateOfBirth);
-
         const updates = [
           editUser(currentUser.id, "name", data.name),
-          editUser(currentUser.id, "dateOfBirth", newDate.toISOString()),
+          editUser(
+            currentUser.id,
+            "dateOfBirth",
+            data.dateOfBirth.toISOString()
+          ),
           editUser(currentUser.id, "gender", data.gender),
           editUser(currentUser.id, "location", data.location),
         ];
@@ -106,7 +110,7 @@ const UserCardData = () => {
         setCurrentUser({
           ...currentUser,
           name: data.name,
-          dateOfBirth: newDate,
+          dateOfBirth: data.dateOfBirth,
           gender: data.gender as Gender,
           location: data.location,
           avatar: downloadURL || currentUser.avatar,
@@ -126,8 +130,8 @@ const UserCardData = () => {
       reset({
         name: currentUser.name,
         dateOfBirth: currentUser.dateOfBirth
-          ? new Date(currentUser.dateOfBirth).toISOString().split("T")[0]
-          : "",
+          ? new Date(currentUser.dateOfBirth)
+          : new Date(),
         gender: currentUser.gender,
         location: currentUser.location || "",
         imageFile: undefined,
@@ -137,11 +141,6 @@ const UserCardData = () => {
     setIsEditMode(false);
     resetProgress();
   };
-
-  const dateOfBirth = currentUser?.dateOfBirth
-    .toLocaleDateString()
-    .split("/")
-    .join(".");
 
   const genderOptions = [
     { value: GENDER.MALE, label: "Male" },
@@ -159,6 +158,12 @@ const UserCardData = () => {
         />
         <div>
           <UserFormField
+            label="Email"
+            value={currentUser?.email}
+            isEditMode={false}
+            fieldName="email"
+          />
+          <UserFormField
             label="Name"
             value={currentUser?.name}
             isEditMode={isEditMode}
@@ -168,20 +173,12 @@ const UserCardData = () => {
             register={register}
           />
 
-          <UserFormField
-            label="Email"
-            value={currentUser?.email}
-            isEditMode={false}
-            fieldName="email"
-          />
-
-          <UserFormField
+          <UserBirthFormField
             label="Date of Birth"
-            value={dateOfBirth}
+            value={currentUser?.dateOfBirth}
             isEditMode={isEditMode}
+            control={control}
             fieldName="dateOfBirth"
-            fieldType="date"
-            register={register}
           />
 
           <UserFormField

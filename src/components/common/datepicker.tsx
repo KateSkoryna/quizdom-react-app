@@ -1,23 +1,31 @@
 import DatePicker from "react-datepicker";
 import { subYears } from "date-fns";
 import "react-datepicker/dist/react-datepicker.css";
-import { FaCalendarDay } from "react-icons/fa";
 import styles from "../../styles/components/datepicker.module.scss";
+import calendarIconUrl from "../../assets/calendar.svg";
 
 type DatepickerProps = {
   value: Date;
   callback: (date: Date) => void;
+  className?: string;
+  selectedColor?: string;
 };
 
-const DatepickerContainer = ({ value, callback }: DatepickerProps) => {
+const DatepickerContainer = ({
+  value,
+  callback,
+  className,
+  selectedColor = "#f7941d",
+}: DatepickerProps) => {
   return (
     <DatePicker
       showIcon
-      icon={<FaCalendarDay />}
+      icon={<img src={calendarIconUrl} alt="Calendar" width="16" height="16" />}
       toggleCalendarOnIconClick
-      popperPlacement="bottom-start"
-      wrapperClassName={styles.formDateInput}
-      className={styles.formDateInput}
+      popperPlacement="left-start"
+      wrapperClassName={className || styles.formDateInput}
+      className={className || styles.formDateInput}
+      calendarClassName={selectedColor === "#f7941d" ? styles.customCalendar : ""}
       showYearDropdown
       scrollableYearDropdown
       maxDate={subYears(new Date(), 18)}
