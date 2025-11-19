@@ -131,3 +131,9 @@ export type UserLocalQuiz = {
 };
 
 export type UserQuiz = UserLocalQuiz & QuizId;
+
+export enum GENDER {
+  MALE = "male",
+  FEMALE = "female",
+  NEUTRAL = "neutral",
+}
