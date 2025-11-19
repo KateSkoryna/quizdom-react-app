@@ -1,5 +1,5 @@
 import { useOpenQuizModal } from "../../store/store";
-import QuizModal from "./quizModal";
+import QuizModal from "../modal/quizModal";
 import { Button, Container } from "react-bootstrap";
 
 const AddQuizComponent = () => {

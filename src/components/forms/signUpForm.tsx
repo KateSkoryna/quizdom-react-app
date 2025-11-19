@@ -15,7 +15,7 @@ import { doc, setDoc } from "firebase/firestore";
 import { auth, db } from "../../firebase";
 import bcrypt from "bcryptjs-react";
 import { avatar } from "../../helpers/generateRandomAvatar";
-import DatepickerContainer from "./datepicker";
+import DatepickerContainer from "../common/datepicker";
 
 const initState = {
   name: "",

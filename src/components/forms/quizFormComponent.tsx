@@ -3,7 +3,7 @@ import { useForm, FormProvider } from "react-hook-form";
 import { QuizFormState, QuizFormProps } from "../../types/types";
 import { Button, Container } from "react-bootstrap";
 import FormRangeComponent from "./formRangeComponent";
-import FormCategoryComponent from "../quiz/formCategoryComponent";
+import FormCategoryComponent from "./formCategoryComponent";
 import QuestionsFormComponent from "./questionsFormComponent";
 import addClassnameToText from "../../helpers/addClassnameToText";
 import styles from "../../styles/pages/home.module.scss";

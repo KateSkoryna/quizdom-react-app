@@ -4,7 +4,7 @@ import Footer from "./footer";
 import { Suspense } from "react";
 import Loader from "../common/loader";
 import { ErrorBoundary } from "react-error-boundary";
-import ErrorFallback from "../common/fallback";
+import ErrorFallback from "../fallback/fallback";
 
 function Layout() {
   const navigate = useNavigate();

@@ -1,6 +1,6 @@
 import { useState } from "react";
-import NavigateUserModal from "../common/navigateUserModal";
-import FavoriteElement from "./favoriteElement";
+import NavigateUserModal from "./navigateUserModal";
+import FavoriteElement from "../quiz/favoriteElement";
 
 const QuizNoUserModal = ({ id }: { id: string }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);

@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuthStore } from "../../store/AuthStore";
-import AccessDenied from "./accessDenied";
+import AccessDenied from "../fallback/accessDenied";
 import Loader from "./loader";
 
 const ProtectedRoute = ({ children }: { children: JSX.Element }) => {

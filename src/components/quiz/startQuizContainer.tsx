@@ -3,7 +3,7 @@ import { useAuthStore } from "../../store/AuthStore";
 import styles from "../../styles/pages/home.module.scss";
 import StartQuizButton from "./startQuizButton";
 import { Button } from "react-bootstrap";
-import StartQuizModal from "./startQuizModal";
+import StartQuizModal from "../modal/startQuizModal";
 import { Question } from "../../types/types";
 import Card from "react-bootstrap/Card";
 

@@ -2,7 +2,7 @@ import Card from "react-bootstrap/Card";
 import styles from "../../styles/pages/home.module.scss";
 import { UserQuiz } from "../../types/types";
 import { truncateString } from "../../helpers/truncateString";
-import QuizNoUserModal from "./quizNoUserModal";
+import QuizNoUserModal from "../modal/quizNoUserModal";
 import StartQuizContainer from "./startQuizContainer";
 
 type QuizMainListItemProps = {

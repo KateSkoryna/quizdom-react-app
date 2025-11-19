@@ -1,7 +1,7 @@
 import { Button, Container, Form } from "react-bootstrap";
 import styles from "../../styles/pages/home.module.scss";
 import { QUIZ_CATEGORY, COMPLEXITY_VALUES } from "../../const/const";
-import FormSelectComponent from "./formSelectComponent";
+import FormSelectComponent from "../forms/formSelectComponent";
 import { useSearchParams } from "react-router-dom";
 import { useState } from "react";
 
