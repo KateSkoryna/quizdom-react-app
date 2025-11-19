@@ -43,12 +43,48 @@
   font-size: 12px;
 
   @media (min-width: 768px) {
-    font-size: 16px;
+    font-size: 14px;
   }
 }
 
 .cardText:not(:last-child) {
   margin-bottom: 10px;
+}
+
+.birthField {
+  color: $black;
+  font-size: 12px;
+  text-align: left;
+
+  @media (min-width: 768px) {
+    font-size: 14px;
+  }
+
+  &:not(:last-child) {
+    margin-bottom: 10px;
+  }
+}
+
+.cardText,
+.birthField {
+  .form-control,
+  .form-select,
+  input,
+  select {
+    text-align: end !important;
+
+    &:focus {
+      border-color: $primary-color !important;
+      box-shadow: 0 0 0 0.25rem rgba($primary-color, 0.25) !important;
+      outline: none;
+    }
+  }
+}
+
+:global {
+  .progress-bar.bg-primary {
+    background-color: $element-color !important;
+  }
 }
 
 .userImage {
@@ -110,6 +146,10 @@
   @media (min-width: 768px) {
     gap: 12px;
   }
+
+  & ~ input {
+    text-align: end !important;
+  }
 }
 
 .imgChangeBtn {
@@ -149,5 +189,25 @@
   &:focus {
     outline: 2px solid #0d6efd;
     outline-offset: 2px;
+  }
+}
+
+.editProfileBtn {
+  background-color: $element-color;
+  border-color: $element-color;
+  color: $white;
+  transition: all 0.5s ease;
+
+  &:hover {
+    background-color: $element-color;
+    border-color: $element-color;
+    color: $white;
+  }
+
+  &:active,
+  &:focus {
+    background-color: $element-color;
+    border-color: $element-color;
+    color: $white;
   }
 }
