@@ -4,14 +4,13 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import { Controller, useForm } from "react-hook-form";
 import styles from "../../styles/pages/auth.module.scss";
-import FormFooter from "./formFooter";
 import addClassnameToText from "../../helpers/addClassnameToText";
 import { GENDER, UserData } from "../../types/types";
 import { useAuthStore } from "../../store/AuthStore";
 import { useNavigate } from "react-router-dom";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { signupSchema } from "../../helpers/schema";
-import { doc, setDoc } from "firebase/firestore";
+import { doc, setDoc, Timestamp } from "firebase/firestore";
 import { auth, db } from "../../firebase";
 import bcrypt from "bcryptjs-react";
 import { avatar } from "../../helpers/generateRandomAvatar";
@@ -55,26 +54,43 @@ const SignupForm = () => {
         name: values.name,
         email: values.email,
         avatar: avatar,
-        dateOfBirth: values.dateOfBirth,
+        dateOfBirth: Timestamp.fromDate(values.dateOfBirth),
         gender: values.gender as GENDER,
         password: hashedPassword,
         avarageScore: 0,
         favorites: [],
         userInfo: "I'm a new user and I don't have a bio yet.",
       });
+
       setUserData(values);
       if (userData) {
         reset();
       }
       navigate("/user");
-    } catch (error) {
-      setError("root", {
-        message: "Faid to create an account",
-      });
+    } catch (error: any) {
+      const errorMessage = error.message || error.code;
+      if (
+        errorMessage === "EMAIL_EXISTS" ||
+        error.code === "auth/email-already-in-use" ||
+        error.code === "auth/invalid-email"
+      ) {
+        setError("root", {
+          message: "Something is wrong with email or password",
+        });
+      } else {
+        setError("root", {
+          message: "Failed to create an account",
+        });
+      }
     }
   };
+
+  console.log(errors);
   return (
     <Form onSubmit={handleSubmit(onSubmit)}>
+      {errors.root && (
+        <p className="text-danger mb-3 text-center">{errors.root.message}</p>
+      )}
       <Form.Group controlId="formBasicName">
         <Form.Label>Name</Form.Label>
         <Form.Control
@@ -161,11 +177,6 @@ const SignupForm = () => {
       <Button variant="primary" type="submit" className={styles.formBtn}>
         Sign Up
       </Button>
-      <FormFooter
-        mainText="Already have an account? "
-        text="Log In"
-        path="/login"
-      />
     </Form>
   );
 };
