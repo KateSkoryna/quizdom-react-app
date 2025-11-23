@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { MdFavoriteBorder, MdOutlineFavorite } from "react-icons/md";
-import { toggleFavorites } from "../../API/api";
 import { useAuthStore } from "../../store/AuthStore";
 import styles from "../../styles/pages/home.module.scss";
+import { toggleFavorites } from "../../fetchers/api";
 
 type FavoriteElementProps = {
   quizId: string;

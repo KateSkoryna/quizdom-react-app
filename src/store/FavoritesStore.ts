@@ -1,6 +1,6 @@
 import { create } from "zustand";
-import { getFavoriteQuizes } from "../API/api";
 import { UserQuiz } from "../types/types";
+import { getFavoriteQuizes } from "../fetchers/api";
 
 interface FavoritesStore {
   favorites: UserQuiz[];

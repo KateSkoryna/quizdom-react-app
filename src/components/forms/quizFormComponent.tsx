@@ -9,7 +9,7 @@ import addClassnameToText from "../../helpers/addClassnameToText";
 import styles from "../../styles/pages/home.module.scss";
 import { useSetQuizForm } from "../../store/store";
 import { useAuthStore } from "../../store/AuthStore";
-import { addQuiz } from "../../API/api";
+import { addQuiz } from "../../fetchers/api";
 
 const QuizFormComponent = ({ handleClose }: QuizFormProps) => {
   const quizData = useSetQuizForm((state) => state.newQuizData);
