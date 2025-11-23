@@ -48,7 +48,7 @@ const SearchQuizComponent = () => {
   };
 
   return (
-    <Container className={styles.container}>
+    <Container>
       <Form className={styles.form} onSubmit={handleSubmit}>
         <FormSelectComponent
           fields={categories}

@@ -2,23 +2,27 @@ import Card from "react-bootstrap/Card";
 import styles from "../../styles/pages/home.module.scss";
 import { Container } from "react-bootstrap";
 import BlockQuote from "../common/blockQuote";
-import ResponsiveImage from "../common/responsiveImage";
+import heroSq from "../../assets/hero-big-sq.jpg";
 
 const HeroContainer = () => {
   return (
-    <Card className={styles.heroCard}>
-      <ResponsiveImage className={styles.heroImg} alt="hero" />
-      <Card.ImgOverlay className={styles.overlay}>
-        <Container>
-          <Card.Body className={styles.heroCardBody}>
-            <Card.Title className={styles.heroCardTitle}>
-              Dive into the Depths <br /> of Coding Wisdom
+    <div className={styles.heroCardContainer}>
+      <Card className={styles.heroCard}>
+        <img src={heroSq} className={styles.heroImg} alt="hero" />
+        <Card.ImgOverlay className={styles.overlay}>
+          <Container className={styles.heroContainer}>
+            <Card.Body className={styles.heroCardBody}>
+              <h1 className={styles.heroCardTitle}>
+                Dive into the Depths <br /> of Coding Wisdom
+              </h1>
+            </Card.Body>
+            <div className={styles.heroQuoteWrapper}>
               <BlockQuote />
-            </Card.Title>
-          </Card.Body>
-        </Container>
-      </Card.ImgOverlay>
-    </Card>
+            </div>
+          </Container>
+        </Card.ImgOverlay>
+      </Card>
+    </div>
   );
 };
 

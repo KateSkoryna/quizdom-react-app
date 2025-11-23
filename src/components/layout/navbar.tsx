@@ -3,7 +3,7 @@ import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import { Link, useLocation } from "react-router-dom";
 import Image from "react-bootstrap/Image";
-import logo from "../../assets/logo.svg";
+import logo from "../../assets/logo-dark.svg";
 import Offcanvas from "react-bootstrap/Offcanvas";
 import { useEffect } from "react";
 import styles from "../../styles/components/navbar.module.scss";
@@ -42,7 +42,12 @@ const NavbarContainer = () => {
 
   return (
     <>
-      <Navbar expand="lg" data-bs-theme="dark" fixed="top">
+      <Navbar
+        expand="lg"
+        data-bs-theme="light"
+        fixed="top"
+        className={styles.navbar}
+      >
         <Container>
           <Navbar.Brand as={Link} to="/" onClick={() => setActive("/")}>
             <Image src={logo} />
@@ -73,6 +78,7 @@ const NavbarContainer = () => {
                 <Nav.Link
                   as={Link}
                   to="/quizes"
+                  className={styles.navLink}
                   eventKey="quizes"
                   onClick={handleClose}
                 >
@@ -81,6 +87,7 @@ const NavbarContainer = () => {
                 <Nav.Link
                   as={Link}
                   to="/news"
+                  className={styles.navLink}
                   eventKey="news"
                   onClick={handleClose}
                 >
