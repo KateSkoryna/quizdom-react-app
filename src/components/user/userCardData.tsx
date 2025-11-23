@@ -2,7 +2,6 @@ import { Card } from "react-bootstrap";
 import { useAuthStore } from "../../store/AuthStore";
 import styles from "../../styles/pages/user.module.scss";
 import { useState, useCallback } from "react";
-import { editUser } from "../../API/api";
 import { useForm } from "react-hook-form";
 import { useImageUpload } from "../../hooks/useImageUpload";
 import { UserFormField } from "./userFormField";
@@ -10,12 +9,18 @@ import { AvatarUpload } from "./avatarUpload";
 import { UserEditActions } from "./userEditActions";
 import { GENDER } from "../../types/types";
 import { UserBirthFormField } from "./userBirthFormField";
+import { UserLocationFormField } from "./userLocationFormField";
+import { UserAboutFormField } from "./userAboutFormField";
+import { editUser } from "../../fetchers/api";
+import { Timestamp } from "firebase/firestore";
+import StarComponent from "./starComponent";
 
 interface UserFormData {
   name: string;
   dateOfBirth: Date;
   gender: string;
   location: string;
+  userInfo: string;
   imageFile?: File;
   downloadURL: string;
 }
@@ -43,6 +48,7 @@ const UserCardData = () => {
         : new Date(),
       gender: currentUser?.gender || "",
       location: currentUser?.location || "",
+      userInfo: currentUser?.userInfo || "",
       imageFile: undefined,
       downloadURL: currentUser?.avatar || "",
     },
@@ -78,6 +84,7 @@ const UserCardData = () => {
           : new Date(),
         gender: currentUser.gender,
         location: currentUser.location || "",
+        userInfo: currentUser.userInfo || "",
         imageFile: undefined,
         downloadURL: currentUser.avatar || "",
       });
@@ -94,10 +101,11 @@ const UserCardData = () => {
           editUser(
             currentUser.id,
             "dateOfBirth",
-            data.dateOfBirth.toISOString()
+            Timestamp.fromDate(data.dateOfBirth)
           ),
           editUser(currentUser.id, "gender", data.gender),
           editUser(currentUser.id, "location", data.location),
+          editUser(currentUser.id, "userInfo", data.userInfo),
         ];
 
         // Add avatar update if photo was changed
@@ -113,6 +121,7 @@ const UserCardData = () => {
           dateOfBirth: data.dateOfBirth,
           gender: data.gender as GENDER,
           location: data.location,
+          userInfo: data.userInfo,
           avatar: downloadURL || currentUser.avatar,
         });
 
@@ -134,6 +143,7 @@ const UserCardData = () => {
           : new Date(),
         gender: currentUser.gender,
         location: currentUser.location || "",
+        userInfo: currentUser.userInfo || "",
         imageFile: undefined,
         downloadURL: currentUser.avatar || "",
       });
@@ -149,68 +159,76 @@ const UserCardData = () => {
   ];
 
   return (
-    <Card className={`${styles.card} border h-100`}>
-      <Card.Body className={`${styles.userCardContainer} d-flex flex-column`}>
-        <AvatarUpload
-          avatarUrl={downloadURL || currentUser?.avatar}
-          isEditMode={isEditMode}
-          onFileSelect={handleSelectedFile}
+    <Card className={`${styles.card} d-flex flex-column border h-100`}>
+      <AvatarUpload
+        avatarUrl={downloadURL || currentUser?.avatar}
+        isEditMode={isEditMode}
+        onFileSelect={handleSelectedFile}
+      />
+      <div>
+        <UserFormField
+          label="Email"
+          value={currentUser?.email}
+          isEditMode={false}
+          fieldName="email"
         />
-        <div>
-          <UserFormField
-            label="Email"
-            value={currentUser?.email}
-            isEditMode={false}
-            fieldName="email"
-          />
-          <UserFormField
-            label="Name"
-            value={currentUser?.name}
-            isEditMode={isEditMode}
-            fieldName="name"
-            fieldType="text"
-            placeholder="Enter name"
-            register={register}
-          />
-
-          <UserBirthFormField
-            label="Date of Birth"
-            value={currentUser?.dateOfBirth}
-            isEditMode={isEditMode}
-            control={control}
-            fieldName="dateOfBirth"
-          />
-
-          <UserFormField
-            label="Sex"
-            value={currentUser?.gender}
-            isEditMode={isEditMode}
-            fieldName="gender"
-            fieldType="select"
-            options={genderOptions}
-            register={register}
-          />
-
-          <UserFormField
-            label="Location"
-            value={currentUser?.location}
-            isEditMode={isEditMode}
-            fieldName="location"
-            fieldType="text"
-            placeholder="Enter location"
-            register={register}
-          />
-        </div>
-        <UserEditActions
+        <UserFormField
+          label="Name"
+          value={currentUser?.name}
           isEditMode={isEditMode}
-          loading={loading}
-          isDirty={isDirty}
-          progressUpload={progressUpload}
-          onEdit={handleEditClick}
-          onSave={handleSubmit(onSubmit)}
-          onCancel={handleCancel}
+          fieldName="name"
+          fieldType="text"
+          placeholder="Enter name"
+          register={register}
         />
-      </Card.Body>
+
+        <UserBirthFormField
+          label="Date of Birth"
+          value={currentUser?.dateOfBirth}
+          isEditMode={isEditMode}
+          control={control}
+          fieldName="dateOfBirth"
+        />
+
+        <UserFormField
+          label="Sex"
+          value={currentUser?.gender}
+          isEditMode={isEditMode}
+          fieldName="gender"
+          fieldType="select"
+          options={genderOptions}
+          register={register}
+        />
+
+        <UserLocationFormField
+          label="Location"
+          value={currentUser?.location}
+          isEditMode={isEditMode}
+          control={control}
+          fieldName="location"
+        />
+
+        <UserAboutFormField
+          label="About me"
+          value={currentUser?.userInfo}
+          isEditMode={isEditMode}
+          fieldName="userInfo"
+          placeholder="Tell us about yourself"
+          register={register}
+        />
+      </div>
+      <div className="pt-3">
+        <StarComponent />
+      </div>
+      <UserEditActions
+        isEditMode={isEditMode}
+        loading={loading}
+        isDirty={isDirty}
+        progressUpload={progressUpload}
+        onEdit={handleEditClick}
+        onSave={handleSubmit(onSubmit)}
+        onCancel={handleCancel}
+      />
     </Card>
   );
 };
