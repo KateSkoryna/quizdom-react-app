@@ -1,9 +1,22 @@
 @use "../settings" as *;
 @use "../abstracts" as *;
 
+.navbar {
+  background-color: $white;
+}
+
 .offcanvasNavbar {
-  background-color: #00093c;
+  background-color: $white;
   width: 100%;
+}
+
+.navLink {
+  color: $black;
+
+  &:hover,
+  &:focus {
+    color: $primary-color;
+  }
 }
 
 .navbarToggle:hover,
