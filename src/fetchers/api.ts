@@ -236,7 +236,7 @@ export async function getFavoriteQuizes(
 
 //======================== EDIT USER  ====================
 
-export async function editUser(userId: string, field: string, value: string) {
+export async function editUser(userId: string, field: string, value: string | import("firebase/firestore").Timestamp) {
   try {
     const ref = doc(db, "users", userId);
     await updateDoc(ref, {
