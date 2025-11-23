@@ -1,6 +1,10 @@
 import { create } from "zustand";
-import { getAllQuizes, getQuizesById, getQuizByCategoryAndComplexity } from "../API/api";
 import { UserQuiz } from "../types/types";
+import {
+  getAllQuizes,
+  getQuizByCategoryAndComplexity,
+  getQuizesById,
+} from "../fetchers/api";
 
 interface QuizStore {
   quizes: UserQuiz[];
@@ -10,7 +14,10 @@ interface QuizStore {
   setError: (error: string) => void;
   getQuizes: () => Promise<void>;
   getQuizesById: (userId: string) => Promise<void>;
-  getQuizesByCategoryAndComplexity: (category: string | null, complexity: string | null) => Promise<void>;
+  getQuizesByCategoryAndComplexity: (
+    category: string | null,
+    complexity: string | null
+  ) => Promise<void>;
   clearQuizes: () => void;
 }
 
@@ -39,7 +46,10 @@ export const useQuizesStore = create<QuizStore>((set, get) => ({
       set({ userQuizes, isLoading: false, error: null });
     }
   },
-  getQuizesByCategoryAndComplexity: async (category: string | null, complexity: string | null) => {
+  getQuizesByCategoryAndComplexity: async (
+    category: string | null,
+    complexity: string | null
+  ) => {
     set({ isLoading: true, error: null });
 
     const queryData = { category, complexity };
