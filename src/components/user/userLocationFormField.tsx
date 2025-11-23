@@ -18,7 +18,7 @@ export const UserLocationFormField = <T extends FieldValues>({
   control,
   fieldName,
 }: UserLocationFormFieldProps<T>) => {
-  const mapboxToken = import.meta.env.VITE_MAPBOX_API;
+  const MAPBOX_API_KEY = import.meta.env.VITE_MAPBOX_API;
 
   return (
     <Card.Text
@@ -33,7 +33,7 @@ export const UserLocationFormField = <T extends FieldValues>({
             control={control}
             render={({ field: { onChange, value: fieldValue } }) => (
               <SearchBox
-                accessToken={mapboxToken}
+                accessToken={MAPBOX_API_KEY}
                 value={fieldValue || ""}
                 onRetrieve={(result) => {
                   const placeName =
