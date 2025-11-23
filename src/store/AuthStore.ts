@@ -2,12 +2,11 @@ import { create } from "zustand";
 import {
   createUserWithEmailAndPassword,
   UserCredential,
-  onAuthStateChanged,
   signInWithEmailAndPassword,
   signOut,
+  sendPasswordResetEmail,
 } from "firebase/auth";
 import { auth } from "../firebase";
-import { getCurrentUser } from "../API/api";
 import { CurrentUser, UserData } from "../types/types";
 
 interface AuthStore {
@@ -17,7 +16,7 @@ interface AuthStore {
   signup: (values: UserData) => Promise<UserCredential>;
   login: (email: string, password: string) => Promise<UserCredential>;
   logout: () => Promise<void>;
-  getUser: () => Promise<void>;
+  resetPassword: (email: string) => Promise<void>;
 }
 
 export const useAuthStore = create<AuthStore>((set) => ({
@@ -26,51 +25,36 @@ export const useAuthStore = create<AuthStore>((set) => ({
 
   setCurrentUser: (user) => set({ currentUser: user }),
 
-  signup: (values: UserData): Promise<UserCredential> => {
-    return createUserWithEmailAndPassword(auth, values.email, values.password);
+  signup: async (values: UserData): Promise<UserCredential> => {
+    const userCredential = await createUserWithEmailAndPassword(
+      auth,
+      values.email,
+      values.password
+    );
+    return userCredential;
   },
 
-  login: (email: string, password: string): Promise<UserCredential> => {
-    return signInWithEmailAndPassword(auth, email, password);
+  login: async (email: string, password: string): Promise<UserCredential> => {
+    const userCredential = await signInWithEmailAndPassword(
+      auth,
+      email,
+      password
+    );
+    return userCredential;
   },
 
   logout: async () => {
     try {
-      signOut(auth);
+      await signOut(auth);
+      localStorage.removeItem("authData");
     } catch (error) {
       console.log(error);
     } finally {
-      set({ currentUser: null });
+      set({ currentUser: null, isAuthLoading: false });
     }
   },
 
-  getUser: async () => {
-    try {
-      if (!auth.currentUser) {
-        set({ isAuthLoading: false });
-        return;
-      }
-      const user = await getCurrentUser(auth.currentUser.uid);
-      if (user && user.exists()) {
-        const currentUser: CurrentUser = {
-          ...(user.data() as CurrentUser),
-          id: auth.currentUser!.uid,
-          dateOfBirth: new Date(user.data().dateOfBirth),
-        };
-        set({ currentUser, isAuthLoading: false });
-      } else {
-        set({ isAuthLoading: false });
-      }
-    } catch (error: unknown) {
-      if (error instanceof Error) {
-        console.error(error.message);
-      }
-      set({ isAuthLoading: false });
-    }
+  resetPassword: (email: string): Promise<void> => {
+    return sendPasswordResetEmail(auth, email);
   },
 }));
-
-// Initialize auth state listener
-onAuthStateChanged(auth, () => {
-  useAuthStore.getState().getUser();
-});

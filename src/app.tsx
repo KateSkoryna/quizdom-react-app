@@ -1,13 +1,18 @@
+import { useEffect } from "react";
 import { createHashRouter, RouterProvider, Navigate } from "react-router-dom";
-import { getMediaNews } from "./API/api";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "./firebase";
+
+import { fetchUserWithToken } from "./fetchers/common";
+import { useAuthStore } from "./store/AuthStore";
 import Layout from "./components/layout/layout";
 import UserPage from "./pages/user";
-import SignupPage from "./pages/signup";
-import LoginPage from "./pages/login";
+import AuthPage from "./pages/auth";
 import HomePage from "./pages/home";
 import NewsPage from "./pages/news";
 import NotFoundPage from "./pages/notFound";
 import ProtectedRoute from "./components/common/protectedRoute";
+import { getMediaNews } from "./fetchers/api";
 
 const router = createHashRouter([
   {
@@ -39,12 +44,8 @@ const router = createHashRouter([
         },
       },
       {
-        path: "signup",
-        element: <SignupPage />,
-      },
-      {
         path: "login",
-        element: <LoginPage />,
+        element: <AuthPage />,
       },
       {
         path: "user",
@@ -63,6 +64,16 @@ const router = createHashRouter([
 ]);
 
 function App() {
+  const setCurrentUser = useAuthStore((state) => state.setCurrentUser);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
+      await fetchUserWithToken(firebaseUser, setCurrentUser);
+    });
+
+    return () => unsubscribe();
+  }, [setCurrentUser]);
+
   return <RouterProvider router={router} />;
 }
 
