@@ -1,13 +1,10 @@
 import AddQuizComponent from "../quiz/addQuizComponent";
-import UserQuizSegment from "./userQuizSegment";
 import styles from "../../styles/components/userQuiz.module.scss";
 
 const UserQuizesComponent = () => {
   return (
     <div className={styles.container}>
-      <h5 className="mb-3 text-center">My Quizes</h5>
       <AddQuizComponent />
-      <UserQuizSegment />
     </div>
   );
 };

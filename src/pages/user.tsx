@@ -6,7 +6,7 @@ import UserCardInfo from "../components/user/userCardInfo";
 const UserPage = () => {
   return (
     <Container className={styles.userSection}>
-      <Row className="g-3 g-lg-4 h-100">
+      <Row className="g-3 g-lg-4">
         <Col xs={12} lg={3} className="d-flex">
           <UserCardData />
         </Col>

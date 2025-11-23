@@ -1,52 +1,27 @@
 import Tab from "react-bootstrap/Tab";
-import StatisticsUserComponent from "./statisticsUserComponent";
 import UserQuizesComponent from "./userQuizesComponent";
 import UserFavoritesComponent from "./userFavoritesComponent";
 import Col from "react-bootstrap/Col";
 import Nav from "react-bootstrap/Nav";
-import { Link } from "react-router-dom";
 import styles from "../../styles/pages/user.module.scss";
 
 const UserCardInfo = () => {
   return (
-    <Tab.Container id="user-card" defaultActiveKey="statistics">
+    <Tab.Container id="user-card" defaultActiveKey="my-quizes">
       <Col className={styles.userTabsContainer}>
-        <Nav variant="tabs" className="p-0" fill>
+        <Nav variant="tabs" className={styles.userTabs}>
           <Nav.Item>
-            <Nav.Link
-              className={styles.inactive}
-              as={Link}
-              to="#statistics"
-              eventKey="statistics"
-            >
-              Statistics
-            </Nav.Link>
-          </Nav.Item>
-          <Nav.Item>
-            <Nav.Link
-              className={styles.inactive}
-              as={Link}
-              to="#my-quizes"
-              eventKey="my-quizes"
-            >
+            <Nav.Link eventKey="my-quizes">
               My Quizes
             </Nav.Link>
           </Nav.Item>
           <Nav.Item>
-            <Nav.Link
-              className={styles.inactive}
-              as={Link}
-              to="#favorites"
-              eventKey="favorites"
-            >
+            <Nav.Link eventKey="favorites">
               Favorites
             </Nav.Link>
           </Nav.Item>
         </Nav>
         <Tab.Content>
-          <Tab.Pane eventKey="statistics" title="Statistics">
-            <StatisticsUserComponent />
-          </Tab.Pane>
           <Tab.Pane eventKey="my-quizes" title="My Quizes">
             <UserQuizesComponent />
           </Tab.Pane>
