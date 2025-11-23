@@ -2,6 +2,7 @@ import { Card } from "react-bootstrap";
 import { Control, Controller, FieldValues, Path } from "react-hook-form";
 import DatepickerContainer from "../common/datepicker";
 import styles from "../../styles/pages/user.module.scss";
+import dayjs from "dayjs";
 
 interface UserBirthFormFieldProps<T extends FieldValues> {
   label: string;
@@ -18,12 +19,14 @@ export const UserBirthFormField = <T extends FieldValues>({
   control,
   fieldName,
 }: UserBirthFormFieldProps<T>) => {
-  const formattedDate = value
-    ? value.toLocaleDateString().split("/").join(".")
+  const isValidDate = value instanceof Date && !isNaN(value.getTime());
+  const formattedDate = isValidDate
+    ? dayjs(value).format("DD-MM-YYYY")
     : "Not set";
 
   return (
     <Card.Text
+      as="div"
       className={`${styles.birthField} d-flex justify-content-between align-items-center`}
     >
       <strong>{label}:</strong>
