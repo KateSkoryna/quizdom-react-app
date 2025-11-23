@@ -3,7 +3,8 @@ import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import { Link, useLocation } from "react-router-dom";
 import Image from "react-bootstrap/Image";
-import logo from "../../assets/logo-dark.svg";
+import logoDark from "../../assets/logo-dark.svg";
+import logoLight from "../../assets/logo.svg";
 import Offcanvas from "react-bootstrap/Offcanvas";
 import { useEffect } from "react";
 import styles from "../../styles/components/navbar.module.scss";
@@ -21,6 +22,7 @@ const NavbarContainer = () => {
   const currentUser = useAuthStore((state) => state.currentUser);
 
   const userName = currentUser?.name.split(" ")[0];
+  const isUserPage = location.pathname.includes("/user");
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -46,11 +48,11 @@ const NavbarContainer = () => {
         expand="lg"
         data-bs-theme="light"
         fixed="top"
-        className={styles.navbar}
+        className={`${styles.navbar} ${isUserPage ? styles.navbarUser : ""}`}
       >
         <Container>
           <Navbar.Brand as={Link} to="/" onClick={() => setActive("/")}>
-            <Image src={logo} />
+            <Image src={isUserPage ? logoLight : logoDark} />
           </Navbar.Brand>
           <Navbar.Toggle
             className={styles.navbarToggle}
@@ -78,7 +80,7 @@ const NavbarContainer = () => {
                 <Nav.Link
                   as={Link}
                   to="/quizes"
-                  className={styles.navLink}
+                  className={`${styles.navLink} ${isUserPage ? styles.navLinkLight : ""}`}
                   eventKey="quizes"
                   onClick={handleClose}
                 >
@@ -87,7 +89,7 @@ const NavbarContainer = () => {
                 <Nav.Link
                   as={Link}
                   to="/news"
-                  className={styles.navLink}
+                  className={`${styles.navLink} ${isUserPage ? styles.navLinkLight : ""}`}
                   eventKey="news"
                   onClick={handleClose}
                 >
@@ -98,6 +100,7 @@ const NavbarContainer = () => {
                 <LogoutComponent
                   avatar={currentUser.avatar ?? ""}
                   name={userName ?? ""}
+                  isUserPage={isUserPage}
                 />
               ) : (
                 <Nav
@@ -109,17 +112,8 @@ const NavbarContainer = () => {
                 >
                   <Nav.Link
                     as={Link}
-                    to="/signup"
-                    className={styles.navLink}
-                    eventKey="signup"
-                    onClick={handleClose}
-                  >
-                    Sign Up
-                  </Nav.Link>
-                  <Nav.Link
-                    as={Link}
                     to="/login"
-                    className={styles.navLink}
+                    className={`${styles.navLink} ${isUserPage ? styles.navLinkLight : ""}`}
                     eventKey="login"
                     onClick={handleClose}
                   >

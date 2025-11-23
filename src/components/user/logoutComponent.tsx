@@ -8,9 +8,10 @@ import { useAuthStore } from "../../store/AuthStore";
 type LogoutProps = {
   avatar: string;
   name: string;
+  isUserPage?: boolean;
 };
 
-const LogoutComponent = ({ avatar, name }: LogoutProps) => {
+const LogoutComponent = ({ avatar, name, isUserPage = false }: LogoutProps) => {
   const active = useActiveNavStore((state) => state.active);
   const setActive = useActiveNavStore((state) => state.setActive);
   const setShow = useOpenOffCanvas((state) => state.setShow);
@@ -37,6 +38,7 @@ const LogoutComponent = ({ avatar, name }: LogoutProps) => {
             to="/user"
             eventKey="user"
             onClick={handleClose}
+            className={isUserPage ? styles.navLinkLight : styles.navLinkDark}
           >{`Hi, ${name}`}</Nav.Link>
         </Col>
         <Col xs={12} md={3} className={styles.logoutNavbarContainer}>

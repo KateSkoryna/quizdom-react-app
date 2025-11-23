@@ -65,10 +65,14 @@
   border: transparent;
   width: 20px;
   height: 20px;
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: contain;
-  transition: filter 0.3s ease;
+  background: linear-gradient(90deg, #f7941d, #27aae1);
+  mask-repeat: no-repeat;
+  mask-position: center;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  -webkit-mask-size: contain;
+  transition: all 0.3s ease;
 
   @media screen and (min-width: 768px) {
     width: 30px;
@@ -78,22 +82,25 @@
 
 .footerContactLink:hover {
   border: transparent;
-  filter: brightness(0) saturate(100%) invert(64%) sepia(85%) saturate(1500%)
-    hue-rotate(1deg) brightness(100%) contrast(97%);
+  background: linear-gradient(90deg, #27aae1, #f7941d);
 }
 
 .linkedinIcon {
-  background-image: url("../../assets/linkedin.svg");
+  mask-image: url("../../assets/linkedin.svg");
+  -webkit-mask-image: url("../../assets/linkedin.svg");
 }
 
 .githubIcon {
-  background-image: url("../../assets/github.svg");
+  mask-image: url("../../assets/github.svg");
+  -webkit-mask-image: url("../../assets/github.svg");
 }
 
 .phoneIcon {
-  background-image: url("../../assets/telephone.svg");
+  mask-image: url("../../assets/telephone.svg");
+  -webkit-mask-image: url("../../assets/telephone.svg");
 }
 
 .emailIcon {
-  background-image: url("../../assets/email.svg");
+  mask-image: url("../../assets/email.svg");
+  -webkit-mask-image: url("../../assets/email.svg");
 }

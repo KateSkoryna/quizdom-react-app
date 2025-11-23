@@ -5,6 +5,10 @@
   background-color: $white;
 }
 
+.navbarUser {
+  background-color: $secondary-color;
+}
+
 .offcanvasNavbar {
   background-color: $white;
   width: 100%;
@@ -12,6 +16,15 @@
 
 .navLink {
   color: $black;
+
+  &:hover,
+  &:focus {
+    color: $primary-color;
+  }
+}
+
+.navLinkLight {
+  color: $white;
 
   &:hover,
   &:focus {
