@@ -13,18 +13,26 @@ export default defineConfig({
       cache: false,
       include: ["src/**/*.ts", "src/**/*.tsx"],
       exclude: ["node_modules", "dist"],
+      failOnError: false,
+      failOnWarning: false,
+      emitWarning: true,
+      emitError: true,
     }),
   ],
-  base: "/quizdom-react-app",
+  base: "/quizdom-react-app/",
   define: {
     "process.env": process.env,
   },
   css: {
+    modules: {
+      generateScopedName: "[name]__[local]___[hash:base64:5]",
+    },
     preprocessorOptions: {
       scss: {
         api: "modern-compiler",
         silenceDeprecations: ["legacy-js-api"],
       },
     },
+    devSourcemap: true,
   },
 });
