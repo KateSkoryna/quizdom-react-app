@@ -1,10 +1,6 @@
 @use "../settings" as *;
 @use "../abstracts" as *;
 
-.container {
-  @extend %container;
-}
-
 .form {
   display: flex;
   flex-direction: column;
@@ -13,7 +9,6 @@
 
   @media screen and (min-width: 768px) {
     flex-direction: row;
-    margin-bottom: 10px;
   }
 }
 
@@ -133,13 +128,75 @@
   opacity: 1;
 }
 
+.heroCardContainer {
+  padding: 0 0 2rem 0;
+  position: relative;
+
+  &::before,
+  &::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+    background-repeat: no-repeat;
+  }
+
+  &::before {
+    z-index: 100;
+    background-image: url("../../assets/circle.svg"),
+      url("../../assets/horse.svg"), url("../../assets/triangle.svg"),
+      url("../../assets/x.svg"), url("../../assets/line.svg");
+    // decorElement1, 2, 3, 4, 5 positions
+    background-position: 95% 10%, -3% 85%, 88% 45%, 15% 8%, 50% 10%;
+    background-size: 60px auto, 50px auto, 55px auto, 45px auto, 50px auto;
+    opacity: 0.6;
+
+    @media screen and (min-width: 768px) {
+      background-size: 80px auto, 70px auto, 70px auto, 70px auto, 100px auto;
+      background-position: 103% 55%, -1% 95%, 85% 95%, 55% 15%, 15% 40%;
+    }
+
+    @media screen and (min-width: 1024px) {
+      background-size: 100px auto, 100px auto, 100px auto, 150px auto,
+        100px auto;
+    }
+  }
+
+  &::after {
+    z-index: 100;
+    background-image: url("../../assets/circle.svg"),
+      url("../../assets/horse.svg"), url("../../assets/triangle.svg"),
+      url("../../assets/x.svg"), url("../../assets/line.svg");
+    // decorElement6, 7, 8, 9 positions + extra
+    background-position: 37% 90%, 37% 90%, 37% 90%, 37% 90%, 70% 15%;
+    background-size: 50px auto, 50px auto, 50px auto, 50px auto, 45px auto;
+    opacity: 0.5;
+
+    @media screen and (min-width: 768px) {
+      background-size: 70px auto, 150px auto, 100px auto, 100px auto, 60px auto;
+      background-position: 30% 10%, 87% 15%, 30% 80%, 20% 95%, 55% 95%;
+    }
+
+    @media screen and (min-width: 1024px) {
+      background-size: 120px auto, 100px auto, 150px auto, 100px auto,
+        100px auto;
+    }
+  }
+}
+
 .heroCard {
   margin-top: 60px;
-  max-height: 60vh;
+  max-height: 360px;
   border: 0;
+  position: relative;
+  background-color: $secondary-color;
+  border-radius: 0;
 
   @media screen and (min-width: 768px) {
-    min-height: 400px;
+    min-height: 360px;
   }
 
   // Ensure picture element takes full width
@@ -152,16 +209,16 @@
 .heroImg {
   width: 100%;
   height: 300px;
-  object-position: 70% 30%;
-  object-fit: cover;
+  object-position: 75% center;
+  object-fit: contain;
   display: block;
 
   @media screen and (min-width: 768px) {
-    height: 400px;
+    height: 360px;
   }
 
   @media screen and (min-width: 1024px) {
-    height: 500px;
+    height: 360px;
   }
 }
 
@@ -172,9 +229,22 @@
   padding-top: 20px;
   padding-left: 10px;
   padding-right: 10px;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 
   @media screen and (min-width: 768px) {
   }
+}
+
+.heroContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  flex: 1;
+  position: relative;
+  z-index: 1;
 }
 
 .heroCardBody {
@@ -189,65 +259,94 @@
 }
 
 .heroCardTitle {
-  font-size: 26px;
-  margin-bottom: 70px;
+  font-size: 20px;
+  margin-bottom: 20px;
+  animation: fadeInDown 0.8s ease-out;
 
   @media screen and (min-width: 768px) {
-    font-size: 28px;
-    margin-bottom: 70px;
+    font-size: 24px;
+    margin-bottom: 20px;
   }
 
   @media screen and (min-width: 998px) {
-    font-size: 32px;
-    margin-bottom: 60px;
+    font-size: 28px;
+    margin-bottom: 20px;
+  }
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.heroQuoteWrapper {
+  margin-bottom: 20px;
+  animation: fadeInUp 1s ease-out 0.3s both;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
 .heroJokeText {
-  font-size: 30px;
+  font-size: 22px;
   line-height: 1.2;
   font-family: "bebas neue";
-  text-align: center;
-  color: black;
-  margin-bottom: 10px;
+  text-align: start;
+  color: $white;
+  margin-bottom: 8px;
+  width: 50%;
 
   @media screen and (min-width: 768px) {
-    font-size: 40px;
+    font-size: 28px;
   }
 
   @media screen and (min-width: 998px) {
-    font-size: 52px;
+    font-size: 36px;
   }
 }
 
 .heroJokeTextBig {
-  font-size: 26px;
+  font-size: 18px;
   line-height: 1.2;
   font-family: "bebas neue";
-  text-align: center;
-  color: black;
-  margin-bottom: 10px;
+  text-align: start;
+  color: white;
+  width: 50%;
 
   @media screen and (min-width: 768px) {
-    font-size: 32px;
+    font-size: 24px;
   }
 
   @media screen and (min-width: 998px) {
-    font-size: 40px;
+    font-size: 30px;
   }
 }
 
 .heroJokeAuthor {
-  font-size: 14px;
-  text-align: center;
+  font-size: 12px;
+  text-align: start;
   color: darkslategrey;
 
   @media screen and (min-width: 768px) {
-    font-size: 18px;
+    font-size: 14px;
   }
 
   @media screen and (min-width: 998px) {
-    font-size: 24px;
+    font-size: 16px;
   }
 }
 .errorText {
