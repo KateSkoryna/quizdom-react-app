@@ -285,8 +285,8 @@
 
 .heroCardTitle {
   font-size: 20px;
-  margin-bottom: 20px;
   animation: fadeInDown 0.8s ease-out;
+  color: rgb(255, 255, 255, 0.8);
 
   @media screen and (min-width: 768px) {
     font-size: 24px;
@@ -299,48 +299,23 @@
   }
 }
 
-@keyframes fadeInDown {
-  from {
-    opacity: 0;
-    transform: translateY(-20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
 .heroQuoteWrapper {
-  margin-bottom: 20px;
   animation: fadeInUp 1s ease-out 0.3s both;
 }
 
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
 .heroJokeText {
-  font-size: 22px;
-  line-height: 1.2;
+  font-size: 16px;
   font-family: "bebas neue";
   text-align: start;
   color: $white;
-  margin-bottom: 8px;
-  width: 50%;
+  width: 40%;
 
   @media screen and (min-width: 768px) {
-    font-size: 28px;
+    font-size: 24px;
   }
 
   @media screen and (min-width: 998px) {
-    font-size: 36px;
+    font-size: 28px;
   }
 }
 
