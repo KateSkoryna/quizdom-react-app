@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import { MdFavoriteBorder, MdOutlineFavorite } from "react-icons/md";
 import { useAuthStore } from "../../store/AuthStore";
 import styles from "../../styles/pages/home.module.scss";
 import { toggleFavorites } from "../../fetchers/api";
+import HeartIcon from "../common/favoriteIcon";
 
 type FavoriteElementProps = {
   quizId: string;
@@ -60,17 +60,7 @@ const FavoriteElement = ({ quizId, onAuthRequired }: FavoriteElementProps) => {
           onChange={(e) => handleFavoriteClick(e)}
           id={quizId}
         />
-        {checked ? (
-          <MdOutlineFavorite
-            className={styles.favoriteIcon}
-            style={{ fill: "#F7941D" }}
-          />
-        ) : (
-          <MdFavoriteBorder
-            className={styles.favoriteIcon}
-            style={{ fill: "gray" }}
-          />
-        )}
+        <HeartIcon className={styles.favoriteIcon} />
       </label>
     </div>
   );
