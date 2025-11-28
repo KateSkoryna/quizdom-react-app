@@ -1,6 +1,8 @@
-import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import WarnUserContainer from "../common/warnUserContainer";
+import styles from "../../styles/components/modal.module.scss";
+import owl from "../../assets/owl.svg";
+import { Card } from "react-bootstrap";
 
 type NavigateUserModalProps = {
   handleClose: () => void;
@@ -15,12 +17,10 @@ function NavigateUserModal({ handleClose, show }: NavigateUserModalProps) {
           Sorry!
         </Modal.Title>
       </Modal.Header>
-      <Modal.Body>
+      <Modal.Body className={styles.modalBody}>
         <WarnUserContainer text={"add this quiz to your collection"} />
+        <Card.Img src={owl} className={styles.img} />
       </Modal.Body>
-      <Modal.Footer>
-        <Button onClick={handleClose}>Close</Button>
-      </Modal.Footer>
     </Modal>
   );
 }

@@ -3,10 +3,11 @@ import Modal from "react-bootstrap/Modal";
 import { Answer, Question } from "../../types/types";
 import { ListGroup } from "react-bootstrap";
 import { useRef, useState } from "react";
-import styles from "../../styles/components/startQuizModal.module.scss";
+import styles from "../../styles/components/modal.module.scss";
 import { useAuthStore } from "../../store/AuthStore";
 import WarnUserText from "../common/warnUserContainer";
-import OwlComponent from "../common/owlComponent";
+import owl from "../../assets/owl.svg";
+import { Card } from "react-bootstrap";
 
 type StartQuizModalProps = {
   show: boolean;
@@ -119,7 +120,7 @@ const StartQuizModal = ({
                     {((score / questions.length) * 100).toFixed(1)}%
                   </h6>
                 </div>
-                <OwlComponent />
+                <Card.Img src={owl} className={styles.img} />
                 <Button onClick={handleReset} className={styles.button}>
                   Reset Quiz
                 </Button>
