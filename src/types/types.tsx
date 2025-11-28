@@ -28,8 +28,7 @@ export interface CurrentUser {
   avatar: string;
   dateOfBirth: Date;
   gender: GENDER;
-  password: string;
-  avarageScore: number;
+  averageScore: number;
   userInfo: string;
   favorites: string[];
   location?: string;
@@ -38,8 +37,8 @@ export interface CurrentUser {
 export interface UserData {
   name: string;
   email: string;
-  dateOfBirth: Date;
-  gender: GENDER;
+  dateOfBirth?: Date;
+  gender?: GENDER;
   password: string;
   confirmPassword: string;
 }
