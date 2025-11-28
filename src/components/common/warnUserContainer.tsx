@@ -3,12 +3,12 @@ import styles from "../../styles/components/startQuizModal.module.scss";
 import { useActiveNavStore } from "../../store/store";
 import OwlComponent from "./owlComponent";
 
-const WarnUserText = ({ text }: { text: string }) => {
-  const navidate = useNavigate();
+const WarnUserContainer = ({ text }: { text: string }) => {
+  const navigate = useNavigate();
   const setActive = useActiveNavStore((state) => state.setActive);
   const handleNavigate = (path: string): void => {
     setActive(path);
-    navidate(path);
+    navigate(path);
   };
   return (
     <div className={styles.container}>
@@ -24,9 +24,9 @@ const WarnUserText = ({ text }: { text: string }) => {
           </Link>{" "}
           or{" "}
           <Link
-            to="/signup"
+            to="/login/signup"
             className="text-primary"
-            onClick={() => handleNavigate("signup")}
+            onClick={() => handleNavigate("login/signup")}
           >
             sign up
           </Link>{" "}
@@ -38,4 +38,4 @@ const WarnUserText = ({ text }: { text: string }) => {
   );
 };
 
-export default WarnUserText;
+export default WarnUserContainer;

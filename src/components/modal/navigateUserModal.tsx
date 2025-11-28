@@ -1,6 +1,6 @@
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
-import WarnUserText from "../common/warnUserText";
+import WarnUserContainer from "../common/warnUserContainer";
 
 type NavigateUserModalProps = {
   handleClose: () => void;
@@ -16,7 +16,7 @@ function NavigateUserModal({ handleClose, show }: NavigateUserModalProps) {
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <WarnUserText text={"add this quiz to your collection"} />
+        <WarnUserContainer text={"add this quiz to your collection"} />
       </Modal.Body>
       <Modal.Footer>
         <Button onClick={handleClose}>Close</Button>

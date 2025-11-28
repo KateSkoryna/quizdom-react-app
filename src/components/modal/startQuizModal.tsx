@@ -5,7 +5,7 @@ import { ListGroup } from "react-bootstrap";
 import { useRef, useState } from "react";
 import styles from "../../styles/components/startQuizModal.module.scss";
 import { useAuthStore } from "../../store/AuthStore";
-import WarnUserText from "../common/warnUserText";
+import WarnUserText from "../common/warnUserContainer";
 import OwlComponent from "../common/owlComponent";
 
 type StartQuizModalProps = {

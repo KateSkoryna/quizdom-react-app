@@ -48,6 +48,10 @@ const router = createHashRouter([
         element: <AuthPage />,
       },
       {
+        path: "login/signup",
+        element: <AuthPage />,
+      },
+      {
         path: "user",
         element: (
           <ProtectedRoute>
