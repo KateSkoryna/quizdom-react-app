@@ -3,7 +3,7 @@ import styles from "../../styles/components/userQuiz.module.scss";
 
 function StarComponent() {
   const currentUser = useAuthStore((state) => state.currentUser);
-  const score: number = Number(currentUser?.avarageScore);
+  const score: number = Number(currentUser?.averageScore);
 
   return (
     <div>
