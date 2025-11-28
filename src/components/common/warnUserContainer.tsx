@@ -20,14 +20,6 @@ const WarnUserContainer = ({ text }: { text: string }) => {
         >
           log in
         </Link>{" "}
-        or{" "}
-        <Link
-          to="/login/signup"
-          className="text-primary"
-          onClick={() => handleNavigate("login/signup")}
-        >
-          sign up
-        </Link>{" "}
         to {text}.
       </p>
     </div>
