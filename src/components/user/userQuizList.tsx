@@ -23,17 +23,18 @@ const UserQuizList = () => {
   return isLoading ? (
     <Loader />
   ) : userQuizes && userQuizes.length > 0 ? (
-    <Accordion defaultActiveKey="0" flush>
-      {userQuizes.map((quiz, index) => {
-        const { id, ...rest } = quiz;
-        return (
-          <UserQuizItem key={id} quiz={rest} eventKey={index.toString()} />
-        );
-      })}
-    </Accordion>
-  ) : (
-    <p className="text-center">No quizes yet</p>
-  );
+    <>
+      <h5 className="mb-3 text-center">My Quizes</h5>
+      <Accordion defaultActiveKey="0" flush>
+        {userQuizes.map((quiz, index) => {
+          const { id, ...rest } = quiz;
+          return (
+            <UserQuizItem key={id} quiz={rest} eventKey={index.toString()} />
+          );
+        })}
+      </Accordion>
+    </>
+  ) : null;
 };
 
 export default UserQuizList;

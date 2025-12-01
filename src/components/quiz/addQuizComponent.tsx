@@ -16,7 +16,7 @@ const AddQuizComponent = () => {
   return (
     <Container className="text-end">
       <Button onClick={handleShowModal}>Add Quiz</Button>
-      <h5 className="mb-3 text-center">My Quizes</h5>
+
       <UserQuizList />
       <QuizModal showModal={show} handleCloseModal={handleCloseModal} />
     </Container>
