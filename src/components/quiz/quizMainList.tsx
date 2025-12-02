@@ -1,12 +1,13 @@
-import { UserQuiz } from "../../types/types";
+import { useQuizesStore } from "../../store/quizeStore";
 import QuizMainListItem from "./quizMainListItem";
 import { Container, Card } from "react-bootstrap";
 
-const QuizMainList = ({ quizes }: { quizes: UserQuiz[] }) => {
+const QuizMainList = () => {
+  const quizes = useQuizesStore((state) => state.quizes);
   return (
     <Container style={{ paddingBottom: "80px", marginTop: "20px" }}>
       {quizes.map((quiz) => (
-        <Card key={quiz.id} style={{ width: "100%", marginBottom: "10px" }}>
+        <Card key={quiz.id} style={{ marginBottom: "10px" }}>
           <QuizMainListItem quiz={quiz} />
         </Card>
       ))}
