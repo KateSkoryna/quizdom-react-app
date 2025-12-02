@@ -32,34 +32,27 @@
 }
 
 .checkbox label .favoriteIcon {
+  @extend %icon-button;
   margin-left: auto;
-  cursor: pointer;
-  width: 30px;
-  height: 30px;
-  border: 2px solid transparent;
-  border-radius: 4px;
-  padding: 2px;
-  box-sizing: content-box;
-  transition: all 0.2s ease-in-out;
 
   path {
-    stroke: gray;
-    fill: none;
-    transition: all 0.2s ease-in-out;
+    stroke: $gray-light;
+    fill: $gray-light;
+    transition: all 0.3s ease;
   }
 
   &:hover {
     path {
-      stroke: #f7941d;
-      fill: white;
+      stroke: $primary-color;
+      fill: $primary-color;
     }
   }
 }
 
 .checkbox label input[type="checkbox"]:checked ~ .favoriteIcon {
   path {
-    stroke: #f7941d;
-    fill: #f7941d;
+    stroke: $primary-color;
+    fill: $primary-color;
   }
 }
 
@@ -92,9 +85,6 @@
 
 .checkbox {
   display: inline-block;
-  position: absolute;
-  right: 10px;
-  top: 8px;
 }
 
 .checkbox label {

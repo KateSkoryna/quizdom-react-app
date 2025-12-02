@@ -1,0 +1,103 @@
+@use "../settings" as *;
+@use "../abstracts" as *;
+
+.addQuizContainer {
+  text-align: center;
+  margin: 2rem auto;
+}
+
+// Large CTA Button
+.ctaButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem 2rem;
+  font-size: 1.25rem;
+  font-weight: 600;
+  background: linear-gradient(135deg, $primary-color, $primary-color);
+  background-size: 200% 200%;
+  border: none;
+  border-radius: 50px;
+  color: $white;
+  box-shadow: 0 4px 15px rgba($primary-color, 0.4);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+  animation: gradientShift 4s ease-in-out infinite;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba($primary-color, 0.5);
+  }
+
+  &:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 10px rgba($primary-color, 0.3);
+  }
+}
+
+@keyframes gradientShift {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+.plusIcon {
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.ctaSubtext {
+  color: black;
+  font-size: 0.95rem;
+  margin-top: 0.5rem;
+  margin-inline: auto;
+}
+
+// Floating Action Button (FAB)
+.fab {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, $primary-color, $primary-color);
+  background-size: 200% 200%;
+  border: none;
+  box-shadow: 0 4px 20px rgba($primary-color, 0.5);
+  color: $white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  z-index: 1000;
+  animation: gradientShift 4s ease-in-out infinite;
+
+  &:hover {
+    transform: scale(1.1) rotate(90deg);
+    box-shadow: 0 6px 25px rgba($primary-color, 0.6);
+  }
+
+  &:active {
+    transform: scale(1.05) rotate(90deg);
+  }
+
+  @media screen and (max-width: 768px) {
+    width: 56px;
+    height: 56px;
+    bottom: 1.5rem;
+    right: 1.5rem;
+  }
+}
+
+.fabIcon {
+  font-size: 2rem;
+  font-weight: 300;
+  line-height: 1;
+}

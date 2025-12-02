@@ -1,0 +1,249 @@
+@use "../settings" as *;
+@use "../abstracts" as *;
+
+.quizCard {
+  padding: 0.5rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  border: none;
+  border-radius: $border-radius-5;
+  transition: all 0.3s ease;
+}
+
+.cardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+.title {
+  font-size: $font-size-18;
+  font-weight: 700;
+  color: $text-primary;
+  margin: 0;
+}
+
+.subtitle {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: $font-size-16;
+  color: $text-secondary;
+}
+
+.complexity {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-weight: 600;
+  color: $primary-color;
+}
+
+.levelIcon {
+  width: 16px;
+  height: 16px;
+  object-fit: contain;
+}
+
+.separator {
+  color: $gray-light;
+}
+
+.author {
+  font-style: italic;
+  color: $gray-light;
+  font-size: $font-size-8;
+}
+
+// Description
+.description {
+  color: $text-secondary;
+  font-size: $font-size-12;
+}
+
+// Level Info
+.levelInfo {
+  display: flex;
+  align-items: center;
+}
+
+// Card Meta (Stats + Published Info)
+.cardMeta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+// Stats
+.stats {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.statItem {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.65rem;
+  color: $text-secondary;
+}
+
+.statIcon {
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
+}
+
+.rating {
+  display: flex;
+  gap: 0.05rem;
+}
+
+.starFilled {
+  color: $primary-color;
+  font-size: 0.75rem;
+}
+
+.starEmpty {
+  color: $gray-light;
+  font-size: 0.75rem;
+}
+
+.ratingValue {
+  font-weight: 600;
+  color: $text-primary;
+  margin-left: 0.125rem;
+  font-size: 0.65rem;
+}
+
+.statValue {
+  font-weight: 500;
+  font-size: 0.65rem;
+}
+
+// Footer
+.cardFooter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+// Action Buttons Container
+.actionButtons {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+// Start Button with animated gradient
+.startButton {
+  padding: 0.625rem 1.5rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 50px;
+  background: linear-gradient(135deg, $primary-color, $primary-color);
+  background-size: 200% 200%;
+  color: $white;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  animation: gradientShift 4s ease-in-out infinite;
+
+  &:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba($primary-color, 0.4);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    animation: none;
+  }
+}
+
+@keyframes gradientShift {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+// Share Button
+.shareButton {
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  padding: 0;
+  line-height: 1;
+}
+
+.shareIcon {
+  @extend %icon-button;
+  width: 32px;
+  height: 32px;
+}
+
+// Published Info
+.publishedInfo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  color: $gray-light;
+}
+
+.publishedDate {
+  color: $gray-light;
+  font-size: 0.875rem;
+}
+
+// Responsive
+@media screen and (max-width: 768px) {
+  .cardMeta {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .stats {
+    gap: 0.5rem;
+    width: 100%;
+  }
+
+  .statItem {
+    font-size: 0.6rem;
+  }
+
+  .title {
+    font-size: 1.25rem;
+  }
+
+  .cardFooter {
+    flex-direction: column-reverse;
+    gap: 1rem;
+    align-items: stretch;
+  }
+
+  .shareButton {
+    align-self: flex-end;
+  }
+
+  .startButton {
+    width: 100%;
+    padding: 0.75rem;
+  }
+
+  .publishedInfo {
+    width: 100%;
+  }
+}
