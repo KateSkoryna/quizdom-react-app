@@ -9,9 +9,9 @@ const ShareIcon = ({ className }: { className?: string }) => (
   >
     <path
       stroke="currentColor"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      stroke-width="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="1.5"
       d="m17 11-4-4v2c-2 0-6 2.2-6 7 0-.667 1.2-3 6-3v2l4-4z"
     />
     <circle
@@ -19,9 +19,9 @@ const ShareIcon = ({ className }: { className?: string }) => (
       cy="12"
       r="10"
       stroke="currentColor"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      stroke-width="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="1.5"
     />
   </svg>
 );
