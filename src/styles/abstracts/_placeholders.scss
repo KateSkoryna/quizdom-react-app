@@ -46,6 +46,37 @@
   }
 }
 
+%button-secondary {
+  border: 2px solid;
+  border-radius: 50px;
+  background: transparent;
+  padding: $spacing-5 $spacing-10;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: $font-size-16;
+  cursor: pointer;
+  transition: $transition-all;
+
+  &:hover {
+    outline: none;
+  }
+}
+
+%icon-button {
+  cursor: pointer;
+  width: 28px;
+  height: 28px;
+  transition: all 0.3s ease;
+  color: $gray-light;
+  stroke: $gray-light;
+
+  &:hover {
+    transform: scale(1.1);
+    color: $primary-color;
+  }
+}
+
 %container {
   margin-top: 2rem;
   margin-bottom: 2rem;

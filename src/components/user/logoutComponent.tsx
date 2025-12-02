@@ -1,56 +1,61 @@
-import Button from "react-bootstrap/Button";
-import { Link, useNavigate } from "react-router-dom";
-import { Nav, Col, Image, Row } from "react-bootstrap";
+import { useNavigate, useLocation } from "react-router-dom";
+import { Dropdown, Image } from "react-bootstrap";
 import styles from "../../styles/components/logout.module.scss";
-import { useActiveNavStore, useOpenOffCanvas } from "../../store/store";
+import { useOpenOffCanvas } from "../../store/store";
 import { useAuthStore } from "../../store/AuthStore";
 
 type LogoutProps = {
   avatar: string;
   name: string;
-  isUserPage?: boolean;
 };
 
-const LogoutComponent = ({ avatar, name, isUserPage = false }: LogoutProps) => {
-  const active = useActiveNavStore((state) => state.active);
-  const setActive = useActiveNavStore((state) => state.setActive);
+const LogoutComponent = ({ avatar, name }: LogoutProps) => {
   const setShow = useOpenOffCanvas((state) => state.setShow);
-
   const logout = useAuthStore((state) => state.logout);
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleClose = () => setShow(false);
 
   const handleLogout = async () => {
     await logout();
     navigate("/");
+    handleClose();
   };
 
+  const handleProfileClick = () => {
+    navigate("/user");
+    handleClose();
+  };
+
+  const isProfilePage = location.pathname === "/user";
+
   return (
-    <Nav
-      activeKey={active}
-      onSelect={(selectedKey) => selectedKey !== null && setActive(selectedKey)}
-    >
-      <Row className={styles.logoutNavbar}>
-        <Col xs={12} md={4} className={styles.logoutNavbarContainer}>
-          <Nav.Link
-            as={Link}
-            to="/user"
-            eventKey="user"
-            onClick={handleClose}
-            className={isUserPage ? styles.navLinkLight : styles.navLinkDark}
-          >{`Hi, ${name}`}</Nav.Link>
-        </Col>
-        <Col xs={12} md={3} className={styles.logoutNavbarContainer}>
-          <Image src={avatar} className={styles.userIcon} />
-        </Col>
-        <Col xs={12} md={3} className={styles.logoutNavbarContainer}>
-          <Button onClick={handleLogout} className={styles.logoutBtn}>
-            Logout
-          </Button>
-        </Col>
-      </Row>
-    </Nav>
+    <Dropdown align="end" className={`${styles.userDropdown} ${isProfilePage ? styles.lightBackground : ""}`}>
+      <Dropdown.Toggle
+        as="div"
+        className={styles.avatarToggle}
+        id="user-dropdown"
+      >
+        <Image src={avatar} className={styles.userIcon} />
+      </Dropdown.Toggle>
+
+      <Dropdown.Menu className={styles.dropdownMenu}>
+        <Dropdown.Header className={styles.dropdownHeader}>
+          Hi, {name}
+        </Dropdown.Header>
+        <Dropdown.Item
+          onClick={handleProfileClick}
+          className={`${styles.dropdownItem} ${isProfilePage ? styles.active : ""}`}
+        >
+          My Profile
+        </Dropdown.Item>
+        <Dropdown.Divider />
+        <Dropdown.Item onClick={handleLogout} className={styles.dropdownItem}>
+          Logout
+        </Dropdown.Item>
+      </Dropdown.Menu>
+    </Dropdown>
   );
 };
 
