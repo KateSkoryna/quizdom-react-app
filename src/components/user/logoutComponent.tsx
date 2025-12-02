@@ -1,37 +1,35 @@
 import { useNavigate, useLocation } from "react-router-dom";
 import { Dropdown, Image } from "react-bootstrap";
 import styles from "../../styles/components/logout.module.scss";
-import { useOpenOffCanvas } from "../../store/store";
 import { useAuthStore } from "../../store/AuthStore";
 
 type LogoutProps = {
   avatar: string;
   name: string;
+  isUserPage?: boolean;
+  onClose?: () => void;
 };
 
-const LogoutComponent = ({ avatar, name }: LogoutProps) => {
-  const setShow = useOpenOffCanvas((state) => state.setShow);
+const LogoutComponent = ({ avatar, name, isUserPage: isUserPageProp, onClose }: LogoutProps) => {
   const logout = useAuthStore((state) => state.logout);
   const navigate = useNavigate();
   const location = useLocation();
 
-  const handleClose = () => setShow(false);
+  const isUserPage = isUserPageProp ?? location.pathname === "/user";
 
   const handleLogout = async () => {
     await logout();
     navigate("/");
-    handleClose();
+    onClose?.();
   };
 
   const handleProfileClick = () => {
     navigate("/user");
-    handleClose();
+    onClose?.();
   };
 
-  const isProfilePage = location.pathname === "/user";
-
   return (
-    <Dropdown align="end" className={`${styles.userDropdown} ${isProfilePage ? styles.lightBackground : ""}`}>
+    <Dropdown align="end" className={`${styles.userDropdown} ${isUserPage ? styles.lightBackground : ""}`}>
       <Dropdown.Toggle
         as="div"
         className={styles.avatarToggle}
@@ -46,7 +44,7 @@ const LogoutComponent = ({ avatar, name }: LogoutProps) => {
         </Dropdown.Header>
         <Dropdown.Item
           onClick={handleProfileClick}
-          className={`${styles.dropdownItem} ${isProfilePage ? styles.active : ""}`}
+          className={`${styles.dropdownItem} ${isUserPage ? styles.active : ""}`}
         >
           My Profile
         </Dropdown.Item>

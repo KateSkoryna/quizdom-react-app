@@ -1,11 +1,8 @@
-import { useState, lazy, Suspense } from "react";
+import { useState } from "react";
 import FavoriteElement from "../quiz/favoriteElement";
 import ShareIcon from "../common/shareIcon";
-import Loader from "../common/loader";
+import NavigateUserModal from "./navigateUserModal";
 import styles from "../../styles/components/quizCard.module.scss";
-
-// Lazy load modal - only loads when user needs to authenticate
-const NavigateUserModal = lazy(() => import("./navigateUserModal"));
 
 const QuizNoUserModal = ({ id }: { id: string }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -33,9 +30,7 @@ const QuizNoUserModal = ({ id }: { id: string }) => {
         <ShareIcon className={styles.shareIcon} />
       </button>
       {isModalOpen && (
-        <Suspense fallback={<Loader />}>
-          <NavigateUserModal handleClose={handleModalToggle} show={isModalOpen} />
-        </Suspense>
+        <NavigateUserModal handleClose={handleModalToggle} show={isModalOpen} />
       )}
     </div>
   );

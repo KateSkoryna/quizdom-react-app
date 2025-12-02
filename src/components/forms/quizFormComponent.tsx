@@ -1,25 +1,37 @@
 import Form from "react-bootstrap/Form";
 import { useForm, FormProvider } from "react-hook-form";
-import { QuizFormState, QuizFormProps } from "../../types/types";
+import { QuizFormState, QuizFormProps, Complexity, QuizCategory } from "../../types/types";
 import { Button, Container } from "react-bootstrap";
 import FormRangeComponent from "./formRangeComponent";
 import FormCategoryComponent from "./formCategoryComponent";
 import QuestionsFormComponent from "./questionsFormComponent";
 import addClassnameToText from "../../helpers/addClassnameToText";
 import styles from "../../styles/pages/home.module.scss";
-import { useSetQuizForm } from "../../store/store";
 import { useAuthStore } from "../../store/AuthStore";
 import { addQuiz } from "../../fetchers/api";
 
-const QuizFormComponent = ({ handleClose }: QuizFormProps) => {
-  const quizData = useSetQuizForm((state) => state.newQuizData);
-  const setQuizFormData = useSetQuizForm((state) => state.setNewQuizData);
+const defaultValues: QuizFormState = {
+  title: "",
+  description: "",
+  complexity: Complexity.BEGINNER,
+  category: QuizCategory.JS,
+  questions: [
+    {
+      questionTitle: "",
+      answers: [
+        { answer: "", isCorrect: false },
+        { answer: "", isCorrect: false },
+      ],
+    },
+  ],
+};
 
+const QuizFormComponent = ({ handleClose }: QuizFormProps) => {
   const currentUser = useAuthStore((state) => state.currentUser);
 
   const methods = useForm({
     mode: "onChange",
-    defaultValues: quizData,
+    defaultValues,
   });
 
   const {
@@ -34,8 +46,8 @@ const QuizFormComponent = ({ handleClose }: QuizFormProps) => {
     try {
       if (currentUser) {
         await addQuiz(data, currentUser?.id, currentUser?.name);
-        setQuizFormData(data);
         reset();
+        handleClose();
       }
     } catch (error) {
       setError("root", {

@@ -1,11 +1,12 @@
-import { useState, lazy, Suspense } from "react";
+import { useState } from "react";
 import Card from "react-bootstrap/Card";
 import { Button } from "react-bootstrap";
 import styles from "../../styles/components/quizCard.module.scss";
 import { UserQuiz } from "../../types/types";
 import { truncateString } from "../../helpers/truncateString";
 import { useAuthStore } from "../../store/AuthStore";
-import Loader from "../common/loader";
+import StartQuizModal from "../modal/startQuizModal";
+import QuizNoUserModal from "../modal/quizNoUserModal";
 import Intermediate from "../../assets/bishop.svg";
 import Beginner from "../../assets/knight.svg";
 import Expert from "../../assets/queen.svg";
@@ -16,10 +17,6 @@ import CommentIcon from "../common/commentIcon";
 type QuizMainListItemProps = {
   quiz: UserQuiz;
 };
-
-// Lazy load modal
-const StartQuizModal = lazy(() => import("../modal/startQuizModal"));
-const QuizNoUserModal = lazy(() => import("../modal/quizNoUserModal"));
 
 const LEVEL_CONFIG = {
   "1": { name: "Beginner", color: "#F7941D", icon: Beginner },
@@ -75,9 +72,7 @@ const QuizMainListItem = ({
       {/* Header */}
       <div className={styles.cardHeader}>
         <h3 className={styles.title}>{cuttedTitle}</h3>
-        <Suspense fallback={<Loader />}>
-          <QuizNoUserModal id={id} />
-        </Suspense>
+        <QuizNoUserModal id={id} />
       </div>
 
       {/* Description */}
@@ -136,13 +131,11 @@ const QuizMainListItem = ({
         </div>
       </div>
       {startQuiz && (
-        <Suspense fallback={<Loader />}>
-          <StartQuizModal
-            show={startQuiz}
-            handleClose={handleEnd}
-            questions={questions}
-          />
-        </Suspense>
+        <StartQuizModal
+          show={startQuiz}
+          handleClose={handleEnd}
+          questions={questions}
+        />
       )}
     </Card.Body>
   );

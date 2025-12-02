@@ -6,41 +6,26 @@ import Image from "react-bootstrap/Image";
 import logoDark from "../../assets/logo-dark.svg";
 import logoLight from "../../assets/logo.svg";
 import Offcanvas from "react-bootstrap/Offcanvas";
-import { useEffect } from "react";
+import { useState, useMemo } from "react";
 import styles from "../../styles/components/navbar.module.scss";
 import CloseButton from "react-bootstrap/CloseButton";
 import LogoutComponent from "../user/logoutComponent";
-import { useActiveNavStore, useOpenOffCanvas } from "../../store/store";
 import { useAuthStore } from "../../store/AuthStore";
 
 const NavbarContainer = () => {
   const location = useLocation();
-  const active = useActiveNavStore((state) => state.active);
-  const setActive = useActiveNavStore((state) => state.setActive);
-  const show = useOpenOffCanvas((state) => state.show);
-  const setShow = useOpenOffCanvas((state) => state.setShow);
   const currentUser = useAuthStore((state) => state.currentUser);
+  const [show, setShow] = useState(false);
 
   const userName = currentUser?.name.split(" ")[0];
   const isUserPage = location.pathname.includes("/user");
 
+  const active = useMemo(() => {
+    return location.pathname.split("/")[1] || "/";
+  }, [location.pathname]);
+
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-
-  useEffect(() => {
-    const pathname = location.pathname;
-    if (pathname.includes("/quizes")) {
-      setActive("quizes");
-    } else if (pathname.includes("/news")) {
-      setActive("news");
-    } else if (pathname.includes("/signup")) {
-      setActive("signup");
-    } else if (pathname.includes("/login")) {
-      setActive("login");
-    } else {
-      setActive("/");
-    }
-  }, [location.pathname, setActive]);
 
   return (
     <>
@@ -51,7 +36,7 @@ const NavbarContainer = () => {
         className={`${styles.navbar} ${isUserPage ? styles.navbarUser : ""}`}
       >
         <Container>
-          <Navbar.Brand as={Link} to="/" onClick={() => setActive("/")}>
+          <Navbar.Brand as={Link} to="/">
             <Image src={isUserPage ? logoLight : logoDark} />
           </Navbar.Brand>
           <Navbar.Toggle
@@ -70,17 +55,13 @@ const NavbarContainer = () => {
               <CloseButton className={styles.closeBtn} onClick={handleClose} />
             </Offcanvas.Header>
             <Offcanvas.Body className="d-flex flex-column flex-lg-row justify-content-lg-between">
-              <Nav
-                className={styles.offcanvasNav}
-                activeKey={active}
-                onSelect={(selectedKey) =>
-                  selectedKey !== null && setActive(selectedKey)
-                }
-              >
+              <Nav className={styles.offcanvasNav} activeKey={active}>
                 <Nav.Link
                   as={Link}
                   to="/quizes"
-                  className={`${styles.navLink} ${isUserPage ? styles.navLinkLight : ""}`}
+                  className={`${styles.navLink} ${
+                    isUserPage ? styles.navLinkLight : ""
+                  }`}
                   eventKey="quizes"
                   onClick={handleClose}
                 >
@@ -89,7 +70,9 @@ const NavbarContainer = () => {
                 <Nav.Link
                   as={Link}
                   to="/news"
-                  className={`${styles.navLink} ${isUserPage ? styles.navLinkLight : ""}`}
+                  className={`${styles.navLink} ${
+                    isUserPage ? styles.navLinkLight : ""
+                  }`}
                   eventKey="news"
                   onClick={handleClose}
                 >
@@ -101,19 +84,16 @@ const NavbarContainer = () => {
                   avatar={currentUser.avatar ?? ""}
                   name={userName ?? ""}
                   isUserPage={isUserPage}
+                  onClose={handleClose}
                 />
               ) : (
-                <Nav
-                  className={styles.offcanvasNav}
-                  activeKey={active}
-                  onSelect={(selectedKey) =>
-                    selectedKey !== null && setActive(selectedKey)
-                  }
-                >
+                <Nav className={styles.offcanvasNav} activeKey={active}>
                   <Nav.Link
                     as={Link}
                     to="/login"
-                    className={`${styles.navLink} ${isUserPage ? styles.navLinkLight : ""}`}
+                    className={`${styles.navLink} ${
+                      isUserPage ? styles.navLinkLight : ""
+                    }`}
                     eventKey="login"
                     onClick={handleClose}
                   >
