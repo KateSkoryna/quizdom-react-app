@@ -131,6 +131,9 @@ export type UserLocalQuiz = {
   authorId: string;
   authorName: string;
   publishedAt: Date;
+  rating?: number;
+  commentsCount?: number;
+  likesCount?: number;
 };
 
 export type UserQuiz = UserLocalQuiz & QuizId;
