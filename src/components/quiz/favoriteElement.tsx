@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useAuthStore } from "../../store/AuthStore";
 import styles from "../../styles/pages/home.module.scss";
 import { toggleFavorites } from "../../fetchers/api";
-import HeartIcon from "../common/favoriteIcon";
+import FavoriteIcon from "../common/favoriteIcon";
 
 type FavoriteElementProps = {
   quizId: string;
@@ -60,7 +60,7 @@ const FavoriteElement = ({ quizId, onAuthRequired }: FavoriteElementProps) => {
           onChange={(e) => handleFavoriteClick(e)}
           id={quizId}
         />
-        <HeartIcon className={styles.favoriteIcon} />
+        <FavoriteIcon className={styles.favoriteIcon} />
       </label>
     </div>
   );
