@@ -1,37 +1,31 @@
+import { useState, lazy, Suspense } from "react";
 import Card from "react-bootstrap/Card";
 import { Button } from "react-bootstrap";
 import styles from "../../styles/components/quizCard.module.scss";
 import { UserQuiz } from "../../types/types";
 import { truncateString } from "../../helpers/truncateString";
-import QuizNoUserModal from "../modal/quizNoUserModal";
 import { useAuthStore } from "../../store/AuthStore";
-import { useState } from "react";
-import StartQuizModal from "../modal/startQuizModal";
+import Loader from "../common/loader";
 import Intermediate from "../../assets/bishop.svg";
 import Beginner from "../../assets/knight.svg";
 import Expert from "../../assets/queen.svg";
 import Advanced from "../../assets/rook.svg";
 import HeartIcon from "../common/heartIcon";
-import CommentIcon from "../../assets/comment.svg";
+import CommentIcon from "../common/commentIcon";
 
 type QuizMainListItemProps = {
   quiz: UserQuiz;
 };
 
-// Level configuration mapping
-const LEVEL_CONFIG = {
-  beginner: { name: "Beginner", color: "#F7941D", icon: Beginner },
-  intermediate: { name: "Intermediate", color: "#E8A83D", icon: Intermediate },
-  advanced: { name: "Advanced", color: "#5CB8E0", icon: Advanced },
-  expert: { name: "Expert", color: "#27AAE1", icon: Expert },
-};
+// Lazy load modal
+const StartQuizModal = lazy(() => import("../modal/startQuizModal"));
+const QuizNoUserModal = lazy(() => import("../modal/quizNoUserModal"));
 
-// Map complexity numbers to level keys
-const COMPLEXITY_TO_LEVEL: Record<string, keyof typeof LEVEL_CONFIG> = {
-  "1": "beginner",
-  "2": "intermediate",
-  "3": "advanced",
-  "4": "expert",
+const LEVEL_CONFIG = {
+  "1": { name: "Beginner", color: "#F7941D", icon: Beginner },
+  "2": { name: "Intermediate", color: "#E8A83D", icon: Intermediate },
+  "3": { name: "Advanced", color: "#5CB8E0", icon: Advanced },
+  "4": { name: "Expert", color: "#27AAE1", icon: Expert },
 };
 
 const QuizMainListItem = ({
@@ -56,8 +50,7 @@ const QuizMainListItem = ({
   const localizedDate = publishedAt.toLocaleDateString();
 
   const displayAuthor = currentUser ? authorName : "Someone you know";
-  const levelKey = COMPLEXITY_TO_LEVEL[complexity] || "beginner";
-  const levelConfig = LEVEL_CONFIG[levelKey];
+  const levelConfig = LEVEL_CONFIG[complexity] || LEVEL_CONFIG["1"];
 
   const handleStart = () => setStartQuiz(true);
   const handleEnd = () => setStartQuiz(false);
@@ -82,7 +75,9 @@ const QuizMainListItem = ({
       {/* Header */}
       <div className={styles.cardHeader}>
         <h3 className={styles.title}>{cuttedTitle}</h3>
-        <QuizNoUserModal id={id} />
+        <Suspense fallback={<Loader />}>
+          <QuizNoUserModal id={id} />
+        </Suspense>
       </div>
 
       {/* Description */}
@@ -135,17 +130,19 @@ const QuizMainListItem = ({
             <span className={styles.statValue}>{likesCount}</span>
           </div>
           <div className={styles.statItem}>
-            <img src={CommentIcon} alt="comments" className={styles.statIcon} />
+            <CommentIcon className={styles.statIcon} />
             <span className={styles.statValue}>{commentsCount}</span>
           </div>
         </div>
       </div>
       {startQuiz && (
-        <StartQuizModal
-          show={startQuiz}
-          handleClose={handleEnd}
-          questions={questions}
-        />
+        <Suspense fallback={<Loader />}>
+          <StartQuizModal
+            show={startQuiz}
+            handleClose={handleEnd}
+            questions={questions}
+          />
+        </Suspense>
       )}
     </Card.Body>
   );

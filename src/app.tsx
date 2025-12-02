@@ -1,23 +1,30 @@
-import { useEffect } from "react";
+import { useEffect, lazy, Suspense } from "react";
 import { createHashRouter, RouterProvider, Navigate } from "react-router-dom";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./firebase";
 
 import { fetchUserWithToken } from "./fetchers/common";
 import { useAuthStore } from "./store/AuthStore";
-import Layout from "./components/layout/layout";
-import UserPage from "./pages/user";
-import AuthPage from "./pages/auth";
-import HomePage from "./pages/home";
-import NewsPage from "./pages/news";
-import NotFoundPage from "./pages/notFound";
+import Loader from "./components/common/loader";
 import ProtectedRoute from "./components/common/protectedRoute";
 import { getMediaNews } from "./fetchers/api";
+
+// Lazy load pages and layout
+const Layout = lazy(() => import("./components/layout/layout"));
+const UserPage = lazy(() => import("./pages/user"));
+const AuthPage = lazy(() => import("./pages/auth"));
+const HomePage = lazy(() => import("./pages/home"));
+const NewsPage = lazy(() => import("./pages/news"));
+const NotFoundPage = lazy(() => import("./pages/notFound"));
 
 const router = createHashRouter([
   {
     path: "/",
-    element: <Layout />,
+    element: (
+      <Suspense fallback={<Loader />}>
+        <Layout />
+      </Suspense>
+    ),
     children: [
       {
         index: true,
@@ -25,11 +32,19 @@ const router = createHashRouter([
       },
       {
         path: "quizes",
-        element: <HomePage />,
+        element: (
+          <Suspense fallback={<Loader />}>
+            <HomePage />
+          </Suspense>
+        ),
       },
       {
         path: "news",
-        element: <NewsPage />,
+        element: (
+          <Suspense fallback={<Loader />}>
+            <NewsPage />
+          </Suspense>
+        ),
         loader: async ({ request }) => {
           const url = new URL(request.url);
           let searchQuery = url.searchParams.get("query") || "";
@@ -45,19 +60,29 @@ const router = createHashRouter([
       },
       {
         path: "login",
-        element: <AuthPage />,
+        element: (
+          <Suspense fallback={<Loader />}>
+            <AuthPage />
+          </Suspense>
+        ),
       },
       {
         path: "user",
         element: (
-          <ProtectedRoute>
-            <UserPage />
-          </ProtectedRoute>
+          <Suspense fallback={<Loader />}>
+            <ProtectedRoute>
+              <UserPage />
+            </ProtectedRoute>
+          </Suspense>
         ),
       },
       {
         path: "*",
-        element: <NotFoundPage />,
+        element: (
+          <Suspense fallback={<Loader />}>
+            <NotFoundPage />
+          </Suspense>
+        ),
       },
     ],
   },

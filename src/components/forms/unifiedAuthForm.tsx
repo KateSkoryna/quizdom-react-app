@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, lazy, Suspense } from "react";
 import { Form, Button } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
@@ -7,10 +7,13 @@ import { useAuthStore } from "../../store/AuthStore";
 import { ensureUserDocument } from "../../helpers/authHelper";
 import { UserData } from "../../types/types";
 import { loginSchema, signupSchema } from "../../helpers/schema";
-import ForgotPasswordModal from "../modal/forgotPasswordModal";
 import addClassnameToText from "../../helpers/addClassnameToText";
+import Loader from "../common/loader";
 import styles from "../../styles/pages/auth.module.scss";
 import eyeIcon from "../../assets/eye.svg";
+
+// Lazy load modal - only loads when user clicks "Forget password?"
+const ForgotPasswordModal = lazy(() => import("../modal/forgotPasswordModal"));
 
 type AuthMode = "login" | "signup";
 
@@ -208,11 +211,13 @@ const UnifiedAuthForm = () => {
           : "Already have an account? Log in"}
       </p>
 
-      {mode === "login" && (
-        <ForgotPasswordModal
-          show={showForgotPassword}
-          handleClose={() => setShowForgotPassword(false)}
-        />
+      {mode === "login" && showForgotPassword && (
+        <Suspense fallback={<Loader />}>
+          <ForgotPasswordModal
+            show={showForgotPassword}
+            handleClose={() => setShowForgotPassword(false)}
+          />
+        </Suspense>
       )}
     </Form>
   );

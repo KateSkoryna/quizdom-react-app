@@ -1,9 +1,13 @@
+import { lazy, Suspense } from "react";
 import { useOpenQuizModal } from "../../store/store";
-import QuizModal from "../modal/quizModal";
 import { Button, Container } from "react-bootstrap";
 import UserQuizList from "../user/userQuizList";
 import styles from "../../styles/components/addQuiz.module.scss";
 import { useAuthStore } from "../../store/AuthStore";
+import Loader from "../common/loader";
+
+// Lazy load the modal - only loads when user clicks "Create Your Quiz"
+const QuizModal = lazy(() => import("../modal/quizModal"));
 
 const AddQuizComponent = () => {
   const currentUser = useAuthStore((state) => state.currentUser);
@@ -27,7 +31,11 @@ const AddQuizComponent = () => {
       </p>
 
       <UserQuizList />
-      <QuizModal showModal={show} handleCloseModal={handleCloseModal} />
+      {show && (
+        <Suspense fallback={<Loader />}>
+          <QuizModal showModal={show} handleCloseModal={handleCloseModal} />
+        </Suspense>
+      )}
     </Container>
   ) : null;
 };
