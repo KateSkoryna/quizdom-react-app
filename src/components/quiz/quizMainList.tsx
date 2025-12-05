@@ -1,5 +1,5 @@
 import { useQuizesStore } from "../../store/quizeStore";
-import QuizMainListItem from "./quizMainListItem";
+import QuizMainListItem from "./quizItem/quizMainListItem";
 import { Container, Card } from "react-bootstrap";
 
 const QuizMainList = () => {
