@@ -1,6 +1,6 @@
 import { useFormContext } from "react-hook-form";
 import { Form } from "react-bootstrap";
-import { QUIZ_CATEGORY } from "../../const/const";
+import { QUIZ_CATEGORY } from "../../types/types";
 
 const entries = Object.entries(QUIZ_CATEGORY);
 

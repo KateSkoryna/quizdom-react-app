@@ -136,4 +136,26 @@ export type UserLocalQuiz = {
   likesCount?: number;
 };
 
+export const NEWS_CATEGORY = {
+  [NewsCategory.TECHNOLOGY]: "technology",
+  [NewsCategory.HEALTH]: "health",
+  [NewsCategory.BUSINESS]: "business",
+  [NewsCategory.SCIENCE]: "science",
+};
+
+export const COMPLEXITY_VALUES = {
+  [Complexity.BEGINNER]: "beginner",
+  [Complexity.MEDIUM]: "medium",
+  [Complexity.ADVANCED]: "advanced",
+  [Complexity.EXPERT]: "expert",
+};
+export const QUIZ_CATEGORY = {
+  [QuizCategory.JS]: "JavaScript",
+  [QuizCategory.TS]: "TypeScript",
+  [QuizCategory.REACT]: "ReactJS",
+  [QuizCategory.NEXT_JS]: "NextJS",
+  [QuizCategory.NODE_JS]: "NodeJS",
+  [QuizCategory.JEST]: "Jest",
+};
+
 export type UserQuiz = UserLocalQuiz & QuizId;

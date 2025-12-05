@@ -14,8 +14,7 @@ import {
   deleteDoc,
   addDoc,
 } from "firebase/firestore";
-import { QuizFormState, UserQuiz } from "../types/types";
-import { COMPLEXITY_VALUES } from "../const/const";
+import { COMPLEXITY_VALUES, QuizFormState, UserQuiz } from "../types/types";
 
 const API_KEY = import.meta.env.VITE_NEWS_API_KEY;
 const NEWS_BASE_URL = import.meta.env.VITE_NEWS_BASE_URL;
@@ -236,7 +235,11 @@ export async function getFavoriteQuizes(
 
 //======================== EDIT USER  ====================
 
-export async function editUser(userId: string, field: string, value: string | import("firebase/firestore").Timestamp) {
+export async function editUser(
+  userId: string,
+  field: string,
+  value: string | import("firebase/firestore").Timestamp
+) {
   try {
     const ref = doc(db, "users", userId);
     await updateDoc(ref, {

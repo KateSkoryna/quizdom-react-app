@@ -1,5 +1,4 @@
-import { COMPLEXITY_VALUES } from "../const/const";
-import { Complexity } from "../types/types";
+import { Complexity, COMPLEXITY_VALUES } from "../types/types";
 
 export const convertComplexity = (complexity: string) => {
   switch (complexity) {

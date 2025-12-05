@@ -1,9 +1,9 @@
 import { Button, Container, Form } from "react-bootstrap";
 import styles from "../../styles/pages/home.module.scss";
-import { QUIZ_CATEGORY, COMPLEXITY_VALUES } from "../../const/const";
 import FormSelectComponent from "../forms/formSelectComponent";
 import { useSearchParams } from "react-router-dom";
 import { useState } from "react";
+import { COMPLEXITY_VALUES, QUIZ_CATEGORY } from "../../types/types";
 
 const categories = Object.values(QUIZ_CATEGORY);
 const complexityValues = Object.values(COMPLEXITY_VALUES);
