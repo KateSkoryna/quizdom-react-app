@@ -6,7 +6,7 @@ import calendarIconUrl from "../../assets/calendar.svg";
 
 type DatepickerProps = {
   value: Date;
-  callback: (date: Date) => void;
+  callback: (date: Date | null) => void;
   className?: string;
   selectedColor?: string;
 };
