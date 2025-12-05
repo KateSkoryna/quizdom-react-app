@@ -18,7 +18,7 @@ const GoogleAuthHandler = () => {
       await loginWithGoogle();
       await ensureUserDocument("google");
       navigate("/user");
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error("Google auth error:", error);
       setError("Failed to authenticate with Google. Please try again.");
     } finally {

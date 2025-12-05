@@ -14,12 +14,19 @@ import eyeIcon from "../../assets/eye.svg";
 
 type AuthMode = "login" | "signup";
 
-const initLoginState = {
+type AuthFormData = {
+  name?: string;
+  email: string;
+  password: string;
+  confirmPassword?: string;
+};
+
+const initLoginState: AuthFormData = {
   email: "",
   password: "",
 };
 
-const initSignupState = {
+const initSignupState: AuthFormData = {
   name: "",
   email: "",
   password: "",
@@ -41,11 +48,11 @@ const UnifiedAuthForm = () => {
     setError,
     watch,
     formState: { errors },
-  } = useForm<any>({
+  } = useForm<AuthFormData>({
     mode: "onTouched",
     reValidateMode: "onSubmit",
     defaultValues: mode === "login" ? initLoginState : initSignupState,
-    resolver: yupResolver(mode === "login" ? loginSchema : signupSchema) as any,
+    resolver: yupResolver(mode === "login" ? loginSchema : signupSchema),
   });
 
   const passwordValue = watch("password");
@@ -56,21 +63,21 @@ const UnifiedAuthForm = () => {
     setShowPassword(false);
   };
 
-  const onSubmit = async (values: UserData): Promise<void> => {
+  const onSubmit = async (values: AuthFormData): Promise<void> => {
     try {
       if (mode === "login") {
         await login(values.email, values.password);
         navigate("/user");
       } else {
-        const userCredential = await signup(values);
+        const userCredential = await signup(values as UserData);
 
         try {
           await ensureUserDocument("email", {
-            name: values.name,
+            name: values.name!,
             email: values.email,
           });
           navigate("/user");
-        } catch (firestoreError: any) {
+        } catch (firestoreError: unknown) {
           // Rollback: Delete the Firebase Auth user if Firestore creation fails
           try {
             await userCredential.user.delete();
@@ -80,8 +87,10 @@ const UnifiedAuthForm = () => {
           throw new Error("Failed to create user profile");
         }
       }
-    } catch (error: any) {
-      const errorMessage = error.message || error.code;
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : (error as { code?: string }).code || "";
+      const errorCode = (error as { code?: string }).code || "";
+
       if (mode === "login") {
         setError("root", {
           message: "Invalid email or password",
@@ -89,15 +98,15 @@ const UnifiedAuthForm = () => {
       } else {
         if (
           errorMessage === "EMAIL_EXISTS" ||
-          error.code === "auth/email-already-in-use" ||
-          error.code === "auth/invalid-email"
+          errorCode === "auth/email-already-in-use" ||
+          errorCode === "auth/invalid-email"
         ) {
           setError("root", {
             message: "Something is wrong with email or password",
           });
         } else {
           setError("root", {
-            message: error.message || "Failed to create an account",
+            message: errorMessage || "Failed to create an account",
           });
         }
       }
@@ -190,23 +199,28 @@ const UnifiedAuthForm = () => {
       )}
 
       {mode === "login" && (
-        <p
+        <button
+          type="button"
           className={styles.forgetPassword}
           onClick={() => setShowForgotPassword(true)}
         >
           Forget password?
-        </p>
+        </button>
       )}
 
       <Button variant="primary" type="submit" className={styles.formBtn}>
         {mode === "login" ? "Login" : "Sign Up"}
       </Button>
 
-      <p className={styles.toggleMode} onClick={toggleMode}>
+      <button
+        type="button"
+        className={styles.toggleMode}
+        onClick={toggleMode}
+      >
         {mode === "login"
           ? "Don't have an account? Sign up"
           : "Already have an account? Log in"}
-      </p>
+      </button>
 
       {mode === "login" && showForgotPassword && (
         <ForgotPasswordModal
