@@ -11,7 +11,7 @@ const UserQuizItem = ({
   quiz: UserLocalQuiz;
   eventKey: string;
 }) => {
-  const { title, authorId, authorName, publishedAt, ...rest } = quiz;
+  const { title, authorId, authorName, publishedAt, rating: _rating, commentsCount: _commentsCount, likesCount: _likesCount, ...rest } = quiz;
   const currentUser = useAuthStore((state) => state.currentUser);
 
   return (
