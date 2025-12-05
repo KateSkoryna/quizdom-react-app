@@ -14,9 +14,7 @@ export default defineConfig({
   plugins: [
     react({
       babel: {
-        plugins: [
-          ["babel-plugin-react-compiler", ReactCompilerConfig],
-        ],
+        plugins: [["babel-plugin-react-compiler", ReactCompilerConfig]],
       },
     }),
     eslint({
@@ -32,6 +30,11 @@ export default defineConfig({
   base: "/quizdom-react-app/",
   define: {
     "process.env": process.env,
+  },
+  server: {
+    host: "0.0.0.0",
+    port: 5173,
+    allowedHosts: true,
   },
   css: {
     modules: {
