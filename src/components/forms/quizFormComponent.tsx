@@ -1,6 +1,11 @@
 import Form from "react-bootstrap/Form";
 import { useForm, FormProvider } from "react-hook-form";
-import { QuizFormState, QuizFormProps, Complexity, QuizCategory } from "../../types/types";
+import {
+  QuizFormState,
+  QuizFormProps,
+  Complexity,
+  QuizCategory,
+} from "../../types/types";
 import { Button, Container } from "react-bootstrap";
 import FormRangeComponent from "./formRangeComponent";
 import FormCategoryComponent from "./formCategoryComponent";
@@ -43,16 +48,10 @@ const QuizFormComponent = ({ handleClose }: QuizFormProps) => {
   } = methods;
 
   const handleFormSubmit = async (data: QuizFormState): Promise<void> => {
-    try {
-      if (currentUser) {
-        await addQuiz(data, currentUser?.id, currentUser?.name);
-        reset();
-        handleClose();
-      }
-    } catch (error) {
-      setError("root", {
-        message: "Failed to create a quiz",
-      });
+    if (currentUser) {
+      await addQuiz(data, currentUser?.id, currentUser?.name, setError);
+      reset();
+      handleClose();
     }
   };
 

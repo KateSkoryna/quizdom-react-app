@@ -15,6 +15,7 @@ import {
   addDoc,
 } from "firebase/firestore";
 import { COMPLEXITY_VALUES, QuizFormState, UserQuiz } from "../types/types";
+import { UseFormSetError } from "react-hook-form";
 
 const API_KEY = import.meta.env.VITE_NEWS_API_KEY;
 const NEWS_BASE_URL = import.meta.env.VITE_NEWS_BASE_URL;
@@ -146,7 +147,8 @@ export async function getQuizByCategoryAndComplexity(queryData: {
 export async function addQuiz(
   data: QuizFormState,
   userId: string,
-  userName: string
+  userName: string,
+  setError: UseFormSetError<QuizFormState>
 ) {
   try {
     await addDoc(collection(db, "quizes"), {
@@ -158,6 +160,9 @@ export async function addQuiz(
     });
   } catch (error) {
     if (error instanceof Error) {
+      setError("root", {
+        message: "Failed to create a quiz",
+      });
       throw new Error(error.message);
     }
   }

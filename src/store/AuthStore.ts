@@ -55,7 +55,9 @@ export const useAuthStore = create<AuthStore>((set) => ({
       await signOut(auth);
       localStorage.removeItem("authData");
     } catch (error) {
-      console.log(error);
+      if (error instanceof Error) {
+        throw new Error(error.message);
+      }
     } finally {
       set({ currentUser: null, isAuthLoading: false });
     }

@@ -19,7 +19,7 @@ const UserQuizList = () => {
     };
 
     getQuizes();
-  }, [currentUser]);
+  }, [currentUser, getQuizesById]);
   return isLoading ? (
     <Loader />
   ) : userQuizes && userQuizes.length > 0 ? (
