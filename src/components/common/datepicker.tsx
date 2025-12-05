@@ -1,5 +1,5 @@
 import DatePicker from "react-datepicker";
-import { subYears } from "date-fns";
+import dayjs from "dayjs";
 import "react-datepicker/dist/react-datepicker.css";
 import styles from "../../styles/components/datepicker.module.scss";
 import calendarIconUrl from "../../assets/calendar.svg";
@@ -28,8 +28,8 @@ const DatepickerContainer = ({
       calendarClassName={selectedColor === "#f7941d" ? styles.customCalendar : ""}
       showYearDropdown
       scrollableYearDropdown
-      maxDate={subYears(new Date(), 18)}
-      minDate={subYears(new Date(), 100)}
+      maxDate={dayjs().subtract(18, 'years').toDate()}
+      minDate={dayjs().subtract(100, 'years').toDate()}
       dropdownMode="select"
       showMonthDropdown
       selected={value ? new Date(value) : null}

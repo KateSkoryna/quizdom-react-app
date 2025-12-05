@@ -15,7 +15,6 @@
     "axios": "^1.6.8",
     "bcryptjs-react": "^2.4.6",
     "bootstrap": "^5.3.3",
-    "date-fns": "^3.6.0",
     "dayjs": "^1.11.19",
     "dotenv": "^16.4.5",
     "firebase": "^10.12.0",
