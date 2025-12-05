@@ -86,5 +86,4 @@ const getJoke = () => {
   return jokes[Math.floor(Math.random() * jokes.length)];
 };
 
-// eslint-disable-next-line react-refresh/only-export-components
 export const JOKE: Joke = getJoke();
