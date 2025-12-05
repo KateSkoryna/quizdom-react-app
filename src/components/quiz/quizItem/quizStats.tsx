@@ -37,12 +37,10 @@ const QuizStats = ({
   };
 
   return (
-    <div className={styles.cardMeta}>
-      <div className={styles.publishedInfo}>
-        <p
-          className={styles.author}
-        >{`Published by ${displayAuthor} • ${publishedAt}`}</p>
-      </div>
+    <div className={styles.publishedInfo}>
+      <p
+        className={styles.author}
+      >{`Created by ${displayAuthor} • ${publishedAt}`}</p>
       <div className={styles.stats}>
         <div className={styles.statItem}>
           <span className={styles.rating}>

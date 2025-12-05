@@ -4,8 +4,8 @@ import { UserQuiz } from "../../../types/types";
 import { truncateString } from "../../../helpers/truncateString";
 import { useAuthStore } from "../../../store/AuthStore";
 import StartQuizButton from "./startQuizButton";
-import QuizCardHeader from "./quizCardHeader";
 import QuizStats from "./quizStats";
+import QuizCover from "./quizCover";
 import QuizLevelBadge from "./quizLevelBadge";
 
 type QuizMainListItemProps = {
@@ -24,6 +24,7 @@ const QuizMainListItem = ({
     rating = 0,
     commentsCount = 0,
     likesCount = 0,
+    category,
   },
 }: QuizMainListItemProps) => {
   const currentUser = useAuthStore((state) => state.currentUser);
@@ -33,26 +34,27 @@ const QuizMainListItem = ({
   const localizedDate = publishedAt.toLocaleDateString();
 
   return (
-    <Card.Body className={styles.quizCard}>
-      <QuizCardHeader title={cuttedTitle} id={id} />
+    <Card className={styles.quizCardContent}>
+      <div className={styles.front}>
+        <QuizCover title={cuttedTitle} id={id} category={category} />
+        <Card.Body className={styles.quizInfoCard}>
+          <Card.Text className={styles.description}>
+            {cuttedDescription}
+          </Card.Text>
 
-      <Card.Text className={styles.description}>{cuttedDescription}</Card.Text>
-
-      <QuizLevelBadge complexity={complexity} />
-
-      <StartQuizButton questions={questions} />
-
-      <div className={styles.cardFooter}>
-        <QuizStats
-          rating={rating}
-          likesCount={likesCount}
-          commentsCount={commentsCount}
-          authorName={authorName}
-          publishedAt={localizedDate}
-          currentUser={!!currentUser}
-        />
+          <QuizLevelBadge complexity={complexity} />
+          <QuizStats
+            rating={rating}
+            likesCount={likesCount}
+            commentsCount={commentsCount}
+            authorName={authorName}
+            publishedAt={localizedDate}
+            currentUser={!!currentUser}
+          />
+        </Card.Body>
       </div>
-    </Card.Body>
+      <StartQuizButton questions={questions} />
+    </Card>
   );
 };
 

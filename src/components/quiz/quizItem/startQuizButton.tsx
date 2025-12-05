@@ -26,7 +26,7 @@ const StartQuizButton = ({ questions }: StartQuizButtonProps) => {
   const handleModalToggle = () => setIsModalOpen(!isModalOpen);
 
   return (
-    <>
+    <div className={styles.back}>
       <div className={styles.startButtonContainer}>
         <Button onClick={handleStart} className={styles.startButton}>
           Start
@@ -42,7 +42,7 @@ const StartQuizButton = ({ questions }: StartQuizButtonProps) => {
       {isModalOpen && (
         <NavigateUserModal handleClose={handleModalToggle} show={isModalOpen} />
       )}
-    </>
+    </div>
   );
 };
 
