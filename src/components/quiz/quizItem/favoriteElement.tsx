@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import { useAuthStore } from "../../store/AuthStore";
-import styles from "../../styles/pages/home.module.scss";
-import { toggleFavorites } from "../../fetchers/api";
-import FavoriteIcon from "../common/favoriteIcon";
+import { useAuthStore } from "../../../store/AuthStore";
+import styles from "../../../styles/pages/home.module.scss";
+import { toggleFavorites } from "../../../fetchers/api";
+import FavoriteIcon from "../../icons/favoriteIcon";
 
 type FavoriteElementProps = {
   quizId: string;

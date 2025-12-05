@@ -1,6 +1,6 @@
 import { useState } from "react";
-import FavoriteElement from "../quiz/favoriteElement";
-import ShareIcon from "../common/shareIcon";
+import FavoriteElement from "../quiz/quizItem/favoriteElement";
+import ShareIcon from "../icons/shareIcon";
 import NavigateUserModal from "./navigateUserModal";
 import styles from "../../styles/components/quizCard.module.scss";
 
