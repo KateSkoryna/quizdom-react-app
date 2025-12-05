@@ -1,10 +1,10 @@
-import { useEffect } from "react";
+import { useEffect, ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuthStore } from "../../store/AuthStore";
 import AccessDenied from "../fallback/accessDenied";
 import Loader from "./loader";
 
-const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
+const ProtectedRoute = ({ children }: { children: ReactNode }) => {
   const currentUser = useAuthStore((state) => state.currentUser);
   const isAuthLoading = useAuthStore((state) => state.isAuthLoading);
   const navigate = useNavigate();

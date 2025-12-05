@@ -1,14 +1,24 @@
 import dotenv from "dotenv";
 import { defineConfig } from "vite";
-import react from "@vitejs/plugin-react-swc";
+import react from "@vitejs/plugin-react";
 // @ts-expect-error
 import eslint from "vite-plugin-eslint";
 
 dotenv.config();
 
+const ReactCompilerConfig = {
+  /* ... */
+};
+
 export default defineConfig({
   plugins: [
-    react(),
+    react({
+      babel: {
+        plugins: [
+          ["babel-plugin-react-compiler", ReactCompilerConfig],
+        ],
+      },
+    }),
     eslint({
       cache: false,
       include: ["src/**/*.ts", "src/**/*.tsx"],
