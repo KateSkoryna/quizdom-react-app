@@ -82,6 +82,7 @@ export interface FormFooterProps {
 
 export interface QuizFormProps {
   handleClose: () => void;
+  onFormStateChange?: (state: { isDirty: boolean; isSubmitting: boolean }) => void;
 }
 
 export interface Answer {
@@ -101,6 +102,7 @@ export enum QuizCategory {
   NEXT_JS = "NextJS",
   NODE_JS = "NodeJS",
   JEST = "Jest",
+  OTHER = "Other",
 }
 
 export enum Complexity {
@@ -156,6 +158,7 @@ export const QUIZ_CATEGORY = {
   [QuizCategory.NEXT_JS]: "NextJS",
   [QuizCategory.NODE_JS]: "NodeJS",
   [QuizCategory.JEST]: "Jest",
+  [QuizCategory.OTHER]: "Other",
 };
 
 export type UserQuiz = UserLocalQuiz & QuizId;
