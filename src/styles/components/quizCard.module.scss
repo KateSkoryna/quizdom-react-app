@@ -19,6 +19,7 @@
   height: 100%;
   position: relative;
   border: 0;
+  min-height: 360px;
 
   & .quizCardContent {
     border: none;
@@ -27,10 +28,11 @@
     position: absolute;
     width: 100%;
     height: 100%;
-    transition: transform 1s;
+    transition: transform 0.6s;
     transform-style: preserve-3d;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
     border-radius: 6px;
+    pointer-events: none;
 
     & .front,
     .back {
@@ -38,10 +40,18 @@
       width: 100%;
       position: absolute;
       backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+    }
+
+    & .front {
+      pointer-events: auto;
+      display: flex;
+      flex-direction: column;
     }
 
     & .back {
       transform: rotateY(180deg);
+      pointer-events: none;
 
       // Start Button Container - absolutely positioned on right
       & .startButtonContainer {
@@ -55,7 +65,9 @@
 
       // Start Button with gradient glow on hover
       & .startButton {
-        padding: 0.5rem 1rem;
+        width: 12rem;
+        height: 12rem;
+        padding: 0;
         border: none;
         outline: none;
         color: $primary-color;
@@ -63,12 +75,15 @@
         cursor: pointer;
         position: relative;
         z-index: 0;
-        border-radius: 50px;
-        font-size: 1rem;
+        border-radius: 50%;
+        font-size: 2rem;
         font-weight: 700;
         text-transform: uppercase;
         letter-spacing: 0.5px;
-        transition: transform 0.2s ease, box-shadow 0.3s ease;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        display: flex;
+        align-items: center;
+        justify-content: center;
 
         &:before {
           content: "";
@@ -93,11 +108,12 @@
           width: calc(100% + 4px);
           height: calc(100% + 4px);
           opacity: 0;
-          transition: opacity 0.3s ease-in-out;
-          border-radius: 50px;
+          transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+          border-radius: 50%;
         }
 
-        &:hover {
+        &:hover,
+        &:focus {
           border: none;
           transform: translateY(-2px);
           box-shadow: 0 0 20px rgba(247, 148, 29, 0.6),
@@ -129,7 +145,7 @@
           background: $white;
           left: 0;
           top: 0;
-          border-radius: 50px;
+          border-radius: 50%;
         }
 
         &:disabled {
@@ -150,7 +166,27 @@
 
   &:hover .quizCardContent {
     transform: rotateY(180deg);
-    transition: transform 0.5s;
+
+    // Disable front pointer events, enable back
+    & .front {
+      pointer-events: none;
+    }
+
+    & .back {
+      pointer-events: auto;
+    }
+
+    // Activate button glow effect on card hover
+    & .startButton {
+      transform: translateY(-2px);
+      box-shadow: 0 0 20px rgba(247, 148, 29, 0.6),
+        0 0 40px rgba(39, 170, 225, 0.5), 0 4px 20px rgba(0, 0, 0, 0.15);
+
+      &:before {
+        opacity: 1;
+        animation: glowing 20s linear infinite;
+      }
+    }
   }
 }
 
@@ -166,7 +202,7 @@
   border-top-left-radius: 6px;
   border-top-right-radius: 6px;
 
-  background: linear-gradient(135deg, #f7941d 0%, #27aae1 100%);
+  background: $primary-gradient;
 
   & .coverTitle {
     color: white;
@@ -209,6 +245,8 @@
   border-radius: 0;
   transition: all 0.3s ease;
   position: relative;
+  flex: 1;
+  min-height: 0;
 }
 
 .cardHeader {
@@ -235,7 +273,7 @@
 
 .complexity {
   display: flex;
-  align-items: center;
+  align-items: baseline;
   gap: 0.25rem;
   font-weight: 600;
   color: $primary-color;
