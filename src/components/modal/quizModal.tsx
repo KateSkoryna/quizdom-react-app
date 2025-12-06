@@ -1,5 +1,7 @@
 import Modal from "react-bootstrap/Modal";
 import QuizFormComponent from "../forms/quizFormComponent";
+import styles from "../../styles/components/modal.module.scss";
+import { useRef, useState, useCallback } from "react";
 
 interface QuizModalProps {
   showModal: boolean;
@@ -7,20 +9,52 @@ interface QuizModalProps {
 }
 
 const QuizModal = ({ showModal, handleCloseModal }: QuizModalProps) => {
+  const formRef = useRef<{ submit: () => void; isSubmitting: boolean; isDirty: boolean }>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isDirty, setIsDirty] = useState(false);
+
+  const handleFormStateChange = useCallback((state: { isDirty: boolean; isSubmitting: boolean }) => {
+    setIsDirty(state.isDirty);
+    setIsSubmitting(state.isSubmitting);
+  }, []);
+
+  const handlePublish = () => {
+    formRef.current?.submit();
+  };
+
   return (
     <Modal
       size="lg"
       show={showModal}
       onHide={handleCloseModal}
       scrollable
-      dialogClassName="h-75"
+      dialogClassName={styles.quizModalDialog}
+      centered
     >
-      <Modal.Header closeButton>
+      <Modal.Header closeButton className={styles.modalHeader}>
         <Modal.Title as="h2">Create your own Quiz</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <QuizFormComponent handleClose={handleCloseModal} />
+        <QuizFormComponent ref={formRef} handleClose={handleCloseModal} onFormStateChange={handleFormStateChange} />
       </Modal.Body>
+      <Modal.Footer className={styles.modalFooter}>
+        <button
+          type="button"
+          className={styles.primaryButton}
+          onClick={handlePublish}
+          disabled={!isDirty || isSubmitting}
+        >
+          {isSubmitting ? "Publishing..." : "Publish Quiz"}
+        </button>
+        <button
+          type="button"
+          className={styles.secondaryButton}
+          onClick={handleCloseModal}
+          disabled={isSubmitting}
+        >
+          Save to Drafts
+        </button>
+      </Modal.Footer>
     </Modal>
   );
 };

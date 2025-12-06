@@ -1,8 +1,10 @@
 import { useFieldArray, useFormContext } from "react-hook-form";
 import AnswersFormComponent from "./answersFormComponent";
-import { Button, Form } from "react-bootstrap";
+import { Form } from "react-bootstrap";
 import addClassnameToText from "../../helpers/addClassnameToText";
-import styles from "../../styles/pages/home.module.scss";
+import modalStyles from "../../styles/components/modal.module.scss";
+import { RiAddLine } from "react-icons/ri";
+import { IoMdRemove } from "react-icons/io";
 
 const QuestionsFormComponent = () => {
   const {
@@ -27,19 +29,29 @@ const QuestionsFormComponent = () => {
         return (
           <Form.Group
             key={question.id}
-            className="mb-3"
+            className={modalStyles.questionContainer}
             controlId={`question-${index}`}
           >
             <div className="d-flex justify-content-between mb-3">
-              <Form.Label className="mb-0 align-self-center">
+              <Form.Label
+                className={`mb-0 align-self-center ${modalStyles.questionLabel}`}
+              >
                 Question {index + 1}
               </Form.Label>
               {index > 0 && (
-                <Button onClick={() => remove(index)}>Remove Question</Button>
+                <button
+                  type="button"
+                  className={modalStyles.addQuestionButton}
+                  onClick={() => remove(index)}
+                >
+                  <IoMdRemove />
+                  <span>Remove Question</span>
+                </button>
               )}
             </div>
 
             <Form.Control
+              className={modalStyles.formInput}
               {...register(`questions[${index}].questionTitle`, {
                 required: "Question title is required",
                 minLength: {
@@ -48,17 +60,17 @@ const QuestionsFormComponent = () => {
                 },
               })}
               type="text"
-              placeholder="Add question ..."
+              placeholder="Question Text"
             />
-            {error
-              ? addClassnameToText("text-danger", error)
-              : addClassnameToText(styles.errorText)}
+            {error && addClassnameToText("text-danger", error)}
             <AnswersFormComponent nestIndex={index} />
           </Form.Group>
         );
       })}
-      <Form.Group className="text-center">
-        <Button
+      <div className={modalStyles.addQuestionContainer}>
+        <button
+          type="button"
+          className={modalStyles.addQuestionButton}
           onClick={() =>
             append({
               questionTitle: "",
@@ -69,9 +81,10 @@ const QuestionsFormComponent = () => {
             })
           }
         >
-          Add Question
-        </Button>
-      </Form.Group>
+          <RiAddLine />
+          <span>Add Question</span>
+        </button>
+      </div>
     </Form.Group>
   );
 };

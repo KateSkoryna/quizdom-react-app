@@ -6,14 +6,15 @@ import {
   Complexity,
   QuizCategory,
 } from "../../types/types";
-import { Button, Container } from "react-bootstrap";
+import { Container } from "react-bootstrap";
 import FormRangeComponent from "./formRangeComponent";
 import FormCategoryComponent from "./formCategoryComponent";
 import QuestionsFormComponent from "./questionsFormComponent";
 import addClassnameToText from "../../helpers/addClassnameToText";
-import styles from "../../styles/pages/home.module.scss";
+import modalStyles from "../../styles/components/modal.module.scss";
 import { useAuthStore } from "../../store/AuthStore";
 import { addQuiz } from "../../fetchers/api";
+import { forwardRef, useImperativeHandle, useEffect } from "react";
 
 const defaultValues: QuizFormState = {
   title: "",
@@ -31,7 +32,10 @@ const defaultValues: QuizFormState = {
   ],
 };
 
-const QuizFormComponent = ({ handleClose }: QuizFormProps) => {
+const QuizFormComponent = forwardRef<
+  { submit: () => void; isSubmitting: boolean; isDirty: boolean },
+  QuizFormProps
+>(({ handleClose, onFormStateChange }, ref) => {
   const currentUser = useAuthStore((state) => state.currentUser);
 
   const methods = useForm({
@@ -47,6 +51,19 @@ const QuizFormComponent = ({ handleClose }: QuizFormProps) => {
     formState: { errors, isDirty, isSubmitting },
   } = methods;
 
+  useImperativeHandle(ref, () => ({
+    submit: () => {
+      handleSubmit(handleFormSubmit)();
+    },
+    isSubmitting,
+    isDirty,
+  }));
+
+  // Notify parent of form state changes
+  useEffect(() => {
+    onFormStateChange?.({ isDirty, isSubmitting });
+  }, [isDirty, isSubmitting, onFormStateChange]);
+
   const handleFormSubmit = async (data: QuizFormState): Promise<void> => {
     if (currentUser) {
       await addQuiz(data, currentUser?.id, currentUser?.name, setError);
@@ -59,12 +76,13 @@ const QuizFormComponent = ({ handleClose }: QuizFormProps) => {
   const errorDescription = errors.description?.message;
 
   return (
-    <Container>
+    <Container className={modalStyles.formContainer}>
       <FormProvider {...methods}>
         <Form onSubmit={handleSubmit(handleFormSubmit)}>
-          <Form.Group className="mb-3" controlId="div-title">
-            <Form.Label>Quiz Title</Form.Label>
+          <Form.Group className={modalStyles.formGroup} controlId="div-title">
+            <Form.Label className={modalStyles.formLabel}>Quiz Title</Form.Label>
             <Form.Control
+              className={modalStyles.formInput}
               {...register("title", {
                 required: "Title is required",
                 minLength: 8,
@@ -72,13 +90,12 @@ const QuizFormComponent = ({ handleClose }: QuizFormProps) => {
               type="text"
               placeholder="Best Quiz ever..."
             />
-            {(errorTitle as string)
-              ? addClassnameToText("text-danger", errorTitle as string)
-              : addClassnameToText(styles.errorText)}
+            {errorTitle && addClassnameToText("text-danger", errorTitle as string)}
           </Form.Group>
-          <Form.Group className="mb-3" controlId="div-description">
-            <Form.Label>Quiz Description</Form.Label>
+          <Form.Group className={modalStyles.formGroup} controlId="div-description">
+            <Form.Label className={modalStyles.formLabel}>Quiz Description</Form.Label>
             <Form.Control
+              className={modalStyles.formTextarea}
               {...register("description", {
                 required: "Description is required",
                 minLength: 8,
@@ -86,26 +103,19 @@ const QuizFormComponent = ({ handleClose }: QuizFormProps) => {
               as="textarea"
               rows={3}
             />
-            {(errorDescription as string)
-              ? addClassnameToText("text-danger", errorDescription as string)
-              : addClassnameToText(styles.errorText)}
+            {errorDescription && addClassnameToText("text-danger", errorDescription as string)}
           </Form.Group>
-          <FormRangeComponent fieldName="complexity" />
-          <FormCategoryComponent fieldName="category" />
-          <h5 className="mx-auto mb-3 mt-3 text-center">Add your questions</h5>
-          <QuestionsFormComponent />
-          <div className="d-flex justify-content-center">
-            <Button className="me-3" variant="secondary" onClick={handleClose}>
-              Close Quiz
-            </Button>
-            <Button type="submit" disabled={!isDirty || isSubmitting}>
-              {isSubmitting ? "Submitting..." : "Save Quiz"}
-            </Button>
+          <div className={modalStyles.dropdownRow}>
+            <FormRangeComponent fieldName="complexity" />
+            <FormCategoryComponent fieldName="category" />
           </div>
+          <QuestionsFormComponent />
         </Form>
       </FormProvider>
     </Container>
   );
-};
+});
+
+QuizFormComponent.displayName = "QuizFormComponent";
 
 export default QuizFormComponent;

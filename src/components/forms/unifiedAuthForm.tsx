@@ -217,9 +217,17 @@ const UnifiedAuthForm = () => {
         className={styles.toggleMode}
         onClick={toggleMode}
       >
-        {mode === "login"
-          ? "Don't have an account? Sign up"
-          : "Already have an account? Log in"}
+        {mode === "login" ? (
+          <>
+            <span className={styles.toggleText}>Don't have an account? </span>
+            <span className={styles.toggleLink}>Sign up</span>
+          </>
+        ) : (
+          <>
+            <span className={styles.toggleText}>Already have an account? </span>
+            <span className={styles.toggleLink}>Log in</span>
+          </>
+        )}
       </button>
 
       {mode === "login" && showForgotPassword && (
