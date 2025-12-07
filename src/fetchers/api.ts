@@ -14,8 +14,14 @@ import {
   deleteDoc,
   addDoc,
 } from "firebase/firestore";
-import { COMPLEXITY_VALUES, QuizFormState, UserQuiz } from "../types/types";
+import {
+  QuizFormState,
+  UserQuiz,
+  QuizAttempt,
+  Feedback,
+} from "../../shared/types";
 import { UseFormSetError } from "react-hook-form";
+import { COMPLEXITY_VALUES } from "../const/complexity";
 
 const API_KEY = import.meta.env.VITE_NEWS_API_KEY;
 const NEWS_BASE_URL = import.meta.env.VITE_NEWS_BASE_URL;
@@ -250,6 +256,146 @@ export async function editUser(
     await updateDoc(ref, {
       [field]: value,
     });
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new Error(error.message);
+    }
+  }
+}
+
+//======================== QUIZ ATTEMPTS  ====================
+
+export async function getUserQuizAttempts(
+  userId: string,
+  quizId: string
+): Promise<QuizAttempt[]> {
+  try {
+    const q = query(
+      collection(db, "quizAttempts"),
+      where("userId", "==", userId),
+      where("quizId", "==", quizId)
+    );
+    const querySnapshot = await getDocs(q);
+    const attempts = querySnapshot.docs.map((doc) => ({
+      ...(doc.data() as QuizAttempt),
+      id: doc.id,
+      completedAt: doc.data().completedAt?.toDate(),
+    }));
+    return attempts;
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new Error(error.message);
+    }
+    return [];
+  }
+}
+
+export async function canAttemptQuiz(
+  userId: string,
+  quizId: string
+): Promise<boolean> {
+  try {
+    const attempts = await getUserQuizAttempts(userId, quizId);
+    return attempts.length < 2;
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new Error(error.message);
+    }
+    return false;
+  }
+}
+
+export async function addQuizAttempt(
+  userId: string,
+  quizId: string,
+  completed: boolean,
+  score?: number
+): Promise<void> {
+  try {
+    const attempts = await getUserQuizAttempts(userId, quizId);
+    const attemptNumber = attempts.length + 1;
+
+    if (attemptNumber > 2) {
+      throw new Error("Maximum attempts reached for this quiz");
+    }
+
+    await addDoc(collection(db, "quizAttempts"), {
+      quizId,
+      userId,
+      attemptNumber,
+      completed,
+      score: score || 0,
+      completedAt: completed ? new Date() : null,
+      feedbackLeft: false,
+    });
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new Error(error.message);
+    }
+  }
+}
+
+export async function canLeaveFeedback(
+  userId: string,
+  quizId: string
+): Promise<boolean> {
+  try {
+    const attempts = await getUserQuizAttempts(userId, quizId);
+    // User can leave feedback if they completed the quiz and haven't left feedback yet
+    const completedAttempt = attempts.find(
+      (attempt) => attempt.completed && !attempt.feedbackLeft
+    );
+    return !!completedAttempt;
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new Error(error.message);
+    }
+    return false;
+  }
+}
+
+//======================== FEEDBACK  ====================
+
+export async function submitFeedback(
+  userId: string,
+  userName: string,
+  quizId: string,
+  message: string
+): Promise<void> {
+  try {
+    // Check if user can leave feedback
+    const canFeedback = await canLeaveFeedback(userId, quizId);
+    if (!canFeedback) {
+      throw new Error(
+        "You must complete the quiz before leaving feedback, and can only leave feedback once"
+      );
+    }
+
+    // Add feedback to quiz
+    const quizRef = doc(db, "quizes", quizId);
+    const newFeedback: Feedback = {
+      userId,
+      userName,
+      message,
+      createdAt: new Date(),
+    };
+
+    await updateDoc(quizRef, {
+      feedbacks: arrayUnion(newFeedback),
+    });
+
+    // Mark feedback as left in quiz attempt
+    const attempts = await getUserQuizAttempts(userId, quizId);
+    const completedAttempt = attempts.find(
+      (attempt) => attempt.completed && !attempt.feedbackLeft
+    );
+
+    if (completedAttempt && completedAttempt.id) {
+      const attemptRef = doc(db, "quizAttempts", completedAttempt.id);
+      await updateDoc(attemptRef, {
+        feedbackLeft: true,
+      });
+    }
   } catch (error) {
     if (error instanceof Error) {
       throw new Error(error.message);

@@ -1,7 +1,7 @@
 import { User, signOut } from "firebase/auth";
 import { auth } from "../firebase";
 import { useAuthStore } from "../store/AuthStore";
-import { CurrentUser } from "../types/types";
+import { CurrentUser } from "../../shared/types";
 import { getCurrentUser } from "./api";
 
 export const fetchUserWithToken = async (
