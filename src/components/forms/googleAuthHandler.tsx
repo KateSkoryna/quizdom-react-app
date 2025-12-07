@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuthStore } from "../../store/AuthStore";
-import { ensureUserDocument } from "../../helpers/authHelper";
 import GoogleAuthButton from "./googleAuthButton";
+import { ensureUserDocument } from "../../utils/authHelper";
 
 const GoogleAuthHandler = () => {
   const [isLoading, setIsLoading] = useState(false);

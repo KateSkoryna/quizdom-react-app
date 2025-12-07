@@ -1,7 +1,7 @@
 import { Button, Card } from "react-bootstrap";
 import styles from "../../styles/pages/news.module.scss";
-import { truncateString } from "../../helpers/truncateString";
 import { LazyLoadImage } from "react-lazy-load-image-component";
+import { truncateString } from "../../utils/truncateString";
 
 const NewsListItem = ({
   image,

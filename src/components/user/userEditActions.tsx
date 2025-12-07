@@ -1,6 +1,5 @@
 import { Card } from "react-bootstrap";
 import ProgressBar from "react-bootstrap/ProgressBar";
-import styles from "../../styles/pages/user.module.scss";
 import modalStyles from "../../styles/components/modal.module.scss";
 
 interface UserEditActionsProps {
@@ -23,10 +22,7 @@ export const UserEditActions = ({
   onCancel,
 }: UserEditActionsProps) => {
   return (
-    <Card.Footer
-      className="mt-auto"
-      style={{ backgroundColor: "transparent" }}
-    >
+    <Card.Footer className="mt-auto" style={{ backgroundColor: "transparent" }}>
       <div className="mb-2" style={{ minHeight: "1.5rem" }}>
         <ProgressBar
           animated={progressUpload > 0 && progressUpload < 100}
