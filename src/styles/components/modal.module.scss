@@ -461,7 +461,8 @@
 }
 
 .questionTitle {
-  margin-bottom: 20px;
+  margin: 0;
+  flex: 1;
 }
 
 .resultText {
@@ -473,6 +474,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  gap: $spacing-8;
   margin-left: auto;
   margin-right: auto;
 }
@@ -482,7 +484,7 @@
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  gap: 20px;
+  gap: 24px;
 
   @media screen and (min-width: 768px) {
     padding-bottom: 20px;
@@ -612,6 +614,10 @@
 
 .feedbackSection {
   width: 100%;
+
+  & button {
+    margin-inline: auto;
+  }
 }
 
 .feedbackTextarea {
@@ -650,4 +656,75 @@
   opacity: 0;
   transform: translate(0, -100px) rotate(360deg) scale(0);
   animation: revolveDrop 0.3s forwards;
+}
+
+// Hint Button and Popover styles
+.questionHeader {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.hintButton {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: none;
+  border: 2px solid $primary-color;
+  border-radius: 4px;
+  color: $primary-color;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 6px 12px;
+  transition: all 0.3s ease-in-out;
+  white-space: nowrap;
+
+  svg {
+    font-size: 1.25rem;
+  }
+
+  &:hover {
+    background-color: $primary-color;
+    color: $white;
+    transform: translateY(-2px);
+  }
+
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 0.2rem rgba($primary-color, 0.25);
+  }
+}
+
+.hintPopover {
+  border: 2px solid $primary-color;
+  border-radius: 8px;
+  padding: 1rem;
+  background: $white;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  max-width: 400px;
+  margin: 0;
+
+  &::backdrop {
+    background: rgba(0, 0, 0, 0.3);
+  }
+}
+
+.hintContent {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+
+  svg {
+    color: $primary-color;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  p {
+    margin: 0;
+    line-height: 1.5;
+    color: $black;
+  }
 }
