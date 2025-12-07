@@ -1,3 +1,4 @@
+@use "sass:color";
 @use "../settings" as *;
 @use "../abstracts" as *;
 
@@ -32,6 +33,54 @@
     &:focus {
       box-shadow: 0 0 0 0.25rem rgba($primary-color, 0.25);
     }
+  }
+}
+
+.startQuizModalDialog {
+  max-width: calc(40rem);
+
+  & .modal-content {
+    padding-top: 16px;
+    padding-bottom: 16px;
+    border: none;
+  }
+
+  & .modal-body {
+    border: none;
+  }
+
+  & .btn-close {
+    transform: scale(3);
+    margin: 0.5rem 0.5rem 0 0;
+    transition: all 0.3s ease-in-out;
+
+    &:hover {
+      opacity: 1;
+      transform: scale(3.15);
+      filter: invert(56%) sepia(89%) saturate(1742%) hue-rotate(359deg)
+        brightness(99%) contrast(95%);
+    }
+
+    &:focus {
+      box-shadow: 0 0 0 0.25rem rgba($primary-color, 0.25);
+    }
+  }
+}
+
+.answersList {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.answerItem {
+  border: 2px solid $gray-light !important;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+
+  &:hover {
+    border-color: $primary-color !important;
   }
 }
 
@@ -87,8 +136,8 @@
   color: $white;
 
   &:hover:not(:disabled) {
-    background-color: darken($primary-color, 10%);
-    border-color: darken($primary-color, 10%);
+    background-color: color.adjust($primary-color, $lightness: -10%);
+    border-color: color.adjust($primary-color, $lightness: -10%);
   }
 }
 
@@ -420,15 +469,12 @@
   background-repeat: no-repeat;
   background-size: contain;
   background-position: center;
-  max-width: 300px;
-  height: 150px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   margin-left: auto;
   margin-right: auto;
-  padding-bottom: 20px;
 }
 
 .resultBody {
@@ -469,8 +515,139 @@
 }
 
 .img {
-  width: 120px;
-  height: 120px;
+  width: 180px;
+  height: 180px;
   position: absolute;
-  left: 10%;
+  left: -10%;
+  top: 50px;
+}
+
+.questionCounter {
+  margin: 0;
+  width: 100%;
+  text-align: center;
+}
+
+.quizFooter {
+  border: none !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+}
+
+.actionButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: none;
+  border: 2px solid;
+  border-radius: 4px;
+  font-size: 1rem;
+  cursor: pointer;
+  padding: 8px 16px;
+  transition: all 0.3s ease-in-out;
+  font-weight: 500;
+
+  &:focus {
+    outline: none;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.actionButtonPrimary {
+  @extend .actionButton;
+  border-color: $primary-color;
+  background-color: $primary-color;
+  color: $white;
+
+  &:hover:not(:disabled) {
+    background-color: color.adjust($primary-color, $lightness: -10%);
+    border-color: color.adjust($primary-color, $lightness: -10%);
+  }
+}
+
+.actionButtonSecondary {
+  @extend .actionButton;
+  border-color: $black;
+  color: $black;
+
+  &:hover:not(:disabled) {
+    border-color: $primary-color;
+    color: $primary-color;
+  }
+}
+
+.ratingSection {
+  width: 100%;
+}
+
+.starRating {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.star {
+  font-size: 2rem;
+  color: $gray-light;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  user-select: none;
+
+  &:hover {
+    transform: scale(1.2);
+  }
+}
+
+.starFilled {
+  color: #ffd700;
+}
+
+.feedbackSection {
+  width: 100%;
+}
+
+.feedbackTextarea {
+  width: 100%;
+  padding: 0.75rem;
+  border: 2px solid $gray-light;
+  border-radius: 4px;
+  resize: vertical;
+  font-family: inherit;
+  font-size: 0.95rem;
+  transition: all 0.3s ease-in-out;
+
+  &:focus {
+    outline: none;
+    border-color: $primary-color;
+    box-shadow: 0 0 0 0.2rem rgba($primary-color, 0.25);
+  }
+
+  &::placeholder {
+    color: #999;
+  }
+}
+
+.scoreText {
+  font-weight: 700;
+  font-size: 1.5rem;
+}
+
+.scoreNumber {
+  color: #28a745;
+  font-weight: 700;
+}
+
+.animateScore span {
+  display: inline-block;
+  opacity: 0;
+  transform: translate(0, -100px) rotate(360deg) scale(0);
+  animation: revolveDrop 0.3s forwards;
 }
