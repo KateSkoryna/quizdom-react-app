@@ -1,7 +1,7 @@
 import { Controller, useFormContext } from "react-hook-form";
-import { convertComplexity } from "../../helpers/convertComplexity";
+import { COMPLEXITY_VALUES, convertComplexity } from "../../const/complexity";
 import { Form } from "react-bootstrap";
-import { Complexity, COMPLEXITY_VALUES } from "../../types/types";
+import { Complexity } from "../../../shared/types";
 import { useState } from "react";
 import styles from "../../styles/components/modal.module.scss";
 
@@ -23,8 +23,14 @@ const FormRangeComponent = ({ fieldName }: { fieldName: string }) => {
       render={({ field: { onChange, value } }) => (
         <Form.Group className={styles.dropdownGroup} controlId={fieldName}>
           <Form.Label className={styles.formLabel}>Complexity level</Form.Label>
-          <details className={styles.dropdown} open={isOpen} onToggle={(e) => setIsOpen(e.currentTarget.open)}>
-            <summary className={styles.dropdownSummary}>{convertComplexity(value)}</summary>
+          <details
+            className={styles.dropdown}
+            open={isOpen}
+            onToggle={(e) => setIsOpen(e.currentTarget.open)}
+          >
+            <summary className={styles.dropdownSummary}>
+              {convertComplexity(value)}
+            </summary>
             <div className={styles.dropdownList}>
               <div className={styles.dropdownListInner}>
                 {complexityOptions.map((option) => (
@@ -34,7 +40,9 @@ const FormRangeComponent = ({ fieldName }: { fieldName: string }) => {
                       onChange(option.value);
                       setIsOpen(false);
                     }}
-                    className={`${styles.dropdownItem} ${value === option.value ? styles.selected : ""}`}
+                    className={`${styles.dropdownItem} ${
+                      value === option.value ? styles.selected : ""
+                    }`}
                   >
                     {option.label}
                   </div>

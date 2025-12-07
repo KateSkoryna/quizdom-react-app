@@ -1,11 +1,11 @@
-import { Article } from "../../types/types";
 import Container from "react-bootstrap/esm/Container";
 import Row from "react-bootstrap/esm/Row";
 import Col from "react-bootstrap/esm/Col";
 import styles from "../../styles/pages/news.module.scss";
 import NewsListItem from "./newsListItem";
 import { DEFAULT_IMG } from "../../const/const";
-import { truncateString } from "../../helpers/truncateString";
+import type { Article } from "../../pages/news";
+import { truncateString } from "../../utils/truncateString";
 
 const NewsListComponent = ({ news }: { news: Article[] }) => {
   return (

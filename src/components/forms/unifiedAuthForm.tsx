@@ -4,13 +4,32 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useAuthStore } from "../../store/AuthStore";
-import { ensureUserDocument } from "../../helpers/authHelper";
-import { UserData } from "../../types/types";
-import { loginSchema, signupSchema } from "../../helpers/schema";
-import addClassnameToText from "../../helpers/addClassnameToText";
+import { UserData } from "../../../shared/types";
 import ForgotPasswordModal from "../modal/forgotPasswordModal";
 import styles from "../../styles/pages/auth.module.scss";
 import eyeIcon from "../../assets/eye.svg";
+import * as yup from "yup";
+import { ensureUserDocument } from "../../utils/authHelper";
+import addClassnameToText from "../../utils/addClassnameToText";
+
+export const loginSchema = yup
+  .object({
+    email: yup.string().email().required("Email is required"),
+    password: yup.string().required("Password is required").min(8),
+  })
+  .required();
+
+export const signupSchema = yup
+  .object({
+    name: yup.string().required("Name is required"),
+    email: yup.string().email().required("Email is required"),
+    password: yup.string().required("Password is required").min(8),
+    confirmPassword: yup
+      .string()
+      .required("Please retype your password.")
+      .oneOf([yup.ref("password")], "Your passwords do not match."),
+  })
+  .required();
 
 type AuthMode = "login" | "signup";
 
@@ -88,7 +107,10 @@ const UnifiedAuthForm = () => {
         }
       }
     } catch (error: unknown) {
-      const errorMessage = error instanceof Error ? error.message : (error as { code?: string }).code || "";
+      const errorMessage =
+        error instanceof Error
+          ? error.message
+          : (error as { code?: string }).code || "";
       const errorCode = (error as { code?: string }).code || "";
 
       if (mode === "login") {
@@ -193,7 +215,10 @@ const UnifiedAuthForm = () => {
             {...register("confirmPassword")}
           />
           {errors.confirmPassword
-            ? addClassnameToText("text-danger", errors.confirmPassword?.message as string)
+            ? addClassnameToText(
+                "text-danger",
+                errors.confirmPassword?.message as string
+              )
             : addClassnameToText(styles.errorText)}
         </Form.Group>
       )}
@@ -212,11 +237,7 @@ const UnifiedAuthForm = () => {
         {mode === "login" ? "Login" : "Sign Up"}
       </Button>
 
-      <button
-        type="button"
-        className={styles.toggleMode}
-        onClick={toggleMode}
-      >
+      <button type="button" className={styles.toggleMode} onClick={toggleMode}>
         {mode === "login" ? (
           <>
             <span className={styles.toggleText}>Don't have an account? </span>

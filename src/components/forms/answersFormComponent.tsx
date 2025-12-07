@@ -1,10 +1,10 @@
 import { Form } from "react-bootstrap";
 import { useFieldArray, useFormContext } from "react-hook-form";
 import FormCheckboxComponent from "./formCheckboxComponent";
-import addClassnameToText from "../../helpers/addClassnameToText";
 import modalStyles from "../../styles/components/modal.module.scss";
 import { MdDeleteOutline } from "react-icons/md";
 import { IoIosAddCircleOutline } from "react-icons/io";
+import addClassnameToText from "../../utils/addClassnameToText";
 
 const AnswersFormComponent = ({ nestIndex }: { nestIndex: number }) => {
   const {

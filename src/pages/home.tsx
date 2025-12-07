@@ -29,7 +29,12 @@ const HomePage = () => {
       };
       fetchQuizesByCategoryAndComplexity();
     }
-  }, [searchCategory, searchComplexity, getQuizes, getQuizesByCategoryAndComplexity]);
+  }, [
+    searchCategory,
+    searchComplexity,
+    getQuizes,
+    getQuizesByCategoryAndComplexity,
+  ]);
 
   return (
     <>

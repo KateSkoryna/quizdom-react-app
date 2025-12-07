@@ -1,4 +1,4 @@
-import { JOKE } from "../../helpers/jokes";
+import { JOKE } from "../../const/jokes";
 import styles from "../../styles/pages/home.module.scss";
 
 const BlockQuote = () => {

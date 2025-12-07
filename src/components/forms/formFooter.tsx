@@ -1,6 +1,11 @@
 import { Form } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import { FormFooterProps } from "../../types/types";
+
+interface FormFooterProps {
+  mainText: string;
+  text: string;
+  path: string;
+}
 
 const FormFooter = ({ mainText, text, path }: FormFooterProps) => {
   return (

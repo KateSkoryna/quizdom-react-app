@@ -7,7 +7,7 @@ import { useImageUpload } from "../../hooks/useImageUpload";
 import { UserFormField } from "./userFormField";
 import { AvatarUpload } from "./avatarUpload";
 import { UserEditActions } from "./userEditActions";
-import { GENDER } from "../../types/types";
+import { GENDER } from "../../../shared/types";
 import { UserBirthFormField } from "./userBirthFormField";
 import { UserLocationFormField } from "./userLocationFormField";
 import { UserAboutFormField } from "./userAboutFormField";

@@ -1,8 +1,8 @@
 import { Controller, useFormContext } from "react-hook-form";
 import { Form } from "react-bootstrap";
-import { QUIZ_CATEGORY } from "../../types/types";
 import { useState } from "react";
 import styles from "../../styles/components/modal.module.scss";
+import { QUIZ_CATEGORY } from "../../const/complexity";
 
 const entries = Object.entries(QUIZ_CATEGORY);
 
@@ -17,8 +17,14 @@ const FormCategoryComponent = ({ fieldName }: { fieldName: string }) => {
       render={({ field: { onChange, value } }) => (
         <Form.Group className={styles.dropdownGroup} controlId="category">
           <Form.Label className={styles.formLabel}>Category</Form.Label>
-          <details className={styles.dropdown} open={isOpen} onToggle={(e) => setIsOpen(e.currentTarget.open)}>
-            <summary className={styles.dropdownSummary}>{value || "Choose a category"}</summary>
+          <details
+            className={styles.dropdown}
+            open={isOpen}
+            onToggle={(e) => setIsOpen(e.currentTarget.open)}
+          >
+            <summary className={styles.dropdownSummary}>
+              {value || "Choose a category"}
+            </summary>
             <div className={styles.dropdownList}>
               <div className={styles.dropdownListInner}>
                 {entries.map(([key, categoryValue]) => (
@@ -28,7 +34,9 @@ const FormCategoryComponent = ({ fieldName }: { fieldName: string }) => {
                       onChange(categoryValue);
                       setIsOpen(false);
                     }}
-                    className={`${styles.dropdownItem} ${value === categoryValue ? styles.selected : ""}`}
+                    className={`${styles.dropdownItem} ${
+                      value === categoryValue ? styles.selected : ""
+                    }`}
                   >
                     {categoryValue}
                   </div>

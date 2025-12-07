@@ -4,7 +4,6 @@ import styles from "../../../styles/components/quizCard.module.scss";
 type QuizStatsProps = {
   rating: number;
   likesCount: number;
-  commentsCount: number;
   authorName: string;
   publishedAt: string;
   currentUser: boolean;

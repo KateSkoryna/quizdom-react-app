@@ -2,7 +2,7 @@ import { useAuthStore } from "../../store/AuthStore";
 import styles from "../../styles/pages/home.module.scss";
 import StartQuizButton from "./quizItem/startQuizButton";
 import { Button } from "react-bootstrap";
-import { Question } from "../../types/types";
+import { Question } from "../../../shared/types";
 import Card from "react-bootstrap/Card";
 
 const StartQuizContainer = ({ questions }: { questions: Question[] }) => {

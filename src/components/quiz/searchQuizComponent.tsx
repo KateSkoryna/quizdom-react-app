@@ -3,7 +3,7 @@ import styles from "../../styles/pages/home.module.scss";
 import FormSelectComponent from "../forms/formSelectComponent";
 import { useSearchParams } from "react-router-dom";
 import { useState } from "react";
-import { COMPLEXITY_VALUES, QUIZ_CATEGORY } from "../../types/types";
+import { COMPLEXITY_VALUES, QUIZ_CATEGORY } from "../../const/complexity";
 
 const categories = Object.values(QUIZ_CATEGORY);
 const complexityValues = Object.values(COMPLEXITY_VALUES);

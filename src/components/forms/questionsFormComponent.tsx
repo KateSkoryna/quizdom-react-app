@@ -1,10 +1,10 @@
 import { useFieldArray, useFormContext } from "react-hook-form";
 import AnswersFormComponent from "./answersFormComponent";
 import { Form } from "react-bootstrap";
-import addClassnameToText from "../../helpers/addClassnameToText";
 import modalStyles from "../../styles/components/modal.module.scss";
 import { RiAddLine } from "react-icons/ri";
 import { IoMdRemove } from "react-icons/io";
+import addClassnameToText from "../../utils/addClassnameToText";
 
 const QuestionsFormComponent = () => {
   const {
@@ -52,17 +52,25 @@ const QuestionsFormComponent = () => {
 
             <Form.Control
               className={modalStyles.formInput}
-              {...register(`questions[${index}].questionTitle`, {
-                required: "Question title is required",
-                minLength: {
-                  value: 4,
-                  message: "Question title must be at least 4 characters",
-                },
-              })}
+              {...register(`questions[${index}].questionTitle`)}
               type="text"
               placeholder="Question Text"
             />
             {error && addClassnameToText("text-danger", error)}
+
+            <Form.Group className="mt-3" controlId={`hint-${index}`}>
+              <Form.Label className={modalStyles.formLabel}>
+                Hint (optional)
+              </Form.Label>
+              <Form.Control
+                className={modalStyles.formTextarea}
+                {...register(`questions[${index}].hint`)}
+                as="textarea"
+                rows={2}
+                placeholder="Add a helpful hint for this question..."
+              />
+            </Form.Group>
+
             <AnswersFormComponent nestIndex={index} />
           </Form.Group>
         );
@@ -74,6 +82,7 @@ const QuestionsFormComponent = () => {
           onClick={() =>
             append({
               questionTitle: "",
+              hint: "",
               answers: [
                 { answer: "", isCorrect: false },
                 { answer: "", isCorrect: false },

@@ -1,10 +1,11 @@
 import Modal from "react-bootstrap/Modal";
-import { Answer, Question } from "../../types/types";
+import { Answer, Question } from "../../../shared/types";
 import { ListGroup } from "react-bootstrap";
 import { useRef, useState } from "react";
 import styles from "../../styles/components/modal.module.scss";
 import owl from "../../assets/owl.svg";
 import { Card } from "react-bootstrap";
+import { MdLightbulbOutline } from "react-icons/md";
 
 type StartQuizModalProps = {
   show: boolean;
@@ -113,13 +114,9 @@ const StartQuizModal = ({
           </Modal.Header>
           <Modal.Body className={styles.resultBody}>
             <>
-              <div className={styles.resultText}>
-                <h5 className="text-center mb-1">
-                  Thank you for taking the quiz!
-                </h5>
-                <h5
-                  className={`mb-2 ${styles.scoreText} ${styles.animateScore}`}
-                >
+              <div className={`${styles.resultText}`}>
+                <h5 className="text-center">Thank you for taking the quiz!</h5>
+                <h5 className={` ${styles.scoreText} ${styles.animateScore}`}>
                   {"Your score is ".split("").map((char, idx) => (
                     <span
                       key={`char-${idx}`}
@@ -154,11 +151,15 @@ const StartQuizModal = ({
                   Correct answers:{" "}
                   {((score / questions.length) * 100).toFixed(1)}%
                 </h6>
+
+                <button onClick={handleReset} className={styles.primaryButton}>
+                  Retake Quiz
+                </button>
               </div>
               <Card.Img src={owl} className={styles.img} />
 
               <div className={styles.ratingSection}>
-                <h6 className="text-center mb-3">Rate this quiz</h6>
+                <h6 className="text-center">Rate this quiz</h6>
                 <div className={styles.starRating}>
                   {[1, 2, 3, 4, 5].map((star) => (
                     <span
@@ -180,16 +181,16 @@ const StartQuizModal = ({
                 <h6 className="text-center mb-2">Share your feedback</h6>
                 <textarea
                   className={styles.feedbackTextarea}
+                  name="feedback"
                   placeholder="Tell us what you think about this quiz..."
                   value={feedback}
                   onChange={(e) => setFeedback(e.target.value)}
                   rows={4}
                 />
+                <button onClick={handleReset} className={styles.primaryButton}>
+                  Share your feedback with us
+                </button>
               </div>
-
-              <button onClick={handleReset} className={styles.primaryButton}>
-                Reset Quiz
-              </button>
             </>
           </Modal.Body>
         </>
@@ -199,7 +200,33 @@ const StartQuizModal = ({
             <Modal.Title>Question {index + 1}</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <h5 className={styles.questionTitle}>{question.questionTitle}</h5>
+            <div className={styles.questionHeader}>
+              <h5 className={styles.questionTitle}>{question.questionTitle}</h5>
+              {question.hint && (
+                <>
+                  <button
+                    type="button"
+                    className={styles.hintButton}
+                    // @ts-ignore - popover is a valid HTML attribute
+                    popovertarget={`hint-${index}`}
+                  >
+                    <MdLightbulbOutline size={24} />
+                    <span>Hint</span>
+                  </button>
+                  <div
+                    // @ts-ignore - popover is a valid HTML attribute
+                    popover="auto"
+                    id={`hint-${index}`}
+                    className={styles.hintPopover}
+                  >
+                    <div className={styles.hintContent}>
+                      <MdLightbulbOutline size={20} />
+                      <p>{question.hint}</p>
+                    </div>
+                  </div>
+                </>
+              )}
+            </div>
             <ListGroup className={styles.answersList}>
               {answers.map((answer, index) => (
                 <ListGroup.Item
