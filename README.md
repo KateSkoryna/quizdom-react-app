@@ -261,3 +261,504 @@ The project uses:
 - **TypeScript** for type safety across the codebase
 - **ESLint** with TypeScript-specific rules for code quality
 - **CSS Modules** for component-scoped styling without conflicts
+
+# Quiz Validation with Yup Schemas - Complete Guide
+
+## Overview
+
+Your quiz app uses **Yup schemas** for comprehensive validation on both frontend and backend, ensuring consistent validation rules across your entire application.
+
+## Architecture
+
+```
+┌─────────────────────────────────────────────────┐
+│         Yup Schema (Single Source of Truth)     │
+│                                                 │
+│  - src/schemas/quizSchema.ts (Frontend)         │
+│  - functions/src/quizSchema.ts (Backend)        │
+└─────────────────────────────────────────────────┘
+                      │
+           ┌──────────┴──────────┐
+           │                     │
+    ┌──────▼──────┐      ┌──────▼──────┐
+    │  Frontend   │      │   Backend   │
+    │ React Hook  │      │  Firebase   │
+    │    Form     │      │  Functions  │
+    │ yupResolver │      │  validate() │
+    └─────────────┘      └─────────────┘
+```
+
+## What's Been Implemented
+
+### Frontend Validation
+
+- ✅ React Hook Form integrated with `yupResolver`
+- ✅ Real-time validation as users type
+- ✅ Automatic error messages, Type-safe with TypeScript
+- Files: `quizFormComponent.tsx`, `questionsFormComponent.tsx`
+
+### Backend Validation - Four Firebase Cloud Functions
+
+1. **validateQuizData** (Callable) - Validate before submission from frontend
+2. **validateQuizHttp** (HTTP Endpoint) - Alternative validation, CORS-enabled
+3. **validateQuizOnCreate** (Firestore Trigger) - Auto-validates new quizzes, deletes invalid
+4. **validateQuizOnUpdate** (Firestore Trigger) - Auto-validates updates, reverts invalid
+
+## Validation Rules
+
+| Field            | Rules                                |
+| ---------------- | ------------------------------------ |
+| Quiz Title       | 3-100 characters, required, trimmed  |
+| Quiz Description | 10-500 characters, required, trimmed |
+| Questions        | 1-50 questions required              |
+| Question Title   | 4-200 characters, required, trimmed  |
+| Answers          | 2-6 per question, at least 1 correct |
+| Category         | Valid QuizCategory enum              |
+| Complexity       | Valid Complexity enum (1-4)          |
+| Answer Text      | Non-empty string, required, trimmed  |
+| isCorrect        | Boolean, required                    |
+
+## Frontend Implementation
+
+```typescript
+import { yupResolver } from "@hookform/resolvers/yup";
+import { quizSchema } from "../../schemas/quizSchema";
+
+const methods = useForm({
+  mode: "onChange",
+  defaultValues,
+  resolver: yupResolver(quizSchema),
+});
+```
+
+## Backend Implementation
+
+All Cloud Functions use yup with these options:
+
+```typescript
+await quizSchema.validate(data, {
+  abortEarly: false, // Collect all errors
+  stripUnknown: true, // Remove unknown fields for security
+});
+```
+
+Errors are formatted as: `"Quiz title is required; Each question must have at least 2 answers"`
+
+## How It Works
+
+```
+User fills form
+     ↓
+Frontend validates (Yup + React Hook Form)
+     ↓
+If valid, submits to Firestore
+     ↓
+Backend validates (Yup + Cloud Functions)
+     ↓
+If valid, saves to database
+If invalid, reverts/deletes
+```
+
+## Deployment
+
+```bash
+npx firebase login
+npx firebase deploy --only functions
+```
+
+### Local Testing with Emulator
+
+```bash
+npm --prefix functions run serve
+```
+
+In `src/firebase.tsx`:
+
+```typescript
+import { getFunctions, connectFunctionsEmulator } from "firebase/functions";
+
+const functions = getFunctions(app);
+if (import.meta.env.DEV) {
+  connectFunctionsEmulator(functions, "localhost", 5001);
+}
+export { functions };
+```
+
+## Testing Validation
+
+Try creating a quiz with invalid data:
+
+1. Empty title → "Quiz title is required"
+2. Short title (< 3 chars) → "Quiz title must be at least 3 characters long"
+3. Long title (> 100 chars) → "Quiz title must be at most 100 characters long"
+4. Short description (< 10 chars) → "Quiz description must be at least 10 characters long"
+5. Question with < 2 answers → "Each question must have at least 2 answers"
+6. Question with no correct answer → "Each question must have at least one correct answer"
+7. Question title < 4 chars → "Question title must be at least 4 characters long"
+
+## Modifying Validation Rules
+
+Edit **both** schema files: `src/schemas/quizSchema.ts` and `functions/src/quizSchema.ts`
+
+Example - Change title length:
+
+```typescript
+title: yup.string().required("Quiz title is required").trim()
+  .min(5, "Quiz title must be at least 5 characters long")
+  .max(150, "Quiz title must be at most 150 characters long"),
+```
+
+After modifying backend: `npm --prefix functions run build && npx firebase deploy --only functions`
+
+Custom validation example:
+
+```typescript
+questionTitle: yup.string().required("Question title is required").trim()
+  .min(4, "Question title must be at least 4 characters long")
+  .test('no-profanity', 'Question contains inappropriate language',
+    (value) => !containsProfanity(value)
+  ),
+```
+
+## Optional: Backend Validation on Submit
+
+Add validation before Firestore submission in `src/fetchers/api.ts`:
+
+```typescript
+import { validateQuizData } from "../utils/quizValidation";
+
+export async function addQuiz(
+  data: QuizFormState,
+  userId: string,
+  userName: string,
+  setError: UseFormSetError<QuizFormState>
+) {
+  try {
+    const validatedData = await validateQuizData(data);
+    await addDoc(collection(db, "quizes"), {
+      ...validatedData,
+      authorId: userId,
+      authorName: userName,
+      publishedAt: new Date(),
+      complexity: COMPLEXITY_VALUES[validatedData.complexity],
+    });
+  } catch (error) {
+    if (error instanceof Error) {
+      setError("root", { message: error.message || "Failed to create a quiz" });
+      throw new Error(error.message);
+    }
+  }
+}
+```
+
+## Project Structure
+
+```
+quizdom-react-app/
+├── src/
+│   ├── schemas/
+│   │   └── quizSchema.ts          ← Frontend validation
+│   ├── utils/
+│   │   └── quizValidation.ts      ← Validation helper
+│   └── components/forms/
+│       ├── quizFormComponent.tsx   ← Uses yupResolver
+│       └── questionsFormComponent.tsx
+├── functions/
+│   ├── src/
+│   │   ├── index.ts               ← 4 Cloud Functions
+│   │   ├── quizSchema.ts          ← Backend validation
+│   │   └── types.ts               ← Type definitions
+│   ├── package.json
+│   └── tsconfig.json
+└── firebase.json                   ← Firebase config
+```
+
+## Benefits
+
+✅ **Consistent** - Same rules everywhere | ✅ **Type-safe** - Full TypeScript support
+✅ **Maintainable** - Single source of truth | ✅ **User-friendly** - Clear error messages
+✅ **Secure** - Server-side validation | ✅ **Automatic** - Firestore triggers enforce rules
+
+## Monitoring
+
+```bash
+npx firebase functions:log              # View logs
+npx firebase functions:list             # Check status
+```
+
+# Firebase Quiz Validation — Complete Project Guide
+
+**Purpose:** single concise reference combining deployment checklist, frontend & backend integration, Firestore triggers, validation rules, and troubleshooting.
+
+---
+
+## Table of Contents
+
+1. Overview
+2. Quick Start (deploy + build)
+3. Project structure
+4. Frontend integration (callable + HTTP)
+5. Updating quiz creation (recommended locations)
+6. Firestore triggers (automatic validation)
+7. Local testing (emulator)
+8. Validation rules (summary)
+9. Error messages & handling
+10. Deployment notes & rebuild
+11. Cleanup & migration notes
+12. Support & next steps
+
+---
+
+## 1. Overview
+
+This project uses a shared Yup schema on both frontend and backend to validate quiz data. Validation runs:
+
+- Client-side (Yup + react-hook-form)
+- Server-side via Firebase Functions (callable + HTTP)
+- Automatically on Firestore writes via triggers
+
+Benefits: consistent rules, TypeScript safety, and server-side protection against malformed or malicious data.
+
+---
+
+## 2. Quick Start
+
+### Install & build functions
+
+```bash
+cd functions
+npm install
+npm run build
+```
+
+### Login & deploy
+
+```bash
+npx firebase login
+npx firebase deploy --only functions
+```
+
+Deployed functions:
+
+- `validateQuizData` — callable
+- `validateQuizHttp` — HTTP POST
+- `validateQuizOnCreate` — Firestore onCreate trigger
+- `validateQuizOnUpdate` — Firestore onUpdate trigger
+
+---
+
+## 3. Project Structure (important files)
+
+```
+quizdom-react-app/
+├─ src/
+│  ├─ schemas/quizSchema.ts          # frontend yup schema
+│  ├─ utils/quizValidation.ts        # callable/http wrappers
+│  └─ components/forms/
+│     ├─ quizFormComponent.tsx
+│     └─ questionsFormComponent.tsx
+├─ functions/
+│  ├─ src/
+│  │  ├─ index.ts                    # exports cloud functions
+│  │  ├─ quizSchema.ts               # backend yup schema
+│  │  ├─ types.ts
+│  │  └─ validation.ts               # old validation (optional delete)
+│  ├─ package.json
+│  └─ tsconfig.json
+├─ firebase.json
+├─ YUP_VALIDATION_GUIDE.md
+├─ INTEGRATION_GUIDE.md
+└─ FIREBASE_FUNCTIONS_USAGE.md
+```
+
+---
+
+## 4. Frontend Integration
+
+Callable function flow
+`src/utils/quizValidation.ts`:
+
+```ts
+import { getFunctions, httpsCallable } from "firebase/functions";
+
+const validateQuizDataFn = httpsCallable(getFunctions(), "validateQuizData");
+
+export async function validateQuizData(quizData: QuizFormState) {
+  try {
+    const result = await validateQuizDataFn(quizData);
+    if (result.data.success) return result.data.data;
+    throw new Error(result.data.error || "Validation failed");
+  } catch (e: any) {
+    throw new Error(e.message || "Quiz validation failed");
+  }
+}
+```
+
+## 5. Updating Quiz Creation Logic
+
+### Validate inside `addQuiz` (recommended single place)
+
+`src/fetchers/api.ts`:
+
+```ts
+import { validateQuizData } from "../utils/quizValidation";
+
+export async function addQuiz(
+  data: QuizFormState,
+  userId: string,
+  userName: string,
+  setError: UseFormSetError<QuizFormState>
+) {
+  try {
+    const validated = await validateQuizData(data);
+    await addDoc(collection(db, "quizes"), {
+      ...validated,
+      authorId: userId,
+      authorName: userName,
+      publishedAt: new Date(),
+      complexity: COMPLEXITY_VALUES[validated.complexity],
+    });
+  } catch (error) {
+    if (error instanceof Error) {
+      setError("root", { message: error.message });
+      throw error;
+    }
+    throw new Error("Failed to create quiz");
+  }
+}
+```
+
+> Note: The collection name used here is `quizes`. Check your triggers/queries for consistency (see section 11).
+
+## 6. Firestore Triggers (Automatic Validation)
+
+Triggers included in functions:
+
+- `validateQuizOnCreate` — runs on document creation:
+  - Validates payload
+  - If invalid: deletes the document (or rejects write depending on implementation)
+- `validateQuizOnUpdate` — runs on document update:
+  - Validates new data
+  - If invalid: reverts update or deletes
+
+**Effect:** backend enforcement even if client-side validation is bypassed.
+
+---
+
+## 7. Local Testing with Emulator
+
+Start functions emulator:
+
+```bash
+npm --prefix functions run serve
+```
+
+Connect from frontend:
+
+```ts
+import { getFunctions, connectFunctionsEmulator } from "firebase/functions";
+const functions = getFunctions(app);
+if (import.meta.env.DEV) connectFunctionsEmulator(functions, "localhost", 5001);
+export { functions };
+```
+
+Test callable and HTTP endpoints locally before deploying.
+
+---
+
+## 8. Validation Rules (Summary)
+
+### Quiz
+
+- Title: **3–100 chars**
+- Description: **10–500 chars**
+- Questions: **1–50**
+- Category & complexity must be valid
+
+### Question
+
+- Title: non-empty, 4–200 chars preferred
+- Answers: **2–6**
+- At least **1 correct answer**
+- Optional hint
+
+### Answer
+
+- Non-empty `text`
+- Boolean `isCorrect`
+
+Keep frontend and backend `quizSchema.ts` in sync:
+
+- `src/schemas/quizSchema.ts`
+- `functions/src/quizSchema.ts`
+
+---
+
+## 9. Error Messages & Handling
+
+Validation returns clear messages for UI display:
+
+- "Quiz must have a non-empty title"
+- "Quiz title must be at least 3 characters long"
+- "Question 1 must have at least 2 answers"
+- "Question 2 must have at least one correct answer"
+
+Example usage:
+
+```ts
+try {
+  const validated = await validateQuizData(quizData);
+} catch (err) {
+  toast.error(err.message);
+}
+```
+
+---
+
+## 10. Deployment Notes & Rebuild
+
+After changing backend code:
+
+```bash
+npm --prefix functions run build
+npx firebase deploy --only functions
+```
+
+View logs:
+
+```bash
+npx firebase functions:log
+```
+
+Check Firebase Console: https://console.firebase.google.com/
+
+---
+
+## 11. Cleanup & Critical Notes
+
+### Old validation file
+
+If `functions/src/validation.ts` is legacy, remove:
+
+```bash
+rm functions/src/validation.ts
+```
+
+### Collection name mismatch
+
+Triggers watch `quizzes` but code may write to `quizes`. Fix to one form:
+
+In `functions/src/index.ts`:
+
+```ts
+.document("quizes/{quizId}") // OR .document("quizzes/{quizId}")
+```
+
+Make sure both Firestore writes and triggers use the same path.
+
+### Schema sync
+
+When updating schema, update BOTH:
+
+- `src/schemas/quizSchema.ts`
+- `functions/src/quizSchema.ts`
