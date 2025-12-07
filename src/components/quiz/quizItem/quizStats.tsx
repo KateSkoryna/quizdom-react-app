@@ -1,5 +1,4 @@
 import HeartIcon from "../../icons/heartIcon";
-import CommentIcon from "../../icons/commentIcon";
 import styles from "../../../styles/components/quizCard.module.scss";
 
 type QuizStatsProps = {
@@ -14,7 +13,6 @@ type QuizStatsProps = {
 const QuizStats = ({
   rating,
   likesCount,
-  commentsCount,
   authorName,
   publishedAt,
   currentUser,
@@ -46,17 +44,13 @@ const QuizStats = ({
           <span className={styles.rating}>
             {renderStars(Math.round(rating))}
           </span>
-          {rating > 0 && (
-            <span className={styles.ratingValue}>{rating.toFixed(1)}</span>
-          )}
+          <span className={styles.ratingValue}>
+            {rating % 1 === 0 ? rating.toFixed(0) : rating.toFixed(1)}
+          </span>
         </div>
         <div className={styles.statItem}>
           <HeartIcon className={styles.statIcon} />
           <span className={styles.statValue}>{likesCount}</span>
-        </div>
-        <div className={styles.statItem}>
-          <CommentIcon className={styles.statIcon} />
-          <span className={styles.statValue}>{commentsCount}</span>
         </div>
       </div>
     </div>
