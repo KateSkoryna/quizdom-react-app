@@ -32,3 +32,28 @@ export const convertComplexity = (complexity: string) => {
       return COMPLEXITY_VALUES[Complexity.BEGINNER];
   }
 };
+
+export const getConfigByFieldName = (fieldName: string) => {
+  if (fieldName === "complexity") {
+    return {
+      label: "Complexity level",
+      options: [
+        { value: Complexity.BEGINNER, label: COMPLEXITY_VALUES[Complexity.BEGINNER] },
+        { value: Complexity.MEDIUM, label: COMPLEXITY_VALUES[Complexity.MEDIUM] },
+        { value: Complexity.ADVANCED, label: COMPLEXITY_VALUES[Complexity.ADVANCED] },
+        { value: Complexity.EXPERT, label: COMPLEXITY_VALUES[Complexity.EXPERT] },
+      ],
+      formatDisplayValue: convertComplexity,
+    };
+  }
+
+  // category
+  return {
+    label: "Category",
+    options: Object.values(QUIZ_CATEGORY).map((categoryValue) => ({
+      value: categoryValue,
+      label: categoryValue,
+    })),
+    formatDisplayValue: (value: string) => value || "Choose a category",
+  };
+};
