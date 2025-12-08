@@ -1,70 +1,54 @@
 import { Button, Container, Form } from "react-bootstrap";
 import styles from "../../styles/pages/home.module.scss";
+import modalStyles from "../../styles/components/modal.module.scss";
 import FormSelectComponent from "../forms/formSelectComponent";
 import { useSearchParams } from "react-router-dom";
-import { useState } from "react";
+import { useForm } from "react-hook-form";
 import { COMPLEXITY_VALUES, QUIZ_CATEGORY } from "../../const/complexity";
 
 const categories = Object.values(QUIZ_CATEGORY);
 const complexityValues = Object.values(COMPLEXITY_VALUES);
-const initState = { category: "", complexity: "" };
+
+type SearchFormData = {
+  category: string;
+  complexity: string;
+};
 
 const SearchQuizComponent = () => {
-  const [searchParams, setSearchParams] = useSearchParams(initState);
-  const [category, setCategory] = useState(searchParams.get("category") ?? "");
-  const [complexity, setComplexity] = useState(
-    searchParams.get("complexity") ?? ""
-  );
-  const [error, setError] = useState(false);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const { control, handleSubmit } = useForm<SearchFormData>({
+    defaultValues: {
+      category: searchParams.get("category") ?? "All",
+      complexity: searchParams.get("complexity") ?? "All",
+    },
+  });
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    if (!category && !complexity) {
-      setError(true);
-      return;
-    }
+  const onSubmit = (data: SearchFormData) => {
     const params: Record<string, string> = {};
-    if (category) params.category = category;
-    if (complexity) params.complexity = complexity;
+    if (data.category && data.category !== "All")
+      params.category = data.category;
+    if (data.complexity && data.complexity !== "All")
+      params.complexity = data.complexity;
     setSearchParams(params);
-  };
-
-  const handleChangeCategory = (value: string) => {
-    if (value === "All") {
-      setCategory("");
-      return;
-    }
-    setError(false);
-    setCategory(value);
-  };
-
-  const handleChangeComplexity = (value: string) => {
-    if (value === "All") {
-      setComplexity("");
-      return;
-    }
-    setError(false);
-    setComplexity(value);
   };
 
   return (
     <Container>
-      <Form className={styles.form} onSubmit={handleSubmit}>
+      <Form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
         <FormSelectComponent
           fields={categories}
           fieldsName="category"
-          handleChange={handleChangeCategory}
+          control={control}
         />
         <FormSelectComponent
           fields={complexityValues}
           fieldsName="complexity"
-          handleChange={handleChangeComplexity}
+          control={control}
         />
-        <Button className={styles.button} type="submit">
+        <Button className={modalStyles.primaryButton} type="submit">
           Search
         </Button>
       </Form>
-      {error && <p className={styles.error}>Please select search query</p>}
     </Container>
   );
 };

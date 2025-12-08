@@ -1,31 +1,38 @@
 import { Form } from "react-bootstrap";
 import styles from "../../styles/pages/home.module.scss";
+import { Controller, Control } from "react-hook-form";
 
 type FormSelectProps = {
   fields: string[];
   fieldsName: string;
-  handleChange: (value: string) => void;
+  control: Control<any>;
 };
 
 const FormSelectComponent = ({
   fields,
   fieldsName,
-  handleChange,
+  control,
 }: FormSelectProps) => {
   return (
-    <Form.Select
-      className={styles.selectCategory}
-      onChange={(e) => handleChange(e.target.value)}
-      defaultValue="All"
+    <Controller
       name={fieldsName}
-    >
-      <option>All</option>
-      {fields.map((field) => (
-        <option key={field} value={field}>
-          {field}
-        </option>
-      ))}
-    </Form.Select>
+      control={control}
+      render={({ field }) => (
+        <Form.Select
+          className={styles.selectCategory}
+          onChange={(e) => field.onChange(e.target.value)}
+          value={field.value || "All"}
+          name={fieldsName}
+        >
+          <option value="All">All</option>
+          {fields.map((fieldValue) => (
+            <option key={fieldValue} value={fieldValue}>
+              {fieldValue}
+            </option>
+          ))}
+        </Form.Select>
+      )}
+    />
   );
 };
 
