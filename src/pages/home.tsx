@@ -1,8 +1,9 @@
 import { useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import HeroContainer from "../components/layout/heroContainer";
-import QuizContainer from "../components/quiz/quizContainer";
 import { useQuizesStore } from "../store/quizeStore";
+import SearchQuizComponent from "../components/quiz/searchQuizComponent";
+import QuizMainList from "../components/quiz/quizMainList";
 
 const HomePage = () => {
   const [searchParams] = useSearchParams();
@@ -39,7 +40,8 @@ const HomePage = () => {
   return (
     <>
       <HeroContainer />
-      <QuizContainer />
+      <SearchQuizComponent />
+      <QuizMainList />
     </>
   );
 };
