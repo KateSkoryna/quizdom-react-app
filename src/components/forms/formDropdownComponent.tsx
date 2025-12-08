@@ -1,20 +1,18 @@
 import { Controller, useFormContext } from "react-hook-form";
-import { COMPLEXITY_VALUES, convertComplexity } from "../../const/complexity";
 import { Form } from "react-bootstrap";
-import { Complexity } from "../../../shared/types";
 import { useState } from "react";
 import styles from "../../styles/components/modal.module.scss";
+import { getConfigByFieldName } from "../../const/complexity";
 
-const complexityOptions = [
-  { value: Complexity.BEGINNER, label: COMPLEXITY_VALUES[Complexity.BEGINNER] },
-  { value: Complexity.MEDIUM, label: COMPLEXITY_VALUES[Complexity.MEDIUM] },
-  { value: Complexity.ADVANCED, label: COMPLEXITY_VALUES[Complexity.ADVANCED] },
-  { value: Complexity.EXPERT, label: COMPLEXITY_VALUES[Complexity.EXPERT] },
-];
+interface FormDropdownComponentProps {
+  fieldName: "complexity" | "category";
+}
 
-const FormRangeComponent = ({ fieldName }: { fieldName: string }) => {
+const FormDropdownComponent = ({ fieldName }: FormDropdownComponentProps) => {
   const { control } = useFormContext();
   const [isOpen, setIsOpen] = useState(false);
+
+  const config = getConfigByFieldName(fieldName);
 
   return (
     <Controller
@@ -22,18 +20,18 @@ const FormRangeComponent = ({ fieldName }: { fieldName: string }) => {
       name={fieldName}
       render={({ field: { onChange, value } }) => (
         <Form.Group className={styles.dropdownGroup} controlId={fieldName}>
-          <Form.Label className={styles.formLabel}>Complexity level</Form.Label>
+          <Form.Label className={styles.formLabel}>{config.label}</Form.Label>
           <details
             className={styles.dropdown}
             open={isOpen}
             onToggle={(e) => setIsOpen(e.currentTarget.open)}
           >
             <summary className={styles.dropdownSummary}>
-              {convertComplexity(value)}
+              {config.formatDisplayValue(value)}
             </summary>
             <div className={styles.dropdownList}>
               <div className={styles.dropdownListInner}>
-                {complexityOptions.map((option) => (
+                {config.options.map((option) => (
                   <div
                     key={option.value}
                     onClick={() => {
@@ -56,4 +54,4 @@ const FormRangeComponent = ({ fieldName }: { fieldName: string }) => {
   );
 };
 
-export default FormRangeComponent;
+export default FormDropdownComponent;

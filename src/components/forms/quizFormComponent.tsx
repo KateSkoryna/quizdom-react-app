@@ -2,8 +2,7 @@ import Form from "react-bootstrap/Form";
 import { useForm, FormProvider } from "react-hook-form";
 import { QuizFormState, Complexity, QuizCategory } from "../../../shared/types";
 import { Container } from "react-bootstrap";
-import FormRangeComponent from "./formRangeComponent";
-import FormCategoryComponent from "./formCategoryComponent";
+import FormDropdownComponent from "./formDropdownComponent";
 import QuestionsFormComponent from "./questionsFormComponent";
 import modalStyles from "../../styles/components/modal.module.scss";
 import { useAuthStore } from "../../store/AuthStore";
@@ -116,8 +115,8 @@ const QuizFormComponent = forwardRef<
               addClassnameToText("text-danger", errorDescription as string)}
           </Form.Group>
           <div className={modalStyles.dropdownRow}>
-            <FormRangeComponent fieldName="complexity" />
-            <FormCategoryComponent fieldName="category" />
+            <FormDropdownComponent fieldName="complexity" />
+            <FormDropdownComponent fieldName="category" />
           </div>
           <QuestionsFormComponent />
         </Form>
