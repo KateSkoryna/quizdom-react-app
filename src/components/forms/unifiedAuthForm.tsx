@@ -4,13 +4,14 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useAuthStore } from "../../store/AuthStore";
-import { UserData } from "../../../shared/types";
+import { UserData, CurrentUser } from "../../../shared/types";
 import ForgotPasswordModal from "../modal/forgotPasswordModal";
 import styles from "../../styles/pages/auth.module.scss";
 import eyeIcon from "../../assets/eye.svg";
 import * as yup from "yup";
 import { ensureUserDocument } from "../../utils/authHelper";
 import addClassnameToText from "../../utils/addClassnameToText";
+import { getCurrentUser } from "../../fetchers/api";
 
 export const loginSchema = yup
   .object({
@@ -31,7 +32,7 @@ export const signupSchema = yup
   })
   .required();
 
-type AuthMode = "login" | "signup";
+export type AuthMode = "login" | "signup";
 
 type AuthFormData = {
   name?: string;
@@ -52,14 +53,19 @@ const initSignupState: AuthFormData = {
   confirmPassword: "",
 };
 
-const UnifiedAuthForm = () => {
-  const [mode, setMode] = useState<AuthMode>("login");
+interface UnifiedAuthFormProps {
+  mode: AuthMode;
+  onModeChange: (mode: AuthMode) => void;
+}
+
+const UnifiedAuthForm = ({ mode, onModeChange }: UnifiedAuthFormProps) => {
   const [showPassword, setShowPassword] = useState(false);
   const [showForgotPassword, setShowForgotPassword] = useState(false);
   const navigate = useNavigate();
 
   const login = useAuthStore((state) => state.login);
   const signup = useAuthStore((state) => state.signup);
+  const setCurrentUser = useAuthStore((state) => state.setCurrentUser);
 
   const {
     register,
@@ -78,7 +84,7 @@ const UnifiedAuthForm = () => {
 
   const toggleMode = () => {
     const newMode = mode === "login" ? "signup" : "login";
-    setMode(newMode);
+    onModeChange(newMode);
     setShowPassword(false);
   };
 
@@ -91,47 +97,46 @@ const UnifiedAuthForm = () => {
         const userCredential = await signup(values as UserData);
 
         try {
-          await ensureUserDocument("email", {
+          // Create Firestore document
+          await ensureUserDocument("email", userCredential.user, {
             name: values.name!,
             email: values.email,
           });
+
+          // Load user data and set in store
+          const userDoc = await getCurrentUser(userCredential.user.uid);
+          if (!userDoc || !userDoc.exists()) {
+            throw new Error("Failed to load user profile");
+          }
+
+          const userData = userDoc.data();
+          const currentUser: CurrentUser = {
+            ...(userData as CurrentUser),
+            id: userCredential.user.uid,
+            dateOfBirth: userData.dateOfBirth?.toDate
+              ? userData.dateOfBirth.toDate()
+              : new Date(),
+          };
+
+          setCurrentUser(currentUser);
           navigate("/user");
         } catch (firestoreError: unknown) {
           // Rollback: Delete the Firebase Auth user if Firestore creation fails
           try {
             await userCredential.user.delete();
-          } catch (deleteError) {
-            console.error("Failed to rollback user creation:", deleteError);
+          } catch {
+            // Silent rollback failure
           }
-          throw new Error("Failed to create user profile");
+          throw firestoreError;
         }
       }
-    } catch (error: unknown) {
-      const errorMessage =
-        error instanceof Error
-          ? error.message
-          : (error as { code?: string }).code || "";
-      const errorCode = (error as { code?: string }).code || "";
-
-      if (mode === "login") {
-        setError("root", {
-          message: "Invalid email or password",
-        });
-      } else {
-        if (
-          errorMessage === "EMAIL_EXISTS" ||
-          errorCode === "auth/email-already-in-use" ||
-          errorCode === "auth/invalid-email"
-        ) {
-          setError("root", {
-            message: "Something is wrong with email or password",
-          });
-        } else {
-          setError("root", {
-            message: errorMessage || "Failed to create an account",
-          });
-        }
-      }
+    } catch {
+      setError("root", {
+        message:
+          mode === "login"
+            ? "Invalid email or password"
+            : "Failed to create account. Please try again.",
+      });
     }
   };
 

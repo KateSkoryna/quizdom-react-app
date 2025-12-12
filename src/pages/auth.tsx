@@ -1,9 +1,12 @@
+import { useState } from "react";
 import { Container, Card } from "react-bootstrap";
 import GoogleAuthHandler from "../components/forms/googleAuthHandler";
-import UnifiedAuthForm from "../components/forms/unifiedAuthForm";
+import UnifiedAuthForm, { AuthMode } from "../components/forms/unifiedAuthForm";
 import styles from "../styles/pages/auth.module.scss";
 
 const AuthPage = () => {
+  const [mode, setMode] = useState<AuthMode>("login");
+
   return (
     <Container className={styles.authSection}>
       <div className={styles.bubble3}></div>
@@ -16,7 +19,7 @@ const AuthPage = () => {
           <span>OR</span>
         </div>
 
-        <UnifiedAuthForm />
+        <UnifiedAuthForm mode={mode} onModeChange={setMode} />
       </Card>
     </Container>
   );

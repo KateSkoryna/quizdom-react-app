@@ -3,6 +3,7 @@ import { auth } from "../firebase";
 import { useAuthStore } from "../store/AuthStore";
 import { CurrentUser } from "../../shared/types";
 import { getCurrentUser } from "./api";
+import type { QuizAttemptsStore } from "../store/quizAttemptsStore";
 
 export const fetchUserWithToken = async (
   firebaseUser: User | null,
@@ -22,10 +23,10 @@ export const fetchUserWithToken = async (
     localStorage.setItem("authData", JSON.stringify(authData));
 
     // Load user data from Firestore
-    const user = await getCurrentUser(firebaseUser.uid);
+    const userDoc = await getCurrentUser(firebaseUser.uid);
 
-    if (user && user.exists()) {
-      const userData = user.data();
+    if (userDoc && userDoc.exists()) {
+      const userData = userDoc.data();
 
       // Handle Firestore Timestamp or string date
       let dateOfBirth: Date;
@@ -63,4 +64,31 @@ export const fetchUserWithToken = async (
 
   // Set loading to false after auth check
   useAuthStore.setState({ isAuthLoading: false });
+};
+
+/**
+ * Generic fetch wrapper
+ * @param fn - async function returning T
+ * @param set - Zustand set function
+ * @param errorMessage - default error message
+ * @param onSuccess - optional callback to process result
+ */
+export const fetchWrapper = async <T>(
+  fn: () => Promise<T>,
+  set: (state: Partial<QuizAttemptsStore>) => void,
+  errorMessage: string,
+  onSuccess?: (data: T) => void
+): Promise<T> => {
+  try {
+    const result = await fn();
+    if (onSuccess) onSuccess(result); // support async post-processing
+    return result;
+  } catch (error: any) {
+    console.error(errorMessage, error);
+    set({ error: error.message || errorMessage });
+    throw error;
+  } finally {
+    // Always stop loading
+    set({ isLoading: false });
+  }
 };
