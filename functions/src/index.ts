@@ -1,12 +1,5 @@
-/**
- * Firebase Cloud Functions for Quizdom
- *
- * All functions use onRequest (no Express dependency)
- */
-
 import * as admin from "firebase-admin";
 
-// Initialize Firebase Admin SDK
 admin.initializeApp();
 
 // Quiz Completion (unified attempts + feedback)
