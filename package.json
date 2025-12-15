@@ -6,9 +6,9 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "build:all": "./build-all-workspaces.sh",
-    "tsc:all": "./build-ts-services.sh",
-    "format": "./format-all-workspaces.sh",
+    "build:all": "./custom-scripts/build-all-workspaces.sh",
+    "tsc:all": "./custom-scripts/build-ts-services.sh",
+    "format": "./custom-scripts/format-all-workspaces.sh",
     "format:check": "prettier --check \"src/**/*.{ts,tsx,js,jsx,json,css,scss}\" \"shared/src/**/*.{ts,tsx,js,jsx,json}\" \"functions/src/**/*.{ts,tsx,js,jsx,json}\"",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
