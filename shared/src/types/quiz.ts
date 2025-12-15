@@ -44,6 +44,8 @@ export type UserLocalQuiz = {
   authorName: string;
   publishedAt: Date;
   rating?: number;
+  ratingsCount?: number;
+  status?: "done" | "draft";
   likesCount?: number;
 };
 
