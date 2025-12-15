@@ -51,7 +51,6 @@ export async function verifyAuthToken(
  */
 export function setCorsHeaders(req: Request, res: any) {
   const origin = req.headers.origin;
-
   const allowedOrigins = ["https://kateskoryna.github.io", "http://localhost:5173"];
 
   if (origin && allowedOrigins.includes(origin)) {

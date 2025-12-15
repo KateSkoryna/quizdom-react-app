@@ -2,8 +2,7 @@ import axios from "axios";
 import { auth } from "../firebase";
 
 // Get Firebase Functions URL (uses Vite environment variables)
-const FUNCTIONS_URL =
-  import.meta.env.VITE_FUNCTIONS_URL || "http://127.0.0.1:5001/quizdom-react-app/us-central1";
+const FUNCTIONS_URL = import.meta.env.VITE_FUNCTIONS_URL;
 
 // Create axios instance
 const apiClient = axios.create({
