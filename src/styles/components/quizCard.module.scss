@@ -52,6 +52,26 @@
     & .back {
       transform: rotateY(180deg);
       pointer-events: none;
+      padding: 8px 16px;
+      display: flex;
+      flex-direction: column;
+      align-content: center;
+
+      & .completedInfo {
+        text-align: center;
+
+        & > p:first-child {
+          font-weight: bold;
+        }
+      }
+
+      // Action Buttons Container
+      & .actionButtons {
+        display: flex;
+        align-items: center;
+        gap: 0.25rem;
+        margin-left: auto;
+      }
 
       // Start Button Container - absolutely positioned on right
       & .startButtonContainer {
@@ -204,11 +224,12 @@
   height: 120px;
   margin: 0;
   padding: 8px 16px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+  position: relative;
+  display: grid;
   border-top-left-radius: 6px;
   border-top-right-radius: 6px;
+  grid-template-columns: 1fr auto 1fr;
+  grid-template-rows: 1fr auto 1fr;
 
   background: $primary-gradient;
 
@@ -216,17 +237,9 @@
     color: white;
     font-size: 1rem;
     font-weight: 700;
-    text-align: center;
-    padding: 0.66rem;
+    grid-column: 2;
+    grid-row: 2;
     text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-  }
-
-  // Action Buttons Container
-  & .actionButtons {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    margin-left: auto;
   }
 
   // Category
@@ -234,7 +247,11 @@
     color: white;
     font-size: $font-size-8;
     font-weight: 400;
-    margin-left: auto;
+    grid-column: 3;
+    grid-row: 3;
+    justify-self: end;
+    align-self: end;
+    margin: 0;
   }
 }
 
