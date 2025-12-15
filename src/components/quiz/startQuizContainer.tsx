@@ -1,6 +1,6 @@
 import { useAuthStore } from "../../store/AuthStore";
 import styles from "../../styles/pages/home.module.scss";
-import StartQuizButton from "./quizItem/startQuizButton";
+import StartQuizButton from "./quizItem/QuizCardBackside";
 import { Button } from "react-bootstrap";
 import { Question } from "../../../shared/src/types";
 import Card from "react-bootstrap/Card";

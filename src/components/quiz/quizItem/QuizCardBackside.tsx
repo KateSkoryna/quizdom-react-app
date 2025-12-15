@@ -5,13 +5,15 @@ import { useQuizCompletionStore } from "../../../store/quizAttemptsStore";
 import StartQuizModal from "../../modal/startQuizModal";
 import NavigateUserModal from "../../modal/navigateUserModal";
 import styles from "../../../styles/components/quizCard.module.scss";
+import QuizNoUserModal from "../../modal/quizNoUserModal";
+import QuizStatistic from "./quizStatistic";
 
 type StartQuizButtonProps = {
   questions: Array<any>;
   quizId: string;
 };
 
-const StartQuizButton = ({ questions, quizId }: StartQuizButtonProps) => {
+const QuizCardBackside = ({ questions, quizId }: StartQuizButtonProps) => {
   const currentUser = useAuthStore((state) => state.currentUser);
   const { completion, loadCompletion, isLoading } = useQuizCompletionStore();
   const [startQuiz, setStartQuiz] = useState(false);
@@ -43,16 +45,19 @@ const StartQuizButton = ({ questions, quizId }: StartQuizButtonProps) => {
   // Show completion status if user already completed
   const hasCompleted = !!completion;
 
+  // calculate user scores
+  const correct = completion?.score?.correctAnswers ?? 0;
+  const total = completion?.score?.totalQuestions ?? 1;
+
+  const score = `${correct} from ${total}`;
+  const scoreRate = (correct / total) * 100;
+
   return (
     <div className={styles.back}>
+      <QuizNoUserModal id={quizId} />
       <div className={styles.startButtonContainer}>
         {hasCompleted ? (
-          <div className={styles.completedInfo}>
-            <p>Already completed</p>
-            <p>
-              Score: {completion?.score?.correctAnswers}/{completion?.score?.totalQuestions}
-            </p>
-          </div>
+          <QuizStatistic score={score} scoreRate={scoreRate} />
         ) : (
           <Button onClick={handleStart} className={styles.startButton} disabled={isLoading}>
             {isLoading ? "Loading..." : "Start"}
@@ -72,4 +77,4 @@ const StartQuizButton = ({ questions, quizId }: StartQuizButtonProps) => {
   );
 };
 
-export default StartQuizButton;
+export default QuizCardBackside;
