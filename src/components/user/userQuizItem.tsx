@@ -10,8 +10,9 @@ const UserQuizItem = ({ quiz, eventKey }: { quiz: UserLocalQuiz; eventKey: strin
     authorId,
     authorName,
     publishedAt,
-    rating: _rating,
+    ratingsCount: _ratingCount,
     likesCount: _likesCount,
+    status: _status,
     ...rest
   } = quiz;
   const currentUser = useAuthStore((state) => state.currentUser);
@@ -20,21 +21,31 @@ const UserQuizItem = ({ quiz, eventKey }: { quiz: UserLocalQuiz; eventKey: strin
     <Accordion.Item eventKey={eventKey}>
       <Accordion.Header>{title}</Accordion.Header>
       <Accordion.Body className="text-start position-relative">
-        <small className={styles.itemSmalltext}>
-          {`Published at: ${publishedAt.toLocaleDateString()}
-          ${currentUser?.id === authorId ? "" : `by ${authorName}`}`}
-        </small>
+        {currentUser?.id === authorId && <DeleteQuizComponent />}
+
         {Object.entries(rest).map(([key, value]) => {
+          let displayValue;
+
+          if (Array.isArray(value)) {
+            displayValue = "Amount of questions: " + value.length;
+          } else if (typeof value === "string") {
+            displayValue = value[0].toUpperCase() + value.slice(1);
+          } else {
+            displayValue = String(value); // handles numbers like ratingsCount
+          }
+
           return (
             <p key={key} className={styles.itemText}>
-              {Array.isArray(value)
-                ? "Amount of questions: " + value.length
-                : `${key[0].toUpperCase() + key.slice(1)}: 
-                ${value[0].toUpperCase() + value.slice(1)}`}
+              {key[0].toUpperCase() + key.slice(1)}: {displayValue}
             </p>
           );
         })}
-        {currentUser?.id === authorId && <DeleteQuizComponent />}
+
+        <small className={styles.itemSmalltext}>
+          {`Published at: ${publishedAt.toLocaleDateString()}${
+            currentUser?.id === authorId ? "" : ` by ${authorName}`
+          }`}
+        </small>
       </Accordion.Body>
     </Accordion.Item>
   );
