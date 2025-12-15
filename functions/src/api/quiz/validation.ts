@@ -12,7 +12,7 @@ import * as logger from "firebase-functions/logger";
  * Body: QuizFormState
  */
 export const validateQuizData = onRequest(async (req, res) => {
-  setCorsHeaders(res);
+  setCorsHeaders(req, res);
   if (handleOptions(req, res)) return;
 
   if (req.method !== "POST") {

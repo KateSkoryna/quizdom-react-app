@@ -49,8 +49,14 @@ export async function verifyAuthToken(
  * Helper to handle CORS
  * Allows all standard REST methods for future-proofing
  */
-export function setCorsHeaders(res: any) {
-  res.set("Access-Control-Allow-Origin", "*");
+export function setCorsHeaders(req: Request, res: any) {
+  const origin = req.headers.origin;
+
+  const allowedOrigins = ["https://kateskoryna.github.io", "http://localhost:5173"];
+
+  if (origin && allowedOrigins.includes(origin)) {
+    res.set("Access-Control-Allow-Origin", origin);
+  }
   res.set("Access-Control-Allow-Methods", "GET, POST, PUT, PATCH, DELETE, OPTIONS");
   res.set("Access-Control-Allow-Headers", "Content-Type, Authorization");
   res.set("Access-Control-Allow-Credentials", "true");
@@ -62,7 +68,7 @@ export function setCorsHeaders(res: any) {
  */
 export function handleOptions(req: Request, res: any): boolean {
   if (req.method === "OPTIONS") {
-    setCorsHeaders(res);
+    setCorsHeaders(req, res);
     res.status(204).send("");
     return true;
   }

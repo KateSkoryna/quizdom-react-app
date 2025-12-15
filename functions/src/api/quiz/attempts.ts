@@ -7,8 +7,8 @@ import {
 } from "../../services/quiz-service";
 
 export const completeQuiz = onRequest(async (req, res) => {
+  setCorsHeaders(req, res);
   if (handleOptions(req, res)) return;
-  setCorsHeaders(res);
 
   if (req.method !== "POST") {
     res.status(405).json({ success: false, error: "Method not allowed" });
@@ -62,8 +62,8 @@ export const completeQuiz = onRequest(async (req, res) => {
 });
 
 export const getQuizCompletionStatus = onRequest(async (req, res) => {
+  setCorsHeaders(req, res);
   if (handleOptions(req, res)) return;
-  setCorsHeaders(res);
 
   if (req.method !== "GET") {
     res.status(405).json({ success: false, error: "Method not allowed" });
@@ -94,8 +94,8 @@ export const getQuizCompletionStatus = onRequest(async (req, res) => {
 });
 
 export const updateQuizCompletionFeedback = onRequest(async (req, res) => {
+  setCorsHeaders(req, res);
   if (handleOptions(req, res)) return;
-  setCorsHeaders(res);
 
   if (req.method !== "PATCH" && req.method !== "PUT") {
     res.status(405).json({ success: false, error: "Method not allowed" });
