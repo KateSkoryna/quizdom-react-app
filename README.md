@@ -166,6 +166,92 @@ Preview the production build locally after running `npm run build`.
 npm run preview
 ```
 
+## Monorepo Build Scripts
+
+This project is structured as a monorepo with three workspaces that depend on each other:
+- **`shared/`** - Shared TypeScript types and schemas
+- **`functions/`** - Firebase Cloud Functions (backend)
+- **`src/`** - React frontend application
+
+The frontend and backend both import from `shared`, so **build order matters**: `shared` must be built first.
+
+### When to Use These Scripts
+
+These scripts are **manual** - run them when:
+- ✅ You change TypeScript types in `shared/`
+- ✅ You want to check for type errors across all workspaces
+- ✅ You're preparing to deploy
+- ✅ You want to generate production builds
+
+These scripts do **NOT** run automatically on file changes.
+
+### `npm run build:all`
+
+Builds all three workspaces in the correct dependency order.
+
+```bash
+npm run build:all
+```
+
+**What it does:**
+1. Compiles `shared/` → outputs to `shared/lib/`
+2. Compiles `functions/` → outputs to `functions/lib/`
+3. Builds frontend (TypeScript + Vite) → outputs to `dist/`
+
+**When to run:** After making changes to shared types or before deployment.
+
+### `npm run tsc:all`
+
+Runs TypeScript compiler across all workspaces to check for type errors (faster than full build).
+
+```bash
+npm run tsc:all
+```
+
+**What it does:**
+- Type-checks `shared/`, `functions/`, and `src/` for TypeScript errors
+- Does NOT create build artifacts (no compilation output)
+- Useful for quick validation during development
+
+**When to run:** During development to catch type errors before committing code.
+
+### `npm run format`
+
+Formats all code across all workspaces using Prettier.
+
+```bash
+npm run format
+```
+
+**What it does:**
+1. Formats `shared/src/` TypeScript files
+2. Formats `functions/src/` TypeScript files
+3. Formats `src/` TypeScript, JavaScript, CSS, and SCSS files
+
+**When to run:** Before committing code to ensure consistent formatting.
+
+### `npm run format:check`
+
+Checks if all files are formatted correctly without modifying them.
+
+```bash
+npm run format:check
+```
+
+**What it does:**
+- Validates formatting across all workspaces
+- Reports files that need formatting
+- Does NOT modify files (read-only check)
+
+**When to run:** In CI/CD pipelines or to verify formatting before committing.
+
+### Important Notes
+
+- If you change types in `shared/`, always run `npm run build:all` so that `functions` and `src` see the latest types
+- The scripts will stop on the first error (fail-fast behavior)
+- All scripts show clear progress indicators for each workspace
+- Prettier configuration is in `.prettierrc` (shared across all workspaces)
+
 ## Project Structure
 
 ```
@@ -762,3 +848,152 @@ When updating schema, update BOTH:
 
 - `src/schemas/quizSchema.ts`
 - `functions/src/quizSchema.ts`
+
+---
+
+## REST API Structure
+
+### Backend (Firebase Functions)
+
+```
+functions/
+└── src/
+    ├── api/
+    │   └── quiz/
+    │       ├── attempts.ts     # Quiz attempt endpoints
+    │       └── feedback.ts     # Quiz feedback endpoints
+    ├── services/               # Business logic (future)
+    ├── utils/
+    │   └── constants.ts        # Shared constants (MAX_ATTEMPTS, COLLECTIONS)
+    ├── middlewares/
+    │   └── authMiddleware.ts   # Firebase token verification
+    ├── config/
+    │   └── firestore.ts        # Firestore database instance
+    └── index.ts                # Exports all functions
+```
+
+### Quiz Attempts API Endpoints
+
+#### 1. Check Attempt Limit
+**GET** `/quizAttempts/:quizId/check`
+- Check if user can attempt the quiz
+- Returns: `{ canAttempt, attemptCount, maxAttempts, attempts }`
+
+#### 2. Record Quiz Attempt
+**POST** `/quizAttempts`
+- Save quiz completion automatically
+- Body: `{ quizId, score: { totalQuestions, correctAnswers } }`
+- Returns: `{ attemptId, attemptNumber: 1, remainingAttempts: 0 }`
+- **One attempt per user per quiz** (MAX_ATTEMPTS = 1)
+
+#### 3. Get User Attempts
+**GET** `/quizAttempts/:quizId`
+- Get user's attempt history + feedback for a quiz
+- Returns: `{ attempts, feedback, attemptCount, canAttempt }`
+
+### Quiz Feedback API Endpoints
+
+#### Submit Feedback
+**POST** `/quizFeedback`
+- Submit/update rating and comment for a quiz
+- Body: `{ quizId, rating: 1-5, comment?: string }`
+- User must complete quiz before leaving feedback
+- Updates quiz average rating automatically
+
+### Frontend (React + Axios)
+
+```
+src/
+├── api/
+│   └── axiosInstance.ts        # Axios client with auth interceptor
+├── store/
+│   └── quizAttemptsStore.ts    # Zustand store for attempts/feedback
+└── components/
+    ├── quiz/
+    │   └── quizItem/
+    │       └── startQuizButton.tsx  # Shows "Start" or "Already completed"
+    └── modal/
+        └── startQuizModal.tsx       # Auto-saves results, handles feedback
+```
+
+### Authentication Flow
+
+All API requests require Firebase authentication:
+
+1. **Frontend**: Axios interceptor automatically adds Firebase auth token to headers
+```typescript
+Authorization: Bearer <firebase-id-token>
+```
+
+2. **Backend**: Auth middleware verifies token on every request
+```typescript
+const decodedToken = await admin.auth().verifyIdToken(token);
+req.user = { uid, email, name };
+```
+
+### Quiz Completion Flow
+
+```
+User finishes quiz
+    ↓
+Frontend calculates score (e.g., 15/20)
+    ↓
+Auto-saves to database via POST /quizAttempts
+    ↓
+Result stored in Firestore:
+  {
+    quizId,
+    userId,
+    attemptNumber: 1,
+    score: { totalQuestions: 20, correctAnswers: 15 },
+    completedAt: timestamp
+  }
+    ↓
+User can optionally add rating (1-5) and feedback
+    ↓
+POST /quizFeedback → updates quiz average rating
+    ↓
+Modal closes, button shows "Already completed: 15/20"
+```
+
+### Key Features
+
+- ✅ **One attempt per quiz** - Users can't retake quizzes
+- ✅ **Auto-save results** - Scores saved immediately upon completion
+- ✅ **Optional feedback** - Rating and comments are optional
+- ✅ **Transaction safety** - Prevents duplicate attempts via Firestore transactions
+- ✅ **Auth protection** - All endpoints require valid Firebase auth token
+- ✅ **Automatic rating calculation** - Quiz average rating updated when feedback submitted
+
+### Environment Variables
+
+Add to `.env`:
+```env
+# Firebase Functions URL (development)
+REACT_APP_FUNCTIONS_URL=http://127.0.0.1:5001/quizdom-react-app/us-central1
+
+# Firebase Functions URL (production)
+REACT_APP_FUNCTIONS_URL=https://us-central1-your-project.cloudfunctions.net
+```
+
+### Local Development
+
+1. Start Firebase emulator:
+```bash
+cd functions
+npm run serve
+```
+
+2. Frontend will automatically connect to local functions (via axios instance)
+
+### Deployment
+
+```bash
+cd functions
+npm run build
+firebase deploy --only functions
+```
+
+Deployed endpoints:
+- `/quizAttempts` - Quiz attempt management
+- `/quizFeedback` - Quiz feedback management
