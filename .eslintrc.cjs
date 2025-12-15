@@ -43,5 +43,6 @@ module.exports = {
     eqeqeq: ["warn", "always"],
     "no-unused-expressions": "warn",
     "jsx-a11y/no-autofocus": "warn",
+    curly: ["error", "all"], // Always require curly braces for if/else/for/while
   },
 };
