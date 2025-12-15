@@ -1,7 +1,9 @@
+import { Popover, Overlay } from "react-bootstrap";
 import Modal from "react-bootstrap/Modal";
-import { Answer, Question } from "../../../shared/types";
+import { Answer, Question } from "../../../shared/src/types";
 import { ListGroup } from "react-bootstrap";
 import { useRef, useState } from "react";
+import { useQuizCompletionStore } from "../../store/quizAttemptsStore";
 import styles from "../../styles/components/modal.module.scss";
 import owl from "../../assets/owl.svg";
 import { Card } from "react-bootstrap";
@@ -11,13 +13,12 @@ type StartQuizModalProps = {
   show: boolean;
   handleClose: () => void;
   questions: Question[];
+  quizId: string;
 };
 
-const StartQuizModal = ({
-  show,
-  handleClose,
-  questions,
-}: StartQuizModalProps) => {
+const StartQuizModal = ({ show, handleClose, questions, quizId }: StartQuizModalProps) => {
+  const { completeQuiz, updateFeedback, isLoading } = useQuizCompletionStore();
+  const [showHint, setShowHint] = useState(false);
   const [index, setIndex] = useState(0);
   const [question, setQuestion] = useState<Question>(questions[index]);
   const [answers, setAnswers] = useState<Answer[]>(questions[index].answers);
@@ -27,6 +28,9 @@ const StartQuizModal = ({
   const [rating, setRating] = useState(0);
   const [hoverRating, setHoverRating] = useState(0);
   const [feedback, setFeedback] = useState("");
+  const [savedAttempt, setSavedAttempt] = useState(false);
+
+  const hint = useRef<HTMLButtonElement>(null);
 
   const Option1 = useRef<HTMLLIElement | null>(null);
   const Option2 = useRef<HTMLLIElement | null>(null);
@@ -35,10 +39,7 @@ const StartQuizModal = ({
 
   const optionArray = [Option1, Option2, Option3, Option4];
 
-  const handleCorrectAnswer = (
-    event: React.MouseEvent<HTMLElement>,
-    isCorrect: boolean
-  ) => {
+  const handleCorrectAnswer = (event: React.MouseEvent<HTMLElement>, isCorrect: boolean) => {
     if (!lock) {
       if (isCorrect) {
         event.currentTarget.classList.add(styles.isCorrect);
@@ -56,10 +57,24 @@ const StartQuizModal = ({
     }
   };
 
-  const handleNextQuestion = () => {
+  const handleNextQuestion = async () => {
     if (lock) {
       if (index === questions.length - 1) {
         setResult(true);
+
+        // Auto-save quiz completion
+        if (!savedAttempt) {
+          try {
+            await completeQuiz(quizId, {
+              totalQuestions: questions.length,
+              correctAnswers: score,
+            });
+            setSavedAttempt(true);
+          } catch (error) {
+            console.error("Failed to save completion:", error);
+          }
+        }
+
         return 0;
       }
       setIndex((prev) => prev + 1);
@@ -86,16 +101,20 @@ const StartQuizModal = ({
     });
   };
 
-  const handleReset = () => {
-    setIndex(0);
-    setQuestion(questions[0]);
-    setAnswers(questions[0].answers);
-    setLock(false);
-    setScore(0);
-    setResult(false);
-    setRating(0);
-    setHoverRating(0);
-    setFeedback("");
+  const handleSubmitFeedback = async () => {
+    try {
+      // Only call API if user provided rating or feedback
+      const hasFeedback = feedback.trim().length > 0;
+      const hasRating = rating > 0;
+
+      if (hasRating || hasFeedback) {
+        await updateFeedback(quizId, rating, hasFeedback ? feedback : undefined);
+      }
+
+      handleClose();
+    } catch (error) {
+      console.error("Failed to submit feedback:", error);
+    }
   };
 
   return (
@@ -118,24 +137,15 @@ const StartQuizModal = ({
                 <h5 className="text-center">Thank you for taking the quiz!</h5>
                 <h5 className={` ${styles.scoreText} ${styles.animateScore}`}>
                   {"Your score is ".split("").map((char, idx) => (
-                    <span
-                      key={`char-${idx}`}
-                      style={{ animationDelay: `${idx * 0.05}s` }}
-                    >
+                    <span key={`char-${idx}`} style={{ animationDelay: `${idx * 0.05}s` }}>
                       {char === " " ? "\u00A0" : char}
                     </span>
                   ))}
-                  <span
-                    className={styles.scoreNumber}
-                    style={{ animationDelay: `${14 * 0.05}s` }}
-                  >
+                  <span className={styles.scoreNumber} style={{ animationDelay: `${14 * 0.05}s` }}>
                     {score}
                   </span>
                   {" out of ".split("").map((char, idx) => (
-                    <span
-                      key={`out-${idx}`}
-                      style={{ animationDelay: `${(15 + idx) * 0.05}s` }}
-                    >
+                    <span key={`out-${idx}`} style={{ animationDelay: `${(15 + idx) * 0.05}s` }}>
                       {char === " " ? "\u00A0" : char}
                     </span>
                   ))}
@@ -147,19 +157,12 @@ const StartQuizModal = ({
                     {questions.length}
                   </span>
                 </h5>
-                <h6>
-                  Correct answers:{" "}
-                  {((score / questions.length) * 100).toFixed(1)}%
-                </h6>
-
-                <button onClick={handleReset} className={styles.primaryButton}>
-                  Retake Quiz
-                </button>
+                <h6>Correct answers: {((score / questions.length) * 100).toFixed(1)}%</h6>
               </div>
               <Card.Img src={owl} className={styles.img} />
 
               <div className={styles.ratingSection}>
-                <h6 className="text-center">Rate this quiz</h6>
+                <h6 className="text-center">Evaluate this quiz (optional)</h6>
                 <div className={styles.starRating}>
                   {[1, 2, 3, 4, 5].map((star) => (
                     <span
@@ -178,18 +181,28 @@ const StartQuizModal = ({
               </div>
 
               <div className={styles.feedbackSection}>
-                <h6 className="text-center mb-2">Share your feedback</h6>
+                <h6 className="text-center mb-2">Share your thoughts</h6>
                 <textarea
                   className={styles.feedbackTextarea}
                   name="feedback"
-                  placeholder="Tell us what you think about this quiz..."
+                  placeholder="Tell us what you think about this quiz... (optional)"
                   value={feedback}
                   onChange={(e) => setFeedback(e.target.value)}
                   rows={4}
                 />
-                <button onClick={handleReset} className={styles.primaryButton}>
-                  Share your feedback with us
-                </button>
+                <div className={styles.buttonGroup}>
+                  <button
+                    onClick={handleSubmitFeedback}
+                    className={styles.primaryButton}
+                    disabled={isLoading}
+                  >
+                    {isLoading
+                      ? "Submitting..."
+                      : rating > 0 || feedback.trim().length > 0
+                        ? "Submit Evaluation"
+                        : "Close"}
+                  </button>
+                </div>
               </div>
             </>
           </Modal.Body>
@@ -205,25 +218,24 @@ const StartQuizModal = ({
               {question.hint && (
                 <>
                   <button
+                    ref={hint}
                     type="button"
                     className={styles.hintButton}
-                    // @ts-ignore - popover is a valid HTML attribute
-                    popovertarget={`hint-${index}`}
+                    onClick={() => setShowHint(!showHint)}
                   >
                     <MdLightbulbOutline size={24} />
                     <span>Hint</span>
                   </button>
-                  <div
-                    // @ts-ignore - popover is a valid HTML attribute
-                    popover="auto"
-                    id={`hint-${index}`}
-                    className={styles.hintPopover}
-                  >
-                    <div className={styles.hintContent}>
-                      <MdLightbulbOutline size={20} />
-                      <p>{question.hint}</p>
-                    </div>
-                  </div>
+                  <Overlay target={hint.current} show={showHint} placement="right">
+                    {(props) => (
+                      <Popover {...props}>
+                        <Popover.Body className={styles.hintContent}>
+                          <MdLightbulbOutline size={20} />
+                          <p>{question.hint}</p>
+                        </Popover.Body>
+                      </Popover>
+                    )}
+                  </Overlay>
                 </>
               )}
             </div>
@@ -235,10 +247,7 @@ const StartQuizModal = ({
                   className={`d-flex justify-content-between align-items-start ${styles.answerItem}`}
                   key={answer.answer}
                   onClick={(event) =>
-                    handleCorrectAnswer(
-                      event as React.MouseEvent<HTMLElement>,
-                      answer.isCorrect
-                    )
+                    handleCorrectAnswer(event as React.MouseEvent<HTMLElement>, answer.isCorrect)
                   }
                 >
                   <div className="ms-2 me-auto">
@@ -257,9 +266,7 @@ const StartQuizModal = ({
               Previous Question
             </button>
             <button
-              className={
-                lock ? styles.actionButtonPrimary : styles.actionButtonSecondary
-              }
+              className={lock ? styles.actionButtonPrimary : styles.actionButtonSecondary}
               onClick={handleNextQuestion}
             >
               Next Question

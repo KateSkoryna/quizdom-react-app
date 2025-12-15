@@ -1,4 +1,4 @@
-import { Complexity, QuizCategory } from "../../shared/types";
+import { Complexity, QuizCategory } from "../../shared/src/types";
 
 // Constants
 export const COMPLEXITY_VALUES = {
@@ -38,10 +38,22 @@ export const getConfigByFieldName = (fieldName: string) => {
     return {
       label: "Complexity level",
       options: [
-        { value: Complexity.BEGINNER, label: COMPLEXITY_VALUES[Complexity.BEGINNER] },
-        { value: Complexity.MEDIUM, label: COMPLEXITY_VALUES[Complexity.MEDIUM] },
-        { value: Complexity.ADVANCED, label: COMPLEXITY_VALUES[Complexity.ADVANCED] },
-        { value: Complexity.EXPERT, label: COMPLEXITY_VALUES[Complexity.EXPERT] },
+        {
+          value: Complexity.BEGINNER,
+          label: COMPLEXITY_VALUES[Complexity.BEGINNER],
+        },
+        {
+          value: Complexity.MEDIUM,
+          label: COMPLEXITY_VALUES[Complexity.MEDIUM],
+        },
+        {
+          value: Complexity.ADVANCED,
+          label: COMPLEXITY_VALUES[Complexity.ADVANCED],
+        },
+        {
+          value: Complexity.EXPERT,
+          label: COMPLEXITY_VALUES[Complexity.EXPERT],
+        },
       ],
       formatDisplayValue: convertComplexity,
     };

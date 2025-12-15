@@ -40,11 +40,7 @@
   transition: all 0.1s ease-in;
 }
 
-.checkbox
-  label
-  input[type="checkbox"]:checked
-  + .checkboxIconWrapper
-  > .checkboxIcon {
+.checkbox label input[type="checkbox"]:checked + .checkboxIconWrapper > .checkboxIcon {
   opacity: 1;
 }
 
@@ -53,10 +49,6 @@
   transition: all 0.1s ease-in;
 }
 
-.checkbox
-  label
-  input[type="checkbox"]:checked
-  + .checkboxIconWrapper
-  > .checkboxIcon {
+.checkbox label input[type="checkbox"]:checked + .checkboxIconWrapper > .checkboxIcon {
   opacity: 1;
 }

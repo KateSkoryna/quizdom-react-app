@@ -7,7 +7,7 @@ import { useImageUpload } from "../../hooks/useImageUpload";
 import { UserFormField } from "./userFormField";
 import { AvatarUpload } from "./avatarUpload";
 import { UserEditActions } from "./userEditActions";
-import { GENDER } from "../../../shared/types";
+import { GENDER } from "../../../shared/src/types";
 import { UserBirthFormField } from "./userBirthFormField";
 import { UserLocationFormField } from "./userLocationFormField";
 import { UserAboutFormField } from "./userAboutFormField";
@@ -43,9 +43,7 @@ const UserCardData = () => {
   } = useForm<UserFormData>({
     defaultValues: {
       name: currentUser?.name || "",
-      dateOfBirth: currentUser?.dateOfBirth
-        ? new Date(currentUser.dateOfBirth)
-        : new Date(),
+      dateOfBirth: currentUser?.dateOfBirth ? new Date(currentUser.dateOfBirth) : new Date(),
       gender: currentUser?.gender || "",
       location: currentUser?.location || "",
       userInfo: currentUser?.userInfo || "",
@@ -79,9 +77,7 @@ const UserCardData = () => {
     if (currentUser) {
       reset({
         name: currentUser.name,
-        dateOfBirth: currentUser.dateOfBirth
-          ? new Date(currentUser.dateOfBirth)
-          : new Date(),
+        dateOfBirth: currentUser.dateOfBirth ? new Date(currentUser.dateOfBirth) : new Date(),
         gender: currentUser.gender,
         location: currentUser.location || "",
         userInfo: currentUser.userInfo || "",
@@ -98,11 +94,7 @@ const UserCardData = () => {
       if (currentUser) {
         const updates = [
           editUser(currentUser.id, "name", data.name),
-          editUser(
-            currentUser.id,
-            "dateOfBirth",
-            Timestamp.fromDate(data.dateOfBirth)
-          ),
+          editUser(currentUser.id, "dateOfBirth", Timestamp.fromDate(data.dateOfBirth)),
           editUser(currentUser.id, "gender", data.gender),
           editUser(currentUser.id, "location", data.location),
           editUser(currentUser.id, "userInfo", data.userInfo),
@@ -138,9 +130,7 @@ const UserCardData = () => {
     if (currentUser) {
       reset({
         name: currentUser.name,
-        dateOfBirth: currentUser.dateOfBirth
-          ? new Date(currentUser.dateOfBirth)
-          : new Date(),
+        dateOfBirth: currentUser.dateOfBirth ? new Date(currentUser.dateOfBirth) : new Date(),
         gender: currentUser.gender,
         location: currentUser.location || "",
         userInfo: currentUser.userInfo || "",

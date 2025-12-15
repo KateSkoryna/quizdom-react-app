@@ -1,7 +1,7 @@
 import { doc, setDoc, Timestamp } from "firebase/firestore";
 import { User } from "firebase/auth";
 import { db } from "../firebase";
-import { GENDER } from "../../shared/types";
+import { GENDER } from "../../shared/src/types";
 import { avatar as defaultAvatar } from "./generateRandomAvatar";
 
 type AuthType = "google" | "email";
@@ -39,19 +39,19 @@ export const ensureUserDocument = async (
             userInfo: "I'm a new user and I don't have a bio yet.",
           }
         : authType === "email" && emailSignupData
-        ? {
-            name: emailSignupData.name,
-            email: emailSignupData.email,
-            avatar: defaultAvatar,
-            dateOfBirth: emailSignupData.dateOfBirth
-              ? Timestamp.fromDate(emailSignupData.dateOfBirth)
-              : Timestamp.now(),
-            gender: emailSignupData.gender || GENDER.NEUTRAL,
-            averageScore: 0,
-            favorites: [],
-            userInfo: "I'm a new user and I don't have a bio yet.",
-          }
-        : null;
+          ? {
+              name: emailSignupData.name,
+              email: emailSignupData.email,
+              avatar: defaultAvatar,
+              dateOfBirth: emailSignupData.dateOfBirth
+                ? Timestamp.fromDate(emailSignupData.dateOfBirth)
+                : Timestamp.now(),
+              gender: emailSignupData.gender || GENDER.NEUTRAL,
+              averageScore: 0,
+              favorites: [],
+              userInfo: "I'm a new user and I don't have a bio yet.",
+            }
+          : null;
 
     if (!userData) {
       throw new Error("Invalid auth type or missing signup data");

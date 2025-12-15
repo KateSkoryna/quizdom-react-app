@@ -12,10 +12,7 @@ interface ImageError {
   message: string;
 }
 
-export const useImageUpload = ({
-  imageFile,
-  onUploadComplete,
-}: UseImageUploadProps) => {
+export const useImageUpload = ({ imageFile, onUploadComplete }: UseImageUploadProps) => {
   const [progressUpload, setProgressUpload] = useState(0);
   const [error, setError] = useState<ImageError | null>(null);
 
@@ -29,8 +26,7 @@ export const useImageUpload = ({
         uploadTask.on(
           "state_changed",
           (snapshot) => {
-            const progress =
-              (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
             setProgressUpload(progress);
           },
           (error) => {

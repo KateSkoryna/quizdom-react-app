@@ -26,9 +26,7 @@ const FormDropdownComponent = ({ fieldName }: FormDropdownComponentProps) => {
             open={isOpen}
             onToggle={(e) => setIsOpen(e.currentTarget.open)}
           >
-            <summary className={styles.dropdownSummary}>
-              {config.formatDisplayValue(value)}
-            </summary>
+            <summary className={styles.dropdownSummary}>{config.formatDisplayValue(value)}</summary>
             <div className={styles.dropdownList}>
               <div className={styles.dropdownListInner}>
                 {config.options.map((option) => (

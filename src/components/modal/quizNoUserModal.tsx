@@ -22,16 +22,10 @@ const QuizNoUserModal = ({ id }: { id: string }) => {
   return (
     <div className={styles.actionButtons}>
       <FavoriteElement quizId={id} onAuthRequired={handleModalToggle} />
-      <button
-        onClick={handleShare}
-        className={styles.shareButton}
-        aria-label="Share quiz"
-      >
+      <button onClick={handleShare} className={styles.shareButton} aria-label="Share quiz">
         <ShareIcon className={styles.shareIcon} />
       </button>
-      {isModalOpen && (
-        <NavigateUserModal handleClose={handleModalToggle} show={isModalOpen} />
-      )}
+      {isModalOpen && <NavigateUserModal handleClose={handleModalToggle} show={isModalOpen} />}
     </div>
   );
 };

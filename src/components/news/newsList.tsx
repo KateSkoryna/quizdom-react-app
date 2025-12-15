@@ -17,9 +17,7 @@ const NewsListComponent = ({ news }: { news: Article[] }) => {
               image={image ?? DEFAULT_IMG}
               title={title}
               description={
-                description
-                  ? truncateString(description, 90)
-                  : "No description available"
+                description ? truncateString(description, 90) : "No description available"
               }
               url={url}
             />

@@ -59,9 +59,7 @@ const NavbarContainer = () => {
                 <Nav.Link
                   as={Link}
                   to="/quizes"
-                  className={`${styles.navLink} ${
-                    isUserPage ? styles.navLinkLight : ""
-                  }`}
+                  className={`${styles.navLink} ${isUserPage ? styles.navLinkLight : ""}`}
                   eventKey="quizes"
                   onClick={handleClose}
                 >
@@ -70,9 +68,7 @@ const NavbarContainer = () => {
                 <Nav.Link
                   as={Link}
                   to="/news"
-                  className={`${styles.navLink} ${
-                    isUserPage ? styles.navLinkLight : ""
-                  }`}
+                  className={`${styles.navLink} ${isUserPage ? styles.navLinkLight : ""}`}
                   eventKey="news"
                   onClick={handleClose}
                 >
@@ -91,9 +87,7 @@ const NavbarContainer = () => {
                   <Nav.Link
                     as={Link}
                     to="/login"
-                    className={`${styles.navLink} ${
-                      isUserPage ? styles.navLinkLight : ""
-                    }`}
+                    className={`${styles.navLink} ${isUserPage ? styles.navLinkLight : ""}`}
                     eventKey="login"
                     onClick={handleClose}
                   >

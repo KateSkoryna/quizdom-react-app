@@ -10,15 +10,8 @@ const QuizLevelBadge = ({ complexity }: QuizLevelBadgeProps) => {
 
   return (
     <div className={styles.levelInfo}>
-      <p
-        className={styles.complexity}
-        style={{ color: levelConfig?.color || "#000" }}
-      >
-        <img
-          src={levelConfig?.icon}
-          alt={`Level ${complexity}`}
-          className={styles.levelIcon}
-        />
+      <p className={styles.complexity} style={{ color: levelConfig?.color || "#000" }}>
+        <img src={levelConfig?.icon} alt={`Level ${complexity}`} className={styles.levelIcon} />
         {levelConfig?.name || complexity}
       </p>
     </div>

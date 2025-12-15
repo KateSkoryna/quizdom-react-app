@@ -27,21 +27,17 @@ const AnswersFormComponent = ({ nestIndex }: { nestIndex: number }) => {
       <div className={modalStyles.answersGrid}>
         {answers.map((answer, index) => {
           // @ts-ignore
-          const error = errors?.questions?.[nestIndex]?.answers?.[index]?.answer
-            ?.message as string;
+          const error = errors?.questions?.[nestIndex]?.answers?.[index]?.answer?.message as string;
           return (
             <div key={answer.id}>
               <Form.Control
-                {...register(
-                  `questions[${nestIndex}].answers[${index}].answer`,
-                  {
-                    required: "Answer is required",
-                    minLength: {
-                      value: 3,
-                      message: "Answer must be at least 4 characters",
-                    },
-                  } as const
-                )}
+                {...register(`questions[${nestIndex}].answers[${index}].answer`, {
+                  required: "Answer is required",
+                  minLength: {
+                    value: 3,
+                    message: "Answer must be at least 4 characters",
+                  },
+                } as const)}
                 as="textarea"
                 className={modalStyles.answerInput}
                 placeholder={`Answer ${index + 1}`}

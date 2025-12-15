@@ -1,6 +1,6 @@
 import Card from "react-bootstrap/Card";
 import styles from "../../../styles/components/quizCard.module.scss";
-import { UserQuiz } from "../../../../shared/types";
+import { UserQuiz } from "../../../../shared/src/types";
 import { useAuthStore } from "../../../store/AuthStore";
 import StartQuizButton from "./startQuizButton";
 import QuizStats from "./quizStats";
@@ -37,9 +37,7 @@ const QuizMainListItem = ({
       <div className={styles.front}>
         <QuizCover title={cuttedTitle} id={id} category={category} />
         <Card.Body className={styles.quizInfoCard}>
-          <Card.Text className={styles.description}>
-            {cuttedDescription}
-          </Card.Text>
+          <Card.Text className={styles.description}>{cuttedDescription}</Card.Text>
 
           <QuizLevelBadge complexity={complexity} />
           <QuizStats
@@ -51,7 +49,7 @@ const QuizMainListItem = ({
           />
         </Card.Body>
       </div>
-      <StartQuizButton questions={questions} />
+      <StartQuizButton questions={questions} quizId={id!} />
     </Card>
   );
 };

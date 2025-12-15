@@ -7,10 +7,7 @@ interface GoogleAuthButtonProps {
   isLoading?: boolean;
 }
 
-const GoogleAuthButton = ({
-  onClick,
-  isLoading = false,
-}: GoogleAuthButtonProps) => {
+const GoogleAuthButton = ({ onClick, isLoading = false }: GoogleAuthButtonProps) => {
   return (
     <Button
       variant="outline-secondary"
@@ -20,9 +17,7 @@ const GoogleAuthButton = ({
       type="button"
     >
       <img src={googleIcon} className={styles.googleIcon} alt="Google" />
-      <span className={styles.googleText}>
-        {isLoading ? "Loading..." : "Login with Google"}
-      </span>
+      <span className={styles.googleText}>{isLoading ? "Loading..." : "Login with Google"}</span>
     </Button>
   );
 };

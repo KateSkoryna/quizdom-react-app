@@ -1,9 +1,9 @@
 import { User, signOut } from "firebase/auth";
 import { auth } from "../firebase";
 import { useAuthStore } from "../store/AuthStore";
-import { CurrentUser } from "../../shared/types";
+import { CurrentUser } from "../../shared/src/types";
 import { getCurrentUser } from "./api";
-import type { QuizAttemptsStore } from "../store/quizAttemptsStore";
+import type { QuizCompletionStore } from "../store/quizAttemptsStore";
 
 export const fetchUserWithToken = async (
   firebaseUser: User | null,
@@ -48,10 +48,7 @@ export const fetchUserWithToken = async (
       setCurrentUser(currentUser);
     } else {
       // User document doesn't exist in Firestore - sign out
-      console.warn(
-        "User document not found in Firestore for uid:",
-        firebaseUser.uid
-      );
+      console.warn("User document not found in Firestore for uid:", firebaseUser.uid);
       await signOut(auth);
       localStorage.removeItem("authData");
       setCurrentUser(null);
@@ -75,7 +72,7 @@ export const fetchUserWithToken = async (
  */
 export const fetchWrapper = async <T>(
   fn: () => Promise<T>,
-  set: (state: Partial<QuizAttemptsStore>) => void,
+  set: (state: Partial<QuizCompletionStore>) => void,
   errorMessage: string,
   onSuccess?: (data: T) => void
 ): Promise<T> => {

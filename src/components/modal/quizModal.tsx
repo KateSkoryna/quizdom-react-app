@@ -8,18 +8,27 @@ interface QuizModalProps {
   handleCloseModal: () => void;
 }
 
+export type Status = "done" | "draft";
+
 const QuizModal = ({ showModal, handleCloseModal }: QuizModalProps) => {
-  const formRef = useRef<{ submit: () => void; isSubmitting: boolean; isDirty: boolean }>(null);
+  const formRef = useRef<{
+    submit: (status: Status) => void;
+    isSubmitting: boolean;
+    isDirty: boolean;
+  }>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isDirty, setIsDirty] = useState(false);
 
-  const handleFormStateChange = useCallback((state: { isDirty: boolean; isSubmitting: boolean }) => {
-    setIsDirty(state.isDirty);
-    setIsSubmitting(state.isSubmitting);
-  }, []);
+  const handleFormStateChange = useCallback(
+    (state: { isDirty: boolean; isSubmitting: boolean }) => {
+      setIsDirty(state.isDirty);
+      setIsSubmitting(state.isSubmitting);
+    },
+    []
+  );
 
-  const handlePublish = () => {
-    formRef.current?.submit();
+  const handleSaveQuiz = (status: Status) => {
+    formRef.current?.submit(status);
   };
 
   return (
@@ -35,13 +44,17 @@ const QuizModal = ({ showModal, handleCloseModal }: QuizModalProps) => {
         <Modal.Title as="h2">Create your own Quiz</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <QuizFormComponent ref={formRef} handleClose={handleCloseModal} onFormStateChange={handleFormStateChange} />
+        <QuizFormComponent
+          ref={formRef}
+          handleClose={handleCloseModal}
+          onFormStateChange={handleFormStateChange}
+        />
       </Modal.Body>
       <Modal.Footer className={styles.modalFooter}>
         <button
           type="button"
           className={styles.primaryButton}
-          onClick={handlePublish}
+          onClick={() => handleSaveQuiz("done")}
           disabled={!isDirty || isSubmitting}
         >
           {isSubmitting ? "Publishing..." : "Publish Quiz"}
@@ -49,7 +62,7 @@ const QuizModal = ({ showModal, handleCloseModal }: QuizModalProps) => {
         <button
           type="button"
           className={styles.secondaryButton}
-          onClick={handleCloseModal}
+          onClick={() => handleSaveQuiz("draft")}
           disabled={isSubmitting}
         >
           Save to Drafts

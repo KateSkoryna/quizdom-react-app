@@ -60,11 +60,7 @@ const SearchForm = ({
           Search
         </Button>
       </div>
-      {errorState && (
-        <Form.Text className={styles.error}>
-          Please enter a search term
-        </Form.Text>
-      )}
+      {errorState && <Form.Text className={styles.error}>Please enter a search term</Form.Text>}
     </Form>
   );
 };

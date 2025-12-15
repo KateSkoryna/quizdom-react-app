@@ -8,10 +8,7 @@ type ForgotPasswordModalProps = {
   handleClose: () => void;
 };
 
-const ForgotPasswordModal = ({
-  show,
-  handleClose,
-}: ForgotPasswordModalProps) => {
+const ForgotPasswordModal = ({ show, handleClose }: ForgotPasswordModalProps) => {
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
@@ -63,8 +60,7 @@ const ForgotPasswordModal = ({
       <Modal.Body>
         {success ? (
           <div className="text-success">
-            Password reset email sent! Check your inbox for further
-            instructions.
+            Password reset email sent! Check your inbox for further instructions.
           </div>
         ) : (
           <Form onSubmit={handleSubmit}>
@@ -77,18 +73,9 @@ const ForgotPasswordModal = ({
                 onChange={(e) => setEmail(e.target.value)}
                 autoComplete="email"
               />
-              {error && (
-                <Form.Text className="text-danger mt-1 d-block">
-                  {error}
-                </Form.Text>
-              )}
+              {error && <Form.Text className="text-danger mt-1 d-block">{error}</Form.Text>}
             </Form.Group>
-            <Button
-              variant="primary"
-              type="submit"
-              className={styles.formBtn}
-              disabled={isLoading}
-            >
+            <Button variant="primary" type="submit" className={styles.formBtn} disabled={isLoading}>
               {isLoading ? "Sending..." : "Send Reset Link"}
             </Button>
           </Form>

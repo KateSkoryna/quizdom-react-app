@@ -23,19 +23,11 @@ const HomePage = () => {
       fetchQuizes();
     } else {
       const fetchQuizesByCategoryAndComplexity = async () => {
-        await getQuizesByCategoryAndComplexity(
-          searchCategory,
-          searchComplexity
-        );
+        await getQuizesByCategoryAndComplexity(searchCategory, searchComplexity);
       };
       fetchQuizesByCategoryAndComplexity();
     }
-  }, [
-    searchCategory,
-    searchComplexity,
-    getQuizes,
-    getQuizesByCategoryAndComplexity,
-  ]);
+  }, [searchCategory, searchComplexity, getQuizes, getQuizesByCategoryAndComplexity]);
 
   return (
     <>

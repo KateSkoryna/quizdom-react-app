@@ -9,7 +9,7 @@ import {
   signInWithPopup,
 } from "firebase/auth";
 import { auth } from "../firebase";
-import { CurrentUser, UserData } from "../../shared/types";
+import { CurrentUser, UserData } from "../../shared/src/types";
 
 interface AuthStore {
   currentUser: CurrentUser | null;
@@ -38,11 +38,7 @@ export const useAuthStore = create<AuthStore>((set) => ({
   },
 
   login: async (email: string, password: string): Promise<UserCredential> => {
-    const userCredential = await signInWithEmailAndPassword(
-      auth,
-      email,
-      password
-    );
+    const userCredential = await signInWithEmailAndPassword(auth, email, password);
     return userCredential;
   },
   loginWithGoogle: async (): Promise<UserCredential> => {

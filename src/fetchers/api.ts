@@ -11,17 +11,29 @@ import {
   arrayUnion,
   arrayRemove,
   documentId,
-  deleteDoc,
   addDoc,
 } from "firebase/firestore";
-import {
-  QuizFormState,
-  UserQuiz,
-  QuizAttempt,
-  Feedback,
-} from "../../shared/types";
-import { UseFormSetError } from "react-hook-form";
-import { COMPLEXITY_VALUES } from "../const/complexity";
+import { UserQuiz } from "../../shared/src/types";
+
+// TODO: Remove these old client-side Firestore functions
+// They should be replaced with backend API calls using useQuizCompletionStore
+interface QuizAttempt {
+  id?: string;
+  userId: string;
+  quizId: string;
+  attemptNumber: number;
+  completed: boolean;
+  score?: number;
+  completedAt: Date | null;
+  feedbackLeft: boolean;
+}
+
+interface Feedback {
+  userId: string;
+  userName: string;
+  message: string;
+  createdAt: Date;
+}
 
 const API_KEY = import.meta.env.VITE_NEWS_API_KEY;
 const NEWS_BASE_URL = import.meta.env.VITE_NEWS_BASE_URL;
@@ -60,125 +72,18 @@ export async function getCurrentUser(userId: string) {
   }
 }
 
-//======================== GET ALL QUIZES  ==========================
+//======================== EDIT USER  ====================
 
-export async function getAllQuizes(setError: (error: string) => void) {
-  try {
-    const snapshot = await getDocs(collection(db, "quizes"));
-    const quizes = snapshot.docs.map((doc) => {
-      return {
-        ...(doc.data() as UserQuiz),
-        id: doc.id,
-        publishedAt: doc.data().publishedAt.toDate(),
-      };
-    });
-    return quizes;
-  } catch (error) {
-    if (error instanceof Error) {
-      setError(error.message);
-      throw new Error(error.message);
-    }
-  }
-}
-
-//======================== GET QUIZES BY USER  ======================
-
-export async function getQuizesById(
+export async function editUser(
   userId: string,
-  setError: (error: string) => void
+  field: string,
+  value: string | import("firebase/firestore").Timestamp
 ) {
   try {
-    const q = query(collection(db, "quizes"), where("authorId", "==", userId));
-    const querySnapshot = await getDocs(q);
-
-    const quizes = querySnapshot.docs.map((doc) => {
-      return {
-        ...(doc.data() as UserQuiz),
-        id: doc.id,
-        publishedAt: doc.data().publishedAt.toDate(),
-      };
+    const ref = doc(db, "users", userId);
+    await updateDoc(ref, {
+      [field]: value,
     });
-    return quizes;
-  } catch (error) {
-    if (error instanceof Error) {
-      setError(error.message);
-      throw new Error(error.message);
-    }
-  }
-}
-
-//======================== GET QUIZES BY CATEGORY  ======================
-
-export async function getQuizByCategoryAndComplexity(queryData: {
-  category: string | null;
-  complexity: string | null;
-}) {
-  try {
-    let q = query(
-      collection(db, "quizes"),
-      where("category", "==", queryData.category)
-    );
-    if (!queryData.category || queryData.complexity) {
-      q = query(
-        collection(db, "quizes"),
-        where("complexity", "==", queryData.complexity)
-      );
-    }
-    if (queryData.category && queryData.complexity) {
-      q = query(
-        collection(db, "quizes"),
-        where("category", "==", queryData.category),
-        where("complexity", "==", queryData.complexity)
-      );
-    }
-
-    const querySnapshot = await getDocs(q);
-    const quizes = querySnapshot.docs.map((doc) => {
-      return {
-        ...(doc.data() as UserQuiz),
-        id: doc.id,
-        publishedAt: doc.data().publishedAt.toDate(),
-      };
-    });
-    return quizes;
-  } catch (error: unknown) {
-    if (error instanceof Error) {
-      throw new Error(error.message);
-    }
-  }
-}
-
-//======================== ADD QUIZ  ====================
-
-export async function addQuiz(
-  data: QuizFormState,
-  userId: string,
-  userName: string,
-  setError: UseFormSetError<QuizFormState>
-) {
-  try {
-    await addDoc(collection(db, "quizes"), {
-      ...data,
-      authorId: userId,
-      authorName: userName,
-      publishedAt: new Date(),
-      complexity: COMPLEXITY_VALUES[data.complexity],
-    });
-  } catch (error) {
-    if (error instanceof Error) {
-      setError("root", {
-        message: "Failed to create a quiz",
-      });
-      throw new Error(error.message);
-    }
-  }
-}
-
-//======================== REMOVE QUIZ  ====================
-
-export async function removeQuiz(quizId: string) {
-  try {
-    await deleteDoc(doc(db, "quizes", quizId));
   } catch (error) {
     if (error instanceof Error) {
       throw new Error(error.message);
@@ -188,11 +93,7 @@ export async function removeQuiz(quizId: string) {
 
 //======================== TOGGLE FAVORITE QUIZ  ====================
 
-export async function toggleFavorites(
-  quizId: string,
-  userId: string,
-  action: string
-) {
+export async function toggleFavorites(quizId: string, userId: string, action: string) {
   try {
     const ref = doc(db, "users", userId);
     switch (action) {
@@ -218,15 +119,9 @@ export async function toggleFavorites(
 
 //======================== GET FAVORITE QUIZES  ====================
 
-export async function getFavoriteQuizes(
-  quizIds: string[],
-  setError: (error: string) => void
-) {
+export async function getFavoriteQuizes(quizIds: string[], setError: (error: string) => void) {
   try {
-    const q = query(
-      collection(db, "quizes"),
-      where(documentId(), "in", quizIds)
-    );
+    const q = query(collection(db, "quizes"), where(documentId(), "in", quizIds));
     const querySnapshot = await getDocs(q);
     const quizes = querySnapshot.docs.map((doc) => {
       return {
@@ -244,31 +139,9 @@ export async function getFavoriteQuizes(
   }
 }
 
-//======================== EDIT USER  ====================
-
-export async function editUser(
-  userId: string,
-  field: string,
-  value: string | import("firebase/firestore").Timestamp
-) {
-  try {
-    const ref = doc(db, "users", userId);
-    await updateDoc(ref, {
-      [field]: value,
-    });
-  } catch (error) {
-    if (error instanceof Error) {
-      throw new Error(error.message);
-    }
-  }
-}
-
 //======================== QUIZ ATTEMPTS  ====================
 
-export async function getUserQuizAttempts(
-  userId: string,
-  quizId: string
-): Promise<QuizAttempt[]> {
+export async function getUserQuizAttempts(userId: string, quizId: string): Promise<QuizAttempt[]> {
   try {
     const q = query(
       collection(db, "quizAttempts"),
@@ -290,10 +163,7 @@ export async function getUserQuizAttempts(
   }
 }
 
-export async function canAttemptQuiz(
-  userId: string,
-  quizId: string
-): Promise<boolean> {
+export async function canAttemptQuiz(userId: string, quizId: string): Promise<boolean> {
   try {
     const attempts = await getUserQuizAttempts(userId, quizId);
     return attempts.length < 2;
@@ -335,16 +205,11 @@ export async function addQuizAttempt(
   }
 }
 
-export async function canLeaveFeedback(
-  userId: string,
-  quizId: string
-): Promise<boolean> {
+export async function canLeaveFeedback(userId: string, quizId: string): Promise<boolean> {
   try {
     const attempts = await getUserQuizAttempts(userId, quizId);
     // User can leave feedback if they completed the quiz and haven't left feedback yet
-    const completedAttempt = attempts.find(
-      (attempt) => attempt.completed && !attempt.feedbackLeft
-    );
+    const completedAttempt = attempts.find((attempt) => attempt.completed && !attempt.feedbackLeft);
     return !!completedAttempt;
   } catch (error) {
     if (error instanceof Error) {
@@ -386,9 +251,7 @@ export async function submitFeedback(
 
     // Mark feedback as left in quiz attempt
     const attempts = await getUserQuizAttempts(userId, quizId);
-    const completedAttempt = attempts.find(
-      (attempt) => attempt.completed && !attempt.feedbackLeft
-    );
+    const completedAttempt = attempts.find((attempt) => attempt.completed && !attempt.feedbackLeft);
 
     if (completedAttempt && completedAttempt.id) {
       const attemptRef = doc(db, "quizAttempts", completedAttempt.id);

@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useAuthStore } from "../../store/AuthStore";
-import { UserData, CurrentUser } from "../../../shared/types";
+import { UserData, CurrentUser } from "../../../shared/src/types";
 import ForgotPasswordModal from "../modal/forgotPasswordModal";
 import styles from "../../styles/pages/auth.module.scss";
 import eyeIcon from "../../assets/eye.svg";
@@ -113,9 +113,7 @@ const UnifiedAuthForm = ({ mode, onModeChange }: UnifiedAuthFormProps) => {
           const currentUser: CurrentUser = {
             ...(userData as CurrentUser),
             id: userCredential.user.uid,
-            dateOfBirth: userData.dateOfBirth?.toDate
-              ? userData.dateOfBirth.toDate()
-              : new Date(),
+            dateOfBirth: userData.dateOfBirth?.toDate ? userData.dateOfBirth.toDate() : new Date(),
           };
 
           setCurrentUser(currentUser);
@@ -142,9 +140,7 @@ const UnifiedAuthForm = ({ mode, onModeChange }: UnifiedAuthFormProps) => {
 
   return (
     <Form key={mode} onSubmit={handleSubmit(onSubmit)}>
-      {errors.root && (
-        <p className="text-danger mb-3 text-center">{errors.root.message}</p>
-      )}
+      {errors.root && <p className="text-danger mb-3 text-center">{errors.root.message}</p>}
 
       {mode === "signup" && (
         <Form.Group controlId="formBasicName">
@@ -194,10 +190,7 @@ const UnifiedAuthForm = ({ mode, onModeChange }: UnifiedAuthFormProps) => {
               className={styles.eyeBtn}
               type="button"
             >
-              <img
-                src={eyeIcon}
-                alt={showPassword ? "Hide password" : "Show password"}
-              />
+              <img src={eyeIcon} alt={showPassword ? "Hide password" : "Show password"} />
             </button>
           )}
         </div>
@@ -220,10 +213,7 @@ const UnifiedAuthForm = ({ mode, onModeChange }: UnifiedAuthFormProps) => {
             {...register("confirmPassword")}
           />
           {errors.confirmPassword
-            ? addClassnameToText(
-                "text-danger",
-                errors.confirmPassword?.message as string
-              )
+            ? addClassnameToText("text-danger", errors.confirmPassword?.message as string)
             : addClassnameToText(styles.errorText)}
         </Form.Group>
       )}

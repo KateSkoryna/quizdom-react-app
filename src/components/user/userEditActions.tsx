@@ -51,11 +51,7 @@ export const UserEditActions = ({
           </button>
         </div>
       ) : (
-        <button
-          type="button"
-          className={`w-100 ${modalStyles.primaryButton}`}
-          onClick={onEdit}
-        >
+        <button type="button" className={`w-100 ${modalStyles.primaryButton}`} onClick={onEdit}>
           Edit Profile
         </button>
       )}

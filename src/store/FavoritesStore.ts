@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { UserQuiz } from "../../shared/types";
+import { UserQuiz } from "../../shared/src/types";
 import { getFavoriteQuizes } from "../fetchers/api";
 
 interface FavoritesStore {

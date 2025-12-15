@@ -8,20 +8,14 @@ type FormCheckboxProps = {
   index: number;
 };
 
-const FormCheckboxComponent = ({
-  label,
-  nestIndex,
-  index,
-}: FormCheckboxProps) => {
+const FormCheckboxComponent = ({ label, nestIndex, index }: FormCheckboxProps) => {
   const { register } = useFormContext();
   return (
     <div className={styles.checkbox}>
       <label>
         <input
           type="checkbox"
-          {...register(
-            `questions[${nestIndex}].answers[${index}].isCorrect` as const
-          )}
+          {...register(`questions[${nestIndex}].answers[${index}].isCorrect` as const)}
         />
         <span className={styles.checkboxIconWrapper}>
           <FaCheck className={styles.checkboxIcon} />

@@ -22,13 +22,7 @@ const UserFavoriteQuizList = () => {
       {favorites ? (
         favorites.map((quiz, index) => {
           const { id, ...rest } = quiz;
-          return (
-            <UserQuizListItem
-              key={id}
-              quiz={rest}
-              eventKey={index.toString()}
-            />
-          );
+          return <UserQuizListItem key={id} quiz={rest} eventKey={index.toString()} />;
         })
       ) : (
         <p>No quizes yet</p>

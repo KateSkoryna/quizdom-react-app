@@ -20,9 +20,7 @@ export const UserBirthFormField = <T extends FieldValues>({
   fieldName,
 }: UserBirthFormFieldProps<T>) => {
   const isValidDate = value instanceof Date && !isNaN(value.getTime());
-  const formattedDate = isValidDate
-    ? dayjs(value).format("DD-MM-YYYY")
-    : "Not set";
+  const formattedDate = isValidDate ? dayjs(value).format("DD-MM-YYYY") : "Not set";
 
   return (
     <Card.Text
@@ -36,11 +34,7 @@ export const UserBirthFormField = <T extends FieldValues>({
             name={fieldName}
             control={control}
             render={({ field: { onChange, value } }) => (
-              <DatepickerContainer
-                value={value}
-                callback={onChange}
-                selectedColor="#f7941d"
-              />
+              <DatepickerContainer value={value} callback={onChange} selectedColor="#f7941d" />
             )}
           />
         ) : (

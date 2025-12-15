@@ -5,12 +5,7 @@ import styles from "../../styles/components/footer.module.scss";
 
 const Footer = () => {
   return (
-    <Navbar
-      expand="lg"
-      data-bs-theme="dark"
-      fixed="bottom"
-      className={styles.footerNavbar}
-    >
+    <Navbar expand="lg" data-bs-theme="dark" fixed="bottom" className={styles.footerNavbar}>
       <Container className={styles.footerContainer}>
         <Nav className={styles.footerContactNavbar}>
           <Nav.Link

@@ -29,19 +29,16 @@ const LogoutComponent = ({ avatar, name, isUserPage: isUserPageProp, onClose }: 
   };
 
   return (
-    <Dropdown align="end" className={`${styles.userDropdown} ${isUserPage ? styles.lightBackground : ""}`}>
-      <Dropdown.Toggle
-        as="div"
-        className={styles.avatarToggle}
-        id="user-dropdown"
-      >
+    <Dropdown
+      align="end"
+      className={`${styles.userDropdown} ${isUserPage ? styles.lightBackground : ""}`}
+    >
+      <Dropdown.Toggle as="div" className={styles.avatarToggle} id="user-dropdown">
         <Image src={avatar} className={styles.userIcon} />
       </Dropdown.Toggle>
 
       <Dropdown.Menu className={styles.dropdownMenu}>
-        <Dropdown.Header className={styles.dropdownHeader}>
-          Hi, {name}
-        </Dropdown.Header>
+        <Dropdown.Header className={styles.dropdownHeader}>Hi, {name}</Dropdown.Header>
         <Dropdown.Item
           onClick={handleProfileClick}
           className={`${styles.dropdownItem} ${isUserPage ? styles.active : ""}`}

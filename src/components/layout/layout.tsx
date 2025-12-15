@@ -9,10 +9,7 @@ import ErrorFallback from "../fallback/fallback";
 function Layout() {
   const navigate = useNavigate();
   return (
-    <ErrorBoundary
-      FallbackComponent={ErrorFallback}
-      onReset={() => navigate("/")}
-    >
+    <ErrorBoundary FallbackComponent={ErrorFallback} onReset={() => navigate("/")}>
       <Suspense fallback={<Loader />}>
         <NavbarContainer />
         <Outlet />

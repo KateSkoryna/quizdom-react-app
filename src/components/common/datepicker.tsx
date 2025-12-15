@@ -28,8 +28,8 @@ const DatepickerContainer = ({
       calendarClassName={selectedColor === "#f7941d" ? styles.customCalendar : ""}
       showYearDropdown
       scrollableYearDropdown
-      maxDate={dayjs().subtract(18, 'years').toDate()}
-      minDate={dayjs().subtract(100, 'years').toDate()}
+      maxDate={dayjs().subtract(18, "years").toDate()}
+      minDate={dayjs().subtract(100, "years").toDate()}
       dropdownMode="select"
       showMonthDropdown
       selected={value ? new Date(value) : null}

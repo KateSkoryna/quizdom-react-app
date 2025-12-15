@@ -16,9 +16,7 @@ const DeleteQuizComponent = () => {
       </Button>
       <Modal show={show} onHide={handleClose} centered>
         <Modal.Header closeButton>
-          <Modal.Title as="h5">
-            Are you sure you want to delete this quiz?
-          </Modal.Title>
+          <Modal.Title as="h5">Are you sure you want to delete this quiz?</Modal.Title>
         </Modal.Header>
         <Modal.Body className="text-center">
           Be careful! After deletion, you cannot recover it.

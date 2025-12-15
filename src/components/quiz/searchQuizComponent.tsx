@@ -25,26 +25,16 @@ const SearchQuizComponent = () => {
 
   const onSubmit = (data: SearchFormData) => {
     const params: Record<string, string> = {};
-    if (data.category && data.category !== "All")
-      params.category = data.category;
-    if (data.complexity && data.complexity !== "All")
-      params.complexity = data.complexity;
+    if (data.category && data.category !== "All") params.category = data.category;
+    if (data.complexity && data.complexity !== "All") params.complexity = data.complexity;
     setSearchParams(params);
   };
 
   return (
     <Container>
       <Form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
-        <FormSelectComponent
-          fields={categories}
-          fieldsName="category"
-          control={control}
-        />
-        <FormSelectComponent
-          fields={complexityValues}
-          fieldsName="complexity"
-          control={control}
-        />
+        <FormSelectComponent fields={categories} fieldsName="category" control={control} />
+        <FormSelectComponent fields={complexityValues} fieldsName="complexity" control={control} />
         <Button className={modalStyles.primaryButton} type="submit">
           Search
         </Button>

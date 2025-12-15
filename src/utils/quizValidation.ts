@@ -1,21 +1,14 @@
-import { getFunctions, httpsCallable } from "firebase/functions";
-import { QuizFormState } from "../../shared/types";
-
-const functions = getFunctions();
+import { QuizFormState } from "../../shared/src/types";
+import apiClient from "../fetchers/axiosInstance";
 
 /**
  * Validates quiz data using Firebase Cloud Function
  * Throws an error if validation fails with descriptive message
  */
-export async function validateQuizData(
-  quizData: QuizFormState
-): Promise<QuizFormState> {
+export async function validateQuizData(quizData: QuizFormState): Promise<QuizFormState> {
   try {
-    const validateQuiz = httpsCallable(functions, "validateQuizData");
-    const result = await validateQuiz(quizData);
-
-    // TypeScript type assertion for the result
-    const data = result.data as { success: boolean; data: QuizFormState };
+    const response = await apiClient.post("/validateQuizData", quizData);
+    const data = response.data;
 
     if (data.success) {
       return data.data;
@@ -23,8 +16,7 @@ export async function validateQuizData(
 
     throw new Error("Quiz validation failed");
   } catch (error: any) {
-    // Extract meaningful error message
-    const errorMessage = error.message || "Quiz validation failed";
+    const errorMessage = error.error || error.message || "Quiz validation failed";
     throw new Error(errorMessage);
   }
 }

@@ -3,7 +3,7 @@
 
 .addQuizContainer {
   text-align: center;
-  margin: 2rem auto;
+  margin: 0.5 auto;
 }
 
 // Large CTA Button
@@ -20,7 +20,9 @@
   border-radius: 50px;
   color: $white;
   box-shadow: 0 4px 15px rgba($primary-color, 0.4);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
   cursor: pointer;
   animation: gradientShift 4s ease-in-out infinite;
 
@@ -75,7 +77,9 @@
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
   z-index: 1000;
   animation: gradientShift 4s ease-in-out infinite;
 

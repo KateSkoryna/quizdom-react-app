@@ -4,7 +4,7 @@ import { useAuthStore } from "../../store/AuthStore";
 import GoogleAuthButton from "./googleAuthButton";
 import { ensureUserDocument } from "../../utils/authHelper";
 import { getCurrentUser } from "../../fetchers/api";
-import { CurrentUser } from "../../../shared/types";
+import { CurrentUser } from "../../../shared/src/types";
 
 const GoogleAuthHandler = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -34,9 +34,7 @@ const GoogleAuthHandler = () => {
       const currentUser: CurrentUser = {
         ...(userData as CurrentUser),
         id: userCredential.user.uid,
-        dateOfBirth: userData.dateOfBirth?.toDate
-          ? userData.dateOfBirth.toDate()
-          : new Date(),
+        dateOfBirth: userData.dateOfBirth?.toDate ? userData.dateOfBirth.toDate() : new Date(),
       };
 
       setCurrentUser(currentUser);

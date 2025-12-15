@@ -15,9 +15,7 @@ const FavoriteElement = ({ quizId, onAuthRequired }: FavoriteElementProps) => {
   const currentUser = useAuthStore((state) => state.currentUser);
   const setCurrentUser = useAuthStore((state) => state.setCurrentUser);
 
-  const handleFavoriteClick = async (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
+  const handleFavoriteClick = async (event: React.ChangeEvent<HTMLInputElement>) => {
     if (!currentUser) {
       onAuthRequired();
       return;
@@ -28,9 +26,7 @@ const FavoriteElement = ({ quizId, onAuthRequired }: FavoriteElementProps) => {
       setChecked(false);
       setCurrentUser({
         ...currentUser,
-        favorites: currentUser.favorites.filter(
-          (item: string) => item !== event.target.id
-        ),
+        favorites: currentUser.favorites.filter((item: string) => item !== event.target.id),
       });
       return;
     }

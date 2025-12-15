@@ -8,11 +8,7 @@ type FormSelectProps = {
   control: Control<any>;
 };
 
-const FormSelectComponent = ({
-  fields,
-  fieldsName,
-  control,
-}: FormSelectProps) => {
+const FormSelectComponent = ({ fields, fieldsName, control }: FormSelectProps) => {
   return (
     <Controller
       name={fieldsName}

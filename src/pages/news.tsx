@@ -38,11 +38,7 @@ const NewsPage = () => {
   return (
     <>
       <SearchComponent categories={values} />
-      {navigation.state === "loading" ? (
-        <Loader />
-      ) : (
-        <NewsListComponent news={news} />
-      )}
+      {navigation.state === "loading" ? <Loader /> : <NewsListComponent news={news} />}
     </>
   );
 };

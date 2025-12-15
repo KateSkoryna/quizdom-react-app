@@ -33,9 +33,7 @@ const QuestionsFormComponent = () => {
             controlId={`question-${index}`}
           >
             <div className="d-flex justify-content-between mb-3">
-              <Form.Label
-                className={`mb-0 align-self-center ${modalStyles.questionLabel}`}
-              >
+              <Form.Label className={`mb-0 align-self-center ${modalStyles.questionLabel}`}>
                 Question {index + 1}
               </Form.Label>
               {index > 0 && (
@@ -59,9 +57,7 @@ const QuestionsFormComponent = () => {
             {error && addClassnameToText("text-danger", error)}
 
             <Form.Group className="mt-3" controlId={`hint-${index}`}>
-              <Form.Label className={modalStyles.formLabel}>
-                Hint (optional)
-              </Form.Label>
+              <Form.Label className={modalStyles.formLabel}>Hint (optional)</Form.Label>
               <Form.Control
                 className={modalStyles.formTextarea}
                 {...register(`questions[${index}].hint`)}
