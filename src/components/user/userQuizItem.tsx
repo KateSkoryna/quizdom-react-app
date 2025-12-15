@@ -27,7 +27,7 @@ const UserQuizItem = ({ quiz, eventKey }: { quiz: UserLocalQuiz; eventKey: strin
           let displayValue;
 
           if (Array.isArray(value)) {
-            displayValue = "Amount of questions: " + value.length;
+            displayValue = value.length;
           } else if (typeof value === "string") {
             displayValue = value[0].toUpperCase() + value.slice(1);
           } else {

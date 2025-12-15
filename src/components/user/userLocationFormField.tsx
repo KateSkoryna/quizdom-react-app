@@ -53,7 +53,7 @@ export const UserLocationFormField = <T extends FieldValues>({
                 theme={{
                   variables: {
                     fontFamily: '"Montserrat", sans-serif',
-                    borderRadius: "0.375rem",
+                    borderRadius: "4px",
                     boxShadow: "none",
                     border: "1px solid #ced4da",
                     colorText: "#212529",
