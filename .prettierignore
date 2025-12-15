@@ -1,0 +1,29 @@
+# Build outputs
+dist/
+build/
+lib/
+*.min.js
+
+# Dependencies
+node_modules/
+**/node_modules/
+
+# Package manager
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Environment files
+.env
+.env.*
+
+# Git
+.git/
+
+# IDE
+.vscode/
+.idea/
+
+# Other
+coverage/
+*.log

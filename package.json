@@ -6,12 +6,17 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
+    "build:all": "./build-all-workspaces.sh",
+    "tsc:all": "./build-ts-services.sh",
+    "format": "./format-all-workspaces.sh",
+    "format:check": "prettier --check \"src/**/*.{ts,tsx,js,jsx,json,css,scss}\" \"shared/src/**/*.{ts,tsx,js,jsx,json}\" \"functions/src/**/*.{ts,tsx,js,jsx,json}\"",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
     "@mapbox/search-js-react": "^1.5.0",
+    "@quizdom-app/shared": "file:./shared",
     "axios": "^1.13.2",
     "bcryptjs-react": "^2.4.6",
     "bootstrap": "^5.3.8",
@@ -51,6 +56,7 @@
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.6",
     "ngrok": "^5.0.0-beta.2",
+    "prettier": "^3.7.4",
     "react-bootstrap": "^2.10.10",
     "sass": "^1.93.3",
     "typescript": "^5.9.3",
