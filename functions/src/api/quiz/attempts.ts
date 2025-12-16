@@ -1,14 +1,17 @@
 import { onRequest } from "firebase-functions/v2/https";
-import { setCorsHeaders, handleOptions, verifyAuthToken } from "../../utils/authHelper";
+import { verifyAuthToken } from "../../utils/authHelper";
 import {
   getQuizCompletion,
   createQuizCompletion,
   updateQuizFeedback,
 } from "../../services/quiz-service";
 
-export const completeQuiz = onRequest(async (req, res) => {
-  setCorsHeaders(req, res);
-  if (handleOptions(req, res)) return;
+const corsOptions = {
+  cors: ["https://kateskoryna.github.io", "http://localhost:5173"],
+  invoker: "public" as const,
+};
+
+export const completeQuiz = onRequest(corsOptions, async (req, res) => {
 
   if (req.method !== "POST") {
     res.status(405).json({ success: false, error: "Method not allowed" });
@@ -61,9 +64,7 @@ export const completeQuiz = onRequest(async (req, res) => {
   }
 });
 
-export const getQuizCompletionStatus = onRequest(async (req, res) => {
-  setCorsHeaders(req, res);
-  if (handleOptions(req, res)) return;
+export const getQuizCompletionStatus = onRequest(corsOptions, async (req, res) => {
 
   if (req.method !== "GET") {
     res.status(405).json({ success: false, error: "Method not allowed" });
@@ -93,9 +94,7 @@ export const getQuizCompletionStatus = onRequest(async (req, res) => {
   }
 });
 
-export const updateQuizCompletionFeedback = onRequest(async (req, res) => {
-  setCorsHeaders(req, res);
-  if (handleOptions(req, res)) return;
+export const updateQuizCompletionFeedback = onRequest(corsOptions, async (req, res) => {
 
   if (req.method !== "PATCH" && req.method !== "PUT") {
     res.status(405).json({ success: false, error: "Method not allowed" });

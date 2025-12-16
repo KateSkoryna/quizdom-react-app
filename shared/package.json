@@ -6,6 +6,9 @@
   "scripts": {
     "build": "tsc"
   },
+  "dependencies": {
+    "yup": "^1.7.1"
+  },
   "devDependencies": {
     "typescript": "^5.9.3"
   }

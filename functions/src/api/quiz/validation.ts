@@ -1,19 +1,22 @@
 import { onRequest } from "firebase-functions/v2/https";
 import * as functions from "firebase-functions";
-import { quizSchema } from "@quizdom-app/shared";
+import { quizSchema } from "../../schemas/quizSchema";
 import { ValidationError as YupValidationError } from "yup";
 import { COLLECTIONS } from "../../utils/constants";
-import { verifyAuthToken, setCorsHeaders, handleOptions } from "../../utils/authHelper";
+import { verifyAuthToken } from "../../utils/authHelper";
 import * as logger from "firebase-functions/logger";
+
+const corsOptions = {
+  cors: ["https://kateskoryna.github.io", "http://localhost:5173"],
+  invoker: "public" as const,
+};
 
 /**
  * POST /validateQuizData
  * Validate quiz data before submission
  * Body: QuizFormState
  */
-export const validateQuizData = onRequest(async (req, res) => {
-  setCorsHeaders(req, res);
-  if (handleOptions(req, res)) return;
+export const validateQuizData = onRequest(corsOptions, async (req, res) => {
 
   if (req.method !== "POST") {
     res.status(405).json({ success: false, error: "Method not allowed" });

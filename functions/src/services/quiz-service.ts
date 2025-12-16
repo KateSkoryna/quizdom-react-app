@@ -1,7 +1,7 @@
 import { db } from "../config/firestore";
 import { FieldValue } from "firebase-admin/firestore";
 import { COLLECTIONS } from "../utils/constants";
-import type { QuizCompletion } from "@quizdom-app/shared";
+import type { QuizCompletion } from "../types/quiz";
 
 export const getQuizCompletion = async (
   userId: string,

@@ -15,16 +15,20 @@ type StartQuizButtonProps = {
 
 const QuizCardBackside = ({ questions, quizId }: StartQuizButtonProps) => {
   const currentUser = useAuthStore((state) => state.currentUser);
-  const { completion, loadCompletion, isLoading } = useQuizCompletionStore();
+  const { loadCompletion, isLoading, completionCache } = useQuizCompletionStore();
   const [startQuiz, setStartQuiz] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  // Get completion for THIS specific quiz from cache
+  const completion = completionCache[quizId];
 
   // Load completion when user is logged in
   useEffect(() => {
     if (currentUser && quizId) {
       loadCompletion(quizId);
     }
-  }, [currentUser, quizId, loadCompletion]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentUser, quizId]);
 
   const handleStart = () => {
     if (!currentUser) {
@@ -42,8 +46,8 @@ const QuizCardBackside = ({ questions, quizId }: StartQuizButtonProps) => {
   const handleEnd = () => setStartQuiz(false);
   const handleModalToggle = () => setIsModalOpen(!isModalOpen);
 
-  // Show completion status if user already completed
-  const hasCompleted = !!completion;
+  // Show completion status only if user is authenticated and has completed
+  const hasCompleted = currentUser && !!completion;
 
   // calculate user scores
   const correct = completion?.score?.correctAnswers ?? 0;
@@ -52,6 +56,9 @@ const QuizCardBackside = ({ questions, quizId }: StartQuizButtonProps) => {
   const score = `${correct} from ${total}`;
   const scoreRate = (correct / total) * 100;
 
+  // Only show loading state for authenticated users
+  const showLoading = currentUser && isLoading;
+
   return (
     <div className={styles.back}>
       <QuizNoUserModal id={quizId} />
@@ -59,8 +66,8 @@ const QuizCardBackside = ({ questions, quizId }: StartQuizButtonProps) => {
         {hasCompleted ? (
           <QuizStatistic score={score} scoreRate={scoreRate} />
         ) : (
-          <Button onClick={handleStart} className={styles.startButton} disabled={isLoading}>
-            {isLoading ? "Loading..." : "Start"}
+          <Button onClick={handleStart} className={styles.startButton} disabled={showLoading}>
+            {showLoading ? "Loading..." : "Start"}
           </Button>
         )}
       </div>

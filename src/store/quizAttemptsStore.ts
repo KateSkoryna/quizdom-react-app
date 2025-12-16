@@ -7,6 +7,7 @@ export interface QuizCompletionStore {
   isLoading: boolean;
   error: string | null;
   currentQuizId: string | null;
+  completionCache: Record<string, QuizCompletion | null>;
 
   setError: (error: string) => void;
   loadCompletion: (quizId: string) => Promise<void>;
@@ -20,6 +21,7 @@ const initialState = {
   isLoading: false,
   error: null as string | null,
   currentQuizId: null as string | null,
+  completionCache: {} as Record<string, QuizCompletion | null>,
 };
 
 export const useQuizCompletionStore = create<QuizCompletionStore>((set, get) => ({
@@ -28,17 +30,33 @@ export const useQuizCompletionStore = create<QuizCompletionStore>((set, get) => 
   setError: (error: string) => set({ error, isLoading: false }),
 
   loadCompletion: async (quizId: string) => {
+    const { completionCache } = get();
+
+    // Check cache first
+    if (quizId in completionCache) {
+      set({
+        completion: completionCache[quizId],
+        currentQuizId: quizId,
+        isLoading: false,
+      });
+      return;
+    }
+
     set({ isLoading: true, error: null, currentQuizId: quizId });
 
     try {
       const response = await apiClient.get(`/getQuizCompletionStatus?quizId=${quizId}`);
       const { completion } = response.data;
 
-      set({
+      set((state) => ({
         completion,
         isLoading: false,
         error: null,
-      });
+        completionCache: {
+          ...state.completionCache,
+          [quizId]: completion,
+        },
+      }));
     } catch (error: any) {
       const errorMessage = error.error || "Failed to load completion status";
       set({ error: errorMessage, isLoading: false });
@@ -52,7 +70,14 @@ export const useQuizCompletionStore = create<QuizCompletionStore>((set, get) => 
     try {
       await apiClient.post("/completeQuiz", { quizId, score });
 
-      // Reload completion after recording
+      // Invalidate cache and reload
+      set((state) => ({
+        completionCache: {
+          ...state.completionCache,
+          [quizId]: undefined as any, // Remove from cache to force reload
+        },
+      }));
+
       await get().loadCompletion(quizId);
 
       set({ isLoading: false, error: null });
@@ -73,7 +98,14 @@ export const useQuizCompletionStore = create<QuizCompletionStore>((set, get) => 
         comment,
       });
 
-      // Reload completion to get updated feedback
+      // Invalidate cache and reload
+      set((state) => ({
+        completionCache: {
+          ...state.completionCache,
+          [quizId]: undefined as any, // Remove from cache to force reload
+        },
+      }));
+
       await get().loadCompletion(quizId);
 
       set({ isLoading: false, error: null });
