@@ -57,7 +57,7 @@ const QuizCardBackside = ({ questions, quizId }: StartQuizButtonProps) => {
   const scoreRate = (correct / total) * 100;
 
   // Only show loading state for authenticated users
-  const showLoading = currentUser && isLoading;
+  const showLoading = !!(currentUser && isLoading);
 
   return (
     <div className={styles.back}>
