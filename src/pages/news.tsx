@@ -1,11 +1,13 @@
+import { useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 import NewsListComponent from "../components/news/newsList";
-import { useLoaderData, useNavigation } from "react-router-dom";
 import SearchComponent from "../components/news/searchComponent";
 import Loader from "../components/common/loader";
+import { useNews } from "../hooks/useNews";
 
 export interface Article {
   id: string;
-  author: string;
+  author?: string;
   title: string;
   url: string;
   description?: string;
@@ -27,18 +29,27 @@ const NEWS_CATEGORY = {
 };
 
 const NewsPage = () => {
-  const navigation = useNavigation();
-  const newsList: Article[] = useLoaderData() as Article[];
+  const [searchParams] = useSearchParams();
+  const { news: newsList, isLoading, fetchNews } = useNews();
+
+  const searchQuery = searchParams.get("query") || "none";
+  const searchCategory = searchParams.get("category") || "technology";
+  const values: string[] = Object.values(NEWS_CATEGORY);
+
+  // Fetch news when search params change
+  useEffect(() => {
+    fetchNews(searchCategory, searchQuery);
+  }, [searchCategory, searchQuery]);
+
   const news = newsList.map((article, index) => ({
     ...article,
     id: `${new Date().getTime()}-${index}`,
   }));
-  const values: string[] = Object.values(NEWS_CATEGORY);
 
   return (
     <>
       <SearchComponent categories={values} />
-      {navigation.state === "loading" ? <Loader /> : <NewsListComponent news={news} />}
+      {isLoading ? <Loader /> : <NewsListComponent news={news} />}
     </>
   );
 };
