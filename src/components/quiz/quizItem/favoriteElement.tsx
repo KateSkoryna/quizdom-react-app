@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
 import { useAuthStore } from "../../../store/AuthStore";
+import { useFavoritesStore } from "../../../store/FavoritesStore";
+import { ACTION } from "../../../types/user";
 import styles from "../../../styles/pages/home.module.scss";
-import { toggleFavorites } from "../../../fetchers/api";
 import FavoriteIcon from "../../icons/favoriteIcon";
 
 type FavoriteElementProps = {
@@ -10,10 +10,12 @@ type FavoriteElementProps = {
 };
 
 const FavoriteElement = ({ quizId, onAuthRequired }: FavoriteElementProps) => {
-  const [checked, setChecked] = useState(false);
-
   const currentUser = useAuthStore((state) => state.currentUser);
   const setCurrentUser = useAuthStore((state) => state.setCurrentUser);
+  const toggleFavorite = useFavoritesStore((state) => state.toggleFavorite);
+
+  // Derive checked state from currentUser
+  const isChecked = currentUser?.favorites?.includes(quizId) || false;
 
   const handleFavoriteClick = async (event: React.ChangeEvent<HTMLInputElement>) => {
     if (!currentUser) {
@@ -21,38 +23,28 @@ const FavoriteElement = ({ quizId, onAuthRequired }: FavoriteElementProps) => {
       return;
     }
 
-    if (!event.target.checked) {
-      await toggleFavorites(event.target.id, currentUser.id, "remove");
-      setChecked(false);
-      setCurrentUser({
-        ...currentUser,
-        favorites: currentUser.favorites.filter((item: string) => item !== event.target.id),
-      });
-      return;
-    }
+    const action = event.target.checked ? ACTION.ADD : ACTION.REMOVE;
 
-    await toggleFavorites(event.target.id, currentUser.id, "add");
-    setChecked(true);
+    // Call backend API (apiCall handles loading/error states)
+    await toggleFavorite(event.target.id, action);
+
+    // Update local user state after successful API call
+    const updatedFavorites = action === ACTION.ADD
+      ? [...currentUser.favorites, event.target.id]
+      : currentUser.favorites.filter((item: string) => item !== event.target.id);
+
     setCurrentUser({
       ...currentUser,
-      favorites: [...currentUser.favorites, event.target.id],
+      favorites: updatedFavorites,
     });
   };
-
-  useEffect(() => {
-    if (currentUser) {
-      if (currentUser.favorites.includes(quizId)) {
-        setChecked(true);
-      }
-    }
-  }, [currentUser, quizId]);
 
   return (
     <div className={styles.checkbox}>
       <label>
         <input
           type="checkbox"
-          checked={checked}
+          checked={isChecked}
           onChange={(e) => handleFavoriteClick(e)}
           id={quizId}
         />

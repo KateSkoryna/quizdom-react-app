@@ -7,13 +7,13 @@ import { useFavoritesStore } from "../../store/FavoritesStore";
 
 const UserFavoriteQuizList = () => {
   const currentUser = useAuthStore((state) => state.currentUser);
-  const { favorites, isLoading, fetchFavorites } = useFavoritesStore();
+  const { favorites, isLoading, getFavorites } = useFavoritesStore();
 
   useEffect(() => {
     if (currentUser?.favorites) {
-      fetchFavorites(currentUser.favorites);
+      getFavorites(currentUser.favorites);
     }
-  }, [currentUser, fetchFavorites]);
+  }, [currentUser, getFavorites]);
 
   return isLoading ? (
     <Loader />

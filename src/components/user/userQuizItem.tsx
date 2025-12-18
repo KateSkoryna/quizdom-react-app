@@ -1,10 +1,10 @@
 import Accordion from "react-bootstrap/Accordion";
-import { UserLocalQuiz } from "../../../shared/src/types";
+import { QuizMetadata } from "../../types";
 import styles from "../../styles/components/userQuiz.module.scss";
 import { useAuthStore } from "../../store/AuthStore";
 import DeleteQuizComponent from "../quiz/deleteQuizComponent";
 
-const UserQuizItem = ({ quiz, eventKey }: { quiz: UserLocalQuiz; eventKey: string }) => {
+const UserQuizItem = ({ quiz, eventKey }: { quiz: QuizMetadata; eventKey: string }) => {
   const {
     title,
     authorId,

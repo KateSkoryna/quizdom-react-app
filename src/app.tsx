@@ -7,7 +7,6 @@ import { fetchUserWithToken } from "./fetchers/common";
 import { useAuthStore } from "./store/AuthStore";
 import Loader from "./components/common/loader";
 import ProtectedRoute from "./components/common/protectedRoute";
-import { getMediaNews } from "./fetchers/api";
 
 // Lazy load pages and layout
 const Layout = lazy(() => import("./components/layout/layout"));
@@ -45,18 +44,6 @@ const router = createHashRouter([
             <NewsPage />
           </Suspense>
         ),
-        loader: async ({ request }) => {
-          const url = new URL(request.url);
-          let searchQuery = url.searchParams.get("query") || "";
-          let searchCategory = url.searchParams.get("category");
-          if (!searchQuery) {
-            searchQuery = "none";
-          }
-          if (!searchCategory) {
-            searchCategory = "technology";
-          }
-          return await getMediaNews(searchCategory, searchQuery);
-        },
       },
       {
         path: "login",
