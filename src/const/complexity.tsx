@@ -1,4 +1,4 @@
-import { Complexity, QuizCategory } from "../../shared/src/types";
+import { Complexity, QuizCategory } from "../types";
 
 // Constants
 export const COMPLEXITY_VALUES = {

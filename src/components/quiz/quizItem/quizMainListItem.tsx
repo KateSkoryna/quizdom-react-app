@@ -1,8 +1,8 @@
 import Card from "react-bootstrap/Card";
 import styles from "../../../styles/components/quizCard.module.scss";
-import { UserQuiz } from "../../../../shared/src/types";
+import { UserQuiz } from "../../../types";
 import { useAuthStore } from "../../../store/AuthStore";
-import QuizCardBackside from "./QuizCardBackside";
+import QuizCardBackside from "./quizCardBackside";
 import QuizStats from "./quizStats";
 import QuizCover from "./quizCover";
 import QuizLevelBadge from "./quizLevelBadge";
@@ -29,7 +29,7 @@ const QuizMainListItem = ({
   const currentUser = useAuthStore((state) => state.currentUser);
 
   const cuttedTitle = truncateString(title, 50);
-  const cuttedDescription = truncateString(description, 120);
+  const cuttedDescription = truncateString(description, 60);
   const localizedDate = publishedAt.toLocaleDateString();
 
   return (

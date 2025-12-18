@@ -1,6 +1,6 @@
 import Form from "react-bootstrap/Form";
 import { useForm, FormProvider } from "react-hook-form";
-import { QuizFormState, Complexity, QuizCategory } from "../../../shared/src/types";
+import { QuizFormState, Complexity, QuizCategory } from "../../types";
 import { Container } from "react-bootstrap";
 import FormDropdownComponent from "./formDropdownComponent";
 import QuestionsFormComponent from "./questionsFormComponent";
@@ -8,7 +8,7 @@ import modalStyles from "../../styles/components/modal.module.scss";
 import { useAuthStore } from "../../store/AuthStore";
 import { forwardRef, useImperativeHandle, useEffect } from "react";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { quizSchema } from "@quizdom-app/shared/src";
+import { quizSchema } from "../../schemas";
 import addClassnameToText from "../../utils/addClassnameToText";
 import type { Status } from "../modal/quizModal";
 import { useQuizesStore } from "../../store/quizeStore";
@@ -76,15 +76,29 @@ const QuizFormComponent = forwardRef<QuizFormRef, QuizFormProps>(
     }, [isDirty, isSubmitting, onFormStateChange]);
 
     const handleFormSubmit = async (data: QuizFormState & { status: Status }) => {
+      console.log("📋 Form submitted with data:", data);
+      console.log("👤 Current user:", currentUser);
+
       if (currentUser) {
-        await addQuiz(data, currentUser.id, currentUser.name, setError);
-        reset();
-        handleClose();
+        debugger;
+        try {
+          console.log("🔄 Calling addQuiz...");
+          await addQuiz(data, currentUser.id, currentUser.name, setError);
+          console.log("✅ Quiz created successfully!");
+          reset();
+          handleClose();
+        } catch (error) {
+          console.error("❌ Error in handleFormSubmit:", error);
+          // Error is already set by addQuiz, just log it
+        }
+      } else {
+        console.error("❌ No current user found!");
       }
     };
 
     const errorTitle = errors.title?.message;
     const errorDescription = errors.description?.message;
+    const errorRoot = errors.root?.message;
 
     return (
       <Container className={modalStyles.formContainer}>
@@ -94,6 +108,11 @@ const QuizFormComponent = forwardRef<QuizFormRef, QuizFormProps>(
               handleFormSubmit({ ...data, status: "done" })
             )}
           >
+            {errorRoot && (
+              <div className="alert alert-danger" role="alert">
+                {errorRoot}
+              </div>
+            )}
             <Form.Group className={modalStyles.formGroup} controlId="div-title">
               <Form.Label className={modalStyles.formLabel}>Quiz Title</Form.Label>
               <Form.Control

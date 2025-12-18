@@ -4,7 +4,7 @@ import { useAuthStore } from "../../store/AuthStore";
 import GoogleAuthButton from "./googleAuthButton";
 import { ensureUserDocument } from "../../utils/authHelper";
 import { getCurrentUser } from "../../fetchers/api";
-import { CurrentUser } from "../../../shared/src/types";
+import { CurrentUser } from "../../types";
 
 const GoogleAuthHandler = () => {
   const [isLoading, setIsLoading] = useState(false);

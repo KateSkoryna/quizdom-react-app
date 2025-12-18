@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useAuthStore } from "../../store/AuthStore";
-import { UserData, CurrentUser } from "../../../shared/src/types";
+import { UserData, CurrentUser } from "../../types";
 import ForgotPasswordModal from "../modal/forgotPasswordModal";
 import styles from "../../styles/pages/auth.module.scss";
 import eyeIcon from "../../assets/eye.svg";

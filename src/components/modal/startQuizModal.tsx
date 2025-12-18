@@ -1,6 +1,6 @@
 import { Popover, Overlay } from "react-bootstrap";
 import Modal from "react-bootstrap/Modal";
-import { Answer, Question } from "../../../shared/src/types";
+import { Answer, Question } from "../../types";
 import { ListGroup } from "react-bootstrap";
 import { useRef, useState } from "react";
 import { useQuizCompletionStore } from "../../store/quizAttemptsStore";

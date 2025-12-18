@@ -19,15 +19,12 @@ const QuizCardBackside = ({ questions, quizId }: StartQuizButtonProps) => {
   const [startQuiz, setStartQuiz] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // Get completion for THIS specific quiz from cache
   const completion = completionCache[quizId];
 
-  // Load completion when user is logged in
   useEffect(() => {
     if (currentUser && quizId) {
       loadCompletion(quizId);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentUser, quizId]);
 
   const handleStart = () => {
@@ -37,7 +34,7 @@ const QuizCardBackside = ({ questions, quizId }: StartQuizButtonProps) => {
     }
 
     if (completion) {
-      return; // User already completed the quiz
+      return;
     }
 
     setStartQuiz(true);
@@ -54,9 +51,8 @@ const QuizCardBackside = ({ questions, quizId }: StartQuizButtonProps) => {
   const total = completion?.score?.totalQuestions ?? 1;
 
   const score = `${correct} from ${total}`;
-  const scoreRate = (correct / total) * 100;
+  const scoreRate = `${Number((correct / total) * 100).toFixed()}%`;
 
-  // Only show loading state for authenticated users
   const showLoading = !!(currentUser && isLoading);
 
   return (

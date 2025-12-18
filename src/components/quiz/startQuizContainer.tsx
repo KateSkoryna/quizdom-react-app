@@ -1,8 +1,8 @@
 import { useAuthStore } from "../../store/AuthStore";
 import styles from "../../styles/pages/home.module.scss";
-import StartQuizButton from "./quizItem/QuizCardBackside";
+import StartQuizButton from "./quizItem/quizCardBackside";
 import { Button } from "react-bootstrap";
-import { Question } from "../../../shared/src/types";
+import { Question } from "../../types";
 import Card from "react-bootstrap/Card";
 
 const StartQuizContainer = ({ questions, quizId }: { questions: Question[]; quizId: string }) => {
