@@ -1,7 +1,7 @@
 import { doc, setDoc, Timestamp } from "firebase/firestore";
 import { User } from "firebase/auth";
 import { db } from "../firebase";
-import { GENDER } from "../../shared/src/types";
+import { GENDER } from "../types";
 import { avatar as defaultAvatar } from "./generateRandomAvatar";
 
 type AuthType = "google" | "email";

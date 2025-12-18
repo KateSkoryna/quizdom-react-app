@@ -1,4 +1,4 @@
-import { QuizFormState } from "../../shared/src/types";
+import { QuizFormState } from "../types";
 import apiClient from "../fetchers/axiosInstance";
 
 /**
