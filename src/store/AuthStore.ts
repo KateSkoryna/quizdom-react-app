@@ -9,7 +9,7 @@ import {
   signInWithPopup,
 } from "firebase/auth";
 import { auth } from "../firebase";
-import { CurrentUser, UserData } from "../../shared/src/types";
+import { CurrentUser, UserData } from "../types";
 
 interface AuthStore {
   currentUser: CurrentUser | null;

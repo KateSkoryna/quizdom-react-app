@@ -1,6 +1,6 @@
 import { create } from "zustand";
-import type { QuizScore, QuizCompletion } from "../../shared/src/types/quiz";
-import apiClient from "../fetchers/axiosInstance";
+import type { QuizScore, QuizCompletion } from "../types/quiz";
+import { apiCall } from "../fetchers/common";
 
 export interface QuizCompletionStore {
   completion: QuizCompletion | null;
@@ -38,82 +38,65 @@ export const useQuizCompletionStore = create<QuizCompletionStore>((set, get) => 
         completion: completionCache[quizId],
         currentQuizId: quizId,
         isLoading: false,
+        error: null,
       });
       return;
     }
 
-    set({ isLoading: true, error: null, currentQuizId: quizId });
-
-    try {
-      const response = await apiClient.get(`/getQuizCompletionStatus?quizId=${quizId}`);
-      const { completion } = response.data;
-
-      set((state) => ({
-        completion,
-        isLoading: false,
-        error: null,
-        completionCache: {
-          ...state.completionCache,
-          [quizId]: completion,
-        },
-      }));
-    } catch (error: any) {
-      const errorMessage = error.error || "Failed to load completion status";
-      set({ error: errorMessage, isLoading: false });
-      throw new Error(errorMessage);
-    }
+    await apiCall(
+      set,
+      "get",
+      `/getQuizCompletionStatus?quizId=${quizId}`,
+      undefined,
+      (data: { completion: QuizCompletion }) => {
+        set((state) => ({
+          currentQuizId: quizId,
+          completion: data.completion,
+          completionCache: {
+            ...state.completionCache,
+            [quizId]: data.completion,
+          },
+        }));
+      }
+    );
   },
 
   completeQuiz: async (quizId: string, score: QuizScore) => {
-    set({ isLoading: true, error: null });
-
-    try {
-      await apiClient.post("/completeQuiz", { quizId, score });
-
-      // Invalidate cache and reload
+    await apiCall(set, "post", "/completeQuiz", { data: { quizId, score } }, () => {
+      // Invalidate cache
       set((state) => ({
         completionCache: {
           ...state.completionCache,
-          [quizId]: undefined as any, // Remove from cache to force reload
+          [quizId]: undefined as any,
         },
       }));
+    });
 
-      await get().loadCompletion(quizId);
-
-      set({ isLoading: false, error: null });
-    } catch (error: any) {
-      const errorMessage = error.error || "Failed to complete quiz";
-      set({ error: errorMessage, isLoading: false });
-      throw new Error(errorMessage);
-    }
+    // Note: This causes double loading (submit + reload)
+    // Could optimize by returning completion data from API
+    await get().loadCompletion(quizId);
   },
 
   updateFeedback: async (quizId: string, rating: number, comment?: string) => {
-    set({ isLoading: true, error: null });
+    await apiCall(
+      set,
+      "patch",
+      "/updateQuizCompletionFeedback",
+      { data: { quizId, rating, comment } },
+      () => {
+        // Invalidate cache
+        set((state) => ({
+          completionCache: {
+            ...state.completionCache,
+            [quizId]: undefined as any,
+          },
+        }));
+      }
+    );
 
-    try {
-      await apiClient.patch("/updateQuizCompletionFeedback", {
-        quizId,
-        rating,
-        comment,
-      });
-
-      // Invalidate cache and reload
-      set((state) => ({
-        completionCache: {
-          ...state.completionCache,
-          [quizId]: undefined as any, // Remove from cache to force reload
-        },
-      }));
-
-      await get().loadCompletion(quizId);
-
-      set({ isLoading: false, error: null });
-    } catch (error: any) {
-      const errorMessage = error.error || "Failed to update feedback";
-      set({ error: errorMessage, isLoading: false });
-      throw new Error(errorMessage);
-    }
+    // Note: This causes double loading (update + reload)
+    // Could optimize by returning completion data from API
+    await get().loadCompletion(quizId);
   },
 
   reset: () => set(initialState),
