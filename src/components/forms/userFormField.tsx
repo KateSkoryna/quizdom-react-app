@@ -24,7 +24,9 @@ export const UserFormField = <T extends FieldValues>({
   register,
 }: UserFormFieldProps<T>) => {
   const renderEditField = () => {
-    if (!register) return null;
+    if (!register) {
+      return null;
+    }
 
     if (fieldType === "select" && options) {
       return (
