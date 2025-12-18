@@ -18,10 +18,7 @@ module.exports = {
     },
   },
   rules: {
-    "react-refresh/only-export-components": [
-      "warn",
-      { allowConstantExport: true },
-    ],
+    "react-refresh/only-export-components": ["warn", { allowConstantExport: true }],
     "react-hooks/rules-of-hooks": "error",
     "react-hooks/exhaustive-deps": "warn",
     "@typescript-eslint/no-unused-vars": [
@@ -43,6 +40,6 @@ module.exports = {
     eqeqeq: ["warn", "always"],
     "no-unused-expressions": "warn",
     "jsx-a11y/no-autofocus": "warn",
-    curly: ["error", "all"], // Always require curly braces for if/else/for/while
+    curly: ["error", "multi-line"], // Require curly braces only for multi-line blocks
   },
 };

@@ -32,3 +32,4 @@ Before making any changes, verify that your suggestions meet the following crite
 
 - NEVER create README.md or any .md documentation files unless explicitly requested by the user
 - Always ask first if documentation files would be helpful before creating them
+- NEVER add your description to commits, only commit message should be provided
