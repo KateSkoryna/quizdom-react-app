@@ -23,7 +23,7 @@ const AnswersFormComponent = ({ nestIndex }: { nestIndex: number }) => {
   });
 
   return (
-    <Form.Group className="mt-3" controlId="div-questions">
+    <Form.Group className="mt-3">
       <div className={modalStyles.answersGrid}>
         {answers.map((answer, index) => {
           // @ts-ignore

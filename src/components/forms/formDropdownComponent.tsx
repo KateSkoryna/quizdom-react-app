@@ -20,7 +20,9 @@ const FormDropdownComponent = ({ fieldName }: FormDropdownComponentProps) => {
       name={fieldName}
       render={({ field: { onChange, value } }) => (
         <Form.Group className={styles.dropdownGroup} controlId={fieldName}>
-          <Form.Label className={styles.formLabel}>{config.label}</Form.Label>
+          <Form.Label as="p" className={styles.formLabel}>
+            {config.label}
+          </Form.Label>
           <details
             className={styles.dropdown}
             open={isOpen}
@@ -32,9 +34,18 @@ const FormDropdownComponent = ({ fieldName }: FormDropdownComponentProps) => {
                 {config.options.map((option) => (
                   <div
                     key={option.value}
+                    role="button"
+                    tabIndex={0}
                     onClick={() => {
                       onChange(option.value);
                       setIsOpen(false);
+                    }}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" || e.key === " ") {
+                        e.preventDefault();
+                        onChange(option.value);
+                        setIsOpen(false);
+                      }
                     }}
                     className={`${styles.dropdownItem} ${
                       value === option.value ? styles.selected : ""
