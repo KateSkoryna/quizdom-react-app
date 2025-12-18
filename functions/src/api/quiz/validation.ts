@@ -17,7 +17,6 @@ const corsOptions = {
  * Body: QuizFormState
  */
 export const validateQuizData = onRequest(corsOptions, async (req, res) => {
-
   if (req.method !== "POST") {
     res.status(405).json({ success: false, error: "Method not allowed" });
     return;
@@ -57,7 +56,7 @@ export const validateQuizData = onRequest(corsOptions, async (req, res) => {
  * Firestore trigger to validate quiz data before creation
  */
 export const validateQuizOnCreate = functions.firestore
-  .document(`${COLLECTIONS.QUIZES}/{quizId}`)
+  .document(`${COLLECTIONS.QUIZZES}/{quizId}`)
   .onCreate(async (snap, context) => {
     const quizData = snap.data();
 
@@ -86,7 +85,7 @@ export const validateQuizOnCreate = functions.firestore
  * Firestore trigger to validate quiz data before update
  */
 export const validateQuizOnUpdate = functions.firestore
-  .document(`${COLLECTIONS.QUIZES}/{quizId}`)
+  .document(`${COLLECTIONS.QUIZZES}/{quizId}`)
   .onUpdate(async (change, context) => {
     const newQuizData = change.after.data();
 

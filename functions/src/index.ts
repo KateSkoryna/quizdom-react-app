@@ -15,3 +15,16 @@ export {
   validateQuizOnCreate,
   validateQuizOnUpdate,
 } from "./api/quiz/validation";
+
+// Quiz CRUD
+export {
+  getQuizzes,
+  getQuizById,
+  getQuizzesByUserId,
+  createQuiz,
+  updateQuiz,
+  deleteQuiz,
+} from "./api/quiz/quizzes";
+
+// Favorites
+export { toggleFavorite, getUserFavorites, getFavoriteQuizzes } from "./api/quiz/favorites";

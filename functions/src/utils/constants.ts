@@ -3,6 +3,12 @@
  */
 
 export const COLLECTIONS = {
-  QUIZES: "quizes",
+  QUIZZES: "quizzes",
   QUIZ_COMPLETIONS: "quizCompletions",
+  USERS: "users",
 } as const;
+
+export enum ACTION {
+  ADD = "add",
+  REMOVE = "remove",
+}

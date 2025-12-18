@@ -34,21 +34,6 @@ export interface QuizCompletion {
   feedbackUpdatedAt?: Date;
 }
 
-export type UserLocalQuiz = {
-  title: string;
-  description: string;
-  complexity: Complexity;
-  category: QuizCategory;
-  questions: Question[];
-  authorId: string;
-  authorName: string;
-  publishedAt: Date;
-  rating?: number;
-  ratingsCount?: number;
-  status?: "done" | "draft";
-  likesCount?: number;
-};
-
 // Base quiz types (used by schema)
 export interface Answer {
   answer: string;
