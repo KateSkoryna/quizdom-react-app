@@ -29,9 +29,10 @@ const FavoriteElement = ({ quizId, onAuthRequired }: FavoriteElementProps) => {
     await toggleFavorite(event.target.id, action);
 
     // Update local user state after successful API call
-    const updatedFavorites = action === ACTION.ADD
-      ? [...currentUser.favorites, event.target.id]
-      : currentUser.favorites.filter((item: string) => item !== event.target.id);
+    const updatedFavorites =
+      action === ACTION.ADD
+        ? [...currentUser.favorites, event.target.id]
+        : currentUser.favorites.filter((item: string) => item !== event.target.id);
 
     setCurrentUser({
       ...currentUser,

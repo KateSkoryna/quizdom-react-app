@@ -12,7 +12,6 @@ const corsOptions = {
 };
 
 export const completeQuiz = onRequest(corsOptions, async (req, res) => {
-
   if (req.method !== "POST") {
     res.status(405).json({ success: false, error: "Method not allowed" });
     return;
@@ -65,7 +64,6 @@ export const completeQuiz = onRequest(corsOptions, async (req, res) => {
 });
 
 export const getQuizCompletionStatus = onRequest(corsOptions, async (req, res) => {
-
   if (req.method !== "GET") {
     res.status(405).json({ success: false, error: "Method not allowed" });
     return;
@@ -95,7 +93,6 @@ export const getQuizCompletionStatus = onRequest(corsOptions, async (req, res) =
 });
 
 export const updateQuizCompletionFeedback = onRequest(corsOptions, async (req, res) => {
-
   if (req.method !== "PATCH" && req.method !== "PUT") {
     res.status(405).json({ success: false, error: "Method not allowed" });
     return;
