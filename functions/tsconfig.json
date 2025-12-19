@@ -6,7 +6,9 @@
     "outDir": "lib",
     "sourceMap": true,
     "strict": true,
-    "target": "ES2022"
+    "target": "ES2022",
+    "skipLibCheck": true,
+    "types": ["node", "handlebars"]
   },
   "compileOnSave": true,
   "include": ["src"]

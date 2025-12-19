@@ -1,69 +1,101 @@
-import * as yup from "yup";
-import { QuizCategory, Complexity } from "../types/quiz";
+import { z } from "genkit";
 
-// Answer validation schema
-export const answerSchema = yup.object().shape({
-  answer: yup
+/* ======================================================
+   Frontend / Internal domain schemas
+   (MATCH your existing TS interfaces exactly)
+   ====================================================== */
+
+// --- Answer ---
+export const answerSchema = z.object({
+  answer: z
     .string()
-    .required("Answer text is required")
-    .trim()
-    .min(1, "Answer text cannot be empty"),
-  isCorrect: yup.boolean().required("isCorrect field is required"),
+    .min(1, "Answer cannot be empty")
+    .max(100, "Answer cannot exceed 100 characters"),
+  isCorrect: z.boolean(),
 });
 
-// Question validation schema
-export const questionSchema = yup.object().shape({
-  questionTitle: yup
+// --- Question ---
+export const questionSchema = z.object({
+  questionTitle: z
     .string()
-    .required("Question title is required")
-    .trim()
     .min(4, "Question title must be at least 4 characters long")
-    .max(200, "Question title must be at most 200 characters long"),
-  answers: yup
-    .array()
-    .of(answerSchema)
-    .min(2, "Each question must have at least 2 answers")
-    .max(6, "Each question must have at most 6 answers")
-    .required("Answers are required")
-    .test(
-      "has-correct-answer",
-      "Each question must have at least one correct answer",
-      (answers) => {
-        if (!answers) return false;
-        return answers.some((answer) => answer.isCorrect === true);
-      }
+    .max(200, "Question title must be at most 200 characters long")
+    .trim(),
+
+  answers: z
+    .array(answerSchema)
+    .refine(
+      (answers) => answers.length === 2 || answers.length === 4,
+      "Each question must have exactly 2 or 4 answers"
+    )
+    .refine(
+      (answers) => answers.some((a) => a.isCorrect),
+      "Each question must have at least one correct answer"
     ),
-  hint: yup.string().trim().optional(),
+
+  hint: z.string().max(50).optional(),
 });
 
-// Quiz validation schema
-export const quizSchema = yup.object().shape({
-  title: yup
-    .string()
-    .required("Quiz title is required")
-    .trim()
-    .min(3, "Quiz title must be at least 3 characters long")
-    .max(100, "Quiz title must be at most 100 characters long"),
-  description: yup
-    .string()
-    .required("Quiz description is required")
-    .trim()
-    .min(10, "Quiz description must be at least 10 characters long")
-    .max(500, "Quiz description must be at most 500 characters long"),
-  complexity: yup
-    .mixed<Complexity>()
-    .oneOf(Object.values(Complexity), "Invalid complexity level")
-    .required("Complexity is required"),
-  category: yup
-    .mixed<QuizCategory>()
-    .oneOf(Object.values(QuizCategory), "Invalid category")
-    .required("Category is required"),
-  questions: yup
-    .array()
-    .of(questionSchema)
-    .min(1, "Quiz must have at least one question")
-    .max(50, "Quiz must have at most 50 questions")
-    .required("Questions are required"),
+// --- Quiz ---
+export const quizSchema = z
+  .object({
+    title: z
+      .string()
+      .min(3, "Quiz title must be at least 3 characters long")
+      .max(100, "Quiz title must be at most 100 characters long")
+      .trim(),
+
+    description: z
+      .string()
+      .min(10, "Quiz description must be at least 10 characters long")
+      .max(200, "Quiz description must be at most 200 characters long")
+      .trim(),
+
+    questions: z.array(questionSchema).length(10, "Quiz must contain exactly 10 questions"),
+  })
+  .strict();
+
+export type QuizSchemaType = z.infer<typeof quizSchema>;
+
+/* ======================================================
+   Flow input schema (API / Genkit)
+   ====================================================== */
+
+// Replace Object.values with a literal array if possible
+export const quizInputSchema = z.object({
+  category: z.enum(["JavaScript", "TypeScript", "ReactJS", "NextJS", "NodeJS", "Jest", "Other"]),
+  complexity: z.enum(["Beginner", "Medium", "Advanced", "Expert"]), // Adjust to your enum values
+  language: z.string().default("English"),
+  customUserPrompt: z.string().max(300).optional(),
 });
 
-export type QuizSchemaType = yup.InferType<typeof quizSchema>;
+/* ======================================================
+   AI output schema (RAW model JSON)
+   This is what the LLM MUST return
+   ====================================================== */
+
+export const flowQuestionSchema = z.object({
+  type: z.enum(["multiple-choice", "true-false"]),
+
+  question_text: z.string().min(4).max(200),
+
+  // Options required for all questions (true-false: 2 options, multiple-choice: 4 options)
+  options: z
+    .array(z.string().min(1).max(100))
+    .min(2)
+    .max(4)
+    .refine(
+      (opts) => opts.length === 2 || opts.length === 4,
+      "Must have exactly 2 (true-false) or 4 (multiple-choice) options"
+    ),
+
+  correct_answer: z.string().min(1).max(100),
+
+  hint: z.string().max(40),
+});
+
+export const quizOutputSchema = z.object({
+  title: z.string().min(3).max(100),
+  description: z.string().min(10).max(200),
+  questions: z.array(flowQuestionSchema).length(10),
+});

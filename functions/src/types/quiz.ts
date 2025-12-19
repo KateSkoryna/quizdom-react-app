@@ -57,10 +57,10 @@ export enum QuizCategory {
 }
 
 export enum Complexity {
-  BEGINNER = "1",
-  MEDIUM = "2",
-  ADVANCED = "3",
-  EXPERT = "4",
+  BEGINNER = "Beginner",
+  MEDIUM = "Medium",
+  ADVANCED = "Advanced",
+  EXPERT = "Expert",
 }
 
 export interface QuizFormState {
@@ -79,4 +79,21 @@ export interface UserQuiz extends QuizFormState {
   rating?: number;
   likesCount?: number;
   status: "done" | "draft";
+}
+
+export interface Answer {
+  answer: string;
+  isCorrect: boolean;
+}
+
+export interface Question {
+  questionTitle: string;
+  answers: Answer[];
+  hint?: string;
+}
+
+export interface Quiz {
+  title: string;
+  description: string;
+  questions: Question[];
 }
