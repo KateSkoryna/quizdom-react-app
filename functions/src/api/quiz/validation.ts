@@ -1,7 +1,6 @@
 import { onRequest } from "firebase-functions/v2/https";
 import * as functions from "firebase-functions";
 import { quizSchema } from "../../schemas/quizSchema";
-import { ValidationError as YupValidationError } from "yup";
 import { COLLECTIONS } from "../../utils/constants";
 import { verifyAuthToken } from "../../utils/authHelper";
 import * as logger from "firebase-functions/logger";
@@ -26,10 +25,7 @@ export const validateQuizData = onRequest(corsOptions, async (req, res) => {
   if (!user) return;
 
   try {
-    const validatedQuiz = await quizSchema.validate(req.body, {
-      abortEarly: false,
-      stripUnknown: true,
-    });
+    const validatedQuiz = quizSchema.parse(req.body); // Zod parse
 
     res.status(200).json({
       success: true,
@@ -37,13 +33,13 @@ export const validateQuizData = onRequest(corsOptions, async (req, res) => {
       data: validatedQuiz,
     });
   } catch (error) {
-    if (error instanceof YupValidationError) {
-      const errorMessage = error.errors.join("; ");
+    if (error instanceof Error) {
       res.status(400).json({
         success: false,
-        error: errorMessage,
+        error: error.message,
       });
     } else {
+      console.error(error);
       res.status(500).json({
         success: false,
         error: "Internal server error",
@@ -61,20 +57,15 @@ export const validateQuizOnCreate = functions.firestore
     const quizData = snap.data();
 
     try {
-      await quizSchema.validate(quizData, {
-        abortEarly: false,
-        stripUnknown: true,
-      });
-
+      quizSchema.parse(quizData);
       logger.info(`Quiz ${context.params.quizId} validated successfully`);
     } catch (error) {
-      if (error instanceof YupValidationError) {
-        const errorMessage = error.errors.join("; ");
-        logger.error(`Invalid quiz data for ${context.params.quizId}: ${errorMessage}`);
+      if (error instanceof Error) {
+        logger.error(`Invalid quiz data for ${context.params.quizId}: ${error.message}`);
         await snap.ref.delete();
         throw new functions.https.HttpsError(
           "invalid-argument",
-          `Quiz validation failed: ${errorMessage}`
+          `Quiz validation failed: ${error.message}`
         );
       }
       throw error;
@@ -90,20 +81,16 @@ export const validateQuizOnUpdate = functions.firestore
     const newQuizData = change.after.data();
 
     try {
-      await quizSchema.validate(newQuizData, {
-        abortEarly: false,
-        stripUnknown: true,
-      });
-
+      quizSchema.parse(newQuizData);
       logger.info(`Quiz ${context.params.quizId} update validated successfully`);
     } catch (error) {
-      if (error instanceof YupValidationError) {
-        const errorMessage = error.errors.join("; ");
-        logger.error(`Invalid quiz update for ${context.params.quizId}: ${errorMessage}`);
-        await change.after.ref.update(change.before.data());
+      if (error instanceof Error) {
+        logger.error(`Invalid quiz update for ${context.params.quizId}: ${error.message}`);
+        // Rollback to previous data
+        await change.after.ref.set(change.before.data(), { merge: true });
         throw new functions.https.HttpsError(
           "invalid-argument",
-          `Quiz validation failed: ${errorMessage}`
+          `Quiz validation failed: ${error.message}`
         );
       }
       throw error;

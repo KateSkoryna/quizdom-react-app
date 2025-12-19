@@ -1,7 +1,6 @@
 import { onRequest } from "firebase-functions/v2/https";
 import { verifyAuthToken } from "../../utils/authHelper";
 import { quizSchema } from "../../schemas/quizSchema";
-import { ValidationError as YupValidationError } from "yup";
 import {
   getQuizzes as getAllQuizzes,
   getQuizById as getQuizByIdService,
@@ -138,11 +137,8 @@ export const createQuiz = onRequest(corsOptions, async (req, res) => {
   if (!user) return;
 
   try {
-    // Validate quiz data
-    const validatedQuiz = await quizSchema.validate(req.body, {
-      abortEarly: false,
-      stripUnknown: true,
-    });
+    // Validate quiz data using Zod
+    const validatedQuiz = quizSchema.parse(req.body); // <- Zod parses and throws if invalid
 
     // Create quiz with author info
     const quizId = await createQuizService(
@@ -157,11 +153,10 @@ export const createQuiz = onRequest(corsOptions, async (req, res) => {
       data: { quizId },
     });
   } catch (error) {
-    if (error instanceof YupValidationError) {
-      const errorMessage = error.errors.join("; ");
+    if (error instanceof Error) {
       res.status(400).json({
         success: false,
-        error: errorMessage,
+        error: error.message,
       });
     } else {
       console.error("Error creating quiz:", error);
@@ -195,8 +190,7 @@ export const updateQuiz = onRequest(corsOptions, async (req, res) => {
   }
 
   try {
-    // Check if quiz exists and user is the author
-    const existingQuiz: any = await getQuizByIdService(quizId);
+    const existingQuiz = await getQuizByIdService(quizId);
     if (!existingQuiz) {
       res.status(404).json({ success: false, error: "Quiz not found" });
       return;
@@ -210,11 +204,8 @@ export const updateQuiz = onRequest(corsOptions, async (req, res) => {
       return;
     }
 
-    // Validate update data (partial validation)
-    const validatedQuiz = await quizSchema.validate(req.body, {
-      abortEarly: false,
-      stripUnknown: true,
-    });
+    // Validate update data (partial allowed)
+    const validatedQuiz = quizSchema.partial().parse(req.body);
 
     await updateQuizService(quizId, validatedQuiz);
 
@@ -223,11 +214,10 @@ export const updateQuiz = onRequest(corsOptions, async (req, res) => {
       message: "Quiz updated successfully",
     });
   } catch (error) {
-    if (error instanceof YupValidationError) {
-      const errorMessage = error.errors.join("; ");
+    if (error instanceof Error) {
       res.status(400).json({
         success: false,
-        error: errorMessage,
+        error: error.message,
       });
     } else {
       console.error("Error updating quiz:", error);
@@ -238,7 +228,6 @@ export const updateQuiz = onRequest(corsOptions, async (req, res) => {
     }
   }
 });
-
 /**
  * DELETE /deleteQuiz
  * Delete a quiz (authenticated, author only)

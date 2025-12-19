@@ -13,20 +13,19 @@ const corsOptions = {
  * Get array of favorite quiz IDs for authenticated user
  */
 export const getUserFavorites = onRequest(corsOptions, async (req, res) => {
-  // TODO: Implement this endpoint
-  // 1. Check method is GET
   if (req.method !== "GET") {
     res.status(405).json({ success: false, error: "Method not allowed" });
     return;
   }
 
-  // 2. Verify auth token
   const user = await verifyAuthToken(req, res);
-  if (!user) return;
+  if (!user) {
+    res.status(401).json({ message: "Unauthorized" });
+    return;
+  }
 
   const userId = user.uid;
 
-  // 3. Call getUserFavorites service with user.uid
   try {
     const favoriteQuizIds = await getFavorites(userId);
     res.status(200).json({
@@ -48,30 +47,26 @@ export const getUserFavorites = onRequest(corsOptions, async (req, res) => {
  * Query param: quizIds (comma-separated)
  */
 export const getFavoriteQuizzes = onRequest(corsOptions, async (req, res) => {
-  // TODO: Implement this endpoint
-  // 1. Check method is GET
-
   if (req.method !== "GET") {
     res.status(405).json({ success: false, error: "Method not allowed" });
     return;
   }
   // 2. Verify auth token (optional, or we can make this public)
   const user = await verifyAuthToken(req, res);
-  if (!user) return;
-  // 3. Get quizIds from query params and parse
-  // Get quizIds from query params (comma-separated string)
+  if (!user) {
+    res.status(401).json({ message: "Unauthorized" });
+    return;
+  }
+
   const quizIdsParam = req.query.quizIds as string;
 
-  // Validate that quizIds was provided
   if (!quizIdsParam) {
     res.status(400).json({ success: false, error: "quizIds parameter is required" });
     return;
   }
 
-  // Parse comma-separated string into array
   const favoriteQuizIds = quizIdsParam.split(",").map((id) => id.trim());
 
-  // 4. Call getFavoriteQuizzes service
   try {
     const favoriteQuizzes = await getFavoriteQuizList(favoriteQuizIds);
     res.status(200).json({
@@ -100,7 +95,10 @@ export const toggleFavorite = onRequest(corsOptions, async (req, res) => {
   }
 
   const user = await verifyAuthToken(req, res);
-  if (!user) return;
+  if (!user) {
+    res.status(401).json({ message: "Unauthorized" });
+    return;
+  }
 
   const { quizId, action } = req.body;
 
