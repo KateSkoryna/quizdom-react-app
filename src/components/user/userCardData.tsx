@@ -121,7 +121,7 @@ const UserCardData = () => {
         resetProgress();
       }
       setLoading(false);
-    } catch (error) {
+    } catch {
       setLoading(false);
     }
   };
