@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Modal, Form, Button } from "react-bootstrap";
-import { useAuthStore } from "../../store/AuthStore";
+import { useAuthStore } from "../../store/authStore";
 import styles from "../../styles/pages/auth.module.scss";
 
 type ForgotPasswordModalProps = {

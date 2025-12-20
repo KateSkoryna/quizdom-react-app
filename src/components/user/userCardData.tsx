@@ -1,5 +1,5 @@
 import { Card } from "react-bootstrap";
-import { useAuthStore } from "../../store/AuthStore";
+import { useAuthStore } from "../../store/authStore";
 import styles from "../../styles/pages/user.module.scss";
 import { useState, useCallback } from "react";
 import { useForm } from "react-hook-form";

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Button } from "react-bootstrap";
-import { useAuthStore } from "../../../store/AuthStore";
+import { useAuthStore } from "../../../store/authStore";
 import { useQuizCompletionStore } from "../../../store/quizAttemptsStore";
 import StartQuizModal from "../../modal/startQuizModal";
 import NavigateUserModal from "../../modal/navigateUserModal";

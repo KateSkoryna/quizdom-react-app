@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuthStore } from "../../store/AuthStore";
+import { useAuthStore } from "../../store/authStore";
 import GoogleAuthButton from "./googleAuthButton";
 import { ensureUserDocument } from "../../utils/authHelper";
 import { getCurrentUser } from "../../fetchers/api";

@@ -1,4 +1,4 @@
-import { useFavoritesStore } from "../../store/FavoritesStore";
+import { useFavoritesStore } from "../../store/favoritesStore";
 import UserFavoriteQuizList from "./userFavoriteQuizList";
 
 const UserFavoritesComponent = () => {

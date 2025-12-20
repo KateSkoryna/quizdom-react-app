@@ -1,6 +1,6 @@
 import { useEffect, ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuthStore } from "../../store/AuthStore";
+import { useAuthStore } from "../../store/authStore";
 import AccessDenied from "../fallback/accessDenied";
 import Loader from "./loader";
 

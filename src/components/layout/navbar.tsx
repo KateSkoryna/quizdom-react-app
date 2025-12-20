@@ -10,7 +10,7 @@ import { useState, useMemo } from "react";
 import styles from "../../styles/components/navbar.module.scss";
 import CloseButton from "react-bootstrap/CloseButton";
 import LogoutComponent from "../user/logoutComponent";
-import { useAuthStore } from "../../store/AuthStore";
+import { useAuthStore } from "../../store/authStore";
 
 const NavbarContainer = () => {
   const location = useLocation();
@@ -58,12 +58,12 @@ const NavbarContainer = () => {
               <Nav className={styles.offcanvasNav} activeKey={active}>
                 <Nav.Link
                   as={Link}
-                  to="/quizes"
+                  to="/quizzes"
                   className={`${styles.navLink} ${isUserPage ? styles.navLinkLight : ""}`}
-                  eventKey="quizes"
+                  eventKey="quizzes"
                   onClick={handleClose}
                 >
-                  Quizes
+                  Quizzes
                 </Nav.Link>
                 <Nav.Link
                   as={Link}

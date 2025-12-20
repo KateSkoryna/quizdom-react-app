@@ -3,7 +3,7 @@ import { Form, Button } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useAuthStore } from "../../store/AuthStore";
+import { useAuthStore } from "../../store/authStore";
 import { UserData, CurrentUser } from "../../types";
 import ForgotPasswordModal from "../modal/forgotPasswordModal";
 import styles from "../../styles/pages/auth.module.scss";

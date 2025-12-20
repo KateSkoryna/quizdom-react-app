@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Button, Container } from "react-bootstrap";
 import QuizModal from "../modal/quizModal";
-import { useAuthStore } from "../../store/AuthStore";
+import { useAuthStore } from "../../store/authStore";
 import styles from "../../styles/components/addQuiz.module.scss";
 
 const AddQuizComponent = () => {
@@ -19,7 +19,6 @@ const AddQuizComponent = () => {
         <span className={styles.plusIcon}>+</span>
         Create Your Quiz
       </Button>
-      <p className={styles.ctaSubtext}>Share your knowledge and challenge others!</p>
 
       {show && <QuizModal showModal={show} handleCloseModal={handleCloseModal} />}
     </Container>

@@ -1,7 +1,7 @@
 import { useNavigate, useLocation } from "react-router-dom";
 import { Dropdown, Image } from "react-bootstrap";
 import styles from "../../styles/components/logout.module.scss";
-import { useAuthStore } from "../../store/AuthStore";
+import { useAuthStore } from "../../store/authStore";
 
 type LogoutProps = {
   avatar: string;

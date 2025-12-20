@@ -4,14 +4,15 @@ import { QuizFormState, Complexity, QuizCategory } from "../../types";
 import { Container } from "react-bootstrap";
 import FormDropdownComponent from "./formDropdownComponent";
 import QuestionsFormComponent from "./questionsFormComponent";
-import modalStyles from "../../styles/components/modal.module.scss";
-import { useAuthStore } from "../../store/AuthStore";
+import styles from "../../styles/components/modal.module.scss";
+import { useAuthStore } from "../../store/authStore";
 import { forwardRef, useImperativeHandle, useEffect } from "react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { quizSchema } from "../../schemas";
 import addClassnameToText from "../../utils/addClassnameToText";
 import type { Status } from "../modal/quizModal";
-import { useQuizesStore } from "../../store/quizeStore";
+import { useQuizStore } from "../../store/quizStore";
+import { useGeneratedQuizStore } from "../../store/generatedQuizStore";
 
 // ✅ Use type instead of interface
 type QuizFormProps = {
@@ -46,7 +47,15 @@ type QuizFormRef = {
 const QuizFormComponent = forwardRef<QuizFormRef, QuizFormProps>(
   ({ handleClose, onFormStateChange }, ref) => {
     const currentUser = useAuthStore((state) => state.currentUser);
-    const addQuiz = useQuizesStore((store) => store.addQuiz);
+    const addQuiz = useQuizStore((store) => store.addQuiz);
+    const {
+      generatedQuiz,
+      isGenerating,
+      error: generateError,
+      remainingAttempts,
+      generateQuiz,
+      clearGeneratedQuiz,
+    } = useGeneratedQuizStore();
 
     const methods = useForm({
       mode: "onChange",
@@ -59,8 +68,14 @@ const QuizFormComponent = forwardRef<QuizFormRef, QuizFormProps>(
       handleSubmit,
       setError,
       reset,
+      watch,
+      setValue,
       formState: { errors, isDirty, isSubmitting },
     } = methods;
+
+    // Watch category and complexity for AI generation
+    const category = watch("category");
+    const complexity = watch("complexity");
 
     // ✅ Imperative handle with status
     useImperativeHandle(ref, () => ({
@@ -75,22 +90,39 @@ const QuizFormComponent = forwardRef<QuizFormRef, QuizFormProps>(
       onFormStateChange?.({ isDirty, isSubmitting });
     }, [isDirty, isSubmitting, onFormStateChange]);
 
-    const handleFormSubmit = async (data: QuizFormState & { status: Status }) => {
-      console.log("📋 Form submitted with data:", data);
-      console.log("👤 Current user:", currentUser);
+    // Fill form when quiz is generated
+    useEffect(() => {
+      if (generatedQuiz) {
+        // 1. Set top-level fields
+        setValue("title", generatedQuiz.title, { shouldDirty: true });
+        setValue("description", generatedQuiz.description, { shouldDirty: true });
 
+        // 2. Simply use setValue for the array.
+        // React Hook Form will pass this down to the useFieldArray in the child.
+        setValue("questions", generatedQuiz.questions, {
+          shouldDirty: true,
+          shouldValidate: true,
+        });
+
+        clearGeneratedQuiz();
+      }
+    }, [generatedQuiz, setValue]);
+
+    const handleGenerateQuiz = async () => {
+      await generateQuiz({
+        category,
+        complexity,
+        language: "English",
+      });
+    };
+
+    const handleFormSubmit = async ({ status, ...data }: QuizFormState & { status: Status }) => {
       if (currentUser) {
-        debugger;
-        try {
-          console.log("🔄 Calling addQuiz...");
-          await addQuiz(data, currentUser.id, currentUser.name, setError);
-          console.log("✅ Quiz created successfully!");
-          reset();
-          handleClose();
-        } catch (error) {
-          console.error("❌ Error in handleFormSubmit:", error);
-          // Error is already set by addQuiz, just log it
-        }
+        await addQuiz({ ...data, status }, setError);
+
+        console.log("✅ Quiz created successfully!");
+        reset();
+        handleClose();
       } else {
         console.error("❌ No current user found!");
       }
@@ -101,7 +133,7 @@ const QuizFormComponent = forwardRef<QuizFormRef, QuizFormProps>(
     const errorRoot = errors.root?.message;
 
     return (
-      <Container className={modalStyles.formContainer}>
+      <Container className={styles.formContainer}>
         <FormProvider {...methods}>
           <Form
             onSubmit={handleSubmit((data: QuizFormState) =>
@@ -113,10 +145,22 @@ const QuizFormComponent = forwardRef<QuizFormRef, QuizFormProps>(
                 {errorRoot}
               </div>
             )}
-            <Form.Group className={modalStyles.formGroup} controlId="div-title">
-              <Form.Label className={modalStyles.formLabel}>Quiz Title</Form.Label>
+            <button
+              type="button"
+              className={[styles.generateAIBtn, isGenerating && styles.loading]
+                .filter(Boolean)
+                .join(" ")}
+              onClick={handleGenerateQuiz}
+              disabled={isGenerating || remainingAttempts <= 0}
+            />
+
+            {generateError && (
+              <div style={{ color: "red", marginTop: "0.5rem" }}>{generateError}</div>
+            )}
+            <Form.Group className={styles.formGroup} controlId="div-title">
+              <Form.Label className={styles.formLabel}>Quiz Title</Form.Label>
               <Form.Control
-                className={modalStyles.formInput}
+                className={styles.formInput}
                 {...register("title")}
                 type="text"
                 placeholder="Best Quiz ever..."
@@ -124,10 +168,10 @@ const QuizFormComponent = forwardRef<QuizFormRef, QuizFormProps>(
               {errorTitle && addClassnameToText("text-danger", errorTitle as string)}
             </Form.Group>
 
-            <Form.Group className={modalStyles.formGroup} controlId="div-description">
-              <Form.Label className={modalStyles.formLabel}>Quiz Description</Form.Label>
+            <Form.Group className={styles.formGroup} controlId="div-description">
+              <Form.Label className={styles.formLabel}>Quiz Description</Form.Label>
               <Form.Control
-                className={modalStyles.formTextarea}
+                className={styles.formTextarea}
                 {...register("description")}
                 as="textarea"
                 rows={3}
@@ -135,9 +179,17 @@ const QuizFormComponent = forwardRef<QuizFormRef, QuizFormProps>(
               {errorDescription && addClassnameToText("text-danger", errorDescription as string)}
             </Form.Group>
 
-            <div className={modalStyles.dropdownRow}>
+            <div className={styles.dropdownRow}>
               <FormDropdownComponent fieldName="complexity" />
               <FormDropdownComponent fieldName="category" />
+            </div>
+
+            <div style={{ marginTop: "1rem", marginBottom: "1rem" }}>
+              {remainingAttempts <= 0 && (
+                <div style={{ color: "orange", marginTop: "0.5rem" }}>
+                  Maximum generation attempts reached. Please reload to try again.
+                </div>
+              )}
             </div>
 
             <QuestionsFormComponent />

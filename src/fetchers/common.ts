@@ -1,6 +1,6 @@
 import { User, signOut } from "firebase/auth";
 import { auth } from "../firebase";
-import { useAuthStore } from "../store/AuthStore";
+import { useAuthStore } from "../store/authStore";
 import { CurrentUser } from "../types";
 import { getCurrentUser } from "./api";
 import apiClient from "./axiosInstance";

@@ -1,5 +1,5 @@
-import { useAuthStore } from "../../../store/AuthStore";
-import { useFavoritesStore } from "../../../store/FavoritesStore";
+import { useAuthStore } from "../../../store/authStore";
+import { useFavoritesStore } from "../../../store/favoritesStore";
 import { ACTION } from "../../../types/user";
 import styles from "../../../styles/pages/home.module.scss";
 import FavoriteIcon from "../../icons/favoriteIcon";

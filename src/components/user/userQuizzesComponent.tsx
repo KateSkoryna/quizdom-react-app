@@ -1,14 +1,14 @@
 import AddQuizComponent from "../quiz/addQuizComponent";
-import UserQuizList from "../user/userQuizList";
+import UserQuizList from "./userQuizList";
 import styles from "../../styles/components/userQuiz.module.scss";
 
-const UserQuizesComponent = () => {
+const UserQuizzesComponent = () => {
   return (
     <div className={styles.container}>
       <AddQuizComponent />
-      <UserQuizList status="done" title="My Quizes" />
+      <UserQuizList status="done" title="My Quizzes" />
     </div>
   );
 };
 
-export default UserQuizesComponent;
+export default UserQuizzesComponent;

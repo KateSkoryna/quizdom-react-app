@@ -2,8 +2,8 @@ import { Accordion } from "react-bootstrap";
 import UserQuizListItem from "./userQuizItem";
 import Loader from "../common/loader";
 import { useEffect } from "react";
-import { useAuthStore } from "../../store/AuthStore";
-import { useFavoritesStore } from "../../store/FavoritesStore";
+import { useAuthStore } from "../../store/authStore";
+import { useFavoritesStore } from "../../store/favoritesStore";
 
 const UserFavoriteQuizList = () => {
   const currentUser = useAuthStore((state) => state.currentUser);
@@ -25,7 +25,7 @@ const UserFavoriteQuizList = () => {
           return <UserQuizListItem key={id} quiz={rest} eventKey={index.toString()} />;
         })
       ) : (
-        <p>No quizes yet</p>
+        <p>No quizzes yet</p>
       )}
     </Accordion>
   );
