@@ -43,7 +43,6 @@ export const getQuizzes = onRequest(corsOptions, async (req, res) => {
       },
     });
   } catch (error: any) {
-    console.error("Error getting quizzes:", error);
     res.status(500).json({
       success: false,
       error: "Failed to fetch quizzes",
@@ -80,7 +79,7 @@ export const getQuizById = onRequest(corsOptions, async (req, res) => {
       data: quiz,
     });
   } catch (error: any) {
-    console.error("Error getting quiz:", error);
+    void error;
     res.status(500).json({
       success: false,
       error: "Failed to fetch quiz",
@@ -114,7 +113,7 @@ export const getQuizzesByUserId = onRequest(corsOptions, async (req, res) => {
       data: quizzes,
     });
   } catch (error: any) {
-    console.error("Error getting user quizzes:", error);
+    void error;
     res.status(500).json({
       success: false,
       error: "Failed to fetch user quizzes",
@@ -162,7 +161,6 @@ export const createQuiz = onRequest(corsOptions, async (req, res) => {
         error: error.message,
       });
     } else {
-      console.error("Error creating quiz:", error);
       res.status(500).json({
         success: false,
         error: "Failed to create quiz",
@@ -223,7 +221,6 @@ export const updateQuiz = onRequest(corsOptions, async (req, res) => {
         error: error.message,
       });
     } else {
-      console.error("Error updating quiz:", error);
       res.status(500).json({
         success: false,
         error: "Failed to update quiz",
@@ -274,7 +271,7 @@ export const deleteQuiz = onRequest(corsOptions, async (req, res) => {
       message: "Quiz deleted successfully",
     });
   } catch (error: any) {
-    console.error("Error deleting quiz:", error);
+    void error;
     res.status(500).json({
       success: false,
       error: "Failed to delete quiz",

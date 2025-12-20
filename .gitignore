@@ -15,6 +15,7 @@ dist-ssr
 # Firebase Functions
 functions/node_modules
 functions/lib
+functions/.genkit
 
 # misc
 .env

@@ -41,13 +41,6 @@ export const completeQuiz = onRequest(corsOptions, async (req, res) => {
       message: "Quiz completed successfully",
     });
   } catch (error: any) {
-    console.error("Error completing quiz:", error);
-    console.error("Error details:", {
-      message: error.message,
-      code: error.code,
-      stack: error.stack,
-    });
-
     if (error.message === "ALREADY_COMPLETED") {
       res.status(409).json({
         success: false,
@@ -55,10 +48,10 @@ export const completeQuiz = onRequest(corsOptions, async (req, res) => {
       });
       return;
     }
+    void error;
     res.status(500).json({
       success: false,
       error: "Failed to complete quiz",
-      details: error.message,
     });
   }
 });

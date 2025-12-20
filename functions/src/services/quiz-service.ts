@@ -159,14 +159,12 @@ export const getQuizzes = async (filters: QuizFilters = {}): Promise<UserQuiz[]>
 
     const snapshot = await query.get();
 
-    console.log(`Found ${snapshot.docs.length} quizzes`);
-
     return snapshot.docs.map((doc) => ({
       id: doc.id,
       ...doc.data(),
     })) as UserQuiz[];
   } catch (error) {
-    console.error("Error fetching quizzes:", error);
+    void error;
     return [];
   }
 };
