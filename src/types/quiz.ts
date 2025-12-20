@@ -57,10 +57,10 @@ export enum QuizCategory {
 }
 
 export enum Complexity {
-  BEGINNER = "1",
-  MEDIUM = "2",
-  ADVANCED = "3",
-  EXPERT = "4",
+  BEGINNER = "Beginner",
+  MEDIUM = "Medium",
+  ADVANCED = "Advanced",
+  EXPERT = "Expert",
 }
 
 /**

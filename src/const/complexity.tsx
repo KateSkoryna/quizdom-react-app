@@ -2,10 +2,10 @@ import { Complexity, QuizCategory } from "../types";
 
 // Constants
 export const COMPLEXITY_VALUES = {
-  [Complexity.BEGINNER]: "beginner",
-  [Complexity.MEDIUM]: "medium",
-  [Complexity.ADVANCED]: "advanced",
-  [Complexity.EXPERT]: "expert",
+  [Complexity.BEGINNER]: "Beginner",
+  [Complexity.MEDIUM]: "Medium",
+  [Complexity.ADVANCED]: "Advanced",
+  [Complexity.EXPERT]: "Expert",
 };
 
 export const QUIZ_CATEGORY = {
@@ -20,12 +20,16 @@ export const QUIZ_CATEGORY = {
 
 export const convertComplexity = (complexity: string) => {
   switch (complexity) {
+    case "Beginner":
     case "1":
       return COMPLEXITY_VALUES[Complexity.BEGINNER];
+    case "Medium":
     case "2":
       return COMPLEXITY_VALUES[Complexity.MEDIUM];
+    case "Advanced":
     case "3":
       return COMPLEXITY_VALUES[Complexity.ADVANCED];
+    case "Expert":
     case "4":
       return COMPLEXITY_VALUES[Complexity.EXPERT];
     default:
