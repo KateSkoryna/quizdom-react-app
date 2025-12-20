@@ -25,7 +25,7 @@ const QuizCardBackside = ({ questions, quizId }: StartQuizButtonProps) => {
     if (currentUser && quizId) {
       loadCompletion(quizId);
     }
-  }, [currentUser, quizId]);
+  }, [currentUser, quizId, loadCompletion]);
 
   const handleStart = () => {
     if (!currentUser) {

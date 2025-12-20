@@ -39,7 +39,7 @@ const NewsPage = () => {
   // Fetch news when search params change
   useEffect(() => {
     fetchNews(searchCategory, searchQuery);
-  }, [searchCategory, searchQuery]);
+  }, [searchCategory, searchQuery, fetchNews]);
 
   const news = newsList.map((article, index) => ({
     ...article,
