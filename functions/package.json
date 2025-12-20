@@ -2,13 +2,13 @@
   "name": "functions",
   "scripts": {
     "build": "tsc",
-    "serve": "npm run build && firebase emulators:start --only functions",
+    "serve": "npm run build && firebase emulators:start --only functions,firestore",
     "shell": "npm run build && firebase functions:shell",
     "start": "npm run shell",
     "deploy": "firebase deploy --only functions",
     "logs": "firebase functions:log",
     "genkit:ui": "genkit start --port 4001 -- npx tsx --watch src/genkit.ts",
-    "genkit:emulatior": "genkit start -- firebase emulators:start --inspect-functions"
+    "genkit:emulator": "genkit start -- firebase emulators:start --inspect-functions"
   },
   "engines": {
     "node": "20"
