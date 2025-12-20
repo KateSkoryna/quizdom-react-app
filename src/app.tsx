@@ -4,7 +4,7 @@ import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./firebase";
 
 import { fetchUserWithToken } from "./fetchers/common";
-import { useAuthStore } from "./store/AuthStore";
+import { useAuthStore } from "./store/authStore";
 import Loader from "./components/common/loader";
 import ProtectedRoute from "./components/common/protectedRoute";
 
@@ -27,10 +27,10 @@ const router = createHashRouter([
     children: [
       {
         index: true,
-        element: <Navigate to="quizes" replace />,
+        element: <Navigate to="quizzes" replace />,
       },
       {
-        path: "quizes",
+        path: "quizzes",
         element: (
           <Suspense fallback={<Loader />}>
             <HomePage />

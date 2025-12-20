@@ -13,12 +13,10 @@ const AddQuizCard = () => {
   return (
     <>
       <Card className={styles.gridCard}>
-        <div className={styles.addQuizCardContent} onClick={handleShowModal}>
-          <div className={styles.addQuizIcon}>
-            <RiAddLine />
-          </div>
+        <button className={styles.addQuizCardBtn} onClick={handleShowModal}>
           <h3 className={styles.addQuizText}>ADD QUIZ</h3>
-        </div>
+          <RiAddLine className={styles.addQuizIcon} />
+        </button>
       </Card>
       {show && <QuizModal showModal={show} handleCloseModal={handleCloseModal} />}
     </>

@@ -6,7 +6,7 @@ type QuizLevelBadgeProps = {
 };
 
 const QuizLevelBadge = ({ complexity }: QuizLevelBadgeProps) => {
-  const levelConfig = QUIZ_LEVEL_CONFIG[complexity] || QUIZ_LEVEL_CONFIG["1"];
+  const levelConfig = QUIZ_LEVEL_CONFIG[complexity];
 
   return (
     <div className={styles.levelInfo}>

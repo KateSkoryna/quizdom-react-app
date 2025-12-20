@@ -1,5 +1,5 @@
 import Tab from "react-bootstrap/Tab";
-import UserQuizesComponent from "./userQuizesComponent";
+import UserQuizzesComponent from "./userQuizzesComponent";
 import UserFavoritesComponent from "./userFavoritesComponent";
 import Col from "react-bootstrap/Col";
 import Nav from "react-bootstrap/Nav";
@@ -8,11 +8,11 @@ import UserQuizList from "./userQuizList";
 
 const UserCardInfo = () => {
   return (
-    <Tab.Container id="user-card" defaultActiveKey="my-quizes">
+    <Tab.Container id="user-card" defaultActiveKey="my-quizzes">
       <Col className={styles.userTabsContainer}>
         <Nav variant="tabs" className={styles.userTabs}>
           <Nav.Item>
-            <Nav.Link eventKey="my-quizes">My Quizes</Nav.Link>
+            <Nav.Link eventKey="my-quizzes">My Quizzes</Nav.Link>
           </Nav.Item>
           <Nav.Item>
             <Nav.Link eventKey="favorites">Favorites</Nav.Link>
@@ -22,14 +22,14 @@ const UserCardInfo = () => {
           </Nav.Item>
         </Nav>
         <Tab.Content>
-          <Tab.Pane eventKey="my-quizes" title="My Quizes">
-            <UserQuizesComponent />
+          <Tab.Pane eventKey="my-quizzes" title="My Quizzes">
+            <UserQuizzesComponent />
           </Tab.Pane>
           <Tab.Pane eventKey="favorites" title="Favorites">
             <UserFavoritesComponent />
           </Tab.Pane>
           <Tab.Pane eventKey="drafts" title="Drafts">
-            <UserQuizList status="draft" title="Draft Quizes" />
+            <UserQuizList status="draft" title="Draft Quizzes" />
           </Tab.Pane>
         </Tab.Content>
       </Col>

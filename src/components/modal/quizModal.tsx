@@ -55,7 +55,7 @@ const QuizModal = ({ showModal, handleCloseModal }: QuizModalProps) => {
           type="button"
           className={styles.primaryButton}
           onClick={() => handleSaveQuiz("done")}
-          disabled={!isDirty || isSubmitting}
+          disabled={!isDirty}
         >
           {isSubmitting ? "Publishing..." : "Publish Quiz"}
         </button>
@@ -63,7 +63,7 @@ const QuizModal = ({ showModal, handleCloseModal }: QuizModalProps) => {
           type="button"
           className={styles.secondaryButton}
           onClick={() => handleSaveQuiz("draft")}
-          disabled={isSubmitting}
+          disabled={!isDirty}
         >
           Save to Drafts
         </button>
