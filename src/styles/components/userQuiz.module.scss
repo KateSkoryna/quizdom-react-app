@@ -3,6 +3,10 @@
 
 .itemText {
   color: black;
+
+  &:not(:last-child) {
+    padding-right: 32px;
+  }
 }
 
 .itemSmalltext {
@@ -11,7 +15,6 @@
   color: gray;
   text-align: end;
   margin-left: auto;
-  margin-bottom: 10px;
 }
 
 .container {

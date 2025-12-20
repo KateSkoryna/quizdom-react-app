@@ -19,7 +19,7 @@
   height: 100%;
   position: relative;
   border: 0;
-  min-height: 240px;
+  min-height: 280px;
 
   & .quizCardContent {
     border: none;
@@ -415,7 +415,7 @@
 }
 
 // Add Quiz Card
-.addQuizCardContent {
+.addQuizCardBtn {
   min-height: 280px;
   display: flex;
   flex-direction: column;
@@ -427,6 +427,20 @@
   border: 2px dashed $gray-light;
   border-radius: 6px;
   background: transparent;
+
+  .addQuizIcon {
+    font-size: 3rem;
+    color: $black;
+    transition: all 0.3s ease-in-out;
+  }
+
+  .addQuizText {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: $black;
+    margin: 0;
+    transition: all 0.3s ease-in-out;
+  }
 
   &:hover {
     border-color: $primary-color;
@@ -442,20 +456,6 @@
       color: $primary-color;
     }
   }
-}
-
-.addQuizIcon {
-  font-size: 3.33rem;
-  color: $gray-light;
-  transition: all 0.3s ease-in-out;
-}
-
-.addQuizText {
-  font-size: 1rem;
-  font-weight: 700;
-  color: $black;
-  margin: 0;
-  transition: all 0.3s ease-in-out;
 }
 
 // Responsive

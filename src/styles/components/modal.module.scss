@@ -157,6 +157,84 @@
   border: none;
 }
 
+@keyframes gradientFlow {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.generateAIBtn {
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 260px;
+  min-height: 90px;
+  margin-left: auto;
+  padding: 10px 20px;
+  border-radius: 4px;
+  box-shadow:
+    rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
+    rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+  transition:
+    opacity 0.2s ease,
+    transform 0.1s ease;
+
+  &::before {
+    content: "";
+    width: 240px;
+    height: 70px;
+    background: $primary-gradient;
+    background-size: 100% 100%;
+
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-size: contain;
+    mask-size: contain;
+    -webkit-mask-position: center;
+    mask-position: center;
+    -webkit-mask-image: url(../../assets/ai.svg);
+    mask-image: url(../../assets/ai.svg);
+
+    transition: all 0.3s ease;
+  }
+
+  &.loading {
+    &::before {
+      // 2. Change the mask to the loader icon
+      -webkit-mask-image: url(../../assets/ai.svg);
+      mask-image: url(../../assets/ai.svg);
+
+      // 3. Resize the element
+      width: 240px;
+      height: 70px;
+
+      // 4. Make the gradient huge so it has "room" to slide around
+      background-size: 300% 300%;
+
+      // 5. Trigger the animation defined above
+      animation: gradientFlow 2s ease infinite;
+    }
+  }
+
+  &:active:not(:disabled) {
+    transform: scale(0.98);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
 .dropdownRow {
   display: flex;
   gap: 1rem;

@@ -2,8 +2,8 @@
 @use "../abstracts" as *;
 
 .addQuizContainer {
-  text-align: center;
-  margin: 0.5 auto;
+  text-align: end;
+  padding: 0;
 }
 
 // Large CTA Button
@@ -17,7 +17,7 @@
   background: linear-gradient(135deg, $primary-color, $primary-color);
   background-size: 200% 200%;
   border: none;
-  border-radius: 50px;
+  border-radius: 4px;
   color: $white;
   box-shadow: 0 4px 15px rgba($primary-color, 0.4);
   transition:
