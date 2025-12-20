@@ -4,7 +4,7 @@ import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./firebase";
 
 import { fetchUserWithToken } from "./fetchers/common";
-import { useAuthStore } from "./store/authStore";
+import { useAuthStore, type AuthStore } from "./store/authStore";
 import Loader from "./components/common/loader";
 import ProtectedRoute from "./components/common/protectedRoute";
 
@@ -76,7 +76,7 @@ const router = createHashRouter([
 ]);
 
 function App() {
-  const setCurrentUser = useAuthStore((state) => state.setCurrentUser);
+  const setCurrentUser = useAuthStore((state: AuthStore) => state.setCurrentUser);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {

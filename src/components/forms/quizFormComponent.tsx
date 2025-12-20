@@ -5,7 +5,7 @@ import { Container } from "react-bootstrap";
 import FormDropdownComponent from "./formDropdownComponent";
 import QuestionsFormComponent from "./questionsFormComponent";
 import styles from "../../styles/components/modal.module.scss";
-import { useAuthStore } from "../../store/authStore";
+import { useAuthStore, type AuthStore } from "../../store/authStore";
 import { forwardRef, useImperativeHandle, useEffect } from "react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { quizSchema } from "../../schemas";
@@ -46,7 +46,7 @@ type QuizFormRef = {
 
 const QuizFormComponent = forwardRef<QuizFormRef, QuizFormProps>(
   ({ handleClose, onFormStateChange }, ref) => {
-    const currentUser = useAuthStore((state) => state.currentUser);
+    const currentUser = useAuthStore((state: AuthStore) => state.currentUser);
     const addQuiz = useQuizStore((store) => store.addQuiz);
     const {
       generatedQuiz,
@@ -106,7 +106,7 @@ const QuizFormComponent = forwardRef<QuizFormRef, QuizFormProps>(
 
         clearGeneratedQuiz();
       }
-    }, [generatedQuiz, setValue]);
+    }, [generatedQuiz, setValue, clearGeneratedQuiz]);
 
     const handleGenerateQuiz = async () => {
       await generateQuiz({
@@ -120,7 +120,6 @@ const QuizFormComponent = forwardRef<QuizFormRef, QuizFormProps>(
       if (currentUser) {
         await addQuiz({ ...data, status }, setError);
 
-        console.log("✅ Quiz created successfully!");
         reset();
         handleClose();
       } else {

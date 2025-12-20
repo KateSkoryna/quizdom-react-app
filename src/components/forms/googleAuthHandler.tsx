@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuthStore } from "../../store/authStore";
+import { useAuthStore, type AuthStore } from "../../store/authStore";
 import GoogleAuthButton from "./googleAuthButton";
 import { ensureUserDocument } from "../../utils/authHelper";
 import { getCurrentUser } from "../../fetchers/api";
@@ -9,8 +9,8 @@ import { CurrentUser } from "../../types";
 const GoogleAuthHandler = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const loginWithGoogle = useAuthStore((state) => state.loginWithGoogle);
-  const setCurrentUser = useAuthStore((state) => state.setCurrentUser);
+  const loginWithGoogle = useAuthStore((state: AuthStore) => state.loginWithGoogle);
+  const setCurrentUser = useAuthStore((state: AuthStore) => state.setCurrentUser);
   const navigate = useNavigate();
 
   const handleGoogleAuth = async () => {
@@ -39,7 +39,7 @@ const GoogleAuthHandler = () => {
 
       setCurrentUser(currentUser);
       navigate("/user");
-    } catch (error: unknown) {
+    } catch {
       setError("Authentication failed. Please try again.");
     } finally {
       setIsLoading(false);
