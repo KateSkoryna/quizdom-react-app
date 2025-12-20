@@ -235,7 +235,7 @@ const UnifiedAuthForm = ({ mode, onModeChange }: UnifiedAuthFormProps) => {
       <button type="button" className={styles.toggleMode} onClick={toggleMode}>
         {mode === "login" ? (
           <>
-            <span className={styles.toggleText}>Don't have an account? </span>
+            <span className={styles.toggleText}>Don&apos;t have an account? </span>
             <span className={styles.toggleLink}>Sign up</span>
           </>
         ) : (

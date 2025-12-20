@@ -167,12 +167,21 @@ const StartQuizModal = ({ show, handleClose, questions, quizId }: StartQuizModal
                   {[1, 2, 3, 4, 5].map((star) => (
                     <span
                       key={star}
+                      role="button"
+                      tabIndex={0}
                       className={`${styles.star} ${
                         star <= (hoverRating || rating) ? styles.starFilled : ""
                       }`}
                       onClick={() => setRating(star)}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter" || e.key === " ") {
+                          e.preventDefault();
+                          setRating(star);
+                        }
+                      }}
                       onMouseEnter={() => setHoverRating(star)}
                       onMouseLeave={() => setHoverRating(0)}
+                      aria-label={`Rate ${star} stars`}
                     >
                       ★
                     </span>
