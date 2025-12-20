@@ -11,7 +11,7 @@ import {
 import { auth } from "../firebase";
 import { CurrentUser, UserData } from "../types";
 
-interface AuthStore {
+export interface AuthStore {
   currentUser: CurrentUser | null;
   isAuthLoading: boolean;
   setCurrentUser: (user: CurrentUser | null) => void;

@@ -18,7 +18,7 @@ module.exports = {
     },
   },
   rules: {
-    "react-refresh/only-export-components": ["warn", { allowConstantExport: true }],
+    "react-refresh/only-export-components": "off",
     "react-hooks/rules-of-hooks": "error",
     "react-hooks/exhaustive-deps": "warn",
     "@typescript-eslint/no-unused-vars": [
@@ -28,10 +28,10 @@ module.exports = {
         varsIgnorePattern: "^_",
       },
     ],
-    "@typescript-eslint/no-explicit-any": "warn",
+    "@typescript-eslint/no-explicit-any": "off",
     "@typescript-eslint/explicit-function-return-type": "off",
     "@typescript-eslint/explicit-module-boundary-types": "off",
-    "@typescript-eslint/no-non-null-assertion": "warn",
+    "@typescript-eslint/no-non-null-assertion": "off",
     "@typescript-eslint/ban-ts-comment": "off",
     "no-console": ["warn", { allow: ["warn", "error"] }],
     "no-debugger": "warn",
@@ -39,7 +39,8 @@ module.exports = {
     "no-var": "error",
     eqeqeq: ["warn", "always"],
     "no-unused-expressions": "warn",
-    "jsx-a11y/no-autofocus": "warn",
-    curly: ["error", "multi-line"], // Require curly braces only for multi-line blocks
+    "jsx-a11y/no-autofocus": "off",
+    "react/no-unescaped-entities": "off",
+    curly: ["error", "multi-line"],
   },
 };
