@@ -1,12 +1,13 @@
 import Card from "react-bootstrap/Card";
 import styles from "../../../styles/components/quizCard.module.scss";
 import { UserQuiz } from "../../../types";
-import { useAuthStore } from "../../../store/AuthStore";
+import { useAuthStore } from "../../../store/authStore";
 import QuizCardBackside from "./quizCardBackside";
 import QuizStats from "./quizStats";
 import QuizCover from "./quizCover";
 import QuizLevelBadge from "./quizLevelBadge";
 import { truncateString } from "../../../utils/truncateString";
+import dayjs from "dayjs";
 
 type QuizMainListItemProps = {
   quiz: UserQuiz;
@@ -30,7 +31,7 @@ const QuizMainListItem = ({
 
   const cuttedTitle = truncateString(title, 50);
   const cuttedDescription = truncateString(description, 60);
-  const localizedDate = publishedAt.toLocaleDateString();
+  const localizedDate = dayjs(publishedAt).format("DD/MM/YYYY");
 
   return (
     <Card className={styles.quizCardContent}>
@@ -38,7 +39,6 @@ const QuizMainListItem = ({
         <QuizCover title={cuttedTitle} category={category} />
         <Card.Body className={styles.quizInfoCard}>
           <Card.Text className={styles.description}>{cuttedDescription}</Card.Text>
-
           <QuizLevelBadge complexity={complexity} />
           <QuizStats
             rating={rating}
@@ -49,8 +49,7 @@ const QuizMainListItem = ({
           />
         </Card.Body>
       </div>
-
-      <QuizCardBackside questions={questions} quizId={id!} />
+      {id && <QuizCardBackside questions={questions} quizId={id} />}
     </Card>
   );
 };

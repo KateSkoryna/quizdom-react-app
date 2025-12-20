@@ -1,8 +1,9 @@
 import Accordion from "react-bootstrap/Accordion";
 import { QuizMetadata } from "../../types";
 import styles from "../../styles/components/userQuiz.module.scss";
-import { useAuthStore } from "../../store/AuthStore";
+import { useAuthStore } from "../../store/authStore";
 import DeleteQuizComponent from "../quiz/deleteQuizComponent";
+import dayjs from "dayjs";
 
 const UserQuizItem = ({ quiz, eventKey }: { quiz: QuizMetadata; eventKey: string }) => {
   const {
@@ -16,6 +17,7 @@ const UserQuizItem = ({ quiz, eventKey }: { quiz: QuizMetadata; eventKey: string
     ...rest
   } = quiz;
   const currentUser = useAuthStore((state) => state.currentUser);
+  const localizedDate = dayjs(publishedAt).format("DD/MM/YYYY");
 
   return (
     <Accordion.Item eventKey={eventKey}>
@@ -31,7 +33,7 @@ const UserQuizItem = ({ quiz, eventKey }: { quiz: QuizMetadata; eventKey: string
           } else if (typeof value === "string") {
             displayValue = value[0].toUpperCase() + value.slice(1);
           } else {
-            displayValue = String(value); // handles numbers like ratingsCount
+            displayValue = String(value);
           }
 
           return (
@@ -42,7 +44,7 @@ const UserQuizItem = ({ quiz, eventKey }: { quiz: QuizMetadata; eventKey: string
         })}
 
         <small className={styles.itemSmalltext}>
-          {`Published at: ${publishedAt.toLocaleDateString()}${
+          {`Published at: ${localizedDate}${
             currentUser?.id === authorId ? "" : ` by ${authorName}`
           }`}
         </small>
