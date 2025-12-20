@@ -1,3 +1,5 @@
+import { Timestamp } from "firebase-admin/firestore";
+
 /**
  * QuizScore - Stores quiz result details
  *
@@ -75,7 +77,7 @@ export interface UserQuiz extends QuizFormState {
   id: string;
   authorId: string;
   authorName: string;
-  publishedAt: Date;
+  publishedAt: Timestamp;
   rating?: number;
   likesCount?: number;
   status: "done" | "draft";

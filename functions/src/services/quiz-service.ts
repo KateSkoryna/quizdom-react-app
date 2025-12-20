@@ -1,5 +1,5 @@
 import { db } from "../config/firestore";
-import { FieldValue, FieldPath } from "firebase-admin/firestore";
+import { FieldValue, FieldPath, Timestamp } from "firebase-admin/firestore";
 import { COLLECTIONS, ACTION } from "../utils/constants";
 import type { QuizCompletion, UserQuiz } from "../types/quiz";
 
@@ -129,41 +129,47 @@ interface QuizFilters {
 }
 
 /**
- * Get all quizzes with optional filtering and pagination
+ * Get all published quizzes with optional filtering and pagination
+ * Only returns quizzes with status = "done"
  */
 export const getQuizzes = async (filters: QuizFilters = {}): Promise<UserQuiz[]> => {
   const { category, complexity, limit = 100, offset = 0 } = filters;
 
-  let query = db.collection(COLLECTIONS.QUIZZES);
+  try {
+    let query: FirebaseFirestore.Query = db.collection(COLLECTIONS.QUIZZES);
 
-  // Apply filters
-  if (category) {
-    query = query.where("category", "==", category) as any;
+    query = query.where("status", "==", "done");
+
+    if (category) {
+      query = query.where("category", "==", category);
+    }
+
+    if (complexity) {
+      query = query.where("complexity", "==", complexity);
+    }
+
+    // Firestore requires 'orderBy' for offset, use 'publishedAt' field
+    query = query.orderBy("publishedAt", "desc");
+
+    if (offset > 0) {
+      query = query.offset(offset);
+    }
+
+    query = query.limit(limit);
+
+    const snapshot = await query.get();
+
+    console.log(`Found ${snapshot.docs.length} quizzes`);
+
+    return snapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    })) as UserQuiz[];
+  } catch (error) {
+    console.error("Error fetching quizzes:", error);
+    return [];
   }
-  if (complexity) {
-    query = query.where("complexity", "==", complexity) as any;
-  }
-
-  // Order by publishedAt descending (newest first)
-  query = query.orderBy("publishedAt", "desc") as any;
-
-  // Apply pagination
-  if (offset > 0) {
-    query = query.offset(offset) as any;
-  }
-  query = query.limit(limit) as any;
-
-  const snapshot = await query.get();
-
-  return snapshot.docs.map(
-    (doc) =>
-      ({
-        id: doc.id,
-        ...doc.data(),
-      }) as UserQuiz
-  );
 };
-
 /**
  * Get a single quiz by ID
  */
@@ -191,17 +197,18 @@ export const getQuizzesByUserId = async (userId: string, status?: string): Promi
     query = query.where("status", "==", status) as any;
   }
 
-  query = query.orderBy("publishedAt", "desc") as any;
-
   const snapshot = await query.get();
 
-  return snapshot.docs.map(
+  // Sort in memory instead of using orderBy to avoid requiring Firestore index
+  const quizzes = snapshot.docs.map(
     (doc) =>
       ({
         id: doc.id,
         ...doc.data(),
       }) as UserQuiz
   );
+
+  return quizzes;
 };
 
 /**
@@ -211,20 +218,26 @@ export const createQuiz = async (
   quizData: any,
   authorId: string,
   authorName: string
-): Promise<string> => {
+): Promise<UserQuiz> => {
   const quizDoc = {
     ...quizData,
     authorId,
     authorName,
-    publishedAt: FieldValue.serverTimestamp(),
-    status: "done",
+    publishedAt: Timestamp.now(),
     rating: 0,
     ratingsCount: 0,
     likesCount: 0,
   };
 
   const docRef = await db.collection(COLLECTIONS.QUIZZES).add(quizDoc);
-  return docRef.id;
+  // Fetch the newly created document
+  const snapshot = await docRef.get();
+
+  // Return the data combined with the ID
+  return {
+    id: docRef.id,
+    ...snapshot.data(),
+  } as UserQuiz;
 };
 
 /**

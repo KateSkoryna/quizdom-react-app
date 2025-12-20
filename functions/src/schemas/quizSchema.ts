@@ -37,23 +37,23 @@ export const questionSchema = z.object({
 });
 
 // --- Quiz ---
-export const quizSchema = z
-  .object({
-    title: z
-      .string()
-      .min(3, "Quiz title must be at least 3 characters long")
-      .max(100, "Quiz title must be at most 100 characters long")
-      .trim(),
+export const quizSchema = z.object({
+  title: z
+    .string()
+    .min(3, "Quiz title must be at least 3 characters long")
+    .max(100, "Quiz title must be at most 100 characters long")
+    .trim(),
 
-    description: z
-      .string()
-      .min(10, "Quiz description must be at least 10 characters long")
-      .max(200, "Quiz description must be at most 200 characters long")
-      .trim(),
-
-    questions: z.array(questionSchema).length(10, "Quiz must contain exactly 10 questions"),
-  })
-  .strict();
+  description: z
+    .string()
+    .min(10, "Quiz description must be at least 10 characters long")
+    .max(200, "Quiz description must be at most 200 characters long")
+    .trim(),
+  status: z.string(),
+  complexity: z.enum(["Beginner", "Medium", "Advanced", "Expert"]),
+  category: z.enum(["JavaScript", "TypeScript", "ReactJS", "NextJS", "NodeJS", "Jest", "Other"]),
+  questions: z.array(questionSchema).length(10, "Quiz must contain exactly 10 questions"),
+});
 
 export type QuizSchemaType = z.infer<typeof quizSchema>;
 

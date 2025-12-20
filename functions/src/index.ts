@@ -26,5 +26,8 @@ export {
   deleteQuiz,
 } from "./api/quiz/quizzes";
 
+// AI Quiz Generation
+export { generateQuiz } from "./api/quiz/generateQuiz";
+
 // Favorites
 export { toggleFavorite, getUserFavorites, getFavoriteQuizzes } from "./api/quiz/favorites";

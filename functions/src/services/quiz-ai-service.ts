@@ -19,9 +19,18 @@ export const ai = genkit({
 export const generateQuizFlow = ai.defineFlow(
   {
     name: "generateQuiz",
+
     inputSchema: quizInputSchema,
   },
   async ({ category, complexity, language, customUserPrompt }) => {
+    const angles = [
+      "focus on obscure edge cases",
+      "focus on real-world practical scenarios",
+      "focus on historical context and origins",
+      "focus on common misconceptions",
+      "focus on high-performance optimization",
+    ];
+    const randomAngle = angles[Math.floor(Math.random() * angles.length)];
     const prompt = `
 You are an expert quiz author.
 
@@ -34,18 +43,22 @@ CRITICAL RULES:
 - Exactly ONE correct answer per question
 - The "correct_answer" must EXACTLY match one option from the "options" array
 - Language: ${language}
+- DIVERSITY ANGLE: ${randomAngle}
 
 HINT REQUIREMENTS (CRITICAL - VALIDATION WILL FAIL IF NOT FOLLOWED):
 - Every question MUST have a hint
-- Hint MUST be 40 characters or less (including spaces and punctuation)
+- Title MUST be 100 characters or less (including spaces and punctuation)
+- Description MUST be 160 characters or less (including spaces and punctuation)
+- Hint MUST be 30 characters or less (including spaces and punctuation)
 - Hint should be a brief clue, not a full sentence
 - Examples of valid hints: "Think about data types", "Check syntax rules", "Common array method"
+- Question title MUST be 160 characters long or less (including spaces and punctuation)
 
 CONTENT GUIDELINES:
 - No obvious clues or repeated words between questions and answers
 - Use paraphrasing and synonyms
-- Title: max 100 characters
-- Description: max 200 characters
+- Title: max 70 characters
+- Description: max 160 characters
 
 CATEGORY: "${category}"
 COMPLEXITY LEVEL: "${complexity}"
@@ -54,9 +67,13 @@ ${customUserPrompt ? `ADDITIONAL INSTRUCTIONS: "${customUserPrompt}"` : ""}
 
     const { output } = await ai.generate({
       prompt,
+      config: {
+        temperature: 1.2, // Range: 0.0 - 2.0. Higher is more creative/random.
+      },
       output: {
         schema: quizOutputSchema,
       },
+
       use: [
         retry({
           maxRetries: 2,

@@ -134,14 +134,17 @@ export const createQuiz = onRequest(corsOptions, async (req, res) => {
   }
 
   const user = await verifyAuthToken(req, res);
-  if (!user) return;
+  if (!user) {
+    res.status(400).json({ success: false, error: "userId is required" });
+    return;
+  }
 
   try {
     // Validate quiz data using Zod
     const validatedQuiz = quizSchema.parse(req.body); // <- Zod parses and throws if invalid
 
     // Create quiz with author info
-    const quizId = await createQuizService(
+    const quiz = await createQuizService(
       validatedQuiz,
       user.uid,
       user.name || user.email || "Anonymous"
@@ -150,7 +153,7 @@ export const createQuiz = onRequest(corsOptions, async (req, res) => {
     res.status(201).json({
       success: true,
       message: "Quiz created successfully",
-      data: { quizId },
+      data: quiz,
     });
   } catch (error) {
     if (error instanceof Error) {
