@@ -1,0 +1,18 @@
+<svg viewBox="0 0 800 233" xmlns="http://www.w3.org/2000/svg">
+  <text x="230" y="145" fill="#000000" font-family="Arial, sans-serif" font-weight="bold" font-size="90">AI Generate</text>
+
+  <g transform="translate(85, 55) scale(1.8)">
+    <path d="M12 3C12 7.97056 16.0294 12 21 12C16.0294 12 12 16.0294 12 21C12 16.0294 7.97056 12 3 12C7.97056 12 12 7.97056 12 3Z" 
+          fill="#000000"/>
+  </g>
+
+  <g transform="translate(80, 80) scale(5.5)">
+    <path d="M12 3C12 7.97056 16.0294 12 21 12C16.0294 12 12 16.0294 12 21C12 16.0294 7.97056 12 3 12C7.97056 12 12 7.97056 12 3Z" 
+          fill="#000000"/>
+  </g>
+
+  <g transform="translate(155, 50) scale(2.8)">
+    <path d="M12 3C12 7.97056 16.0294 12 21 12C16.0294 12 12 16.0294 12 21C12 16.0294 7.97056 12 3 12C7.97056 12 12 7.97056 12 3Z" 
+          fill="#000000"/>
+  </g>
+</svg>
