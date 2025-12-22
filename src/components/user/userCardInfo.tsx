@@ -1,6 +1,7 @@
 import Tab from "react-bootstrap/Tab";
 import UserQuizzesComponent from "./userQuizzesComponent";
 import UserFavoritesComponent from "./userFavoritesComponent";
+import UserResultsComponent from "./userResultsComponent";
 import Col from "react-bootstrap/Col";
 import Nav from "react-bootstrap/Nav";
 import styles from "../../styles/pages/user.module.scss";
@@ -18,6 +19,9 @@ const UserCardInfo = () => {
             <Nav.Link eventKey="favorites">Favorites</Nav.Link>
           </Nav.Item>
           <Nav.Item>
+            <Nav.Link eventKey="my-results">My Results</Nav.Link>
+          </Nav.Item>
+          <Nav.Item>
             <Nav.Link eventKey="drafts">Drafts</Nav.Link>
           </Nav.Item>
         </Nav>
@@ -27,6 +31,9 @@ const UserCardInfo = () => {
           </Tab.Pane>
           <Tab.Pane eventKey="favorites" title="Favorites">
             <UserFavoritesComponent />
+          </Tab.Pane>
+          <Tab.Pane eventKey="my-results" title="My Results">
+            <UserResultsComponent />
           </Tab.Pane>
           <Tab.Pane eventKey="drafts" title="Drafts">
             <UserQuizList status="draft" title="Draft Quizzes" />
