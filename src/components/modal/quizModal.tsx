@@ -1,16 +1,19 @@
 import Modal from "react-bootstrap/Modal";
+import { Button } from "react-bootstrap";
 import QuizFormComponent from "../forms/quizFormComponent";
 import styles from "../../styles/components/modal.module.scss";
 import { useRef, useState, useCallback } from "react";
+import { UserQuiz } from "../../types";
 
 interface QuizModalProps {
   showModal: boolean;
   handleCloseModal: () => void;
+  existingQuiz?: UserQuiz;
 }
 
 export type Status = "done" | "draft";
 
-const QuizModal = ({ showModal, handleCloseModal }: QuizModalProps) => {
+const QuizModal = ({ showModal, handleCloseModal, existingQuiz }: QuizModalProps) => {
   const formRef = useRef<{
     submit: (status: Status) => void;
     isSubmitting: boolean;
@@ -41,27 +44,28 @@ const QuizModal = ({ showModal, handleCloseModal }: QuizModalProps) => {
       centered
     >
       <Modal.Header closeButton className={styles.modalHeader}>
-        <Modal.Title as="h2">Create your own Quiz</Modal.Title>
+        <Modal.Title as="h2">{existingQuiz ? "Edit Quiz" : "Create your own Quiz"}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <QuizFormComponent
           ref={formRef}
           handleClose={handleCloseModal}
           onFormStateChange={handleFormStateChange}
+          existingQuiz={existingQuiz}
         />
       </Modal.Body>
       <Modal.Footer className={styles.modalFooter}>
-        <button
+        <Button
           type="button"
           className={styles.primaryButton}
           onClick={() => handleSaveQuiz("done")}
-          disabled={!isDirty}
+          disabled={isSubmitting}
         >
           {isSubmitting ? "Publishing..." : "Publish Quiz"}
-        </button>
+        </Button>
         <button
           type="button"
-          className={styles.secondaryButton}
+          className={styles.addQuestionButton}
           onClick={() => handleSaveQuiz("draft")}
           disabled={!isDirty}
         >

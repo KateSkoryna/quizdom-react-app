@@ -30,8 +30,14 @@ const UserQuizList = ({ status, title }: { status: Status; title: string }) => {
       <h5 className="mb-3 text-center">{title}</h5>
       <Accordion defaultActiveKey="0" flush>
         {quizzes.map((quiz, index) => {
-          const { id, ...restQuiz } = quiz;
-          return <UserQuizItem key={id} quiz={restQuiz} eventKey={index.toString()} />;
+          return (
+            <UserQuizItem
+              key={quiz.id}
+              quiz={quiz}
+              eventKey={index.toString()}
+              isDraft={status === "draft"}
+            />
+          );
         })}
       </Accordion>
     </div>

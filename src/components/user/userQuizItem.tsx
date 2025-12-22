@@ -1,11 +1,22 @@
 import Accordion from "react-bootstrap/Accordion";
-import { QuizMetadata } from "../../types";
+import { UserQuiz } from "../../types";
 import styles from "../../styles/components/userQuiz.module.scss";
 import { useAuthStore } from "../../store/authStore";
 import DeleteQuizComponent from "../quiz/deleteQuizComponent";
+import { MdEdit } from "react-icons/md";
 import dayjs from "dayjs";
+import { useState } from "react";
+import QuizModal from "../modal/quizModal";
 
-const UserQuizItem = ({ quiz, eventKey }: { quiz: QuizMetadata; eventKey: string }) => {
+const UserQuizItem = ({
+  quiz,
+  eventKey,
+  isDraft,
+}: {
+  quiz: UserQuiz;
+  eventKey: string;
+  isDraft?: boolean;
+}) => {
   const {
     title,
     authorId,
@@ -14,16 +25,40 @@ const UserQuizItem = ({ quiz, eventKey }: { quiz: QuizMetadata; eventKey: string
     ratingsCount: _ratingCount,
     likesCount: _likesCount,
     status: _status,
+    id: _id,
     ...rest
   } = quiz;
   const currentUser = useAuthStore((state) => state.currentUser);
   const localizedDate = dayjs(publishedAt).format("DD/MM/YYYY");
+  const [showEditModal, setShowEditModal] = useState(false);
+
+  const handleEditClick = () => {
+    setShowEditModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setShowEditModal(false);
+  };
 
   return (
     <Accordion.Item eventKey={eventKey}>
       <Accordion.Header>{title}</Accordion.Header>
       <Accordion.Body className="text-start position-relative">
-        {currentUser?.id === authorId && <DeleteQuizComponent />}
+        {currentUser?.id === authorId && (
+          <div className={styles.actionButtons}>
+            {isDraft && (
+              <button
+                onClick={handleEditClick}
+                className={styles.iconButton}
+                aria-label="Edit quiz"
+                type="button"
+              >
+                <MdEdit className={styles.icon} />
+              </button>
+            )}
+            <DeleteQuizComponent />
+          </div>
+        )}
 
         {Object.entries(rest).map(([key, value]) => {
           let displayValue;
@@ -49,6 +84,13 @@ const UserQuizItem = ({ quiz, eventKey }: { quiz: QuizMetadata; eventKey: string
           }`}
         </small>
       </Accordion.Body>
+      {showEditModal && (
+        <QuizModal
+          showModal={showEditModal}
+          handleCloseModal={handleCloseModal}
+          existingQuiz={quiz}
+        />
+      )}
     </Accordion.Item>
   );
 };
