@@ -8,9 +8,11 @@ export interface QuizCompletionStore {
   error: string | null;
   currentQuizId: string | null;
   completionCache: Record<string, QuizCompletion | null>;
+  allCompletionsLoaded: boolean;
 
   setError: (error: string) => void;
   loadCompletion: (quizId: string) => Promise<void>;
+  loadAllCompletions: () => Promise<void>;
   completeQuiz: (quizId: string, score: QuizScore) => Promise<void>;
   updateFeedback: (quizId: string, rating: number, comment?: string) => Promise<void>;
   reset: () => void;
@@ -22,6 +24,7 @@ const initialState = {
   error: null as string | null,
   currentQuizId: null as string | null,
   completionCache: {} as Record<string, QuizCompletion | null>,
+  allCompletionsLoaded: false,
 };
 
 export const useQuizCompletionStore = create<QuizCompletionStore>((set, get) => ({
@@ -32,8 +35,8 @@ export const useQuizCompletionStore = create<QuizCompletionStore>((set, get) => 
   loadCompletion: async (quizId: string) => {
     const { completionCache } = get();
 
-    // Check cache first
-    if (quizId in completionCache) {
+    // Check cache first - only use if value is defined (not undefined)
+    if (quizId in completionCache && completionCache[quizId] !== undefined) {
       set({
         completion: completionCache[quizId],
         currentQuizId: quizId,
@@ -48,32 +51,78 @@ export const useQuizCompletionStore = create<QuizCompletionStore>((set, get) => 
       "get",
       `/getQuizCompletionStatus?quizId=${quizId}`,
       undefined,
-      (data: { completion: QuizCompletion }) => {
+      (data: { completion: any }) => {
+        const convertedCompletion = data.completion
+          ? {
+              ...data.completion,
+              completedAt: data.completion.completedAt?._seconds
+                ? new Date(data.completion.completedAt._seconds * 1000)
+                : new Date(),
+              feedbackUpdatedAt: data.completion.feedbackUpdatedAt?._seconds
+                ? new Date(data.completion.feedbackUpdatedAt._seconds * 1000)
+                : undefined,
+            }
+          : null;
         set((state) => ({
           currentQuizId: quizId,
-          completion: data.completion,
+          completion: convertedCompletion,
           completionCache: {
             ...state.completionCache,
-            [quizId]: data.completion,
+            [quizId]: convertedCompletion,
           },
         }));
       }
     );
   },
 
+  loadAllCompletions: async () => {
+    const { allCompletionsLoaded } = get();
+
+    // Only load once
+    if (allCompletionsLoaded) {
+      return;
+    }
+
+    await apiCall(
+      set,
+      "get",
+      "/getAllUserCompletions",
+      undefined,
+      (data: { completions: any[] }) => {
+        const cache: Record<string, any | null> = {};
+        data.completions.forEach((completion) => {
+          cache[completion.quizId] = {
+            ...completion,
+            completedAt: completion.completedAt?._seconds
+              ? new Date(completion.completedAt._seconds * 1000)
+              : new Date(),
+            feedbackUpdatedAt: completion.feedbackUpdatedAt?._seconds
+              ? new Date(completion.feedbackUpdatedAt._seconds * 1000)
+              : undefined,
+          };
+        });
+        set({
+          completionCache: cache,
+          allCompletionsLoaded: true,
+        });
+      }
+    );
+  },
+
   completeQuiz: async (quizId: string, score: QuizScore) => {
     await apiCall(set, "post", "/completeQuiz", { data: { quizId, score } }, () => {
-      // Invalidate cache
-      set((state) => ({
-        completionCache: {
-          ...state.completionCache,
-          [quizId]: undefined as any,
-        },
-      }));
+      // Remove from cache to force reload
+      set((state) => {
+        const newCache = { ...state.completionCache };
+        delete newCache[quizId];
+        return {
+          completionCache: newCache,
+          allCompletionsLoaded: false,
+        };
+      });
     });
 
-    // Note: This causes double loading (submit + reload)
-    // Could optimize by returning completion data from API
+    // Reload the completion to get fresh data with timestamp
     await get().loadCompletion(quizId);
   },
 
@@ -84,18 +133,19 @@ export const useQuizCompletionStore = create<QuizCompletionStore>((set, get) => 
       "/updateQuizCompletionFeedback",
       { data: { quizId, rating, comment } },
       () => {
-        // Invalidate cache
-        set((state) => ({
-          completionCache: {
-            ...state.completionCache,
-            [quizId]: undefined as any,
-          },
-        }));
+        // Remove from cache to force reload
+        set((state) => {
+          const newCache = { ...state.completionCache };
+          delete newCache[quizId];
+          return {
+            completionCache: newCache,
+            allCompletionsLoaded: false,
+          };
+        });
       }
     );
 
-    // Note: This causes double loading (update + reload)
-    // Could optimize by returning completion data from API
+    // Reload the completion to get fresh data with updated feedback
     await get().loadCompletion(quizId);
   },
 

@@ -12,12 +12,16 @@ interface QuizStore {
   error: string | null;
   setError: (error: string) => void;
   getQuizzes: (category?: string | null, complexity?: string | null) => Promise<void>;
+  getQuizById: (quizId: string) => Promise<UserQuiz | null>;
   getQuizzesById: (userId: string, status?: string) => Promise<void>;
   addQuiz: (
     data: QuizFormState & { status: Status },
     setError: UseFormSetError<QuizFormState>
   ) => Promise<void>;
-  updateQuiz: (quizId: string, data: Partial<QuizFormState>) => Promise<void>;
+  updateQuiz: (
+    quizId: string,
+    data: Partial<QuizFormState & { status: Status }>
+  ) => Promise<void>;
   removeQuiz: (quizId: string) => Promise<void>;
   clearQuizzes: () => void;
 }
@@ -52,6 +56,24 @@ export const useQuizStore = create<QuizStore>((set, get) => ({
     );
   },
 
+  getQuizById: async (quizId: string): Promise<UserQuiz | null> => {
+    try {
+      let quiz: UserQuiz | null = null;
+      await apiCall(set, "get", "/getQuizById", { params: { quizId } }, (data: any) => {
+        quiz = {
+          ...data,
+          publishedAt: data.publishedAt?._seconds
+            ? new Date(data.publishedAt._seconds * 1000)
+            : new Date(),
+        };
+      });
+      return quiz;
+    } catch (error) {
+      console.error(`Failed to fetch quiz ${quizId}:`, error);
+      return null;
+    }
+  },
+
   getQuizzesById: async (userId: string) => {
     const params: any = { userId };
     set({ isLoading: true, error: null });
@@ -84,13 +106,16 @@ export const useQuizStore = create<QuizStore>((set, get) => ({
     }
   },
 
-  updateQuiz: async (quizId: string, data: Partial<QuizFormState>) => {
+  updateQuiz: async (quizId: string, data: Partial<QuizFormState & { status: Status }>) => {
     await apiCall(set, "put", "/updateQuiz", { data, params: { quizId } }, () => {
       // Update local state
       const updatedQuizzes = get().quizzes.map((quiz) =>
         quiz.id === quizId ? { ...quiz, ...data } : quiz
       );
-      set({ quizzes: updatedQuizzes });
+      const updatedUserQuizzes = get().userQuizzes.map((quiz) =>
+        quiz.id === quizId ? { ...quiz, ...data } : quiz
+      );
+      set({ quizzes: updatedQuizzes, userQuizzes: updatedUserQuizzes });
     });
   },
 
