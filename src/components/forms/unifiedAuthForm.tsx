@@ -7,7 +7,7 @@ import { useAuthStore } from "../../store/authStore";
 import { UserData, CurrentUser } from "../../types";
 import ForgotPasswordModal from "../modal/forgotPasswordModal";
 import styles from "../../styles/pages/auth.module.scss";
-import eyeIcon from "../../assets/eye.svg";
+import { MdVisibility, MdVisibilityOff } from "react-icons/md";
 import * as yup from "yup";
 import { ensureUserDocument } from "../../utils/authHelper";
 import addClassnameToText from "../../utils/addClassnameToText";
@@ -185,13 +185,15 @@ const UnifiedAuthForm = ({ mode, onModeChange }: UnifiedAuthFormProps) => {
             {...register("password", { required: "Password is required" })}
           />
           {passwordValue && (
-            <button
+            <Button
               onClick={() => setShowPassword(!showPassword)}
               className={styles.eyeBtn}
               type="button"
+              variant="link"
+              aria-label={showPassword ? "Hide password" : "Show password"}
             >
-              <img src={eyeIcon} alt={showPassword ? "Hide password" : "Show password"} />
-            </button>
+              {showPassword ? <MdVisibilityOff /> : <MdVisibility />}
+            </Button>
           )}
         </div>
         {errors.password ? (
@@ -219,20 +221,21 @@ const UnifiedAuthForm = ({ mode, onModeChange }: UnifiedAuthFormProps) => {
       )}
 
       {mode === "login" && (
-        <button
+        <Button
           type="button"
+          variant="link"
           className={styles.forgetPassword}
           onClick={() => setShowForgotPassword(true)}
         >
           Forget password?
-        </button>
+        </Button>
       )}
 
       <Button variant="primary" type="submit" className={styles.formBtn}>
         {mode === "login" ? "Login" : "Sign Up"}
       </Button>
 
-      <button type="button" className={styles.toggleMode} onClick={toggleMode}>
+      <Button type="button" variant="link" className={styles.toggleMode} onClick={toggleMode}>
         {mode === "login" ? (
           <>
             <span className={styles.toggleText}>Don&apos;t have an account? </span>
@@ -244,7 +247,7 @@ const UnifiedAuthForm = ({ mode, onModeChange }: UnifiedAuthFormProps) => {
             <span className={styles.toggleLink}>Log in</span>
           </>
         )}
-      </button>
+      </Button>
 
       {mode === "login" && showForgotPassword && (
         <ForgotPasswordModal

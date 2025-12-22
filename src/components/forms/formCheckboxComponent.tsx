@@ -1,6 +1,6 @@
 import { useFormContext } from "react-hook-form";
 import styles from "../../styles/components/modal.module.scss";
-import { FaCheck } from "react-icons/fa";
+import { MdCheck } from "react-icons/md";
 
 type FormCheckboxProps = {
   label: string;
@@ -18,7 +18,7 @@ const FormCheckboxComponent = ({ label, nestIndex, index }: FormCheckboxProps) =
           {...register(`questions[${nestIndex}].answers[${index}].isCorrect` as const)}
         />
         <span className={styles.checkboxIconWrapper}>
-          <FaCheck className={styles.checkboxIcon} />
+          <MdCheck className={styles.checkboxIcon} />
         </span>
         {label}
       </label>

@@ -2,8 +2,7 @@ import { useFieldArray, useFormContext } from "react-hook-form";
 import AnswersFormComponent from "./answersFormComponent";
 import { Form } from "react-bootstrap";
 import modalStyles from "../../styles/components/modal.module.scss";
-import { RiAddLine } from "react-icons/ri";
-import { IoMdRemove } from "react-icons/io";
+import { MdAdd, MdRemove } from "react-icons/md";
 import addClassnameToText from "../../utils/addClassnameToText";
 
 const QuestionsFormComponent = () => {
@@ -42,7 +41,7 @@ const QuestionsFormComponent = () => {
                   className={modalStyles.addQuestionButton}
                   onClick={() => remove(index)}
                 >
-                  <IoMdRemove />
+                  <MdRemove />
                   <span>Remove Question</span>
                 </button>
               )}
@@ -86,7 +85,7 @@ const QuestionsFormComponent = () => {
             })
           }
         >
-          <RiAddLine />
+          <MdAdd />
           <span>Add Question</span>
         </button>
       </div>

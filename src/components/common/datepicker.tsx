@@ -2,7 +2,7 @@ import DatePicker from "react-datepicker";
 import dayjs from "dayjs";
 import "react-datepicker/dist/react-datepicker.css";
 import styles from "../../styles/components/datepicker.module.scss";
-import calendarIconUrl from "../../assets/calendar.svg";
+import { MdCalendarToday } from "react-icons/md";
 
 type DatepickerProps = {
   value: Date;
@@ -20,7 +20,7 @@ const DatepickerContainer = ({
   return (
     <DatePicker
       showIcon
-      icon={<img src={calendarIconUrl} alt="Calendar" width="16" height="16" />}
+      icon={<MdCalendarToday />}
       toggleCalendarOnIconClick
       popperPlacement="left-start"
       wrapperClassName={className || styles.formDateInput}

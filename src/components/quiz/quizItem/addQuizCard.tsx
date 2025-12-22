@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Card } from "react-bootstrap";
 import styles from "../../../styles/components/quizCard.module.scss";
 import QuizModal from "../../modal/quizModal";
-import { RiAddLine } from "react-icons/ri";
+import { MdAdd } from "react-icons/md";
 
 const AddQuizCard = () => {
   const [show, setShow] = useState(false);
@@ -15,7 +15,7 @@ const AddQuizCard = () => {
       <Card className={styles.gridCard}>
         <button className={styles.addQuizCardBtn} onClick={handleShowModal}>
           <h3 className={styles.addQuizText}>ADD QUIZ</h3>
-          <RiAddLine className={styles.addQuizIcon} />
+          <MdAdd className={styles.addQuizIcon} />
         </button>
       </Card>
       {show && <QuizModal showModal={show} handleCloseModal={handleCloseModal} />}

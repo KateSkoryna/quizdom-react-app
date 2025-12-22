@@ -2,7 +2,7 @@ import { useAuthStore } from "../../../store/authStore";
 import { useFavoritesStore } from "../../../store/favoritesStore";
 import { ACTION } from "../../../types/user";
 import styles from "../../../styles/pages/home.module.scss";
-import FavoriteIcon from "../../icons/favoriteIcon";
+import { MdStarOutline } from "react-icons/md";
 
 type FavoriteElementProps = {
   quizId: string;
@@ -49,7 +49,7 @@ const FavoriteElement = ({ quizId, onAuthRequired }: FavoriteElementProps) => {
           onChange={(e) => handleFavoriteClick(e)}
           id={quizId}
         />
-        <FavoriteIcon className={styles.favoriteIcon} />
+        <MdStarOutline className={styles.favoriteIcon} />
       </label>
     </div>
   );

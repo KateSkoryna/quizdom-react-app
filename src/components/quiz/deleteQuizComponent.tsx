@@ -1,4 +1,4 @@
-import { TfiTrash } from "react-icons/tfi";
+import { MdDeleteOutline } from "react-icons/md";
 import styles from "../../styles/components/userQuiz.module.scss";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
@@ -12,7 +12,7 @@ const DeleteQuizComponent = () => {
   return (
     <>
       <Button className={styles.deleteBtn} onClick={handleShow}>
-        <TfiTrash className={styles.deleteBtnIcon} />
+        <MdDeleteOutline className={styles.deleteBtnIcon} />
       </Button>
       <Modal show={show} onHide={handleClose} centered>
         <Modal.Header closeButton>
