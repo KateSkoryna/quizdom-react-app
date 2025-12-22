@@ -5,7 +5,6 @@ import styles from "../../styles/pages/news.module.scss";
 import NewsListItem from "./newsListItem";
 import { DEFAULT_IMG } from "../../const/const";
 import type { Article } from "../../pages/news";
-import { truncateString } from "../../utils/truncateString";
 
 const NewsListComponent = ({ news }: { news: Article[] }) => {
   return (
@@ -16,9 +15,7 @@ const NewsListComponent = ({ news }: { news: Article[] }) => {
             <NewsListItem
               image={image ?? DEFAULT_IMG}
               title={title}
-              description={
-                description ? truncateString(description, 90) : "No description available"
-              }
+              description={description || "No description available"}
               url={url}
             />
           </Col>

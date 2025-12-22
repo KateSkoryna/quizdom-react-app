@@ -1,7 +1,6 @@
 import { Button, Card } from "react-bootstrap";
 import styles from "../../styles/pages/news.module.scss";
 import { LazyLoadImage } from "react-lazy-load-image-component";
-import { truncateString } from "../../utils/truncateString";
 
 const NewsListItem = ({
   image,
@@ -18,7 +17,7 @@ const NewsListItem = ({
     <Card className="h-100">
       <LazyLoadImage src={image} className={styles.cardImg} alt={title} />
       <Card.Body className={styles.cardBody}>
-        <Card.Title className="mb-4">{truncateString(title, 64)}</Card.Title>
+        <Card.Title className={`mb-4 ${styles.cardTitle}`}>{title}</Card.Title>
         <Card.Text className={styles.cardText}>{description}</Card.Text>
       </Card.Body>
       <Card.Footer>

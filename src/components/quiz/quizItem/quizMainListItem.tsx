@@ -8,7 +8,6 @@ import QuizCardBackside from "./quizCardBackside";
 import QuizStats from "./quizStats";
 import QuizCover from "./quizCover";
 import QuizLevelBadge from "./quizLevelBadge";
-import { truncateString } from "../../../utils/truncateString";
 import dayjs from "dayjs";
 
 type QuizMainListItemProps = {
@@ -32,8 +31,6 @@ const QuizMainListItem = ({
   const currentUser = useAuthStore((state) => state.currentUser);
   const completionCache = useQuizCompletionStore((state) => state.completionCache);
 
-  const cuttedTitle = truncateString(title, 50);
-  const cuttedDescription = truncateString(description, 60);
   const localizedDate = dayjs(publishedAt).format("DD/MM/YYYY");
 
   const isCompleted = currentUser && id && !!completionCache[id];
@@ -46,9 +43,9 @@ const QuizMainListItem = ({
             ✓ Completed
           </Badge>
         )}
-        <QuizCover title={cuttedTitle} category={category} />
+        <QuizCover title={title} category={category} />
         <Card.Body className={styles.quizInfoCard}>
-          <Card.Text className={styles.description}>{cuttedDescription}</Card.Text>
+          <Card.Text className={styles.description}>{description}</Card.Text>
           <QuizLevelBadge complexity={complexity} />
           <QuizStats
             rating={rating}
