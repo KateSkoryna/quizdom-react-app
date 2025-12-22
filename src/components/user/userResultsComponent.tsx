@@ -7,6 +7,7 @@ import type { UserQuiz } from "../../types/quiz";
 import Loader from "../common/loader";
 import styles from "../../styles/components/userResults.module.scss";
 import dayjs from "dayjs";
+import StarRating from "../common/starRating";
 
 const UserResultsComponent = () => {
   const currentUser = useAuthStore((state) => state.currentUser);
@@ -127,7 +128,7 @@ const UserResultsComponent = () => {
                         <div className={styles.resultItem}>
                           <span className={styles.label}>Your Rating:</span>
                           <span className={styles.value}>
-                            {"⭐".repeat(completion.rating)} ({completion.rating}/5)
+                            <StarRating rating={completion.rating} size="medium" /> ({completion.rating}/5)
                           </span>
                         </div>
                       )}
