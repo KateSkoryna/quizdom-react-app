@@ -1,20 +1,20 @@
-import HeartIcon from "../../icons/heartIcon";
+import { MdHelpOutline } from "react-icons/md";
 import styles from "../../../styles/components/quizCard.module.scss";
 
 type QuizStatsProps = {
   rating: number;
-  likesCount: number;
   authorName: string;
   publishedAt: string;
   currentUser: boolean;
+  questionsCount: number;
 };
 
 const QuizStats = ({
   rating,
-  likesCount,
   authorName,
   publishedAt,
   currentUser,
+  questionsCount,
 }: QuizStatsProps) => {
   const displayAuthor = currentUser ? authorName : "Someone you know";
 
@@ -41,8 +41,8 @@ const QuizStats = ({
           </span>
         </div>
         <div className={styles.statItem}>
-          <HeartIcon className={styles.statIcon} />
-          <span className={styles.statValue}>{likesCount}</span>
+          <MdHelpOutline className={styles.statIcon} />
+          <span className={styles.statValue}>{questionsCount}</span>
         </div>
       </div>
     </div>

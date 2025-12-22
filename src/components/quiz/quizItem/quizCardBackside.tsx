@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Button } from "react-bootstrap";
 import { useAuthStore } from "../../../store/authStore";
 import { useQuizCompletionStore } from "../../../store/quizAttemptsStore";
@@ -7,6 +7,7 @@ import NavigateUserModal from "../../modal/navigateUserModal";
 import styles from "../../../styles/components/quizCard.module.scss";
 import QuizNoUserModal from "../../modal/quizNoUserModal";
 import QuizStatistic from "./quizStatistic";
+import LikeElement from "./likeElement";
 
 type StartQuizButtonProps = {
   questions: Array<any>;
@@ -15,17 +16,11 @@ type StartQuizButtonProps = {
 
 const QuizCardBackside = ({ questions, quizId }: StartQuizButtonProps) => {
   const currentUser = useAuthStore((state) => state.currentUser);
-  const { loadCompletion, isLoading, completionCache } = useQuizCompletionStore();
+  const { isLoading, completionCache } = useQuizCompletionStore();
   const [startQuiz, setStartQuiz] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const completion = completionCache[quizId];
-
-  useEffect(() => {
-    if (currentUser && quizId) {
-      loadCompletion(quizId);
-    }
-  }, [currentUser, quizId, loadCompletion]);
 
   const handleStart = () => {
     if (!currentUser) {
@@ -58,6 +53,9 @@ const QuizCardBackside = ({ questions, quizId }: StartQuizButtonProps) => {
   return (
     <div className={styles.back}>
       <QuizNoUserModal id={quizId} />
+      <div className={styles.likeButtonContainer}>
+        <LikeElement quizId={quizId} onAuthRequired={handleModalToggle} />
+      </div>
       <div className={styles.startButtonContainer}>
         {hasCompleted ? (
           <QuizStatistic score={score} scoreRate={scoreRate} />
