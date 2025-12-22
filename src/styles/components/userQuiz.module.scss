@@ -24,15 +24,52 @@
   text-align: end;
 }
 
+.actionButtons {
+  position: absolute;
+  top: 16px;
+  right: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.iconButton {
+  background-color: transparent;
+  color: gray;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+
+  &:hover,
+  &:focus {
+    color: #f7941d;
+    scale: 1.1;
+    transition: scale 0.2s ease-in-out;
+    outline: none;
+  }
+}
+
+.icon {
+  width: 20px;
+  height: 20px;
+}
+
 .deleteBtn {
   background-color: transparent !important;
   color: gray;
   border: none;
-  position: absolute;
-  top: 16px;
-  right: 20px;
   cursor: pointer;
   padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
 }
 
 .deleteBtn:hover,
@@ -41,7 +78,7 @@
   scale: 1.1;
   transition: scale 0.2s ease-in-out;
   outline: none;
-  box-shadow: 0;
+  box-shadow: none;
 }
 
 .deleteBtnIcon {

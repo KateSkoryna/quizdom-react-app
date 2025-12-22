@@ -1,0 +1,114 @@
+@use "../settings" as *;
+
+.resultsContainer {
+  padding: 1.5rem;
+  min-height: 400px;
+}
+
+.resultsTitle {
+  margin-bottom: 1.5rem;
+  color: $primary-color;
+  font-weight: 700;
+}
+
+.emptyState {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 300px;
+  text-align: center;
+  color: $gray-light;
+  font-size: 1.1rem;
+}
+
+.accordionHeader {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.headerMain {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  flex: 1;
+}
+
+.quizTitle {
+  font-weight: 600;
+  font-size: 1rem;
+  color: $text-primary;
+}
+
+.scoreBadge {
+  font-size: 0.9rem;
+  font-weight: 700;
+  padding: 0.35rem 0.75rem;
+  border-radius: 1rem;
+  margin-right: 16px;
+  display: flex;
+  align-items: center;
+}
+
+.completedDate {
+  font-size: 0.85rem;
+  color: $gray-light;
+  font-style: italic;
+}
+
+.resultCard {
+  border: none;
+  box-shadow: none;
+  background: transparent;
+}
+
+.resultGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.resultItem {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+
+  &.fullWidth {
+    grid-column: 1 / -1;
+  }
+}
+
+.label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: $gray-light;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.value {
+  font-size: 1rem;
+  font-weight: 500;
+  color: $text-primary;
+}
+
+@media screen and (max-width: 768px) {
+  .resultsContainer {
+    padding: 1rem;
+  }
+
+  .resultGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .quizTitle {
+    font-size: 0.9rem;
+  }
+
+  .scoreBadge {
+    font-size: 0.8rem;
+    padding: 0.25rem 0.5rem;
+  }
+}
