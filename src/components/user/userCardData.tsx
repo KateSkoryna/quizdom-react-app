@@ -155,6 +155,11 @@ const UserCardData = () => {
         isEditMode={isEditMode}
         onFileSelect={handleSelectedFile}
       />
+      <hr className={styles.separator} />
+      <div>
+        <StarComponent />
+      </div>
+      <hr className={styles.separator} />
       <div>
         <UserFormField
           label="Email"
@@ -205,10 +210,8 @@ const UserCardData = () => {
           fieldName="userInfo"
           placeholder="Tell us about yourself"
           register={register}
+          control={control}
         />
-      </div>
-      <div className="pt-3">
-        <StarComponent />
       </div>
       <UserEditActions
         isEditMode={isEditMode}
