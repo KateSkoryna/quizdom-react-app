@@ -1,4 +1,4 @@
-import { Card } from "react-bootstrap";
+import { Card, Button } from "react-bootstrap";
 import ProgressBar from "react-bootstrap/ProgressBar";
 import modalStyles from "../../styles/components/modal.module.scss";
 
@@ -33,27 +33,27 @@ export const UserEditActions = ({
       </div>
       {isEditMode ? (
         <div className="d-flex gap-2">
-          <button
+          <Button
             type="button"
             className={`flex-grow-1 ${modalStyles.primaryButton}`}
             onClick={onSave}
             disabled={loading || !isDirty}
           >
             {loading ? "Saving..." : "Save Profile"}
-          </button>
-          <button
+          </Button>
+          <Button
             type="button"
             className={modalStyles.secondaryButton}
             onClick={onCancel}
             disabled={loading}
           >
             Cancel
-          </button>
+          </Button>
         </div>
       ) : (
-        <button type="button" className={`w-100 ${modalStyles.primaryButton}`} onClick={onEdit}>
+        <Button type="button" className={`w-100 ${modalStyles.primaryButton}`} onClick={onEdit}>
           Edit Profile
-        </button>
+        </Button>
       )}
     </Card.Footer>
   );
