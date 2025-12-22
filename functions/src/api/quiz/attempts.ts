@@ -2,6 +2,7 @@ import { onRequest } from "firebase-functions/v2/https";
 import { verifyAuthToken } from "../../utils/authHelper";
 import {
   getQuizCompletion,
+  getUserCompletions,
   createQuizCompletion,
   updateQuizFeedback,
 } from "../../services/quiz-service";
@@ -81,6 +82,29 @@ export const getQuizCompletionStatus = onRequest(corsOptions, async (req, res) =
     res.status(500).json({
       success: false,
       error: "Failed to get quiz completion",
+    });
+  }
+});
+
+export const getAllUserCompletions = onRequest(corsOptions, async (req, res) => {
+  if (req.method !== "GET") {
+    res.status(405).json({ success: false, error: "Method not allowed" });
+    return;
+  }
+
+  const user = await verifyAuthToken(req, res);
+  if (!user) return;
+
+  try {
+    const completions = await getUserCompletions(user.uid);
+    res.status(200).json({
+      success: true,
+      completions,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      error: "Failed to get user completions",
     });
   }
 });

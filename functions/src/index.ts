@@ -6,6 +6,7 @@ admin.initializeApp();
 export {
   completeQuiz,
   getQuizCompletionStatus,
+  getAllUserCompletions,
   updateQuizCompletionFeedback,
 } from "./api/quiz/attempts";
 

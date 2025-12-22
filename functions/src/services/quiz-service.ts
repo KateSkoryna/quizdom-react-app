@@ -22,6 +22,17 @@ export const getQuizCompletion = async (
   return doc.data() as QuizCompletion;
 };
 
+export const getUserCompletions = async (
+  userId: string
+): Promise<QuizCompletion[]> => {
+  const completionSnapshot = await db
+    .collection(COLLECTIONS.QUIZ_COMPLETIONS)
+    .where("userId", "==", userId)
+    .get();
+
+  return completionSnapshot.docs.map((doc) => doc.data() as QuizCompletion);
+};
+
 export const createQuizCompletion = async (
   userId: string,
   quizId: string,
