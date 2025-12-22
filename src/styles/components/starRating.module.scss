@@ -1,0 +1,50 @@
+@use "../settings" as *;
+
+.rating {
+  display: inline-flex;
+  gap: 0.05rem;
+}
+
+.starContainer {
+  position: relative;
+  display: inline-block;
+  line-height: 1;
+}
+
+.starFilled {
+  position: absolute;
+  top: 0;
+  left: 0;
+  color: $primary-color;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.starEmpty {
+  color: $gray-light;
+}
+
+// Size variants
+.small {
+  font-size: 0.75rem;
+
+  .starContainer {
+    font-size: 0.75rem;
+  }
+}
+
+.medium {
+  font-size: 1rem;
+
+  .starContainer {
+    font-size: 1rem;
+  }
+}
+
+.large {
+  font-size: 1.25rem;
+
+  .starContainer {
+    font-size: 1.25rem;
+  }
+}

@@ -72,6 +72,8 @@
         position: absolute;
         top: 16px;
         right: 16px;
+        pointer-events: auto;
+        z-index: 10;
       }
 
       // Like Button Container - bottom right
@@ -79,6 +81,8 @@
         position: absolute;
         bottom: 16px;
         right: 16px;
+        pointer-events: auto;
+        z-index: 10;
       }
 
       // Start Button Container - absolutely positioned on right
@@ -392,14 +396,24 @@
   gap: 0.05rem;
 }
 
-.starFilled {
-  color: $primary-color;
+.starContainer {
+  position: relative;
+  display: inline-block;
   font-size: 0.75rem;
+  line-height: 1;
+}
+
+.starFilled {
+  position: absolute;
+  top: 0;
+  left: 0;
+  color: $primary-color;
+  overflow: hidden;
+  white-space: nowrap;
 }
 
 .starEmpty {
   color: $gray-light;
-  font-size: 0.75rem;
 }
 
 .ratingValue {

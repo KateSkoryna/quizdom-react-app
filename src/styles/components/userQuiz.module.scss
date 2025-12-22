@@ -101,3 +101,44 @@
 .error-text {
   visibility: hidden;
 }
+
+// Statistics Container
+.statisticsContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.statRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.875rem;
+}
+
+.statLabel {
+  font-weight: 500;
+  color: $text-secondary;
+}
+
+.statValue {
+  font-weight: 600;
+  color: $text-primary;
+}
+
+.ratingRow {
+  margin-top: 0.5rem;
+  text-align: center;
+}
+
+.ratingLabel {
+  font-weight: 600;
+  font-size: 1rem;
+  color: $text-primary;
+}
+
+.starsRow {
+  display: flex;
+  justify-content: center;
+  margin-top: 0.25rem;
+}
