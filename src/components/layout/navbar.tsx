@@ -10,11 +10,11 @@ import { useState, useMemo } from "react";
 import styles from "../../styles/components/navbar.module.scss";
 import CloseButton from "react-bootstrap/CloseButton";
 import LogoutComponent from "../user/logoutComponent";
-import { useAuthStore } from "../../store/authStore";
+import { type AuthStore, useAuthStore } from "../../store/authStore";
 
 const NavbarContainer = () => {
   const location = useLocation();
-  const currentUser = useAuthStore((state) => state.currentUser);
+  const currentUser = useAuthStore((state: AuthStore) => state.currentUser);
   const [show, setShow] = useState(false);
 
   const userName = currentUser?.name.split(" ")[0];
@@ -52,7 +52,7 @@ const NavbarContainer = () => {
             className={styles.offcanvasNavbar}
           >
             <Offcanvas.Header className={styles.offcanvasHeader}>
-              <CloseButton className={styles.closeBtn} onClick={handleClose} />
+              <CloseButton onClick={handleClose} />
             </Offcanvas.Header>
             <Offcanvas.Body className="d-flex flex-column flex-lg-row justify-content-lg-between">
               <Nav className={styles.offcanvasNav} activeKey={active}>
