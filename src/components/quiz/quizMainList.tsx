@@ -1,5 +1,6 @@
 import { useQuizStore } from "../../store/quizStore";
 import { useAuthStore } from "../../store/authStore";
+import { useQuizCompletionStore } from "../../store/quizAttemptsStore";
 import QuizMainListItem from "./quizItem/quizMainListItem";
 import AddQuizCard from "./quizItem/addQuizCard";
 import { Container, Card } from "react-bootstrap";
@@ -14,6 +15,7 @@ const QuizMainList = () => {
   const isLoading = useQuizStore((state) => state.isLoading);
   const [searchParams] = useSearchParams();
   const getQuizzes = useQuizStore((state) => state.getQuizzes);
+  const loadAllCompletions = useQuizCompletionStore((state) => state.loadAllCompletions);
 
   const searchCategory = searchParams.get("category") || null;
   const searchComplexity = searchParams.get("complexity") || null;
@@ -24,6 +26,12 @@ const QuizMainList = () => {
     };
     fetchQuizzes();
   }, [searchCategory, searchComplexity, getQuizzes]);
+
+  useEffect(() => {
+    if (currentUser) {
+      loadAllCompletions();
+    }
+  }, [currentUser, loadAllCompletions]);
 
   if (isLoading) return <Loader />;
 
