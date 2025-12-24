@@ -33,5 +33,8 @@ export { generateQuiz } from "./api/quiz/generateQuiz";
 // Favorites
 export { toggleFavorite, getUserFavorites, getFavoriteQuizzes } from "./api/quiz/favorites";
 
+// Likes
+export { toggleLike, getUserLikes } from "./api/quiz/likes";
+
 // User Auth
 export { login } from "./api/user/users";
