@@ -22,9 +22,7 @@ export const getQuizCompletion = async (
   return doc.data() as QuizCompletion;
 };
 
-export const getUserCompletions = async (
-  userId: string
-): Promise<QuizCompletion[]> => {
+export const getUserCompletions = async (userId: string): Promise<QuizCompletion[]> => {
   const completionSnapshot = await db
     .collection(COLLECTIONS.QUIZ_COMPLETIONS)
     .where("userId", "==", userId)
@@ -292,13 +290,13 @@ export const deleteQuiz = async (quizId: string): Promise<void> => {
 };
 
 export const getFavorites = async (userId: string): Promise<string[]> => {
-  const userDoc = await db.collection(COLLECTIONS.USERS).doc(userId).get();
-  if (!userDoc.exists) {
-    throw new Error("USER_NOT_FOUND");
-  }
+  const favoritesSnapshot = await db
+    .collection(COLLECTIONS.USERS)
+    .doc(userId)
+    .collection(COLLECTIONS.FAVORITES)
+    .get();
 
-  const userData = userDoc.data();
-  return userData?.favorites || [];
+  return favoritesSnapshot.docs.map((doc) => doc.data().quizId);
 };
 
 export const toggleUserFavorite = async (
@@ -306,43 +304,133 @@ export const toggleUserFavorite = async (
   quizId: string,
   action: ACTION
 ): Promise<void> => {
-  const userRef = db.collection(COLLECTIONS.USERS).doc(userId);
+  const favoriteRef = db
+    .collection(COLLECTIONS.USERS)
+    .doc(userId)
+    .collection(COLLECTIONS.FAVORITES)
+    .doc(quizId);
 
   switch (action) {
     case ACTION.ADD:
-      await userRef.update({
-        favorites: FieldValue.arrayUnion(quizId),
+      await favoriteRef.set({
+        quizId,
+        addedAt: FieldValue.serverTimestamp(),
       });
       break;
     case ACTION.REMOVE:
-      await userRef.update({
-        favorites: FieldValue.arrayRemove(quizId),
-      });
+      await favoriteRef.delete();
       break;
     default:
       throw new Error("INVALID_ACTION");
   }
 };
 
-export const getFavoriteQuizList = async (quizIds: string[]): Promise<UserQuiz[]> => {
-  if (!quizIds || quizIds.length === 0) {
+export const getFavoriteQuizList = async (userId: string): Promise<UserQuiz[]> => {
+  // Get all favorite quiz IDs from subcollection
+  const favoritesSnapshot = await db
+    .collection(COLLECTIONS.USERS)
+    .doc(userId)
+    .collection(COLLECTIONS.FAVORITES)
+    .orderBy("addedAt", "desc")
+    .get();
+
+  if (favoritesSnapshot.empty) {
     return [];
   }
 
-  // Firestore 'in' query supports max 10 items, so we need to chunk if more
-  // For now, let's limit to first 10 (you can enhance this later)
-  const limitedIds = quizIds.slice(0, 10);
+  const quizIds = favoritesSnapshot.docs.map((doc) => doc.data().quizId);
 
-  const snapshot = await db
-    .collection(COLLECTIONS.QUIZZES)
-    .where(FieldPath.documentId(), "in", limitedIds)
+  // Firestore 'in' query supports max 30 items (updated limit), so chunk if needed
+  const chunkSize = 30;
+  const chunks: string[][] = [];
+  for (let i = 0; i < quizIds.length; i += chunkSize) {
+    chunks.push(quizIds.slice(i, i + chunkSize));
+  }
+
+  // Fetch all chunks in parallel
+  const quizPromises = chunks.map((chunk) =>
+    db.collection(COLLECTIONS.QUIZZES).where(FieldPath.documentId(), "in", chunk).get()
+  );
+
+  const snapshots = await Promise.all(quizPromises);
+
+  // Combine all results and preserve the order from favorites
+  const quizMap = new Map<string, UserQuiz>();
+  snapshots.forEach((snapshot) => {
+    snapshot.docs.forEach((doc) => {
+      quizMap.set(doc.id, { id: doc.id, ...doc.data() } as UserQuiz);
+    });
+  });
+
+  // Return quizzes in the order they were favorited
+  return quizIds
+    .map((id) => quizMap.get(id))
+    .filter((quiz): quiz is UserQuiz => quiz !== undefined);
+};
+
+// ============================================================================
+// Quiz Likes Operations
+// ============================================================================
+
+/**
+ * Get all liked quiz IDs for a user
+ */
+export const getLikes = async (userId: string): Promise<string[]> => {
+  const likesSnapshot = await db
+    .collection(COLLECTIONS.USERS)
+    .doc(userId)
+    .collection(COLLECTIONS.LIKES)
     .get();
 
-  return snapshot.docs.map(
-    (doc) =>
-      ({
-        id: doc.id,
-        ...doc.data(),
-      }) as UserQuiz
-  );
+  return likesSnapshot.docs.map((doc) => doc.data().quizId);
+};
+
+/**
+ * Toggle like status for a quiz
+ * Also updates the quiz's likesCount
+ */
+export const toggleUserLike = async (
+  userId: string,
+  quizId: string,
+  action: ACTION
+): Promise<void> => {
+  const likeRef = db
+    .collection(COLLECTIONS.USERS)
+    .doc(userId)
+    .collection(COLLECTIONS.LIKES)
+    .doc(quizId);
+
+  const quizRef = db.collection(COLLECTIONS.QUIZZES).doc(quizId);
+
+  // Use transaction to ensure atomicity
+  await db.runTransaction(async (transaction) => {
+    const quizDoc = await transaction.get(quizRef);
+
+    if (!quizDoc.exists) {
+      throw new Error("QUIZ_NOT_FOUND");
+    }
+
+    const currentLikesCount = quizDoc.data()?.likesCount || 0;
+
+    if (action === ACTION.ADD) {
+      // Add like
+      transaction.set(likeRef, {
+        quizId,
+        likedAt: FieldValue.serverTimestamp(),
+      });
+
+      // Increment quiz likesCount
+      transaction.update(quizRef, {
+        likesCount: currentLikesCount + 1,
+      });
+    } else {
+      // Remove like
+      transaction.delete(likeRef);
+
+      // Decrement quiz likesCount (don't go below 0)
+      transaction.update(quizRef, {
+        likesCount: Math.max(0, currentLikesCount - 1),
+      });
+    }
+  });
 };
