@@ -1,4 +1,4 @@
-import { MdHelpOutline } from "react-icons/md";
+import { MdHelpOutline, MdFavorite } from "react-icons/md";
 import styles from "../../../styles/components/quizCard.module.scss";
 import StarRating from "../../common/starRating";
 
@@ -8,6 +8,7 @@ type QuizStatsProps = {
   publishedAt: string;
   currentUser: boolean;
   questionsCount: number;
+  likesCount?: number;
 };
 
 const QuizStats = ({
@@ -16,6 +17,7 @@ const QuizStats = ({
   publishedAt,
   currentUser,
   questionsCount,
+  likesCount = 0,
 }: QuizStatsProps) => {
   const displayAuthor = currentUser ? authorName : "Someone you know";
 
@@ -32,6 +34,10 @@ const QuizStats = ({
         <div className={styles.statItem}>
           <MdHelpOutline className={styles.statIcon} />
           <span className={styles.statValue}>{questionsCount}</span>
+        </div>
+        <div className={styles.statItem}>
+          <MdFavorite className={styles.statIcon} style={{ color: "#f7941d" }} />
+          <span className={styles.statValue}>{likesCount}</span>
         </div>
       </div>
     </div>

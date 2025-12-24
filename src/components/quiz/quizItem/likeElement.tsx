@@ -1,27 +1,30 @@
 import { MdFavorite, MdFavoriteBorder } from "react-icons/md";
 import { useAuthStore } from "../../../store/authStore";
+import { useLikesStore } from "../../../store/likesStore";
+import { ACTION } from "../../../types/user";
 import styles from "../../../styles/components/quizCard.module.scss";
-import { useState } from "react";
 
 type LikeElementProps = {
   quizId: string;
   onAuthRequired: () => void;
-  initialLiked?: boolean;
 };
 
-const LikeElement = ({ quizId, onAuthRequired, initialLiked = false }: LikeElementProps) => {
+const LikeElement = ({ quizId, onAuthRequired }: LikeElementProps) => {
   const currentUser = useAuthStore((state) => state.currentUser);
-  const [isLiked, setIsLiked] = useState(initialLiked);
+  const toggleLike = useLikesStore((state) => state.toggleLike);
+  const isLiked = useLikesStore((state) => state.isLiked);
 
-  const handleLikeClick = () => {
+  // Check if quiz is liked from likes store
+  const liked = isLiked(quizId);
+
+  const handleLikeClick = async () => {
     if (!currentUser) {
       onAuthRequired();
       return;
     }
 
-    setIsLiked(!isLiked);
-    // TODO: Call backend API to toggle like
-    // await toggleLike(quizId, !isLiked ? ACTION.ADD : ACTION.REMOVE);
+    const action = liked ? ACTION.REMOVE : ACTION.ADD;
+    await toggleLike(quizId, action);
   };
 
   return (
@@ -31,8 +34,8 @@ const LikeElement = ({ quizId, onAuthRequired, initialLiked = false }: LikeEleme
       aria-label="Like quiz"
       type="button"
     >
-      {isLiked ? (
-        <MdFavorite className={styles.shareIcon} style={{ color: '#f7941d' }} />
+      {liked ? (
+        <MdFavorite className={styles.shareIcon} style={{ color: "#f7941d" }} />
       ) : (
         <MdFavoriteBorder className={styles.shareIcon} />
       )}

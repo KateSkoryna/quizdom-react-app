@@ -53,6 +53,7 @@ const QuizMainListItem = ({
             publishedAt={localizedDate}
             currentUser={!!currentUser}
             questionsCount={questions.length}
+            likesCount={likesCount}
           />
         </Card.Body>
       </div>
