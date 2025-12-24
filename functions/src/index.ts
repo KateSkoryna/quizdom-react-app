@@ -32,3 +32,6 @@ export { generateQuiz } from "./api/quiz/generateQuiz";
 
 // Favorites
 export { toggleFavorite, getUserFavorites, getFavoriteQuizzes } from "./api/quiz/favorites";
+
+// User Auth
+export { login } from "./api/user/users";
