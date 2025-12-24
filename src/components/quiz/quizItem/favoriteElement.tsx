@@ -3,6 +3,7 @@ import { useFavoritesStore } from "../../../store/favoritesStore";
 import { ACTION } from "../../../types/user";
 import styles from "../../../styles/pages/home.module.scss";
 import { MdStarOutline } from "react-icons/md";
+import Loader from "../../common/loader";
 
 type FavoriteElementProps = {
   quizId: string;
@@ -11,11 +12,9 @@ type FavoriteElementProps = {
 
 const FavoriteElement = ({ quizId, onAuthRequired }: FavoriteElementProps) => {
   const currentUser = useAuthStore((state) => state.currentUser);
-  const setCurrentUser = useAuthStore((state) => state.setCurrentUser);
   const toggleFavorite = useFavoritesStore((state) => state.toggleFavorite);
-
-  // Derive checked state from currentUser
-  const isChecked = currentUser?.favorites?.includes(quizId) || false;
+  const isLoading = useFavoritesStore((s) => s.isLoading);
+  const isChecked = useFavoritesStore((state) => state.favoriteIds.includes(quizId));
 
   const handleFavoriteClick = async (event: React.ChangeEvent<HTMLInputElement>) => {
     if (!currentUser) {
@@ -25,20 +24,12 @@ const FavoriteElement = ({ quizId, onAuthRequired }: FavoriteElementProps) => {
 
     const action = event.target.checked ? ACTION.ADD : ACTION.REMOVE;
 
-    // Call backend API (apiCall handles loading/error states)
-    await toggleFavorite(event.target.id, action);
-
-    // Update local user state after successful API call
-    const updatedFavorites =
-      action === ACTION.ADD
-        ? [...currentUser.favorites, event.target.id]
-        : currentUser.favorites.filter((item: string) => item !== event.target.id);
-
-    setCurrentUser({
-      ...currentUser,
-      favorites: updatedFavorites,
-    });
+    await toggleFavorite(quizId, action);
   };
+
+  if (isLoading) {
+    return <Loader />;
+  }
 
   return (
     <div className={styles.checkbox}>

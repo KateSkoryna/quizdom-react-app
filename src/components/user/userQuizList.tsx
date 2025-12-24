@@ -7,11 +7,13 @@ import { useAuthStore } from "../../store/authStore";
 import { useEffect } from "react";
 
 const UserQuizList = ({ status, title }: { status: Status; title: string }) => {
-  const userQuizzes = useQuizStore((state) => state.userQuizzes);
   const isLoading = useQuizStore((state) => state.isLoading);
-  const quizzes = userQuizzes.filter((quiz) => quiz.status === status);
   const currentUser = useAuthStore((state) => state.currentUser);
   const getQuizzesById = useQuizStore((state) => state.getQuizzesById);
+  const getUserQuizzes = useQuizStore((state) => state.getUserQuizzes);
+
+  // Get user's quizzes using selector
+  const quizzes = currentUser ? getUserQuizzes(currentUser.id, status) : [];
 
   useEffect(() => {
     const getQuizzes = async (): Promise<void> => {
