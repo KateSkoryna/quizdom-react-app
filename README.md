@@ -286,8 +286,7 @@ quizdom-react-app/
 │   │   ├── convertComplexity.tsx  # Complexity converter
 │   │   ├── generateRandomAvatar.tsx # Avatar generator
 │   │   ├── jokes.tsx              # Programming jokes data
-│   │   ├── schema.tsx             # Yup validation schemas
-│   │   └── truncateString.tsx     # String truncation utility
+│   │   └── schema.tsx             # Yup validation schemas
 │   ├── pages/
 │   │   ├── AboutPage/
 │   │   ├── BlogsPage/
@@ -320,9 +319,13 @@ quizdom-react-app/
 
 ### Authentication Flow
 
-1. Users sign up with email/password using Firebase Authentication
-2. User profile data is stored in Firestore `users` collection
-3. Protected routes redirect unauthenticated users to login
+1. Users authenticate via Firebase Authentication (Google OAuth or email/password)
+2. Frontend calls `/login` API endpoint with auth token
+3. Backend creates/updates user profile in Firestore `users` collection:
+   - First-time users: Creates new user document (automatic signup)
+   - Returning users: Updates `lastLogin` timestamp
+4. User data stored in Zustand state management
+5. Protected routes redirect unauthenticated users to login page
 
 ### Quiz Creation with React Hook Form
 
@@ -859,18 +862,52 @@ When updating schema, update BOTH:
 functions/
 └── src/
     ├── api/
+    │   ├── user/
+    │   │   └── users.ts        # User authentication endpoints
     │   └── quiz/
     │       ├── attempts.ts     # Quiz attempt endpoints
     │       └── feedback.ts     # Quiz feedback endpoints
-    ├── services/               # Business logic (future)
+    ├── services/
+    │   └── user-service.ts     # User sync business logic
+    ├── types/
+    │   └── user.ts             # User TypeScript types
     ├── utils/
-    │   └── constants.ts        # Shared constants (MAX_ATTEMPTS, COLLECTIONS)
-    ├── middlewares/
-    │   └── authMiddleware.ts   # Firebase token verification
+    │   ├── constants.ts        # Shared constants (MAX_ATTEMPTS, COLLECTIONS)
+    │   └── authHelper.ts       # Firebase token verification
     ├── config/
     │   └── firestore.ts        # Firestore database instance
     └── index.ts                # Exports all functions
 ```
+
+### User Authentication API Endpoints
+
+#### POST `/login`
+- **Purpose**: Login or register a user (automatic signup/login)
+- **Authentication**: Required (Firebase Auth token)
+- **Request**: No body required (user info extracted from auth token)
+- **Response**:
+  ```json
+  {
+    "success": true,
+    "data": {
+      "id": "user-id",
+      "uid": "firebase-uid",
+      "email": "user@example.com",
+      "displayName": "User Name",
+      "photoURL": "https://...",
+      "dateOfBirth": null,
+      "location": "",
+      "sex": "neutral",
+      "bio": "I'm a new user and dont have any bio yet",
+      "createdAt": "2025-01-01T00:00:00.000Z",
+      "lastLogin": "2025-01-01T00:00:00.000Z"
+    }
+  }
+  ```
+- **Behavior**:
+  - First-time users: Creates new user document in Firestore
+  - Returning users: Updates `lastLogin` timestamp
+  - Works with both emulator and production Firestore
 
 ### Quiz Attempts API Endpoints
 
