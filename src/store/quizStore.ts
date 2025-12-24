@@ -7,28 +7,31 @@ import { Status } from "../components/modal/quizModal";
 
 interface QuizStore {
   quizzes: UserQuiz[];
-  userQuizzes: UserQuiz[];
   isLoading: boolean;
   error: string | null;
   setError: (error: string) => void;
+
+  // Fetch methods
   getQuizzes: (category?: string | null, complexity?: string | null) => Promise<void>;
   getQuizById: (quizId: string) => Promise<UserQuiz | null>;
   getQuizzesById: (userId: string, status?: string) => Promise<void>;
+
+  // Mutation methods
   addQuiz: (
     data: QuizFormState & { status: Status },
     setError: UseFormSetError<QuizFormState>
   ) => Promise<void>;
-  updateQuiz: (
-    quizId: string,
-    data: Partial<QuizFormState & { status: Status }>
-  ) => Promise<void>;
+  updateQuiz: (quizId: string, data: Partial<QuizFormState & { status: Status }>) => Promise<void>;
   removeQuiz: (quizId: string) => Promise<void>;
   clearQuizzes: () => void;
+
+  // Selectors
+  getPublishedQuizzes: (category?: string | null, complexity?: string | null) => UserQuiz[];
+  getUserQuizzes: (userId: string, status?: Status) => UserQuiz[];
 }
 
 export const useQuizStore = create<QuizStore>((set, get) => ({
   quizzes: [],
-  userQuizzes: [],
   isLoading: false,
   error: null,
 
@@ -45,13 +48,18 @@ export const useQuizStore = create<QuizStore>((set, get) => ({
       "/getQuizzes",
       Object.keys(params).length > 0 ? { params } : undefined,
       (data: any[]) => {
-        const quizzes = data.map((quiz: any) => ({
+        const fetchedQuizzes = data.map((quiz: any) => ({
           ...quiz,
           publishedAt: quiz.publishedAt?._seconds
             ? new Date(quiz.publishedAt._seconds * 1000)
             : new Date(),
         }));
-        set({ quizzes, isLoading: false, error: null });
+
+        const existingQuizzes = get().quizzes;
+        const quizMap = new Map(existingQuizzes.map((q) => [q.id, q]));
+        fetchedQuizzes.forEach((quiz) => quizMap.set(quiz.id, quiz));
+
+        set({ quizzes: Array.from(quizMap.values()), isLoading: false, error: null });
       }
     );
   },
@@ -78,13 +86,18 @@ export const useQuizStore = create<QuizStore>((set, get) => ({
     const params: any = { userId };
     set({ isLoading: true, error: null });
     await apiCall(set, "get", "/getQuizzesByUserId", { params }, (data: any[]) => {
-      const quizzes = data.map((quiz: any) => ({
+      const fetchedQuizzes = data.map((quiz: any) => ({
         ...quiz,
         publishedAt: quiz.publishedAt?._seconds
           ? new Date(quiz.publishedAt._seconds * 1000)
           : new Date(),
       }));
-      set({ userQuizzes: quizzes, isLoading: false, error: null });
+
+      const existingQuizzes = get().quizzes;
+      const quizMap = new Map(existingQuizzes.map((q) => [q.id, q]));
+      fetchedQuizzes.forEach((quiz) => quizMap.set(quiz.id, quiz));
+
+      set({ quizzes: Array.from(quizMap.values()), isLoading: false, error: null });
     });
   },
 
@@ -97,7 +110,7 @@ export const useQuizStore = create<QuizStore>((set, get) => ({
         const createdQuiz: UserQuiz = responseData;
 
         set((state) => ({
-          userQuizzes: [...state.userQuizzes, createdQuiz],
+          quizzes: [...state.quizzes, createdQuiz],
         }));
       });
     } catch (error: any) {
@@ -112,20 +125,35 @@ export const useQuizStore = create<QuizStore>((set, get) => ({
       const updatedQuizzes = get().quizzes.map((quiz) =>
         quiz.id === quizId ? { ...quiz, ...data } : quiz
       );
-      const updatedUserQuizzes = get().userQuizzes.map((quiz) =>
-        quiz.id === quizId ? { ...quiz, ...data } : quiz
-      );
-      set({ quizzes: updatedQuizzes, userQuizzes: updatedUserQuizzes });
+      set({ quizzes: updatedQuizzes });
     });
   },
 
   removeQuiz: async (quizId: string) => {
     await apiCall(set, "delete", "/deleteQuiz", { params: { quizId } }, () => {
-      // Remove from local state
+      // Remove from quizzes array
       const updatedQuizzes = get().quizzes.filter((quiz) => quiz.id !== quizId);
       set({ quizzes: updatedQuizzes });
     });
   },
 
   clearQuizzes: () => set({ quizzes: [], isLoading: false, error: null }),
+
+  // Selectors
+  getPublishedQuizzes: (category?: string | null, complexity?: string | null) => {
+    return get().quizzes.filter((quiz) => {
+      if (quiz.status !== "done") return false;
+      if (category && quiz.category !== category) return false;
+      if (complexity && quiz.complexity !== complexity) return false;
+      return true;
+    });
+  },
+
+  getUserQuizzes: (userId: string, status?: Status) => {
+    return get().quizzes.filter((quiz) => {
+      if (quiz.authorId !== userId) return false;
+      if (status && quiz.status !== status) return false;
+      return true;
+    });
+  },
 }));
