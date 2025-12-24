@@ -18,7 +18,6 @@ export interface CurrentUser {
   gender: GENDER;
   averageScore: number;
   userInfo: string;
-  favorites: string[];
   location?: string;
 }
 
