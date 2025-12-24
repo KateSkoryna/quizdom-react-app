@@ -17,10 +17,7 @@ const GoogleAuthHandler = () => {
     setError(null);
 
     try {
-      console.log('[GoogleAuth Step 1] Authenticating with Google...');
-      const userCredential = await loginWithGoogle();
-
-      console.log('[GoogleAuth Step 2] Syncing user with backend API /login...', { uid: userCredential.user.uid });
+      await loginWithGoogle();
       const response = await apiClient.post("/login");
 
       if (!response.data.success) {
@@ -37,15 +34,12 @@ const GoogleAuthHandler = () => {
         gender: userData.sex,
         averageScore: 0,
         userInfo: userData.bio,
-        favorites: [],
         location: userData.location,
       };
 
       setCurrentUser(currentUser);
-      console.log('[GoogleAuth Step 3] Success! Navigating to /user');
       navigate("/user");
     } catch (error: any) {
-      console.error('[GoogleAuth] Authentication failed:', error);
       setError(`Authentication failed: ${error.message || "Please try again."}`);
     } finally {
       setIsLoading(false);
