@@ -10,8 +10,8 @@ const UserFavoriteQuizList = () => {
   const { favorites, isLoading, getFavorites } = useFavoritesStore();
 
   useEffect(() => {
-    if (currentUser?.favorites) {
-      getFavorites(currentUser.favorites);
+    if (currentUser) {
+      getFavorites();
     }
   }, [currentUser, getFavorites]);
 
@@ -19,10 +19,9 @@ const UserFavoriteQuizList = () => {
     <Loader />
   ) : (
     <Accordion defaultActiveKey="0" flush>
-      {favorites ? (
+      {favorites && favorites.length > 0 ? (
         favorites.map((quiz, index) => {
-          const { id, ...rest } = quiz;
-          return <UserQuizListItem key={id} quiz={rest} eventKey={index.toString()} />;
+          return <UserQuizListItem key={quiz.id} quiz={quiz} eventKey={index.toString()} />;
         })
       ) : (
         <p>No quizzes yet</p>
