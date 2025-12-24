@@ -36,9 +36,9 @@ export const UserAboutFormField = <T extends FieldValues>({
             placeholder={placeholder}
             rows={3}
             maxLength={200}
-            style={{ minHeight: '100px' }}
+            style={{ minHeight: "100px" }}
           />
-          <small className="text-muted" style={{ float: 'right', marginTop: '4px' }}>
+          <small className="text-muted" style={{ float: "right", marginTop: "4px" }}>
             {charCount}/200
           </small>
         </>

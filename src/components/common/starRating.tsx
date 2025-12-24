@@ -16,10 +16,7 @@ const StarRating = ({ rating, maxStars = 5, size = "small" }: StarRatingProps) =
       stars.push(
         <span key={i} className={styles.starContainer}>
           <span className={styles.starEmpty}>★</span>
-          <span
-            className={styles.starFilled}
-            style={{ width: `${fillPercentage}%` }}
-          >
+          <span className={styles.starFilled} style={{ width: `${fillPercentage}%` }}>
             ★
           </span>
         </span>
@@ -28,11 +25,7 @@ const StarRating = ({ rating, maxStars = 5, size = "small" }: StarRatingProps) =
     return stars;
   };
 
-  return (
-    <span className={`${styles.rating} ${styles[size]}`}>
-      {renderStars()}
-    </span>
-  );
+  return <span className={`${styles.rating} ${styles[size]}`}>{renderStars()}</span>;
 };
 
 export default StarRating;

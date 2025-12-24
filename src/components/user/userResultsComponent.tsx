@@ -128,7 +128,8 @@ const UserResultsComponent = () => {
                         <div className={styles.resultItem}>
                           <span className={styles.label}>Your Rating:</span>
                           <span className={styles.value}>
-                            <StarRating rating={completion.rating} size="medium" /> ({completion.rating}/5)
+                            <StarRating rating={completion.rating} size="medium" /> (
+                            {completion.rating}/5)
                           </span>
                         </div>
                       )}
