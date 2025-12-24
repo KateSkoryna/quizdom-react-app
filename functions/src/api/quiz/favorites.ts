@@ -43,32 +43,22 @@ export const getUserFavorites = onRequest(corsOptions, async (req, res) => {
 
 /**
  * GET /getFavoriteQuizzes
- * Get full quiz data for favorite quizzes
- * Query param: quizIds (comma-separated)
+ * Get full quiz data for favorite quizzes from subcollection
  */
 export const getFavoriteQuizzes = onRequest(corsOptions, async (req, res) => {
   if (req.method !== "GET") {
     res.status(405).json({ success: false, error: "Method not allowed" });
     return;
   }
-  // 2. Verify auth token (optional, or we can make this public)
+
   const user = await verifyAuthToken(req, res);
   if (!user) {
     res.status(401).json({ message: "Unauthorized" });
     return;
   }
 
-  const quizIdsParam = req.query.quizIds as string;
-
-  if (!quizIdsParam) {
-    res.status(400).json({ success: false, error: "quizIds parameter is required" });
-    return;
-  }
-
-  const favoriteQuizIds = quizIdsParam.split(",").map((id) => id.trim());
-
   try {
-    const favoriteQuizzes = await getFavoriteQuizList(favoriteQuizIds);
+    const favoriteQuizzes = await getFavoriteQuizList(user.uid);
     res.status(200).json({
       success: true,
       data: favoriteQuizzes,
