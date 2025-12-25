@@ -31,29 +31,8 @@
   padding-bottom: 10px;
 }
 
-.checkbox label .favoriteIcon {
-  @extend %icon-button;
+.checkbox {
   margin-left: auto;
-
-  path {
-    stroke: $gray-light;
-    fill: $gray-light;
-    transition: all 0.3s ease;
-  }
-
-  &:hover {
-    path {
-      stroke: $primary-color;
-      fill: $primary-color;
-    }
-  }
-}
-
-.checkbox label input[type="checkbox"]:checked ~ .favoriteIcon {
-  path {
-    stroke: $primary-color;
-    fill: $primary-color;
-  }
 }
 
 .itemSmalltext {

@@ -1,0 +1,39 @@
+@import "../settings/colors";
+
+label {
+  cursor: pointer;
+  display: inline-block;
+
+  input[type="checkbox"] {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+
+    &:checked + .toggleIcon {
+      svg {
+        color: $primary-color;
+      }
+    }
+  }
+
+  .toggleIcon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    svg {
+      width: 28px;
+      height: 28px;
+      color: $gray-light;
+      transition:
+        transform 0.2s ease,
+        color 0.2s ease;
+    }
+
+    &:hover svg {
+      transform: scale(1.1);
+      color: $primary-color;
+    }
+  }
+}
