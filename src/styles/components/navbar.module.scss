@@ -12,32 +12,58 @@
 .offcanvasNavbar {
   background-color: $white;
   width: 100%;
+
+  .navLink,
+  .navLinkLight {
+    color: $black !important;
+
+    &:hover,
+    &:focus {
+      color: $primary-color !important;
+    }
+  }
 }
 
 .navLink {
-  color: $black;
+  color: $black !important;
 
   &:hover,
   &:focus {
-    color: $primary-color;
+    color: $primary-color !important;
   }
 }
 
 .navLinkLight {
-  color: $white;
+  color: $white !important;
 
   &:hover,
   &:focus {
-    color: $primary-color;
+    color: $primary-color !important;
   }
 }
 
-.navbarToggle:hover,
-.navbarToggle:focus {
-  scale: 1.1;
-  transition: scale 0.2s ease-in-out;
-  outline: none;
-  box-shadow: 0;
+.navbarToggle {
+  border: none !important;
+  border-color: transparent !important;
+
+  :global(.navbar-toggler-icon) {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='%2300093c' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+  }
+
+  &:hover,
+  &:focus {
+    scale: 1.1;
+    transition: scale 0.2s ease-in-out;
+    outline: none;
+    box-shadow: none !important;
+    border-color: transparent !important;
+  }
+}
+
+.navbarUser .navbarToggle {
+  :global(.navbar-toggler-icon) {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='%23ffffff' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+  }
 }
 
 .offcanvasHeader {

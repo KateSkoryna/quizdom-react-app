@@ -6,20 +6,48 @@
   display: grid;
   grid-template-columns: 1fr;
   gap: 8px;
-  padding-bottom: 80px;
-  margin-top: 20px;
+  padding: 0 12px 80px 12px;
+  list-style: none;
+  margin: 0 auto;
+  width: 100%;
+  max-width: 1320px;
+
+  @media screen and (min-width: 576px) {
+    max-width: 540px;
+  }
+
+  @media screen and (min-width: 768px) {
+    max-width: 720px;
+  }
 
   @media screen and (min-width: 992px) {
     grid-template-columns: repeat(4, 1fr);
     gap: 16px;
+    max-width: 960px;
   }
+
+  @media screen and (min-width: 1200px) {
+    max-width: 1140px;
+  }
+
+  @media screen and (min-width: 1400px) {
+    max-width: 1320px;
+  }
+}
+
+.gridItem {
+  display: block;
 }
 
 .gridCard {
   height: 100%;
   position: relative;
   border: 0;
-  min-height: 280px;
+  min-height: 12rem;
+
+  @media screen and (min-width: 1024px) {
+    min-height: 16rem;
+  }
 
   & .quizCardContent {
     border: none;
@@ -257,7 +285,7 @@
 // Quiz Cover
 .cover {
   width: 100%;
-  height: 120px;
+  height: 6rem;
   margin: 0;
   padding: 8px 16px;
   position: relative;
@@ -268,6 +296,10 @@
   border-top-left-radius: 6px;
   border-top-right-radius: 6px;
   background: $primary-gradient;
+
+  @media screen and (max-width: 768px) {
+    height: 4rem;
+  }
 
   & .coverTitle {
     color: white;
@@ -328,6 +360,10 @@
   font-weight: 700;
   color: $text-primary;
   margin: 0;
+
+  @media screen and (min-width: 769px) {
+    font-size: 1.5rem;
+  }
 }
 
 .subtitle {
@@ -373,7 +409,7 @@
 
 // Description
 .description {
-  font-size: $font-size-16;
+  font-size: 0.875rem;
   font-weight: 700;
 
   // Modern CSS line clamping
@@ -492,7 +528,7 @@
 
 // Add Quiz Card
 .addQuizCardBtn {
-  min-height: 280px;
+  min-height: 12rem;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -503,6 +539,10 @@
   border: 2px dashed $gray-light;
   border-radius: 6px;
   background: transparent;
+
+  @media screen and (min-width: 1024px) {
+    min-height: 16rem;
+  }
 
   .addQuizIcon {
     font-size: 3rem;
