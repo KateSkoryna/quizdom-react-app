@@ -1,45 +1,48 @@
-import { MdFavorite, MdFavoriteBorder } from "react-icons/md";
-import { useAuthStore } from "../../../store/authStore";
+import { useState } from "react";
+import { MdFavoriteBorder } from "react-icons/md";
 import { useLikesStore } from "../../../store/likesStore";
 import { ACTION } from "../../../types/user";
 import styles from "../../../styles/components/quizCard.module.scss";
+import { ToggleAction } from "../toggleAction";
 
 type LikeElementProps = {
   quizId: string;
+  likesCount: number;
   onAuthRequired: () => void;
 };
 
-const LikeElement = ({ quizId, onAuthRequired }: LikeElementProps) => {
-  const currentUser = useAuthStore((state) => state.currentUser);
+const LikeElement = ({ quizId, likesCount, onAuthRequired }: LikeElementProps) => {
   const toggleLike = useLikesStore((state) => state.toggleLike);
-  const isLiked = useLikesStore((state) => state.isLiked);
+  const isLiked = useLikesStore((state) => state.likedQuizIds.includes(quizId));
+  const [currentLikesCount, setCurrentLikesCount] = useState(likesCount);
 
-  // Check if quiz is liked from likes store
-  const liked = isLiked(quizId);
+  const handleToggle = async (action: "ADD" | "REMOVE") => {
+    const actionEnum = action === "ADD" ? ACTION.ADD : ACTION.REMOVE;
 
-  const handleLikeClick = async () => {
-    if (!currentUser) {
-      onAuthRequired();
-      return;
+    // Update count optimistically
+    setCurrentLikesCount((prev) => (action === "ADD" ? prev + 1 : prev - 1));
+
+    try {
+      await toggleLike(quizId, actionEnum);
+    } catch (error) {
+      // Revert count on error
+      setCurrentLikesCount((prev) => (action === "ADD" ? prev - 1 : prev + 1));
     }
-
-    const action = liked ? ACTION.REMOVE : ACTION.ADD;
-    await toggleLike(quizId, action);
   };
 
   return (
-    <button
-      onClick={handleLikeClick}
-      className={styles.shareButton}
-      aria-label="Like quiz"
-      type="button"
-    >
-      {liked ? (
-        <MdFavorite className={styles.shareIcon} style={{ color: "#f7941d" }} />
-      ) : (
-        <MdFavoriteBorder className={styles.shareIcon} />
-      )}
-    </button>
+    <div className={styles.likeContainer}>
+      <ToggleAction
+        isChecked={isLiked}
+        onToggle={handleToggle}
+        onAuthRequired={onAuthRequired}
+        icon={<MdFavoriteBorder />}
+        inputId={`like-${quizId}`}
+        className={styles.shareButton}
+        ariaLabel="Like quiz"
+      />
+      {currentLikesCount > 0 && <span className={styles.likeCount}>{currentLikesCount}</span>}
+    </div>
   );
 };
 

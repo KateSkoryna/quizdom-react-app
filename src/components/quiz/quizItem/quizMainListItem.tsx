@@ -53,11 +53,10 @@ const QuizMainListItem = ({
             publishedAt={localizedDate}
             currentUser={!!currentUser}
             questionsCount={questions.length}
-            likesCount={likesCount}
           />
         </Card.Body>
       </div>
-      {id && <QuizCardBackside questions={questions} quizId={id} />}
+      {id && <QuizCardBackside questions={questions} quizId={id} likesCount={likesCount} />}
     </Card>
   );
 };

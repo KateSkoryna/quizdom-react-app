@@ -12,9 +12,10 @@ import LikeElement from "./likeElement";
 type StartQuizButtonProps = {
   questions: Array<any>;
   quizId: string;
+  likesCount: number;
 };
 
-const QuizCardBackside = ({ questions, quizId }: StartQuizButtonProps) => {
+const QuizCardBackside = ({ questions, quizId, likesCount }: StartQuizButtonProps) => {
   const currentUser = useAuthStore((state) => state.currentUser);
   const { isLoading, completionCache } = useQuizCompletionStore();
   const [startQuiz, setStartQuiz] = useState(false);
@@ -54,7 +55,7 @@ const QuizCardBackside = ({ questions, quizId }: StartQuizButtonProps) => {
     <div className={styles.back}>
       <QuizNoUserModal id={quizId} />
       <div className={styles.likeButtonContainer}>
-        <LikeElement quizId={quizId} onAuthRequired={handleModalToggle} />
+        <LikeElement quizId={quizId} likesCount={likesCount} onAuthRequired={handleModalToggle} />
       </div>
       <div className={styles.startButtonContainer}>
         {hasCompleted ? (
