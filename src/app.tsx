@@ -14,6 +14,7 @@ const UserPage = lazy(() => import("./pages/user"));
 const AuthPage = lazy(() => import("./pages/auth"));
 const HomePage = lazy(() => import("./pages/home"));
 const NewsPage = lazy(() => import("./pages/news"));
+const QuizPage = lazy(() => import("./pages/quiz"));
 const NotFoundPage = lazy(() => import("./pages/notFound"));
 
 const router = createHashRouter([
@@ -34,6 +35,14 @@ const router = createHashRouter([
         element: (
           <Suspense fallback={<Loader />}>
             <HomePage />
+          </Suspense>
+        ),
+      },
+      {
+        path: "quizzes/:quizId",
+        element: (
+          <Suspense fallback={<Loader />}>
+            <QuizPage />
           </Suspense>
         ),
       },

@@ -23,7 +23,7 @@ const ShareElement = ({ quizId }: ShareElementProps) => {
   const handleShare = async () => {
     const shareData = {
       title: "Check out this quiz!",
-      text: `Check out this quiz!\n\n${quizUrl}`  // Include URL in text to ensure it's always shared
+      text: `Check out this quiz!\n\n${quizUrl}`, // Include URL in text to ensure it's always shared
     };
     const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
     const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
