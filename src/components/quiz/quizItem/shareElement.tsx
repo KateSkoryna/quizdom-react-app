@@ -10,8 +10,10 @@ type ShareElementProps = {
 const ShareElement = ({ quizId }: ShareElementProps) => {
   const [copied, setCopied] = useState(false);
 
-  // Construct the correct quiz URL (not using current page href)
-  const quizUrl = `${window.location.origin}/#/quizzes/${quizId}`;
+  // Construct the correct quiz URL including base path for GitHub Pages
+  // Get the base path from current URL (e.g., /quizdom-react-app/)
+  const basePath = window.location.pathname.split('#')[0];
+  const quizUrl = `${window.location.origin}${basePath}#/quizzes/${quizId}`;
   const shareMessage = `${quizUrl}\n\nCheck out this quiz!`;
 
   const copyToClipboard = async () => {
