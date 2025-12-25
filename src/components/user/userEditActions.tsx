@@ -43,6 +43,7 @@ export const UserEditActions = ({
           </Button>
           <Button
             type="button"
+            variant=""
             className={modalStyles.secondaryButton}
             onClick={onCancel}
             disabled={loading}
