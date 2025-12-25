@@ -12,7 +12,7 @@ const ShareElement = ({ quizId }: ShareElementProps) => {
 
   // Construct the correct quiz URL including base path for GitHub Pages
   // Get the base path from current URL (e.g., /quizdom-react-app/)
-  const basePath = window.location.pathname.split('#')[0];
+  const basePath = window.location.pathname.split("#")[0];
   const quizUrl = `${window.location.origin}${basePath}#/quizzes/${quizId}`;
   const shareMessage = `${quizUrl}\n\nCheck out this quiz!`;
 
