@@ -5,7 +5,7 @@ import { useFavoritesStore } from "../../store/favoritesStore";
 import { useLikesStore } from "../../store/likesStore";
 import QuizMainListItem from "./quizItem/quizMainListItem";
 import AddQuizCard from "./quizItem/addQuizCard";
-import { Container, Card } from "react-bootstrap";
+import { Card } from "react-bootstrap";
 import styles from "../../styles/components/quizCard.module.scss";
 import { useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
@@ -45,14 +45,20 @@ const QuizMainList = () => {
   if (isLoading) return <Loader />;
 
   return (
-    <Container className={styles.gridContainer}>
-      {currentUser && <AddQuizCard />}
+    <ul className={styles.gridContainer}>
+      {currentUser && (
+        <li className={styles.gridItem}>
+          <AddQuizCard />
+        </li>
+      )}
       {quizzes.map((quiz) => (
-        <Card key={quiz.id} className={styles.gridCard}>
-          <QuizMainListItem quiz={quiz} />
-        </Card>
+        <li key={quiz.id} className={styles.gridItem}>
+          <Card className={styles.gridCard}>
+            <QuizMainListItem quiz={quiz} />
+          </Card>
+        </li>
       ))}
-    </Container>
+    </ul>
   );
 };
 

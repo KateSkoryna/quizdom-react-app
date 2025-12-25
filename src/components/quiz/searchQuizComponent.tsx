@@ -1,4 +1,4 @@
-import { Button, Container, Form } from "react-bootstrap";
+import { Button, Form } from "react-bootstrap";
 import styles from "../../styles/pages/home.module.scss";
 import modalStyles from "../../styles/components/modal.module.scss";
 import FormSelectComponent from "../forms/formSelectComponent";
@@ -31,15 +31,13 @@ const SearchQuizComponent = () => {
   };
 
   return (
-    <Container>
-      <Form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
-        <FormSelectComponent fields={categories} fieldsName="category" control={control} />
-        <FormSelectComponent fields={complexityValues} fieldsName="complexity" control={control} />
-        <Button className={modalStyles.primaryButton} type="submit">
-          Search
-        </Button>
-      </Form>
-    </Container>
+    <Form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
+      <FormSelectComponent fields={categories} fieldsName="category" control={control} />
+      <FormSelectComponent fields={complexityValues} fieldsName="complexity" control={control} />
+      <Button className={modalStyles.primaryButton} type="submit">
+        Search
+      </Button>
+    </Form>
   );
 };
 
