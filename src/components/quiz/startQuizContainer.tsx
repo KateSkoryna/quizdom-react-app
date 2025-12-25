@@ -12,7 +12,7 @@ const StartQuizContainer = ({ questions, quizId }: { questions: Question[]; quiz
     <>
       {currentUser && (
         <div className={styles.buttonContainer}>
-          <StartQuizButton questions={questions} quizId={quizId} />
+          <StartQuizButton questions={questions} quizId={quizId} likesCount={0} />
           <Card.Link as={Button}>Share Quiz</Card.Link>
         </div>
       )}
