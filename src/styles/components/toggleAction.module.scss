@@ -1,4 +1,4 @@
-@import "../settings/colors";
+@use "../settings" as *;
 
 label {
   cursor: pointer;

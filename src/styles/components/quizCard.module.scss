@@ -461,6 +461,23 @@
 
 .shareIcon {
   @extend %icon-button;
+
+  &.copied {
+    color: $primary-color !important;
+    animation: copySuccess 0.3s ease;
+  }
+}
+
+@keyframes copySuccess {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
 }
 
 .publishedDate {
