@@ -23,7 +23,7 @@ export const ToggleAction = ({
 }: ToggleActionProps) => {
   const currentUser = useAuthStore((s) => s.currentUser);
 
-  const handleInteraction = async (e: React.MouseEvent) => {
+  const handleInteraction = async (e: React.MouseEvent | React.KeyboardEvent) => {
     e.preventDefault();
     if (!currentUser) return onAuthRequired();
 
@@ -31,8 +31,20 @@ export const ToggleAction = ({
     await onToggle(action);
   };
 
+  const handleKeyDown = async (e: React.KeyboardEvent) => {
+    if (e.key === "Enter" || e.key === " ") {
+      await handleInteraction(e);
+    }
+  };
+
   return (
-    <label className={className} onClick={handleInteraction}>
+    <label
+      className={className}
+      onClick={handleInteraction}
+      onKeyDown={handleKeyDown}
+      tabIndex={0}
+      role="button"
+    >
       <input type="checkbox" checked={isChecked} readOnly id={inputId} aria-label={ariaLabel} />
       <span className={styles.toggleIcon}>{icon}</span>
     </label>
