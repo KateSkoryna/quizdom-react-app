@@ -80,25 +80,18 @@ export const quizInputSchema = z.object({
 export const flowQuestionSchema = z.object({
   type: z.enum(["multiple-choice", "true-false"]),
 
-  question_text: z.string().min(4).max(200),
+  question_text: z.string(),
 
   // Options required for all questions (true-false: 2 options, multiple-choice: 4 options)
-  options: z
-    .array(z.string().min(1).max(100))
-    .min(2)
-    .max(4)
-    .refine(
-      (opts) => opts.length === 2 || opts.length === 4,
-      "Must have exactly 2 (true-false) or 4 (multiple-choice) options"
-    ),
+  options: z.array(z.string()).min(2).max(4),
 
-  correct_answer: z.string().min(1).max(100),
+  correct_answer: z.string(),
 
-  hint: z.string().max(40),
+  hint: z.string(),
 });
 
 export const quizOutputSchema = z.object({
-  title: z.string().min(3).max(100),
-  description: z.string().min(10).max(200),
-  questions: z.array(flowQuestionSchema).min(6).max(25),
+  title: z.string(),
+  description: z.string(),
+  questions: z.array(flowQuestionSchema),
 });
