@@ -22,12 +22,7 @@ const LikeElement = ({ quizId, likesCount, onAuthRequired }: LikeElementProps) =
     // Update count optimistically
     setCurrentLikesCount((prev) => (action === "ADD" ? prev + 1 : prev - 1));
 
-    try {
-      await toggleLike(quizId, actionEnum);
-    } catch (error) {
-      // Revert count on error
-      setCurrentLikesCount((prev) => (action === "ADD" ? prev - 1 : prev + 1));
-    }
+    await toggleLike(quizId, actionEnum);
   };
 
   return (
