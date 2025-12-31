@@ -1,7 +1,15 @@
 import { db } from "../config/firestore";
-import { FieldValue, FieldPath, Timestamp } from "firebase-admin/firestore";
+import {
+  FieldValue,
+  FieldPath,
+  Timestamp,
+  Query,
+  Transaction,
+  QueryDocumentSnapshot,
+  QuerySnapshot,
+} from "firebase-admin/firestore";
 import { COLLECTIONS, ACTION } from "../utils/constants";
-import type { QuizCompletion, UserQuiz } from "../types/quiz";
+import type { QuizCompletion, UserQuiz, QuizFormState } from "../types/quiz";
 
 export const getQuizCompletion = async (
   userId: string,
@@ -28,7 +36,7 @@ export const getUserCompletions = async (userId: string): Promise<QuizCompletion
     .where("userId", "==", userId)
     .get();
 
-  return completionSnapshot.docs.map((doc) => doc.data() as QuizCompletion);
+  return completionSnapshot.docs.map((doc: QueryDocumentSnapshot) => doc.data() as QuizCompletion);
 };
 
 export const createQuizCompletion = async (
@@ -36,7 +44,7 @@ export const createQuizCompletion = async (
   quizId: string,
   score: { totalQuestions: number; correctAnswers: number }
 ): Promise<void> => {
-  return await db.runTransaction(async (transaction) => {
+  return await db.runTransaction(async (transaction: Transaction) => {
     const completionRef = db
       .collection(COLLECTIONS.QUIZ_COMPLETIONS)
       .where("quizId", "==", quizId)
@@ -49,11 +57,11 @@ export const createQuizCompletion = async (
     }
 
     const newCompletionRef = db.collection(COLLECTIONS.QUIZ_COMPLETIONS).doc();
-    const completionData: QuizCompletion = {
+    const completionData = {
       quizId,
       userId,
       score,
-      completedAt: FieldValue.serverTimestamp() as any,
+      completedAt: FieldValue.serverTimestamp(),
     };
 
     transaction.set(newCompletionRef, completionData);
@@ -78,8 +86,8 @@ export const updateQuizFeedback = async (
   }
 
   const completionRef = completionSnapshot.docs[0].ref;
-  const updateData: Partial<QuizCompletion> = {
-    feedbackUpdatedAt: FieldValue.serverTimestamp() as any,
+  const updateData: Record<string, unknown> = {
+    feedbackUpdatedAt: FieldValue.serverTimestamp(),
   };
 
   if (rating !== undefined && rating !== null) {
@@ -108,14 +116,14 @@ async function updateQuizRating(quizId: string): Promise<void> {
     .get();
 
   const ratings = completionsSnapshot.docs
-    .map((doc) => doc.data().rating)
-    .filter((rating): rating is number => rating !== undefined && rating !== null);
+    .map((doc: QueryDocumentSnapshot) => doc.data().rating)
+    .filter((rating: unknown): rating is number => rating !== undefined && rating !== null);
 
   if (ratings.length === 0) {
     return;
   }
 
-  const averageRating = ratings.reduce((sum, rating) => sum + rating, 0) / ratings.length;
+  const averageRating = ratings.reduce((sum: number, rating: number) => sum + rating, 0) / ratings.length;
 
   await db
     .collection(COLLECTIONS.QUIZZES)
@@ -145,7 +153,7 @@ export const getQuizzes = async (filters: QuizFilters = {}): Promise<UserQuiz[]>
   const { category, complexity, limit = 100, offset = 0 } = filters;
 
   try {
-    let query: FirebaseFirestore.Query = db.collection(COLLECTIONS.QUIZZES);
+    let query: Query = db.collection(COLLECTIONS.QUIZZES);
 
     query = query.where("status", "==", "done");
 
@@ -168,7 +176,7 @@ export const getQuizzes = async (filters: QuizFilters = {}): Promise<UserQuiz[]>
 
     const snapshot = await query.get();
 
-    return snapshot.docs.map((doc) => ({
+    return snapshot.docs.map((doc: QueryDocumentSnapshot) => ({
       id: doc.id,
       ...doc.data(),
     })) as UserQuiz[];
@@ -198,17 +206,17 @@ export const getQuizById = async (quizId: string): Promise<UserQuiz | null> => {
  * Optionally filter by status
  */
 export const getQuizzesByUserId = async (userId: string, status?: string): Promise<UserQuiz[]> => {
-  let query = db.collection(COLLECTIONS.QUIZZES).where("authorId", "==", userId);
+  let query: Query = db.collection(COLLECTIONS.QUIZZES).where("authorId", "==", userId);
 
   if (status) {
-    query = query.where("status", "==", status) as any;
+    query = query.where("status", "==", status);
   }
 
   const snapshot = await query.get();
 
   // Sort in memory instead of using orderBy to avoid requiring Firestore index
   const quizzes = snapshot.docs.map(
-    (doc) =>
+    (doc: QueryDocumentSnapshot) =>
       ({
         id: doc.id,
         ...doc.data(),
@@ -222,7 +230,11 @@ export const getQuizzesByUserId = async (userId: string, status?: string): Promi
  * Create a new quiz
  */
 export const createQuiz = async (
-  quizData: any,
+  quizData: Omit<QuizFormState, "complexity" | "category"> & {
+    complexity: string;
+    category: string;
+    status?: string;
+  },
   authorId: string,
   authorName: string
 ): Promise<UserQuiz> => {
@@ -250,13 +262,17 @@ export const createQuiz = async (
 /**
  * Update an existing quiz
  */
-export const updateQuiz = async (quizId: string, quizData: any): Promise<UserQuiz> => {
-  // Destructure to explicitly exclude protected fields
-  const { authorId, authorName, publishedAt, ...allowedUpdates } = quizData;
-
+export const updateQuiz = async (
+  quizId: string,
+  quizData: Partial<Omit<QuizFormState, "complexity" | "category">> & {
+    complexity?: string;
+    category?: string;
+    status?: string;
+  }
+): Promise<UserQuiz> => {
   const quizRef = db.collection(COLLECTIONS.QUIZZES).doc(quizId);
 
-  await quizRef.update(allowedUpdates);
+  await quizRef.update(quizData);
 
   const updatedDoc = await quizRef.get();
 
@@ -271,7 +287,7 @@ export const updateQuiz = async (quizId: string, quizData: any): Promise<UserQui
  */
 export const deleteQuiz = async (quizId: string): Promise<void> => {
   // Use a transaction to delete quiz and related completions
-  await db.runTransaction(async (transaction) => {
+  await db.runTransaction(async (transaction: Transaction) => {
     const quizRef = db.collection(COLLECTIONS.QUIZZES).doc(quizId);
 
     // Delete the quiz
@@ -283,7 +299,7 @@ export const deleteQuiz = async (quizId: string): Promise<void> => {
       .where("quizId", "==", quizId)
       .get();
 
-    completionsSnapshot.docs.forEach((doc) => {
+    completionsSnapshot.docs.forEach((doc: QueryDocumentSnapshot) => {
       transaction.delete(doc.ref);
     });
   });
@@ -296,7 +312,7 @@ export const getFavorites = async (userId: string): Promise<string[]> => {
     .collection(COLLECTIONS.FAVORITES)
     .get();
 
-  return favoritesSnapshot.docs.map((doc) => doc.data().quizId);
+  return favoritesSnapshot.docs.map((doc: QueryDocumentSnapshot) => doc.data().quizId);
 };
 
 export const toggleUserFavorite = async (
@@ -338,7 +354,7 @@ export const getFavoriteQuizList = async (userId: string): Promise<UserQuiz[]> =
     return [];
   }
 
-  const quizIds = favoritesSnapshot.docs.map((doc) => doc.data().quizId);
+  const quizIds = favoritesSnapshot.docs.map((doc: QueryDocumentSnapshot) => doc.data().quizId);
 
   // Firestore 'in' query supports max 30 items (updated limit), so chunk if needed
   const chunkSize = 30;
@@ -356,16 +372,16 @@ export const getFavoriteQuizList = async (userId: string): Promise<UserQuiz[]> =
 
   // Combine all results and preserve the order from favorites
   const quizMap = new Map<string, UserQuiz>();
-  snapshots.forEach((snapshot) => {
-    snapshot.docs.forEach((doc) => {
+  snapshots.forEach((snapshot: QuerySnapshot) => {
+    snapshot.docs.forEach((doc: QueryDocumentSnapshot) => {
       quizMap.set(doc.id, { id: doc.id, ...doc.data() } as UserQuiz);
     });
   });
 
   // Return quizzes in the order they were favorited
   return quizIds
-    .map((id) => quizMap.get(id))
-    .filter((quiz): quiz is UserQuiz => quiz !== undefined);
+    .map((id: string) => quizMap.get(id))
+    .filter((quiz: UserQuiz | undefined): quiz is UserQuiz => quiz !== undefined);
 };
 
 // ============================================================================
@@ -382,7 +398,7 @@ export const getLikes = async (userId: string): Promise<string[]> => {
     .collection(COLLECTIONS.LIKES)
     .get();
 
-  return likesSnapshot.docs.map((doc) => doc.data().quizId);
+  return likesSnapshot.docs.map((doc: QueryDocumentSnapshot) => doc.data().quizId);
 };
 
 /**
@@ -403,7 +419,7 @@ export const toggleUserLike = async (
   const quizRef = db.collection(COLLECTIONS.QUIZZES).doc(quizId);
 
   // Use transaction to ensure atomicity
-  await db.runTransaction(async (transaction) => {
+  await db.runTransaction(async (transaction: Transaction) => {
     const quizDoc = await transaction.get(quizRef);
 
     if (!quizDoc.exists) {

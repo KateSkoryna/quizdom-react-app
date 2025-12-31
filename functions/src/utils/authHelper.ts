@@ -1,4 +1,5 @@
 import { Request } from "firebase-functions/v2/https";
+import { Response } from "express";
 import * as admin from "firebase-admin";
 
 export interface AuthenticatedRequest extends Request {
@@ -15,7 +16,7 @@ export interface AuthenticatedRequest extends Request {
  */
 export async function verifyAuthToken(
   req: Request,
-  res: any
+  res: Response
 ): Promise<{ uid: string; email?: string; name?: string } | null> {
   const authHeader = req.headers.authorization;
 
@@ -49,7 +50,7 @@ export async function verifyAuthToken(
  * Helper to handle CORS
  * Allows all standard REST methods for future-proofing
  */
-export function setCorsHeaders(req: Request, res: any) {
+export function setCorsHeaders(req: Request, res: Response) {
   const origin = req.headers.origin;
   const allowedOrigins = ["https://kateskoryna.github.io", "http://localhost:5173"];
 
@@ -65,7 +66,7 @@ export function setCorsHeaders(req: Request, res: any) {
  * Helper to handle OPTIONS preflight
  * Returns 204 No Content with CORS headers
  */
-export function handleOptions(req: Request, res: any): boolean {
+export function handleOptions(req: Request, res: Response): boolean {
   if (req.method === "OPTIONS") {
     setCorsHeaders(req, res);
     res.status(204).send("");
