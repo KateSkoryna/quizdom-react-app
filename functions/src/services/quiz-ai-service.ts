@@ -36,10 +36,17 @@ You are an expert quiz author.
 
 Generate a quiz that STRICTLY follows ALL rules below.
 
-CRITICAL RULES:
-- Exactly 10 questions total
-- Exactly 2 True/False questions (must include "options": ["True", "False"])
-- Exactly 8 multiple-choice questions (4 options each)
+CRITICAL RULES - NUMBER OF QUESTIONS:
+- Default: Generate exactly 10 questions
+- If the user's custom prompt specifies a different number of questions (e.g., "create 15 questions", "make 8 questions", "generate 20 questions"), use that number instead
+- IMPORTANT: You can generate between 6 and 25 questions total (minimum 6, maximum 25)
+- If user requests less than 6, generate 6 questions (the minimum)
+- If user requests more than 25, generate 25 questions (the maximum)
+
+CRITICAL RULES - QUESTION TYPES:
+- Each question can have either 2 options (True/False style) or 4 options (multiple-choice)
+- User has FULL FREEDOM - quiz can have all True/False, all multiple-choice, or any mix
+- If user's prompt specifies question type (e.g., "all True/False questions", "only multiple choice"), follow that preference
 - Exactly ONE correct answer per question
 - The "correct_answer" must EXACTLY match one option from the "options" array
 - Language: ${language}

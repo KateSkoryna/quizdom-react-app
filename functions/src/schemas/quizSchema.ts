@@ -52,7 +52,10 @@ export const quizSchema = z.object({
   status: z.string(),
   complexity: z.enum(["Beginner", "Medium", "Advanced", "Expert"]),
   category: z.enum(["JavaScript", "TypeScript", "ReactJS", "NextJS", "NodeJS", "Jest", "Other"]),
-  questions: z.array(questionSchema).length(10, "Quiz must contain exactly 10 questions"),
+  questions: z
+    .array(questionSchema)
+    .min(6, "Quiz must contain at least 6 questions")
+    .max(25, "Quiz must contain at most 25 questions"),
 });
 
 export type QuizSchemaType = z.infer<typeof quizSchema>;
@@ -97,5 +100,5 @@ export const flowQuestionSchema = z.object({
 export const quizOutputSchema = z.object({
   title: z.string().min(3).max(100),
   description: z.string().min(10).max(200),
-  questions: z.array(flowQuestionSchema).length(10),
+  questions: z.array(flowQuestionSchema).min(6).max(25),
 });
