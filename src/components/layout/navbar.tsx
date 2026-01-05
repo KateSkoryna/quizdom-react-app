@@ -52,14 +52,14 @@ const NavbarContainer = () => {
             className={styles.offcanvasNavbar}
           >
             <Offcanvas.Header className="justify-content-end">
-              <CloseButton color="white" onClick={handleClose} />
+              <CloseButton color="black" onClick={handleClose} />
             </Offcanvas.Header>
             <Offcanvas.Body className="d-flex flex-column flex-lg-row justify-content-lg-between">
               <Nav className={styles.offcanvasNav} activeKey={active}>
                 <Nav.Link
                   as={Link}
                   to="/quizzes"
-                  className={`${styles.navLink} ${isUserPage ? styles.navLinkLight : ""}`}
+                  className={`${isUserPage ? styles.navLinkLight : styles.navLink}`}
                   eventKey="quizzes"
                   onClick={handleClose}
                 >
@@ -68,7 +68,7 @@ const NavbarContainer = () => {
                 <Nav.Link
                   as={Link}
                   to="/news"
-                  className={`${styles.navLink} ${isUserPage ? styles.navLinkLight : ""}`}
+                  className={`${isUserPage ? styles.navLinkLight : styles.navLink}`}
                   eventKey="news"
                   onClick={handleClose}
                 >
@@ -87,7 +87,7 @@ const NavbarContainer = () => {
                   <Nav.Link
                     as={Link}
                     to="/login"
-                    className={`${styles.navLink} ${isUserPage ? styles.navLinkLight : ""}`}
+                    className={`${isUserPage ? styles.navLinkLight : styles.navLink}`}
                     eventKey="login"
                     onClick={handleClose}
                   >

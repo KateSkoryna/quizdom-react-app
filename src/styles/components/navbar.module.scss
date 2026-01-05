@@ -10,7 +10,7 @@
 }
 
 .offcanvasNavbar {
-  background-color: $secondary-color;
+  background-color: $white;
   width: 100%;
 
   .navLink,
@@ -21,12 +21,16 @@
     }
   }
 
-  .navLink.navLinkLight {
-    color: $white !important;
+  .navLinkLight {
+    color: $white;
+
+    @media (max-width: 1199px) {
+      color: $black;
+    }
   }
 
   .navLink {
-    color: $black !important;
+    color: $black;
   }
 }
 

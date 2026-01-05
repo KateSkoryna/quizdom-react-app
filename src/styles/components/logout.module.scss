@@ -8,7 +8,11 @@
 
   &.lightBackground {
     .avatarToggle::after {
-      border-top-color: $white !important;
+      border-top-color: $white;
+
+      @media (max-width: 1199px) {
+        border-top-color: $black;
+      }
     }
   }
 }
