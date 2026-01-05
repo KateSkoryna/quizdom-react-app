@@ -3,11 +3,8 @@
 
 .userDropdown {
   position: relative;
-
-  @media screen and (max-width: 767px) {
-    display: flex;
-    justify-content: center;
-  }
+  display: flex;
+  justify-content: center;
 
   &.lightBackground {
     .avatarToggle::after {

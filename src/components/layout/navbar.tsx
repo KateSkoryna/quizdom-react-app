@@ -8,9 +8,9 @@ import logoLight from "../../assets/logo.svg";
 import Offcanvas from "react-bootstrap/Offcanvas";
 import { useState, useMemo } from "react";
 import styles from "../../styles/components/navbar.module.scss";
-import CloseButton from "react-bootstrap/CloseButton";
 import LogoutComponent from "../user/logoutComponent";
 import { type AuthStore, useAuthStore } from "../../store/authStore";
+import CloseButton from "../common/closeButton";
 
 const NavbarContainer = () => {
   const location = useLocation();
@@ -51,8 +51,8 @@ const NavbarContainer = () => {
             placement={"end"}
             className={styles.offcanvasNavbar}
           >
-            <Offcanvas.Header className={styles.offcanvasHeader}>
-              <CloseButton onClick={handleClose} />
+            <Offcanvas.Header className="justify-content-end">
+              <CloseButton color="white" onClick={handleClose} />
             </Offcanvas.Header>
             <Offcanvas.Body className="d-flex flex-column flex-lg-row justify-content-lg-between">
               <Nav className={styles.offcanvasNav} activeKey={active}>
