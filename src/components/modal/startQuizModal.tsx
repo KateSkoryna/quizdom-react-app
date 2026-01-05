@@ -1,4 +1,3 @@
-import { Popover, Overlay } from "react-bootstrap";
 import Modal from "react-bootstrap/Modal";
 import { Answer, Question } from "../../types";
 import { ListGroup } from "react-bootstrap";
@@ -7,7 +6,7 @@ import { useQuizCompletionStore } from "../../store/quizAttemptsStore";
 import styles from "../../styles/components/modal.module.scss";
 import owl from "../../assets/owl.svg";
 import { Card } from "react-bootstrap";
-import { MdLightbulbOutline } from "react-icons/md";
+import Hint from "./hint";
 
 type StartQuizModalProps = {
   show: boolean;
@@ -18,7 +17,7 @@ type StartQuizModalProps = {
 
 const StartQuizModal = ({ show, handleClose, questions, quizId }: StartQuizModalProps) => {
   const { completeQuiz, updateFeedback, isLoading } = useQuizCompletionStore();
-  const [showHint, setShowHint] = useState(false);
+
   const [index, setIndex] = useState(0);
   const [question, setQuestion] = useState<Question>(questions[index]);
   const [answers, setAnswers] = useState<Answer[]>(questions[index].answers);
@@ -29,8 +28,6 @@ const StartQuizModal = ({ show, handleClose, questions, quizId }: StartQuizModal
   const [hoverRating, setHoverRating] = useState(0);
   const [feedback, setFeedback] = useState("");
   const [savedAttempt, setSavedAttempt] = useState(false);
-
-  const hint = useRef<HTMLButtonElement>(null);
 
   const Option1 = useRef<HTMLLIElement | null>(null);
   const Option2 = useRef<HTMLLIElement | null>(null);
@@ -121,7 +118,7 @@ const StartQuizModal = ({ show, handleClose, questions, quizId }: StartQuizModal
     <Modal
       show={show}
       onHide={handleClose}
-      fullscreen="md-down"
+      fullscreen="sm-down"
       centered
       size="lg"
       dialogClassName={styles.startQuizModalDialog}
@@ -224,29 +221,7 @@ const StartQuizModal = ({ show, handleClose, questions, quizId }: StartQuizModal
           <Modal.Body>
             <div className={styles.questionHeader}>
               <h5 className={styles.questionTitle}>{question.questionTitle}</h5>
-              {question.hint && (
-                <>
-                  <button
-                    ref={hint}
-                    type="button"
-                    className={styles.hintButton}
-                    onClick={() => setShowHint(!showHint)}
-                  >
-                    <MdLightbulbOutline size={24} />
-                    <span>Hint</span>
-                  </button>
-                  <Overlay target={hint.current} show={showHint} placement="right">
-                    {(props) => (
-                      <Popover {...props}>
-                        <Popover.Body className={styles.hintContent}>
-                          <MdLightbulbOutline size={20} />
-                          <p>{question.hint}</p>
-                        </Popover.Body>
-                      </Popover>
-                    )}
-                  </Overlay>
-                </>
-              )}
+              {question.hint && <Hint questionHint={question.hint} />}
             </div>
             <ListGroup className={styles.answersList}>
               {answers.map((answer, index) => (
