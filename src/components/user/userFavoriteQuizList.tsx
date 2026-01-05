@@ -1,9 +1,10 @@
-import { Accordion } from "react-bootstrap";
+import { Accordion, Container } from "react-bootstrap";
 import UserQuizListItem from "./userQuizItem";
 import Loader from "../common/loader";
 import { useEffect } from "react";
 import { useAuthStore } from "../../store/authStore";
 import { useFavoritesStore } from "../../store/favoritesStore";
+import styles from "../../styles/components/userResults.module.scss";
 
 const UserFavoriteQuizList = () => {
   const currentUser = useAuthStore((state) => state.currentUser);
@@ -15,18 +16,24 @@ const UserFavoriteQuizList = () => {
     }
   }, [currentUser, getFavorites]);
 
-  return isLoading ? (
-    <Loader />
-  ) : (
-    <Accordion defaultActiveKey="0" flush>
-      {favorites && favorites.length > 0 ? (
-        favorites.map((quiz, index) => {
+  if (isLoading) {
+    return <Loader />;
+  }
+
+  if (favorites && favorites.length > 0) {
+    return (
+      <Accordion defaultActiveKey="0" flush>
+        {favorites.map((quiz, index) => {
           return <UserQuizListItem key={quiz.id} quiz={quiz} eventKey={index.toString()} />;
-        })
-      ) : (
-        <p>No quizzes yet</p>
-      )}
-    </Accordion>
+        })}
+      </Accordion>
+    );
+  }
+
+  return (
+    <Container className={styles.emptyState}>
+      <p>You haven&apos;t favorited any quizzes yet. Explore quizzes and add them to your favorites!</p>
+    </Container>
   );
 };
 
