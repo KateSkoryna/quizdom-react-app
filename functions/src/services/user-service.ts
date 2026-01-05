@@ -1,6 +1,7 @@
+import * as admin from "firebase-admin";
 import { db } from "../config/firestore";
 import { COLLECTIONS } from "../utils/constants";
-import { DecodedUser, UserDocument, UserProfile } from "../types/user";
+import { DecodedUser, UserDocument, UserProfile, Gender } from "../types/user";
 
 /**
  * Sync user with database - creates new user or updates last login
@@ -9,16 +10,21 @@ export const syncUserWithDatabase = async (decodedUser: DecodedUser): Promise<Us
   const userRef = db.collection(COLLECTIONS.USERS).doc(decodedUser.uid);
   const userDoc = await userRef.get();
 
+  // Fetch full user profile from Firebase Auth (includes displayName and photoURL)
+  const authUser = await admin.auth().getUser(decodedUser.uid);
+
   if (!userDoc.exists) {
     // 1. CREATE Logic: If user doesn't exist, define and set the new record
+    const photoURL = authUser.photoURL || decodedUser.picture || "";
+
     const newUser: UserDocument = {
       uid: decodedUser.uid,
-      email: decodedUser.email || "",
-      displayName: decodedUser.name || "Anonymous",
-      photoURL: decodedUser.picture || "",
+      email: authUser.email || decodedUser.email || "",
+      displayName: authUser.displayName || decodedUser.name || "Anonymous",
+      photoURL: photoURL,
       dateOfBirth: null,
       location: "",
-      sex: "neutral",
+      sex: Gender.NEUTRAL,
       bio: "I'm a new user and dont have any bio yet",
       createdAt: new Date().toISOString(),
       lastLogin: new Date().toISOString(),

@@ -1,4 +1,13 @@
 /**
+ * Gender enum matching frontend GENDER enum
+ */
+export enum Gender {
+  MALE = "male",
+  FEMALE = "female",
+  NEUTRAL = "neutral",
+}
+
+/**
  * Decoded Firebase Auth token from verifyAuthToken
  */
 export interface DecodedUser {
@@ -18,7 +27,7 @@ export interface UserDocument {
   photoURL: string;
   dateOfBirth: string | null;
   location: string;
-  sex: string;
+  sex: Gender;
   bio: string;
   createdAt: string;
   lastLogin: string;
