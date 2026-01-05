@@ -17,7 +17,7 @@ const NavbarContainer = () => {
   const currentUser = useAuthStore((state: AuthStore) => state.currentUser);
   const [show, setShow] = useState(false);
 
-  const userName = currentUser?.name.split(" ")[0];
+  const userName = currentUser?.displayName?.split(" ")[0];
   const isUserPage = location.pathname.includes("/user");
 
   const active = useMemo(() => {
@@ -77,7 +77,7 @@ const NavbarContainer = () => {
               </Nav>
               {currentUser ? (
                 <LogoutComponent
-                  avatar={currentUser.avatar ?? ""}
+                  avatar={currentUser.photoURL}
                   name={userName ?? ""}
                   isUserPage={isUserPage}
                   onClose={handleClose}

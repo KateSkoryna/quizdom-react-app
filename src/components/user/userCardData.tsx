@@ -16,13 +16,13 @@ import { Timestamp } from "firebase/firestore";
 import StarComponent from "./starComponent";
 
 interface UserFormData {
-  name: string;
+  displayName: string;
   dateOfBirth: Date;
-  gender: string;
+  sex: GENDER;
   location: string;
-  userInfo: string;
+  bio: string;
   imageFile?: File;
-  downloadURL: string;
+  photoURL: string;
 }
 
 const UserCardData = () => {
@@ -42,22 +42,22 @@ const UserCardData = () => {
     formState: { isDirty },
   } = useForm<UserFormData>({
     defaultValues: {
-      name: currentUser?.name || "",
+      displayName: currentUser?.displayName || "",
       dateOfBirth: currentUser?.dateOfBirth ? new Date(currentUser.dateOfBirth) : new Date(),
-      gender: currentUser?.gender || "",
+      sex: currentUser?.sex || GENDER.NEUTRAL,
       location: currentUser?.location || "",
-      userInfo: currentUser?.userInfo || "",
+      bio: currentUser?.bio || "",
       imageFile: undefined,
-      downloadURL: currentUser?.avatar || "",
+      photoURL: currentUser?.photoURL || "",
     },
   });
 
-  const downloadURL = watch("downloadURL");
+  const photoURL = watch("photoURL");
   const imageFile = watch("imageFile");
 
   const handleUploadComplete = useCallback(
     (url: string) => {
-      setValue("downloadURL", url, { shouldDirty: true });
+      setValue("photoURL", url, { shouldDirty: true });
     },
     [setValue]
   );
@@ -76,13 +76,13 @@ const UserCardData = () => {
   const handleEditClick = () => {
     if (currentUser) {
       reset({
-        name: currentUser.name,
+        displayName: currentUser.displayName,
         dateOfBirth: currentUser.dateOfBirth ? new Date(currentUser.dateOfBirth) : new Date(),
-        gender: currentUser.gender,
+        sex: currentUser.sex || GENDER.NEUTRAL,
         location: currentUser.location || "",
-        userInfo: currentUser.userInfo || "",
+        bio: currentUser.bio || "",
         imageFile: undefined,
-        downloadURL: currentUser.avatar || "",
+        photoURL: currentUser.photoURL || "",
       });
       setIsEditMode(true);
     }
@@ -93,28 +93,28 @@ const UserCardData = () => {
     try {
       if (currentUser) {
         const updates = [
-          editUser(currentUser.id, "name", data.name),
+          editUser(currentUser.id, "displayName", data.displayName),
           editUser(currentUser.id, "dateOfBirth", Timestamp.fromDate(data.dateOfBirth)),
-          editUser(currentUser.id, "gender", data.gender),
+          editUser(currentUser.id, "sex", data.sex),
           editUser(currentUser.id, "location", data.location),
-          editUser(currentUser.id, "userInfo", data.userInfo),
+          editUser(currentUser.id, "bio", data.bio),
         ];
 
-        // Add avatar update if photo was changed
-        if (downloadURL && downloadURL !== currentUser.avatar) {
-          updates.push(editUser(currentUser.id, "avatar", downloadURL));
+        // Add photoURL update if photo was changed
+        if (photoURL && photoURL !== currentUser.photoURL) {
+          updates.push(editUser(currentUser.id, "photoURL", photoURL));
         }
 
         await Promise.all(updates);
 
         setCurrentUser({
           ...currentUser,
-          name: data.name,
+          displayName: data.displayName,
           dateOfBirth: data.dateOfBirth,
-          gender: data.gender as GENDER,
+          sex: data.sex,
           location: data.location,
-          userInfo: data.userInfo,
-          avatar: downloadURL || currentUser.avatar,
+          bio: data.bio,
+          photoURL: photoURL || currentUser.photoURL,
         });
 
         setIsEditMode(false);
@@ -129,13 +129,13 @@ const UserCardData = () => {
   const handleCancel = () => {
     if (currentUser) {
       reset({
-        name: currentUser.name,
+        displayName: currentUser.displayName,
         dateOfBirth: currentUser.dateOfBirth ? new Date(currentUser.dateOfBirth) : new Date(),
-        gender: currentUser.gender,
+        sex: currentUser.sex || GENDER.NEUTRAL,
         location: currentUser.location || "",
-        userInfo: currentUser.userInfo || "",
+        bio: currentUser.bio || "",
         imageFile: undefined,
-        downloadURL: currentUser.avatar || "",
+        photoURL: currentUser.photoURL || "",
       });
     }
     setIsEditMode(false);
@@ -151,7 +151,7 @@ const UserCardData = () => {
   return (
     <Card className={`${styles.card} d-flex flex-column border h-100`}>
       <AvatarUpload
-        avatarUrl={downloadURL || currentUser?.avatar}
+        avatarUrl={photoURL || currentUser?.photoURL}
         isEditMode={isEditMode}
         onFileSelect={handleSelectedFile}
       />
@@ -169,9 +169,9 @@ const UserCardData = () => {
         />
         <UserFormField
           label="Name"
-          value={currentUser?.name}
+          value={currentUser?.displayName}
           isEditMode={isEditMode}
-          fieldName="name"
+          fieldName="displayName"
           fieldType="text"
           placeholder="Enter name"
           register={register}
@@ -187,9 +187,9 @@ const UserCardData = () => {
 
         <UserFormField
           label="Sex"
-          value={currentUser?.gender}
+          value={currentUser?.sex}
           isEditMode={isEditMode}
-          fieldName="gender"
+          fieldName="sex"
           fieldType="select"
           options={genderOptions}
           register={register}
@@ -205,9 +205,9 @@ const UserCardData = () => {
 
         <UserAboutFormField
           label="About me"
-          value={currentUser?.userInfo}
+          value={currentUser?.bio}
           isEditMode={isEditMode}
-          fieldName="userInfo"
+          fieldName="bio"
           placeholder="Tell us about yourself"
           register={register}
           control={control}

@@ -11,13 +11,13 @@ export enum GENDER {
 
 export interface CurrentUser {
   id: string;
-  name: string;
+  displayName: string;
   email: string;
-  avatar: string;
+  photoURL?: string;
   dateOfBirth: Date;
-  gender: GENDER;
+  sex: GENDER;
   averageScore: number;
-  userInfo: string;
+  bio: string;
   location?: string;
 }
 

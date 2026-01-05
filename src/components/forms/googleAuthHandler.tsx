@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuthStore, type AuthStore } from "../../store/authStore";
 import GoogleAuthButton from "./googleAuthButton";
 import apiClient from "../../fetchers/axiosInstance";
-import { CurrentUser } from "../../types";
+import { CurrentUser, GENDER } from "../../types";
 
 const GoogleAuthHandler = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -27,13 +27,13 @@ const GoogleAuthHandler = () => {
       const userData = response.data.data;
       const currentUser: CurrentUser = {
         id: userData.id,
-        name: userData.displayName,
+        displayName: userData.displayName,
         email: userData.email,
-        avatar: userData.photoURL,
+        photoURL: userData.photoURL,
         dateOfBirth: userData.dateOfBirth ? new Date(userData.dateOfBirth) : new Date(),
-        gender: userData.sex,
+        sex: (userData.sex as GENDER) || GENDER.NEUTRAL,
         averageScore: 0,
-        userInfo: userData.bio,
+        bio: userData.bio,
         location: userData.location,
       };
 

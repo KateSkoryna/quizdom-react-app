@@ -1,7 +1,7 @@
 import { User, signOut } from "firebase/auth";
 import { auth } from "../firebase";
 import { useAuthStore } from "../store/authStore";
-import { CurrentUser } from "../types";
+import { CurrentUser, GENDER } from "../types";
 import { getCurrentUser } from "./api";
 import apiClient from "./axiosInstance";
 
@@ -41,8 +41,14 @@ export const fetchUserWithToken = async (
       }
 
       const currentUser: CurrentUser = {
-        ...(userData as CurrentUser),
         id: firebaseUser.uid,
+        displayName: userData.displayName,
+        email: userData.email,
+        photoURL: userData.photoURL,
+        sex: (userData.sex as GENDER) || GENDER.NEUTRAL,
+        bio: userData.bio,
+        location: userData.location,
+        averageScore: userData.averageScore || 0,
         dateOfBirth,
       };
       setCurrentUser(currentUser);
