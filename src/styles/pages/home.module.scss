@@ -236,7 +236,6 @@
     height: 18rem;
   }
 
-  // Ensure picture element takes full width
   picture {
     display: block;
     width: 100%;
@@ -383,7 +382,7 @@
 .homePageContainer {
   display: flex;
   flex-direction: column;
-  height: calc(100vh - 60px); // Adjust based on your navbar height
+  height: calc(100vh - 60px);
   overflow: hidden;
 }
 
@@ -398,6 +397,4 @@
   overflow-x: hidden;
   scroll-behavior: smooth;
   padding-top: 1rem;
-  padding-left: 0.5rem;
-  padding-right: -0.5rem;
 }
