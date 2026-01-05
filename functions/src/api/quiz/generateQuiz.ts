@@ -15,10 +15,7 @@ export const generateQuiz = onRequest(corsOptions, async (req, res) => {
     }
 
     const user = await verifyAuthToken(req, res);
-    if (!user) {
-      res.status(401).json({ message: "Unauthorized" });
-      return;
-    }
+    if (!user) return;
 
     const { category, complexity, language, customUserPrompt } = req.body;
 

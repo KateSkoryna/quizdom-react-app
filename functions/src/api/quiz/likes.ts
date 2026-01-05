@@ -19,10 +19,7 @@ export const getUserLikes = onRequest(corsOptions, async (req, res) => {
   }
 
   const user = await verifyAuthToken(req, res);
-  if (!user) {
-    res.status(401).json({ message: "Unauthorized" });
-    return;
-  }
+  if (!user) return;
 
   try {
     const likedQuizIds = await getLikes(user.uid);
@@ -51,10 +48,7 @@ export const toggleLike = onRequest(corsOptions, async (req, res) => {
   }
 
   const user = await verifyAuthToken(req, res);
-  if (!user) {
-    res.status(401).json({ message: "Unauthorized" });
-    return;
-  }
+  if (!user) return;
 
   const { quizId, action } = req.body;
 

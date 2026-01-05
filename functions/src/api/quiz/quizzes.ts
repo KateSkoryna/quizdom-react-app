@@ -133,10 +133,7 @@ export const createQuiz = onRequest(corsOptions, async (req, res) => {
   }
 
   const user = await verifyAuthToken(req, res);
-  if (!user) {
-    res.status(400).json({ success: false, error: "userId is required" });
-    return;
-  }
+  if (!user) return;
 
   try {
     // Validate quiz data using Zod

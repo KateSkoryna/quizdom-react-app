@@ -19,10 +19,7 @@ export const getUserFavorites = onRequest(corsOptions, async (req, res) => {
   }
 
   const user = await verifyAuthToken(req, res);
-  if (!user) {
-    res.status(401).json({ message: "Unauthorized" });
-    return;
-  }
+  if (!user) return;
 
   const userId = user.uid;
 
@@ -52,10 +49,7 @@ export const getFavoriteQuizzes = onRequest(corsOptions, async (req, res) => {
   }
 
   const user = await verifyAuthToken(req, res);
-  if (!user) {
-    res.status(401).json({ message: "Unauthorized" });
-    return;
-  }
+  if (!user) return;
 
   try {
     const favoriteQuizzes = await getFavoriteQuizList(user.uid);
@@ -85,10 +79,7 @@ export const toggleFavorite = onRequest(corsOptions, async (req, res) => {
   }
 
   const user = await verifyAuthToken(req, res);
-  if (!user) {
-    res.status(401).json({ message: "Unauthorized" });
-    return;
-  }
+  if (!user) return;
 
   const { quizId, action } = req.body;
 
