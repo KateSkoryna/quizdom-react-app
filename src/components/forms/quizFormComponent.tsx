@@ -171,7 +171,7 @@ const QuizFormComponent = forwardRef<QuizFormRef, QuizFormProps>(
                   style={{
                     display: "flex",
                     gap: "1rem",
-                    alignItems: "flex-start",
+                    alignItems: "center",
                     marginBottom: "1rem",
                   }}
                 >
@@ -184,9 +184,10 @@ const QuizFormComponent = forwardRef<QuizFormRef, QuizFormProps>(
                       value={userPrompt}
                       onChange={(e) => setUserPrompt(e.target.value)}
                       placeholder="Describe what you want the AI to generate..."
-                      style={{ height: "90px", resize: "none" }}
                     />
-                    <Form.Text className="text-muted">{userPrompt.length}/250 characters</Form.Text>
+                    <Form.Text className={styles.smallText}>
+                      {userPrompt.length}/250 characters
+                    </Form.Text>
                   </Form.Group>
 
                   <Button
@@ -196,7 +197,7 @@ const QuizFormComponent = forwardRef<QuizFormRef, QuizFormProps>(
                       .join(" ")}
                     onClick={handleGenerateQuiz}
                     disabled={isGenerating || remainingAttempts <= 0}
-                    style={{ marginTop: "1.85rem", backgroundColor: "transparent" }}
+                    style={{ backgroundColor: "transparent" }}
                   />
                 </div>
 
@@ -229,6 +230,7 @@ const QuizFormComponent = forwardRef<QuizFormRef, QuizFormProps>(
               <Form.Control
                 className={styles.formTextarea}
                 {...register("description")}
+                placeholder="Add your custom description..."
                 as="textarea"
                 rows={3}
               />

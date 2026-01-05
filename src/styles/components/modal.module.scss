@@ -176,10 +176,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  min-width: 260px;
-  min-height: 90px;
+  width: 140px;
+  height: 65px;
   margin-left: auto;
-  padding: 10px 20px;
+  padding: 0;
   border-radius: 4px;
   box-shadow:
     rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
@@ -188,6 +188,10 @@
     opacity 0.2s ease,
     transform 0.1s ease;
 
+  @media (min-width: $breakpoint-xl) {
+    width: 260px;
+    height: 90px;
+  }
   &::before {
     content: "";
     width: 240px;
@@ -257,8 +261,12 @@
 }
 
 .questionLabel {
-  font-size: 1.25rem;
+  font-size: 12px;
   font-weight: 700;
+
+  @media (min-width: $breakpoint-lg) {
+    font-size: 14px;
+  }
 }
 
 .answersGrid {
@@ -275,7 +283,12 @@
   font-weight: 500;
   margin-bottom: 0.5rem;
   display: block;
-  font-size: 0.875rem;
+
+  font-size: 12px;
+
+  @media (min-width: $breakpoint-lg) {
+    font-size: 14px;
+  }
 }
 
 .formInput {
@@ -283,6 +296,11 @@
   padding: 0.5rem;
   border-radius: 4px;
   transition: all 0.3s ease-in-out;
+  font-size: 12px;
+
+  @media (min-width: $breakpoint-lg) {
+    font-size: 14px;
+  }
 
   &:focus {
     outline: none;
@@ -302,6 +320,11 @@
   display: flex;
   align-items: center;
   text-align: left;
+  font-size: 12px;
+
+  @media (min-width: $breakpoint-lg) {
+    font-size: 14px;
+  }
 
   &:focus {
     outline: none;
@@ -312,7 +335,21 @@
 
 .formTextarea {
   @extend .formInput;
-  resize: vertical;
+  resize: auto;
+  font-size: 12px;
+  min-height: 65px !important;
+
+  @media (min-width: $breakpoint-lg) {
+    font-size: 14px;
+    min-height: 90px !important;
+  }
+}
+
+.smallText {
+  font-size: 8px;
+  @media (min-width: $breakpoint-lg) {
+    font-size: 12px;
+  }
 }
 
 .sectionTitle {
