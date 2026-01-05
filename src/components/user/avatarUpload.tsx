@@ -20,7 +20,7 @@ export const AvatarUpload = ({ avatarUrl, isEditMode, onFileSelect }: AvatarUplo
           />
         </label>
       )}
-      <Card.Img src={avatarUrl || defaultAvatar} className={styles.cardImg} />
+      <Card.Img src={avatarUrl} className={styles.cardImg} />
     </div>
   );
 };

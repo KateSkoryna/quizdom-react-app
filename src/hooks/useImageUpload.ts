@@ -4,6 +4,7 @@ import { storage } from "../firebase";
 
 interface UseImageUploadProps {
   imageFile?: File;
+  userId: string | undefined;
   onUploadComplete: (url: string) => void;
 }
 
@@ -12,15 +13,15 @@ interface ImageError {
   message: string;
 }
 
-export const useImageUpload = ({ imageFile, onUploadComplete }: UseImageUploadProps) => {
+export const useImageUpload = ({ imageFile, userId, onUploadComplete }: UseImageUploadProps) => {
   const [progressUpload, setProgressUpload] = useState(0);
   const [error, setError] = useState<ImageError | null>(null);
 
   useEffect(() => {
     const handleUploadFile = () => {
-      if (imageFile) {
+      if (imageFile && userId) {
         const name = (new Date().getTime() + imageFile.name).replace(/\s/g, "");
-        const storageRef = ref(storage, `image/${name}`);
+        const storageRef = ref(storage, `avatars/${userId}/${name}`);
         const uploadTask = uploadBytesResumable(storageRef, imageFile);
 
         uploadTask.on(

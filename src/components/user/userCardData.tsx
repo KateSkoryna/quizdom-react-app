@@ -64,6 +64,7 @@ const UserCardData = () => {
 
   const { progressUpload, resetProgress } = useImageUpload({
     imageFile,
+    userId: currentUser?.id,
     onUploadComplete: handleUploadComplete,
   });
 
