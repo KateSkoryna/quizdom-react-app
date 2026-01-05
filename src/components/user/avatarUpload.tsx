@@ -1,5 +1,6 @@
 import { Card } from "react-bootstrap";
 import styles from "../../styles/pages/user.module.scss";
+import { avatar as defaultAvatar } from "../../utils/generateRandomAvatar";
 
 interface AvatarUploadProps {
   avatarUrl?: string;
@@ -19,7 +20,7 @@ export const AvatarUpload = ({ avatarUrl, isEditMode, onFileSelect }: AvatarUplo
           />
         </label>
       )}
-      <Card.Img src={avatarUrl} className={styles.cardImg} />
+      <Card.Img src={avatarUrl || defaultAvatar} className={styles.cardImg} />
     </div>
   );
 };

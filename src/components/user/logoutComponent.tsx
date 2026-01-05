@@ -2,9 +2,10 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { Dropdown, Image } from "react-bootstrap";
 import styles from "../../styles/components/logout.module.scss";
 import { useAuthStore } from "../../store/authStore";
+import { avatar as defaultAvatar } from "../../utils/generateRandomAvatar";
 
 type LogoutProps = {
-  avatar: string;
+  avatar?: string;
   name: string;
   isUserPage?: boolean;
   onClose?: () => void;
@@ -34,7 +35,7 @@ const LogoutComponent = ({ avatar, name, isUserPage: isUserPageProp, onClose }: 
       className={`${styles.userDropdown} ${isUserPage ? styles.lightBackground : ""}`}
     >
       <Dropdown.Toggle as="div" className={styles.avatarToggle} id="user-dropdown">
-        <Image src={avatar} className={styles.userIcon} />
+        <Image src={avatar || defaultAvatar} className={styles.userIcon} />
       </Dropdown.Toggle>
 
       <Dropdown.Menu className={styles.dropdownMenu}>
