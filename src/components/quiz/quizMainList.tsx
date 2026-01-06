@@ -32,7 +32,7 @@ const QuizMainList = () => {
       await getQuizzes(searchCategory, searchComplexity);
     };
     fetchQuizzes();
-  }, [searchCategory, searchComplexity, getQuizzes]);
+  }, [searchCategory, searchComplexity]);
 
   useEffect(() => {
     if (currentUser) {
@@ -40,7 +40,7 @@ const QuizMainList = () => {
       getFavorites();
       getLikes();
     }
-  }, [currentUser, loadAllCompletions, getFavorites, getLikes]);
+  }, [currentUser]);
 
   if (isLoading) return <Loader />;
 
