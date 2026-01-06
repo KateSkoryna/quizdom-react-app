@@ -7,6 +7,7 @@ import { fetchUserWithToken } from "./fetchers/common";
 import { useAuthStore, type AuthStore } from "./store/authStore";
 import Loader from "./components/common/loader";
 import ProtectedRoute from "./components/common/protectedRoute";
+import GlobalErrorNotification from "./components/common/globalErrorNotification";
 
 // Lazy load pages and layout
 const Layout = lazy(() => import("./components/layout/layout"));
@@ -95,7 +96,12 @@ function App() {
     return () => unsubscribe();
   }, [setCurrentUser]);
 
-  return <RouterProvider router={router} />;
+  return (
+    <>
+      <GlobalErrorNotification />
+      <RouterProvider router={router} />
+    </>
+  );
 }
 
 export default App;
