@@ -4,69 +4,80 @@ import { useAuthStore } from "../store/authStore";
 import { CurrentUser, GENDER } from "../types";
 import { getCurrentUser } from "./api";
 import apiClient from "./axiosInstance";
+import { useGlobalErrorStore, ErrorSeverity } from "../store/globalErrorStore";
 
 export const fetchUserWithToken = async (
   firebaseUser: User | null,
   setCurrentUser: (user: CurrentUser | null) => void
 ): Promise<void> => {
-  if (firebaseUser) {
-    // User is signed in - get token and load user data
-    const token = await firebaseUser.getIdToken();
+  try {
+    if (firebaseUser) {
+      const token = await firebaseUser.getIdToken();
 
-    // Save auth data to localStorage
-    const authData = {
-      isLoggedIn: true,
-      token,
-      email: firebaseUser.email,
-      uid: firebaseUser.uid,
-    };
-    localStorage.setItem("authData", JSON.stringify(authData));
-
-    // Load user data from Firestore
-    const userDoc = await getCurrentUser(firebaseUser.uid);
-
-    if (userDoc && userDoc.exists()) {
-      const userData = userDoc.data();
-
-      // Handle Firestore Timestamp or string date
-      let dateOfBirth: Date;
-      if (userData.dateOfBirth?.toDate) {
-        // Firestore Timestamp
-        dateOfBirth = userData.dateOfBirth.toDate();
-      } else if (userData.dateOfBirth) {
-        // String or other format
-        dateOfBirth = new Date(userData.dateOfBirth);
-      } else {
-        dateOfBirth = new Date();
-      }
-
-      const currentUser: CurrentUser = {
-        id: firebaseUser.uid,
-        displayName: userData.displayName,
-        email: userData.email,
-        photoURL: userData.photoURL,
-        sex: (userData.sex as GENDER) || GENDER.NEUTRAL,
-        bio: userData.bio,
-        location: userData.location,
-        averageScore: userData.averageScore || 0,
-        dateOfBirth,
+      const authData = {
+        isLoggedIn: true,
+        token,
+        email: firebaseUser.email,
+        uid: firebaseUser.uid,
       };
-      setCurrentUser(currentUser);
+      localStorage.setItem("authData", JSON.stringify(authData));
+
+      const userDoc = await getCurrentUser(firebaseUser.uid);
+
+      if (userDoc && userDoc.exists()) {
+        const userData = userDoc.data();
+
+        let dateOfBirth: Date;
+        if (userData.dateOfBirth?.toDate) {
+          dateOfBirth = userData.dateOfBirth.toDate();
+        } else if (userData.dateOfBirth) {
+          dateOfBirth = new Date(userData.dateOfBirth);
+        } else {
+          dateOfBirth = new Date();
+        }
+
+        const currentUser: CurrentUser = {
+          id: firebaseUser.uid,
+          displayName: userData.displayName,
+          email: userData.email,
+          photoURL: userData.photoURL,
+          sex: (userData.sex as GENDER) || GENDER.NEUTRAL,
+          bio: userData.bio,
+          location: userData.location,
+          averageScore: userData.averageScore || 0,
+          dateOfBirth,
+        };
+        setCurrentUser(currentUser);
+      } else {
+        console.warn("User document not found in Firestore for uid:", firebaseUser.uid);
+        await signOut(auth);
+        localStorage.removeItem("authData");
+        setCurrentUser(null);
+
+        useGlobalErrorStore.getState().addError({
+          userMessage: "Account setup incomplete. Please contact support.",
+          severity: ErrorSeverity.ERROR,
+          dismissable: true,
+        });
+      }
     } else {
-      // User document doesn't exist in Firestore - sign out
-      console.warn("User document not found in Firestore for uid:", firebaseUser.uid);
-      await signOut(auth);
       localStorage.removeItem("authData");
       setCurrentUser(null);
     }
-  } else {
-    // User is signed out
+  } catch (error: any) {
+    console.error("Error fetching user:", error);
+
+    useGlobalErrorStore.getState().addError({
+      userMessage: "Failed to load user data. Please refresh the page.",
+      severity: ErrorSeverity.ERROR,
+      dismissable: true,
+    });
+
     localStorage.removeItem("authData");
     setCurrentUser(null);
+  } finally {
+    useAuthStore.setState({ isAuthLoading: false });
   }
-
-  // Set loading to false after auth check
-  useAuthStore.setState({ isAuthLoading: false });
 };
 
 // ============================================================================
@@ -86,8 +97,35 @@ interface ApiCallOptions {
 }
 
 /**
- * Generic API wrapper for Zustand stores
- * Handles loading state, API calls, and error handling automatically
+ * Add error to global store for user notification
+ * Separated for cleaner code and single responsibility
+ */
+function addToGlobalErrorStore(status?: number): void {
+  const isNetworkError = !status;
+  const isServerError = status && status >= 500;
+
+  if (isNetworkError) {
+    useGlobalErrorStore.getState().addError({
+      userMessage: "Network error. Check your connection and try again.",
+      severity: ErrorSeverity.ERROR,
+      dismissable: true,
+    });
+  } else if (isServerError) {
+    useGlobalErrorStore.getState().addError({
+      userMessage: "Server error. Please try again.",
+      severity: ErrorSeverity.ERROR,
+      dismissable: true,
+    });
+  }
+}
+
+/**
+ * Enhanced API wrapper with global error handling
+ * Fails fast - no automatic retries. User can manually retry unlimited times.
+ *
+ * Error handling strategy:
+ * - Client errors (4xx) → Feature store only (local handling)
+ * - Server/Network errors (5xx, no status) → Global store (toast notification)
  *
  * @param set - Zustand set function
  * @param method - HTTP method (get, post, put, delete, patch)
@@ -139,12 +177,10 @@ export async function apiCall<T, S extends StoreWithLoading>(
         break;
     }
 
-    // Check for success field if it exists
     if (response.data.success === false) {
       throw new Error(response.data.error || "Request failed");
     }
 
-    // Extract data from response
     const data = response.data.data || response.data;
 
     if (onSuccess) onSuccess(data);
@@ -153,7 +189,19 @@ export async function apiCall<T, S extends StoreWithLoading>(
     return data;
   } catch (error: any) {
     const errorMsg = error.error || error.message || "An error occurred";
+    const status = error.response?.status;
+
+    // Always update feature store (all errors)
     set({ error: errorMsg, isLoading: false } as Partial<S>);
+
+    // Separate concerns: only server/network errors go to global store
+    const isClientError = status && status >= 400 && status < 500;
+
+    if (!isClientError) {
+      // Network error (no status) OR Server error (5xx)
+      addToGlobalErrorStore(status);
+    }
+
     throw new Error(errorMsg);
   }
 }
