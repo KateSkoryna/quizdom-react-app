@@ -5,6 +5,7 @@ import FormSelectComponent from "../forms/formSelectComponent";
 import { useSearchParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { COMPLEXITY_VALUES, QUIZ_CATEGORY } from "../../const/complexity";
+import { Container } from "react-bootstrap";
 
 const categories = Object.values(QUIZ_CATEGORY);
 const complexityValues = Object.values(COMPLEXITY_VALUES);
@@ -31,13 +32,15 @@ const SearchQuizComponent = () => {
   };
 
   return (
-    <Form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
-      <FormSelectComponent fields={categories} fieldsName="category" control={control} />
-      <FormSelectComponent fields={complexityValues} fieldsName="complexity" control={control} />
-      <Button className={modalStyles.primaryButton} type="submit">
-        Search
-      </Button>
-    </Form>
+    <Container>
+      <Form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
+        <FormSelectComponent fields={categories} fieldsName="category" control={control} />
+        <FormSelectComponent fields={complexityValues} fieldsName="complexity" control={control} />
+        <Button className={modalStyles.primaryButton} type="submit">
+          Search
+        </Button>
+      </Form>
+    </Container>
   );
 };
 
