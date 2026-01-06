@@ -315,6 +315,46 @@ quizdom-react-app/
 └── README.md
 ```
 
+## Error Handling
+
+The app implements a 3-layer error handling architecture:
+
+### Global Error Store
+- **Bootstrap Toast notifications** for critical errors (network failures, server errors)
+- Auto-dismiss after 7 seconds
+- Positioned at top-right corner
+- Color-coded: red (error), yellow (warning)
+
+### Feature Store Errors
+- Local error state in each Zustand store (quizzes, favorites, likes, auth)
+- Client errors (4xx) stay in feature stores for local handling
+- Components access errors via `useQuizStore(state => state.error)`
+
+### Error Routing
+- **Server/Network errors (5xx, no connection)** → Global toast notification
+- **Client errors (4xx - validation, not found, etc.)** → Feature store only
+- **Auth errors** → Both local state and global toast with user-friendly messages
+
+### Implementation
+- Enhanced `apiCall` wrapper with fail-fast approach (no auto-retry)
+- Firebase error code mapping to user-friendly messages
+- All auth operations (login, signup, password reset) include error handling
+- Protected `fetchUserWithToken` with try-catch-finally
+
+### Error Boundaries
+- **React Error Boundary** wraps critical sections to catch render errors
+- **Two fallback components**:
+  - `ErrorFallback` - Full-page error display with "Try Again" and "Go to Home" buttons
+  - `SectionErrorFallback` - Compact error for sections (quiz list, forms, modals)
+- **Strategic placement**:
+  - Main layout (catches all route errors)
+  - Quiz list page (quiz grid rendering)
+  - Quiz modal (quiz form rendering)
+  - User page (profile and quiz sections)
+  - Quiz preview page (quiz content display)
+  - News page (news list rendering)
+- **Bootstrap-styled** with collapsible technical details for debugging
+
 ## Key Features Explained
 
 ### Authentication Flow
