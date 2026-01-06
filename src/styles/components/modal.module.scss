@@ -155,17 +155,45 @@
 .formContainer {
   padding: 0;
   border: none;
-}
 
-@keyframes gradientFlow {
-  0% {
-    background-position: 0% 50%;
+  // Error messages styling
+  :global(.text-danger) {
+    font-size: 8px;
+
+    @media (min-width: $breakpoint-md) {
+      font-size: 8px;
+    }
+
+    @media (min-width: $breakpoint-lg) {
+      font-size: 12px;
+    }
   }
-  50% {
-    background-position: 100% 50%;
+
+  // Alert error styling
+  :global(.alert-danger) {
+    font-size: 8px;
+
+    @media (min-width: $breakpoint-md) {
+      font-size: 8px;
+    }
+
+    @media (min-width: $breakpoint-lg) {
+      font-size: 12px;
+    }
   }
-  100% {
-    background-position: 0% 50%;
+
+  // Inline error styling (e.g., generate AI error)
+  div[style*="color: red"],
+  div[style*="color: orange"] {
+    font-size: 8px !important;
+
+    @media (min-width: $breakpoint-md) {
+      font-size: 8px !important;
+    }
+
+    @media (min-width: $breakpoint-lg) {
+      font-size: 12px !important;
+    }
   }
 }
 

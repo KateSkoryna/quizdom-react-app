@@ -136,6 +136,8 @@ form {
   padding: 0.25rem 0.5rem;
   display: flex;
   align-items: center;
+  box-shadow: none !important;
+  color: $gray-light !important;
 
   &:hover {
     background: none;
