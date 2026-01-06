@@ -14,6 +14,8 @@ import QuizStats from "../components/quiz/quizItem/quizStats";
 import styles from "../styles/components/modal.module.scss";
 import cardStyles from "../styles/components/quizCard.module.scss";
 import dayjs from "dayjs";
+import { ErrorBoundary } from "react-error-boundary";
+import SectionErrorFallback from "../components/fallback/sectionErrorFallback";
 
 const QuizPage = () => {
   const { quizId } = useParams<{ quizId: string }>();
@@ -104,26 +106,28 @@ const QuizPage = () => {
           <Modal.Title as="h4">Quiz Preview</Modal.Title>
         </Modal.Header>
         <Modal.Body className={styles.preQuizBody}>
-          <div className={cardStyles.quizCardContent}>
-            {hasCompleted && (
-              <Badge bg="success" className={cardStyles.completedBadge}>
-                ✓ Completed
-              </Badge>
-            )}
-            <QuizCover title={quiz.title} category={quiz.category} />
-            <div className={cardStyles.quizInfoCard}>
-              <h3 className="mb-3">{quiz.title}</h3>
-              <p className={cardStyles.description}>{quiz.description}</p>
-              <QuizLevelBadge complexity={quiz.complexity} />
-              <QuizStats
-                rating={quiz.rating ?? 0}
-                authorName={quiz.authorName}
-                publishedAt={localizedDate}
-                currentUser={!!currentUser}
-                questionsCount={quiz.questions.length}
-              />
+          <ErrorBoundary FallbackComponent={(props) => <SectionErrorFallback {...props} section="quiz preview" />}>
+            <div className={cardStyles.quizCardContent}>
+              {hasCompleted && (
+                <Badge bg="success" className={cardStyles.completedBadge}>
+                  ✓ Completed
+                </Badge>
+              )}
+              <QuizCover title={quiz.title} category={quiz.category} />
+              <div className={cardStyles.quizInfoCard}>
+                <h3 className="mb-3">{quiz.title}</h3>
+                <p className={cardStyles.description}>{quiz.description}</p>
+                <QuizLevelBadge complexity={quiz.complexity} />
+                <QuizStats
+                  rating={quiz.rating ?? 0}
+                  authorName={quiz.authorName}
+                  publishedAt={localizedDate}
+                  currentUser={!!currentUser}
+                  questionsCount={quiz.questions.length}
+                />
+              </div>
             </div>
-          </div>
+          </ErrorBoundary>
         </Modal.Body>
         <Modal.Footer className={styles.modalFooter}>
           {hasCompleted ? (

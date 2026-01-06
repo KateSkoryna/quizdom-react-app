@@ -4,6 +4,8 @@ import QuizFormComponent from "../forms/quizFormComponent";
 import styles from "../../styles/components/modal.module.scss";
 import { useRef, useState, useCallback } from "react";
 import { UserQuiz } from "../../types";
+import { ErrorBoundary } from "react-error-boundary";
+import SectionErrorFallback from "../fallback/sectionErrorFallback";
 
 interface QuizModalProps {
   showModal: boolean;
@@ -47,12 +49,14 @@ const QuizModal = ({ showModal, handleCloseModal, existingQuiz }: QuizModalProps
         <Modal.Title as="h2">{existingQuiz ? "Edit Quiz" : "Create your own Quiz"}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <QuizFormComponent
-          ref={formRef}
-          handleClose={handleCloseModal}
-          onFormStateChange={handleFormStateChange}
-          existingQuiz={existingQuiz}
-        />
+        <ErrorBoundary FallbackComponent={(props) => <SectionErrorFallback {...props} section="quiz form" />}>
+          <QuizFormComponent
+            ref={formRef}
+            handleClose={handleCloseModal}
+            onFormStateChange={handleFormStateChange}
+            existingQuiz={existingQuiz}
+          />
+        </ErrorBoundary>
       </Modal.Body>
       <Modal.Footer className={styles.modalFooter}>
         <Button

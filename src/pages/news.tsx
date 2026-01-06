@@ -4,6 +4,8 @@ import NewsListComponent from "../components/news/newsList";
 import SearchComponent from "../components/news/searchComponent";
 import Loader from "../components/common/loader";
 import { useNews } from "../hooks/useNews";
+import { ErrorBoundary } from "react-error-boundary";
+import SectionErrorFallback from "../components/fallback/sectionErrorFallback";
 
 export interface Article {
   id: string;
@@ -49,7 +51,13 @@ const NewsPage = () => {
   return (
     <>
       <SearchComponent categories={values} />
-      {isLoading ? <Loader /> : <NewsListComponent news={news} />}
+      {isLoading ? (
+        <Loader />
+      ) : (
+        <ErrorBoundary FallbackComponent={(props) => <SectionErrorFallback {...props} section="news list" />}>
+          <NewsListComponent news={news} />
+        </ErrorBoundary>
+      )}
     </>
   );
 };
