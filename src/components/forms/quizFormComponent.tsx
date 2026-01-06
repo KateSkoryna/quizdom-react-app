@@ -202,16 +202,14 @@ const QuizFormComponent = forwardRef<QuizFormRef, QuizFormProps>(
                 </div>
 
                 {generateError && (
-                  <div style={{ color: "red", marginTop: "0.5rem" }}>{generateError}</div>
+                  <div style={{ color: "red" }}>{generateError}</div>
                 )}
 
-                <div style={{ marginTop: "1rem", marginBottom: "1rem" }}>
-                  {remainingAttempts <= 0 && (
-                    <div style={{ color: "orange", marginTop: "0.5rem" }}>
-                      Maximum generation attempts reached. Please reload to try again.
-                    </div>
-                  )}
-                </div>
+                {remainingAttempts <= 0 && (
+                  <div style={{ color: "orange" }}>
+                    Maximum generation attempts reached. Please reload to try again.
+                  </div>
+                )}
               </>
             )}
             <Form.Group className={styles.formGroup} controlId="div-title">
