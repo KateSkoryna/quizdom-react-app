@@ -3,10 +3,16 @@
 
 .itemText {
   color: black;
+  margin-bottom: 4px;
 
   &:not(:last-child) {
-    padding-right: 32px;
+    padding-right: 44px;
   }
+}
+
+.propertyName {
+  font-weight: 700;
+  margin-right: 4px;
 }
 
 .itemSmalltext {
@@ -27,13 +33,14 @@
 .actionButtons {
   position: absolute;
   top: 16px;
-  right: 20px;
+  right: 16px;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.iconButton {
+.iconButton,
+.deleteBtn {
   background-color: transparent;
   color: gray;
   border: none;
@@ -42,8 +49,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 24px;
-  height: 24px;
+  width: 20px;
+  height: 20px;
 
   &:hover,
   &:focus {
@@ -51,36 +58,15 @@
     scale: 1.1;
     transition: scale 0.2s ease-in-out;
     outline: none;
+    box-shadow: none;
   }
-}
-
-.icon {
-  width: 20px;
-  height: 20px;
 }
 
 .deleteBtn {
   background-color: transparent !important;
-  color: gray;
-  border: none;
-  cursor: pointer;
-  padding: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 24px;
-  height: 24px;
 }
 
-.deleteBtn:hover,
-.deleteBtn:focus {
-  color: #f7941d;
-  scale: 1.1;
-  transition: scale 0.2s ease-in-out;
-  outline: none;
-  box-shadow: none;
-}
-
+.icon,
 .deleteBtnIcon {
   width: 20px;
   height: 20px;
@@ -117,7 +103,7 @@
 }
 
 .statLabel {
-  font-weight: 500;
+  font-weight: 700;
   color: $text-secondary;
 }
 
@@ -132,7 +118,7 @@
 }
 
 .ratingLabel {
-  font-weight: 600;
+  font-weight: 700;
   font-size: 1rem;
   color: $text-primary;
 }
