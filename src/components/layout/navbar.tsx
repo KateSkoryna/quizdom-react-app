@@ -37,7 +37,11 @@ const NavbarContainer = () => {
       >
         <Container>
           <Navbar.Brand as={Link} to="/">
-            <Image src={isUserPage ? logoLight : logoDark} />
+            <Image
+              src={isUserPage ? logoLight : logoDark}
+              alt="quizdom logo"
+              aria-label="quizdom logo"
+            />
           </Navbar.Brand>
           <Navbar.Toggle
             className={styles.navbarToggle}
