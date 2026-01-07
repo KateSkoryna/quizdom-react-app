@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import axios from "axios";
 
 interface NewsArticle {
@@ -25,7 +25,7 @@ export const useNews = (): UseNewsReturn => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchNews = async (category: string, keywords: string) => {
+  const fetchNews = useCallback(async (category: string, keywords: string) => {
     const url = `${NEWS_BASE_URL}?access_key=${API_KEY}&category=${category}&languages=en&keywords=${keywords}`;
 
     setIsLoading(true);
@@ -49,7 +49,7 @@ export const useNews = (): UseNewsReturn => {
       setError(errorMessage);
       setIsLoading(false);
     }
-  };
+  }, []);
 
   return { news, isLoading, error, fetchNews };
 };

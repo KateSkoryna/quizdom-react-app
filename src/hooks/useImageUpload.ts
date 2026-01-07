@@ -48,7 +48,7 @@ export const useImageUpload = ({ imageFile, userId, onUploadComplete }: UseImage
     if (imageFile) {
       handleUploadFile();
     }
-  }, [imageFile, onUploadComplete]);
+  }, [imageFile, userId, onUploadComplete]);
 
   const resetProgress = () => setProgressUpload(0);
 

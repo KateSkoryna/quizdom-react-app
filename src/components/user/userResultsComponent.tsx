@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { Accordion, Card, Container, Badge } from "react-bootstrap";
 import { useQuizCompletionStore } from "../../store/quizAttemptsStore";
 import { useQuizStore } from "../../store/quizStore";
@@ -17,14 +17,16 @@ const UserResultsComponent = () => {
   const [quizDetails, setQuizDetails] = useState<Record<string, UserQuiz>>({});
   const [loadingQuizzes, setLoadingQuizzes] = useState(true);
 
-  const completedQuizzes = Object.entries(completionCache)
-    .filter(([, completion]) => completion !== null)
-    .map(([quizId, completion]) => ({ quizId, completion: completion! }))
-    .sort((a, b) => {
-      const dateA = a.completion.completedAt || new Date(0);
-      const dateB = b.completion.completedAt || new Date(0);
-      return dateB.getTime() - dateA.getTime();
-    });
+  const completedQuizzes = useMemo(() => {
+    return Object.entries(completionCache)
+      .filter(([, completion]) => completion !== null)
+      .map(([quizId, completion]) => ({ quizId, completion: completion! }))
+      .sort((a, b) => {
+        const dateA = a.completion.completedAt || new Date(0);
+        const dateB = b.completion.completedAt || new Date(0);
+        return dateB.getTime() - dateA.getTime();
+      });
+  }, [completionCache]);
 
   useEffect(() => {
     if (currentUser) {
@@ -53,7 +55,7 @@ const UserResultsComponent = () => {
     } else {
       setLoadingQuizzes(false);
     }
-  }, [completionCache]);
+  }, [completedQuizzes]);
 
   if (isLoading || loadingQuizzes) {
     return <Loader />;
