@@ -38,15 +38,16 @@ export const ToggleAction = ({
   };
 
   return (
-    <label
+    <button
+      type="button"
       className={className}
       onClick={handleInteraction}
       onKeyDown={handleKeyDown}
-      tabIndex={0}
-      role="button"
+      aria-label={ariaLabel}
+      aria-pressed={isChecked}
     >
-      <input type="checkbox" checked={isChecked} readOnly id={inputId} aria-label={ariaLabel} />
+      <input type="checkbox" checked={isChecked} readOnly id={inputId} aria-hidden="true" tabIndex={-1} />
       <span className={styles.toggleIcon}>{icon}</span>
-    </label>
+    </button>
   );
 };
