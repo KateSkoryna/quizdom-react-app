@@ -1,6 +1,5 @@
 import { Card } from "react-bootstrap";
 import styles from "../../styles/pages/user.module.scss";
-import { avatar as defaultAvatar } from "../../utils/generateRandomAvatar";
 
 interface AvatarUploadProps {
   avatarUrl?: string;
