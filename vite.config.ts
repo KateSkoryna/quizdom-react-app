@@ -3,6 +3,7 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 // @ts-expect-error
 import eslint from "vite-plugin-eslint";
+import { visualizer } from "rollup-plugin-visualizer";
 
 dotenv.config();
 
@@ -26,10 +27,38 @@ export default defineConfig({
       emitWarning: true,
       emitError: true,
     }),
+    visualizer({
+      open: false,
+      gzipSize: true,
+      brotliSize: true,
+      filename: "dist/stats.html",
+    }),
   ],
   base: "/quizdom-react-app/",
   define: {
     "process.env": process.env,
+  },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          // React core
+          "react-vendor": ["react", "react-dom", "react-router-dom"],
+          // Firebase
+          "firebase-auth": ["firebase/app", "firebase/auth"],
+          "firebase-firestore": ["firebase/firestore"],
+          "firebase-storage": ["firebase/storage"],
+          "firebase-functions": ["firebase/functions"],
+          // UI Libraries
+          "bootstrap-vendor": ["react-bootstrap", "bootstrap"],
+          // Forms
+          "form-vendor": ["react-hook-form", "@hookform/resolvers", "yup"],
+          // Other heavy vendors
+          "mapbox-vendor": ["@mapbox/search-js-react"],
+        },
+      },
+    },
+    chunkSizeWarningLimit: 600,
   },
   server: {
     host: "0.0.0.0",
