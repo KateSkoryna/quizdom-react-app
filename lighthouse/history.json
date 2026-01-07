@@ -1,0 +1,172 @@
+[
+  {
+    "timestamp": "2026-01-07T10:57:38.110Z",
+    "date": "1/7/2026",
+    "time": "11:57:38 AM",
+    "scores": {
+      "performance": 74,
+      "accessibility": 71,
+      "bestPractices": 100,
+      "seo": 82
+    },
+    "metrics": {
+      "fcp": "3.0 s",
+      "lcp": "5.4 s",
+      "tbt": "40 ms",
+      "cls": "0",
+      "speedIndex": "3.0 s"
+    }
+  },
+  {
+    "timestamp": "2026-01-07T11:31:23.170Z",
+    "date": "1/7/2026",
+    "time": "12:31:23 PM",
+    "device": "mobile",
+    "scores": {
+      "performance": 73,
+      "accessibility": 74,
+      "bestPractices": 100,
+      "seo": 82
+    },
+    "metrics": {
+      "fcp": "3.3 s",
+      "lcp": "5.4 s",
+      "tbt": "30 ms",
+      "cls": "0",
+      "speedIndex": "3.3 s"
+    }
+  },
+  {
+    "timestamp": "2026-01-07T11:31:23.180Z",
+    "date": "1/7/2026",
+    "time": "12:31:23 PM",
+    "device": "desktop",
+    "scores": {
+      "performance": 99,
+      "accessibility": 80,
+      "bestPractices": 100,
+      "seo": 82
+    },
+    "metrics": {
+      "fcp": "0.6 s",
+      "lcp": "0.9 s",
+      "tbt": "0 ms",
+      "cls": "0",
+      "speedIndex": "0.8 s"
+    }
+  },
+  {
+    "timestamp": "2026-01-07T11:41:34.339Z",
+    "date": "1/7/2026",
+    "time": "12:41:34 PM",
+    "device": "mobile",
+    "scores": {
+      "performance": 75,
+      "accessibility": 80,
+      "bestPractices": 100,
+      "seo": 91
+    },
+    "metrics": {
+      "fcp": "3.0 s",
+      "lcp": "5.2 s",
+      "tbt": "30 ms",
+      "cls": "0",
+      "speedIndex": "3.0 s"
+    }
+  },
+  {
+    "timestamp": "2026-01-07T11:41:34.350Z",
+    "date": "1/7/2026",
+    "time": "12:41:34 PM",
+    "device": "desktop",
+    "scores": {
+      "performance": 99,
+      "accessibility": 85,
+      "bestPractices": 100,
+      "seo": 91
+    },
+    "metrics": {
+      "fcp": "0.6 s",
+      "lcp": "0.9 s",
+      "tbt": "0 ms",
+      "cls": "0",
+      "speedIndex": "0.8 s"
+    }
+  },
+  {
+    "timestamp": "2026-01-07T11:56:56.155Z",
+    "date": "1/7/2026",
+    "time": "12:56:56 PM",
+    "device": "mobile",
+    "scores": {
+      "performance": 73,
+      "accessibility": 84,
+      "bestPractices": 100,
+      "seo": 91
+    },
+    "metrics": {
+      "fcp": "3.1 s",
+      "lcp": "5.4 s",
+      "tbt": "80 ms",
+      "cls": "0",
+      "speedIndex": "3.9 s"
+    }
+  },
+  {
+    "timestamp": "2026-01-07T11:56:56.169Z",
+    "date": "1/7/2026",
+    "time": "12:56:56 PM",
+    "device": "desktop",
+    "scores": {
+      "performance": 99,
+      "accessibility": 89,
+      "bestPractices": 100,
+      "seo": 91
+    },
+    "metrics": {
+      "fcp": "0.6 s",
+      "lcp": "0.9 s",
+      "tbt": "0 ms",
+      "cls": "0",
+      "speedIndex": "0.8 s"
+    }
+  },
+  {
+    "timestamp": "2026-01-07T12:03:46.762Z",
+    "date": "1/7/2026",
+    "time": "1:03:46 PM",
+    "device": "mobile",
+    "scores": {
+      "performance": 74,
+      "accessibility": 89,
+      "bestPractices": 100,
+      "seo": 91
+    },
+    "metrics": {
+      "fcp": "3.1 s",
+      "lcp": "5.5 s",
+      "tbt": "30 ms",
+      "cls": "0",
+      "speedIndex": "3.1 s"
+    }
+  },
+  {
+    "timestamp": "2026-01-07T12:03:46.772Z",
+    "date": "1/7/2026",
+    "time": "1:03:46 PM",
+    "device": "desktop",
+    "scores": {
+      "performance": 99,
+      "accessibility": 95,
+      "bestPractices": 100,
+      "seo": 91
+    },
+    "metrics": {
+      "fcp": "0.6 s",
+      "lcp": "0.9 s",
+      "tbt": "0 ms",
+      "cls": "0",
+      "speedIndex": "0.8 s"
+    }
+  }
+]

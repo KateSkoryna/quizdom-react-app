@@ -9,7 +9,12 @@
     "format": "prettier --write \"src/**/*.{ts,tsx,js,jsx,json,css,scss}\" \"functions/src/**/*.{ts,tsx,js,jsx,json}\"",
     "format:check": "prettier --check \"src/**/*.{ts,tsx,js,jsx,json,css,scss}\" \"functions/src/**/*.{ts,tsx,js,jsx,json}\"",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "lighthouse:audit": "./lighthouse/scripts/audit.sh",
+    "lighthouse:compare": "node lighthouse/scripts/compare.js",
+    "lighthouse:view": "./lighthouse/scripts/view-latest.sh",
+    "lighthouse:view:mobile": "./lighthouse/scripts/view-latest.sh mobile",
+    "lighthouse:view:desktop": "./lighthouse/scripts/view-latest.sh desktop"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
@@ -52,6 +57,7 @@
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.6",
+    "lighthouse": "^13.0.1",
     "ngrok": "^5.0.0-beta.2",
     "prettier": "^3.7.4",
     "react-bootstrap": "^2.10.10",
