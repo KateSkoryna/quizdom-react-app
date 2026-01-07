@@ -12,7 +12,9 @@ function Layout() {
     <ErrorBoundary FallbackComponent={ErrorFallback} onReset={() => navigate("/")}>
       <Suspense fallback={<Loader />}>
         <NavbarContainer />
-        <Outlet />
+        <main>
+          <Outlet />
+        </main>
         <Footer />
       </Suspense>
     </ErrorBoundary>

@@ -46,7 +46,14 @@ export const ToggleAction = ({
       aria-label={ariaLabel}
       aria-pressed={isChecked}
     >
-      <input type="checkbox" checked={isChecked} readOnly id={inputId} aria-hidden="true" tabIndex={-1} />
+      <input
+        type="checkbox"
+        checked={isChecked}
+        readOnly
+        id={inputId}
+        aria-hidden="true"
+        tabIndex={-1}
+      />
       <span className={styles.toggleIcon}>{icon}</span>
     </button>
   );

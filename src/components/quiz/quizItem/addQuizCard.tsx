@@ -14,7 +14,7 @@ const AddQuizCard = () => {
     <>
       <Card className={styles.gridCard}>
         <button className={styles.addQuizCardBtn} onClick={handleShowModal}>
-          <h3 className={styles.addQuizText}>ADD QUIZ</h3>
+          ADD QUIZ
           <MdAdd className={styles.addQuizIcon} />
         </button>
       </Card>

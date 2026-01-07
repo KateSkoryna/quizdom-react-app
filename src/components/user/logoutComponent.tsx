@@ -34,8 +34,12 @@ const LogoutComponent = ({ avatar, name, isUserPage: isUserPageProp, onClose }: 
       align="end"
       className={`${styles.userDropdown} ${isUserPage ? styles.lightBackground : ""}`}
     >
-      <Dropdown.Toggle as="div" className={styles.avatarToggle} id="user-dropdown">
-        <Image src={avatar || defaultAvatar} className={styles.userIcon} />
+      <Dropdown.Toggle as="button" className={styles.avatarToggle} id="user-dropdown">
+        <Image
+          src={avatar || defaultAvatar}
+          className={styles.userIcon}
+          alt="user avatar dropdown"
+        />
       </Dropdown.Toggle>
 
       <Dropdown.Menu className={styles.dropdownMenu}>
