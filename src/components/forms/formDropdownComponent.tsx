@@ -32,27 +32,20 @@ const FormDropdownComponent = ({ fieldName }: FormDropdownComponentProps) => {
             <div className={styles.dropdownList}>
               <div className={styles.dropdownListInner}>
                 {config.options.map((option) => (
-                  <div
+                  <button
                     key={option.value}
-                    role="button"
-                    tabIndex={0}
+                    type="button"
                     onClick={() => {
                       onChange(option.value);
                       setIsOpen(false);
                     }}
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter" || e.key === " ") {
-                        e.preventDefault();
-                        onChange(option.value);
-                        setIsOpen(false);
-                      }
-                    }}
                     className={`${styles.dropdownItem} ${
                       value === option.value ? styles.selected : ""
                     }`}
+                    aria-label={`Select ${option.label}`}
                   >
                     {option.label}
-                  </div>
+                  </button>
                 ))}
               </div>
             </div>

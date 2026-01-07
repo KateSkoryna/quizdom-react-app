@@ -11,7 +11,11 @@ const DeleteQuizComponent = () => {
   const handleShow = () => setShow(true);
   return (
     <>
-      <Button className={styles.deleteBtn} onClick={handleShow}>
+      <Button
+        className={styles.deleteBtn}
+        onClick={handleShow}
+        aria-label="Delete quiz"
+      >
         <MdDeleteOutline className={styles.deleteBtnIcon} />
       </Button>
       <Modal show={show} onHide={handleClose} centered>

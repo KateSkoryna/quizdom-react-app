@@ -156,32 +156,25 @@ const StartQuizModal = ({ show, handleClose, questions, quizId }: StartQuizModal
                 </h5>
                 <h6>Correct answers: {((score / questions.length) * 100).toFixed(1)}%</h6>
               </div>
-              <Card.Img src={owl} className={styles.img} />
+              <Card.Img src={owl} className={styles.img} alt="Wise owl mascot celebrating quiz completion" />
 
               <div className={styles.ratingSection}>
                 <h6 className="text-center">Evaluate this quiz (optional)</h6>
                 <div className={styles.starRating}>
                   {[1, 2, 3, 4, 5].map((star) => (
-                    <span
+                    <button
                       key={star}
-                      role="button"
-                      tabIndex={0}
+                      type="button"
                       className={`${styles.star} ${
                         star <= (hoverRating || rating) ? styles.starFilled : ""
                       }`}
                       onClick={() => setRating(star)}
-                      onKeyDown={(e) => {
-                        if (e.key === "Enter" || e.key === " ") {
-                          e.preventDefault();
-                          setRating(star);
-                        }
-                      }}
                       onMouseEnter={() => setHoverRating(star)}
                       onMouseLeave={() => setHoverRating(0)}
                       aria-label={`Rate ${star} stars`}
                     >
                       ★
-                    </span>
+                    </button>
                   ))}
                 </div>
               </div>

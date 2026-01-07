@@ -15,10 +15,12 @@ const FormSelectComponent = ({ fields, fieldsName, control }: FormSelectProps) =
       control={control}
       render={({ field }) => (
         <Form.Select
+          id={fieldsName}
           className={styles.selectCategory}
           onChange={(e) => field.onChange(e.target.value)}
           value={field.value || "All"}
           name={fieldsName}
+          aria-label={`Select ${fieldsName}`}
         >
           <option value="All">All</option>
           {fields.map((fieldValue) => (

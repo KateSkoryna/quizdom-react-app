@@ -56,6 +56,7 @@ const AnswersFormComponent = ({ nestIndex }: { nestIndex: number }) => {
                     type="button"
                     className={modalStyles.removeQuestionButton}
                     onClick={() => remove(index)}
+                    aria-label={`Remove answer ${index + 1}`}
                   >
                     <MdDeleteOutline />
                   </button>
