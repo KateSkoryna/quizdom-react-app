@@ -164,15 +164,15 @@
           content: "";
           background: linear-gradient(
             45deg,
-            #f7941d,
+            $primary-color,
             #27aae1,
             #00093c,
             #27aae1,
-            #f7941d,
+            $primary-color,
             #27aae1,
             #00093c,
             #27aae1,
-            #f7941d
+            $primary-color
           );
           position: absolute;
           top: -2px;

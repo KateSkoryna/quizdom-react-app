@@ -54,7 +54,7 @@
 
   &:hover,
   &:focus {
-    color: #f7941d;
+    color: $primary-color;
     scale: 1.1;
     transition: scale 0.2s ease-in-out;
     outline: none;

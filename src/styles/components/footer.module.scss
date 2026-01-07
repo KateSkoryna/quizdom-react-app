@@ -53,7 +53,7 @@
 }
 
 .footerLink:hover {
-  border-bottom: 2px solid #f7941d;
+  border-bottom: 2px solid $primary-color;
 }
 
 .footerContactLink {
@@ -63,7 +63,7 @@
   border: transparent;
   width: 24px !important;
   height: 24px !important;
-  background: linear-gradient(90deg, #f7941d, #27aae1);
+  background: linear-gradient(90deg, $primary-color, #27aae1);
   mask-repeat: no-repeat;
   mask-position: center;
   mask-size: cover;
@@ -80,7 +80,7 @@
 
 .footerContactLink:hover {
   border: transparent;
-  background: linear-gradient(90deg, #27aae1, #f7941d);
+  background: linear-gradient(90deg, #27aae1, $primary-color);
 }
 
 .linkedinIcon {
