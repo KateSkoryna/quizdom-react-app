@@ -1,8 +1,12 @@
 @use "../settings" as *;
 
-label {
+button {
   cursor: pointer;
   display: inline-block;
+  background: transparent;
+  border: none;
+  padding: 0;
+  margin: 0;
 
   input[type="checkbox"] {
     position: absolute;
@@ -23,8 +27,8 @@ label {
     justify-content: center;
 
     svg {
-      width: 28px;
-      height: 28px;
+      width: 24px;
+      height: 24px;
       color: $gray-light;
       transition:
         transform 0.2s ease,
