@@ -6,7 +6,7 @@ type SectionErrorFallbackProps = {
   section?: string;
 };
 
-const SectionErrorFallback = ({ error, resetErrorBoundary, section }: SectionErrorFallbackProps) => {
+const SectionErrorFallback = ({ error: _error, resetErrorBoundary, section }: SectionErrorFallbackProps) => {
   return (
     <div style={{
       maxWidth: "1320px",
