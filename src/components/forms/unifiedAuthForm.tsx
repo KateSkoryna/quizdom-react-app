@@ -70,7 +70,6 @@ const UnifiedAuthForm = ({ mode, onModeChange }: UnifiedAuthFormProps) => {
   const {
     register,
     handleSubmit,
-    setError,
     watch,
     formState: { errors },
   } = useForm<AuthFormData>({
@@ -89,59 +88,48 @@ const UnifiedAuthForm = ({ mode, onModeChange }: UnifiedAuthFormProps) => {
   };
 
   const onSubmit = async (values: AuthFormData): Promise<void> => {
-    try {
-      if (mode === "login") {
-        await login(values.email, values.password);
-        navigate("/user");
-      } else {
-        const userCredential = await signup(values as UserData);
+    if (mode === "login") {
+      await login(values.email, values.password);
+      navigate("/user");
+    } else {
+      const userCredential = await signup(values as UserData);
 
-        try {
-          // Create Firestore document
-          await ensureUserDocument("email", userCredential.user, {
-            name: values.name!,
-            email: values.email,
-          });
+      try {
+        // Create Firestore document
+        await ensureUserDocument("email", userCredential.user, {
+          name: values.name!,
+          email: values.email,
+        });
 
-          // Load user data and set in store
-          const userDoc = await getCurrentUser(userCredential.user.uid);
-          if (!userDoc || !userDoc.exists()) {
-            throw new Error("Failed to load user profile");
-          }
-
-          const userData = userDoc.data();
-          const currentUser: CurrentUser = {
-            ...(userData as CurrentUser),
-            id: userCredential.user.uid,
-            dateOfBirth: userData.dateOfBirth?.toDate ? userData.dateOfBirth.toDate() : new Date(),
-          };
-
-          setCurrentUser(currentUser);
-          navigate("/user");
-        } catch (firestoreError: unknown) {
-          // Rollback: Delete the Firebase Auth user if Firestore creation fails
-          try {
-            await userCredential.user.delete();
-          } catch {
-            // Silent rollback failure
-          }
-          throw firestoreError;
+        // Load user data and set in store
+        const userDoc = await getCurrentUser(userCredential.user.uid);
+        if (!userDoc || !userDoc.exists()) {
+          throw new Error("Failed to load user profile");
         }
+
+        const userData = userDoc.data();
+        const currentUser: CurrentUser = {
+          ...(userData as CurrentUser),
+          id: userCredential.user.uid,
+          dateOfBirth: userData.dateOfBirth?.toDate ? userData.dateOfBirth.toDate() : new Date(),
+        };
+
+        setCurrentUser(currentUser);
+        navigate("/user");
+      } catch (firestoreError: unknown) {
+        // Rollback: Delete the Firebase Auth user if Firestore creation fails
+        try {
+          await userCredential.user.delete();
+        } catch {
+          // Silent rollback failure
+        }
+        throw firestoreError;
       }
-    } catch {
-      setError("root", {
-        message:
-          mode === "login"
-            ? "Invalid email or password"
-            : "Failed to create account. Please try again.",
-      });
     }
   };
 
   return (
     <Form key={mode} onSubmit={handleSubmit(onSubmit)}>
-      {errors.root && <p className="text-danger mb-3 text-center">{errors.root.message}</p>}
-
       {mode === "signup" && (
         <Form.Group controlId="formBasicName">
           <Form.Label>Name</Form.Label>
