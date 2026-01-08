@@ -11,14 +11,12 @@
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "lighthouse:audit": "./lighthouse/scripts/audit.sh",
-    "lighthouse:compare": "node lighthouse/scripts/compare.js",
-    "lighthouse:view": "./lighthouse/scripts/view-latest.sh",
-    "lighthouse:view:mobile": "./lighthouse/scripts/view-latest.sh mobile",
-    "lighthouse:view:desktop": "./lighthouse/scripts/view-latest.sh desktop"
+    "lighthouse:compare": "node lighthouse/scripts/compare.js"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
     "@mapbox/search-js-react": "^1.5.0",
+    "@tanstack/react-query": "^5.90.16",
     "axios": "^1.13.2",
     "bcryptjs-react": "^2.4.6",
     "bootstrap": "^5.3.8",
