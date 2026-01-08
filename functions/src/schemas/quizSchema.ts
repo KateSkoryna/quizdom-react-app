@@ -51,7 +51,19 @@ export const quizSchema = z.object({
     .trim(),
   status: z.string(),
   complexity: z.enum(["Beginner", "Medium", "Advanced", "Expert"]),
-  category: z.enum(["JavaScript", "TypeScript", "ReactJS", "NextJS", "NodeJS", "Jest", "Other"]),
+  category: z.enum([
+    "JavaScript",
+    "TypeScript",
+    "ReactJS",
+    "NextJS",
+    "NodeJS",
+    "Jest",
+    "Web Fundamentals",
+    "HTTP & REST APIs",
+    "Web Performance",
+    "Web Accessibility",
+    "Other",
+  ]),
   questions: z
     .array(questionSchema)
     .min(6, "Quiz must contain at least 6 questions")
@@ -66,7 +78,19 @@ export type QuizSchemaType = z.infer<typeof quizSchema>;
 
 // Replace Object.values with a literal array if possible
 export const quizInputSchema = z.object({
-  category: z.enum(["JavaScript", "TypeScript", "ReactJS", "NextJS", "NodeJS", "Jest", "Other"]),
+  category: z.enum([
+    "JavaScript",
+    "TypeScript",
+    "ReactJS",
+    "NextJS",
+    "NodeJS",
+    "Jest",
+    "Web Fundamentals",
+    "HTTP & REST APIs",
+    "Web Performance",
+    "Web Accessibility",
+    "Other",
+  ]),
   complexity: z.enum(["Beginner", "Medium", "Advanced", "Expert"]), // Adjust to your enum values
   language: z.string().default("English"),
   customUserPrompt: z.string().max(300).optional(),

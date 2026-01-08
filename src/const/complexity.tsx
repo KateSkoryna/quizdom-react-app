@@ -15,6 +15,10 @@ export const QUIZ_CATEGORY = {
   [QuizCategory.NEXT_JS]: "NextJS",
   [QuizCategory.NODE_JS]: "NodeJS",
   [QuizCategory.JEST]: "Jest",
+  [QuizCategory.WEB_FUNDAMENTALS]: "Web Fundamentals",
+  [QuizCategory.HTTP_REST]: "HTTP & REST APIs",
+  [QuizCategory.WEB_PERFORMANCE]: "Web Performance",
+  [QuizCategory.WEB_ACCESSIBILITY]: "Web Accessibility",
   [QuizCategory.OTHER]: "Other",
 };
 
