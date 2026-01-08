@@ -1,6 +1,6 @@
 /**
  * Lighthouse Tracker
- * Saves Lighthouse audit results to history file
+ * Saves mobile and desktop audit results to history
  */
 
 import fs from 'fs';
@@ -11,8 +11,12 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 const HISTORY_FILE = join(__dirname, '../history.json');
-const LATEST_MOBILE_REPORT = join(__dirname, '../.latest-mobile-report');
-const LATEST_DESKTOP_REPORT = join(__dirname, '../.latest-desktop-report');
+const [mobileJsonPath, desktopJsonPath] = process.argv.slice(2);
+
+if (!mobileJsonPath || !desktopJsonPath) {
+  console.error('❌ Usage: node tracker.js <mobile.json> <desktop.json>');
+  process.exit(1);
+}
 
 // Function to extract data from a report
 function extractData(reportPath, device) {
@@ -50,50 +54,14 @@ if (fs.existsSync(HISTORY_FILE)) {
   history = JSON.parse(fs.readFileSync(HISTORY_FILE, 'utf8'));
 }
 
-// Process mobile report
-let mobileEntry = null;
-if (fs.existsSync(LATEST_MOBILE_REPORT)) {
-  const mobilePath = fs.readFileSync(LATEST_MOBILE_REPORT, 'utf8').trim();
-  mobileEntry = extractData(mobilePath, 'mobile');
-  if (mobileEntry) {
-    history.push(mobileEntry);
-  }
-}
+// Process reports
+const mobileEntry = extractData(mobileJsonPath, 'mobile');
+const desktopEntry = extractData(desktopJsonPath, 'desktop');
 
-// Process desktop report
-let desktopEntry = null;
-if (fs.existsSync(LATEST_DESKTOP_REPORT)) {
-  const desktopPath = fs.readFileSync(LATEST_DESKTOP_REPORT, 'utf8').trim();
-  desktopEntry = extractData(desktopPath, 'desktop');
-  if (desktopEntry) {
-    history.push(desktopEntry);
-  }
-}
+if (mobileEntry) history.push(mobileEntry);
+if (desktopEntry) history.push(desktopEntry);
 
 // Save updated history
 fs.writeFileSync(HISTORY_FILE, JSON.stringify(history, null, 2));
 
-console.log('\n✅ Lighthouse scores saved to history!\n');
-
-if (mobileEntry) {
-  console.log('📱 MOBILE Scores:');
-  console.log(`   Performance:    ${mobileEntry.scores.performance}/100`);
-  console.log(`   Accessibility:  ${mobileEntry.scores.accessibility}/100`);
-  console.log(`   Best Practices: ${mobileEntry.scores.bestPractices}/100`);
-  console.log(`   SEO:            ${mobileEntry.scores.seo}/100`);
-  console.log(`\n   Key Metrics:`);
-  console.log(`   FCP: ${mobileEntry.metrics.fcp} | LCP: ${mobileEntry.metrics.lcp} | TBT: ${mobileEntry.metrics.tbt}`);
-}
-
-if (desktopEntry) {
-  console.log('\n💻 DESKTOP Scores:');
-  console.log(`   Performance:    ${desktopEntry.scores.performance}/100`);
-  console.log(`   Accessibility:  ${desktopEntry.scores.accessibility}/100`);
-  console.log(`   Best Practices: ${desktopEntry.scores.bestPractices}/100`);
-  console.log(`   SEO:            ${desktopEntry.scores.seo}/100`);
-  console.log(`\n   Key Metrics:`);
-  console.log(`   FCP: ${desktopEntry.metrics.fcp} | LCP: ${desktopEntry.metrics.lcp} | TBT: ${desktopEntry.metrics.tbt}`);
-}
-
-console.log(`\n📈 Total audits in history: ${history.length}`);
-console.log(`📁 History file: lighthouse/history.json\n`);
+console.log('💾 Results saved to lighthouse/history.json');

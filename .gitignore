@@ -36,5 +36,3 @@ functions/.genkit
 
 # Lighthouse reports (keep history.json tracked)
 lighthouse/reports/
-lighthouse/.latest-mobile-report
-lighthouse/.latest-desktop-report

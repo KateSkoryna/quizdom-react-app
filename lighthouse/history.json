@@ -168,5 +168,195 @@
       "cls": "0",
       "speedIndex": "0.8 s"
     }
+  },
+  {
+    "timestamp": "2026-01-08T09:34:58.038Z",
+    "date": "1/8/2026",
+    "time": "10:34:58 AM",
+    "device": "mobile",
+    "scores": {
+      "performance": 78,
+      "accessibility": 91,
+      "bestPractices": 100,
+      "seo": 91
+    },
+    "metrics": {
+      "fcp": "3.1 s",
+      "lcp": "4.6 s",
+      "tbt": "50 ms",
+      "cls": "0",
+      "speedIndex": "3.1 s"
+    }
+  },
+  {
+    "timestamp": "2026-01-08T09:34:58.048Z",
+    "date": "1/8/2026",
+    "time": "10:34:58 AM",
+    "device": "desktop",
+    "scores": {
+      "performance": 99,
+      "accessibility": 96,
+      "bestPractices": 100,
+      "seo": 91
+    },
+    "metrics": {
+      "fcp": "0.6 s",
+      "lcp": "0.9 s",
+      "tbt": "0 ms",
+      "cls": "0",
+      "speedIndex": "0.8 s"
+    }
+  },
+  {
+    "timestamp": "2026-01-08T09:46:50.559Z",
+    "date": "1/8/2026",
+    "time": "10:46:50 AM",
+    "device": "mobile",
+    "scores": {
+      "performance": 73,
+      "accessibility": 91,
+      "bestPractices": 100,
+      "seo": 91
+    },
+    "metrics": {
+      "fcp": "3.3 s",
+      "lcp": "5.4 s",
+      "tbt": "40 ms",
+      "cls": "0",
+      "speedIndex": "3.3 s"
+    }
+  },
+  {
+    "timestamp": "2026-01-08T09:46:50.570Z",
+    "date": "1/8/2026",
+    "time": "10:46:50 AM",
+    "device": "desktop",
+    "scores": {
+      "performance": 99,
+      "accessibility": 96,
+      "bestPractices": 100,
+      "seo": 91
+    },
+    "metrics": {
+      "fcp": "0.6 s",
+      "lcp": "0.9 s",
+      "tbt": "0 ms",
+      "cls": "0",
+      "speedIndex": "0.8 s"
+    }
+  },
+  {
+    "timestamp": "2026-01-08T09:53:48.022Z",
+    "date": "1/8/2026",
+    "time": "10:53:48 AM",
+    "device": "mobile",
+    "scores": {
+      "performance": 74,
+      "accessibility": 96,
+      "bestPractices": 100,
+      "seo": 91
+    },
+    "metrics": {
+      "fcp": "3.1 s",
+      "lcp": "5.2 s",
+      "tbt": "50 ms",
+      "cls": "0",
+      "speedIndex": "3.1 s"
+    }
+  },
+  {
+    "timestamp": "2026-01-08T09:53:48.032Z",
+    "date": "1/8/2026",
+    "time": "10:53:48 AM",
+    "device": "desktop",
+    "scores": {
+      "performance": 99,
+      "accessibility": 96,
+      "bestPractices": 100,
+      "seo": 91
+    },
+    "metrics": {
+      "fcp": "0.6 s",
+      "lcp": "0.9 s",
+      "tbt": "0 ms",
+      "cls": "0",
+      "speedIndex": "0.8 s"
+    }
+  },
+  {
+    "timestamp": "2026-01-08T10:00:56.904Z",
+    "date": "1/8/2026",
+    "time": "11:00:56 AM",
+    "device": "mobile",
+    "scores": {
+      "performance": 74,
+      "accessibility": 100,
+      "bestPractices": 100,
+      "seo": 91
+    },
+    "metrics": {
+      "fcp": "3.1 s",
+      "lcp": "5.3 s",
+      "tbt": "40 ms",
+      "cls": "0",
+      "speedIndex": "3.1 s"
+    }
+  },
+  {
+    "timestamp": "2026-01-08T10:00:56.916Z",
+    "date": "1/8/2026",
+    "time": "11:00:56 AM",
+    "device": "desktop",
+    "scores": {
+      "performance": 99,
+      "accessibility": 96,
+      "bestPractices": 100,
+      "seo": 91
+    },
+    "metrics": {
+      "fcp": "0.6 s",
+      "lcp": "0.9 s",
+      "tbt": "0 ms",
+      "cls": "0",
+      "speedIndex": "0.8 s"
+    }
+  },
+  {
+    "timestamp": "2026-01-08T10:07:00.226Z",
+    "date": "1/8/2026",
+    "time": "11:07:00 AM",
+    "device": "mobile",
+    "scores": {
+      "performance": 74,
+      "accessibility": 96,
+      "bestPractices": 100,
+      "seo": 100
+    },
+    "metrics": {
+      "fcp": "3.1 s",
+      "lcp": "5.3 s",
+      "tbt": "30 ms",
+      "cls": "0",
+      "speedIndex": "3.1 s"
+    }
+  },
+  {
+    "timestamp": "2026-01-08T10:07:00.236Z",
+    "date": "1/8/2026",
+    "time": "11:07:00 AM",
+    "device": "desktop",
+    "scores": {
+      "performance": 99,
+      "accessibility": 96,
+      "bestPractices": 100,
+      "seo": 100
+    },
+    "metrics": {
+      "fcp": "0.6 s",
+      "lcp": "0.9 s",
+      "tbt": "0 ms",
+      "cls": "0",
+      "speedIndex": "0.8 s"
+    }
   }
 ]

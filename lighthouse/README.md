@@ -1,6 +1,6 @@
 # Lighthouse Tracking
 
-Track and compare Lighthouse performance metrics over time for both **mobile** and **desktop**.
+Simple Lighthouse auditing with comprehensive reports showing scores, issues, and recommendations for both mobile and desktop.
 
 ## Quick Start
 
@@ -9,94 +9,139 @@ Track and compare Lighthouse performance metrics over time for both **mobile** a
 npm run lighthouse:audit
 ```
 
-This will:
-1. Build your production app
-2. Start a preview server
-3. Run Lighthouse audit for **MOBILE** (~30 seconds)
-4. Run Lighthouse audit for **DESKTOP** (~30 seconds)
-5. Save results to `lighthouse/history.json`
-6. Clean up the preview server
-7. Show you separate scores for mobile and desktop
+**This will:**
+1. Build production app
+2. Run Lighthouse for **MOBILE**
+3. Run Lighthouse for **DESKTOP**
+4. Generate human-readable report in terminal (always displayed)
+5. Save report to `lighthouse/reports/report_YYYY-MM-DD.txt`
+6. Save scores to `lighthouse/history.json`
 
-### Compare results
+**Smart report management:**
+- ✅ Multiple runs per day = 1 report (overwrites previous)
+- 📁 Reports kept for 1 year, auto-deleted after (ignored in git)
+- 📊 Terminal always shows full report
+
+**Output includes:**
+- ✅ Scores comparison (Mobile vs Desktop)
+- ⚡ Key performance metrics
+- 📁 Problem files with paths
+- 💡 Specific recommendations for each issue
+
+### Compare results over time
 ```bash
 npm run lighthouse:compare
 ```
 
-Shows:
-- Separate tables for mobile and desktop audit history
-- Change from previous audit (for each device)
-- Overall trend from first to latest audit (for each device)
+Shows historical trends and changes from previous audits.
 
-### View HTML reports
-```bash
-npm run lighthouse:view          # Opens both mobile & desktop reports
-npm run lighthouse:view:mobile   # Opens only mobile report
-npm run lighthouse:view:desktop  # Opens only desktop report
+## File Structure
+
+```
+lighthouse/
+├── README.md
+├── history.json              # Tracked scores over time
+├── reports/                  # Generated reports (ignored in git)
+│   ├── mobile_*.json         # Raw mobile audit data
+│   ├── desktop_*.json        # Raw desktop audit data
+│   └── report_*.txt          # Human-readable reports
+└── scripts/
+    ├── audit.sh              # Main audit script
+    ├── generate-report.js    # Creates readable reports
+    ├── tracker.js            # Saves to history
+    └── compare.js            # Shows trends
 ```
 
-Opens the detailed Lighthouse HTML report(s) in your browser with:
-- Detailed scores breakdown
-- Specific recommendations
-- Performance metrics
-- Screenshots
+## Example Report
 
-## Files
+```
+╔════════════════════════════════════════════════════════════════════╗
+║               LIGHTHOUSE AUDIT REPORT                              ║
+╚════════════════════════════════════════════════════════════════════╝
 
-- `audit.sh` - Bash script that orchestrates the audit process
-- `scripts/tracker.js` - Saves audit results to history
-- `scripts/compare.js` - Compares audit results over time
-- `scripts/view-latest.sh` - Opens the most recent HTML report(s)
-- `history.json` - JSON file storing all audit results (tracked in git)
-- `reports/mobile/` - Mobile reports (ignored in git)
-- `reports/desktop/` - Desktop reports (ignored in git)
-- `.latest-mobile-report` - Pointer to most recent mobile report (ignored in git)
-- `.latest-desktop-report` - Pointer to most recent desktop report (ignored in git)
+📊 SCORES COMPARISON
 
-## Tracking Over Time
+                        📱 MOBILE    💻 DESKTOP
+  ─────────────────────────────────────────────
+  Performance            77 🟠        99 🟢
+  Accessibility          71 🟠        77 🟠
+  Best Practices        100 🟢       100 🟢
+  SEO                    82 🟠        82 🟠
 
-Run `npm run lighthouse:audit` regularly (weekly, monthly, etc.) to track your app's performance over time.
+═══════════════════════════════════════════════════════════════════════
 
-**Each audit creates:**
-- Timestamped mobile HTML and JSON reports in `reports/mobile/` (e.g., `report_2026-01-07_11-43.report.html`)
-- Timestamped desktop HTML and JSON reports in `reports/desktop/`
-- Two entries in `history.json` - one for mobile, one for desktop
-- Updated pointers to the newest reports
+♿ ACCESSIBILITY ISSUES
 
-Example workflow:
-```bash
-# Week 1: Initial audit
-npm run lighthouse:audit
+  1. Buttons do not have an accessible name [mobile & desktop]
+     Buttons must have discernible text that clearly describes...
 
-# Week 2: After some optimizations
-npm run lighthouse:audit
-npm run lighthouse:compare  # See the improvements!
+     📁 Affected files:
+        • assets/user-D0hG5wGE.js
+        • assets/index-Clsb4kBT.js
 
-# View detailed reports anytime
-npm run lighthouse:view
+     💡 Recommendation:
+        Add aria-label to icon-only buttons
 ```
 
 ## What's Tracked
 
 ### Scores (0-100)
-- Performance
-- Accessibility
-- Best Practices
-- SEO
+- 🟢 90-100: Good
+- 🟠 50-89: Needs improvement
+- 🔴 0-49: Poor
 
-### Key Metrics
-- First Contentful Paint (FCP)
-- Largest Contentful Paint (LCP)
-- Total Blocking Time (TBT)
-- Cumulative Layout Shift (CLS)
-- Speed Index
+### Categories
+- **Performance** - Loading speed and responsiveness
+- **Accessibility** - Usability for people with disabilities
+- **Best Practices** - Code quality and security
+- **SEO** - Search engine optimization
 
-## Why Mobile vs Desktop?
+### Metrics
+- **FCP** - First Contentful Paint
+- **LCP** - Largest Contentful Paint
+- **TBT** - Total Blocking Time
+- **CLS** - Cumulative Layout Shift
+- **Speed Index** - How quickly content is displayed
 
-Mobile and desktop have different:
-- **Viewport sizes** - Mobile uses smaller screens
-- **Network speeds** - Mobile typically has slower connections
-- **CPU power** - Mobile devices are less powerful
-- **User expectations** - Mobile users expect fast, responsive experiences
+## Workflow
 
-Your app should perform well on both! Desktop scores are typically higher than mobile scores.
+```bash
+# Week 1: Initial audit
+npm run lighthouse:audit
+# Check the report in terminal
+
+# Fix issues based on recommendations
+
+# Week 2: Re-audit to verify improvements
+npm run lighthouse:audit
+npm run lighthouse:compare  # See the improvements!
+```
+
+## Report Management
+
+**Reports are kept for 1 year:**
+- Small file size (~1MB per day = ~365MB per year)
+- Git ignores them (won't bloat repository)
+- Useful for monthly/yearly comparisons
+- Auto-deleted after 365 days
+
+**Manual cleanup (if needed):**
+```bash
+# Delete reports older than 90 days
+find lighthouse/reports -name "*.json" -mtime +90 -delete
+find lighthouse/reports -name "*.txt" -mtime +90 -delete
+
+# Delete all except most recent 10
+ls -t lighthouse/reports/*.txt | tail -n +11 | xargs rm
+```
+
+**Note:** `history.json` always keeps ALL score summaries (never deleted), even after report files are removed.
+
+## Tips
+
+- Run audits regularly (weekly/monthly) to track progress
+- Fix accessibility issues first (impacts real users)
+- Desktop scores are usually higher than mobile
+- Focus on issues marked 🔴 (red) first
+- Each report shows specific file paths to fix
+- Check `lighthouse/reports/report_2026-01-08.txt` to review past audits
