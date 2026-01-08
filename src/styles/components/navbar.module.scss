@@ -19,6 +19,11 @@
     &:focus {
       color: $primary-color !important;
     }
+
+    &.active {
+      color: $primary-color !important;
+      font-weight: 600;
+    }
   }
 
   .navLinkLight {

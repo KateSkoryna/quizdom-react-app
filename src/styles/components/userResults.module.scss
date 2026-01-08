@@ -15,10 +15,14 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 300px;
   text-align: center;
   color: $gray-light;
   font-size: 1.1rem;
+  margin-top: 1rem;
+
+  @media (min-width: $breakpoint-md) {
+    margin-top: 2rem;
+  }
 }
 
 .accordionHeader {
@@ -47,7 +51,7 @@
   font-weight: 700;
   padding: 0.35rem 0.75rem;
   border-radius: 1rem;
-  margin-right: 16px;
+  margin-right: 1rem;
   display: flex;
   align-items: center;
 }

@@ -17,8 +17,8 @@
       right: 0.75rem;
       top: 50%;
       transform: translateY(-50%);
-      width: 16px;
-      height: 16px;
+      width: 1rem;
+      height: 1rem;
       padding: 0;
       z-index: 1;
       pointer-events: auto;
@@ -80,7 +80,7 @@
     }
 
     .react-datepicker__month {
-      margin: 12px 16px;
+      margin: 12px 1rem;
     }
 
     .react-datepicker__week {

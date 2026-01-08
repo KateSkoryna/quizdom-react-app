@@ -9,8 +9,8 @@
   justify-content: center;
 
   & .modal-content {
-    padding-top: 16px;
-    padding-bottom: 16px;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
     border: none;
   }
 
@@ -40,8 +40,8 @@
   max-width: calc(40rem);
 
   & .modal-content {
-    padding-top: 16px;
-    padding-bottom: 16px;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
     border: none;
   }
 
@@ -115,7 +115,7 @@
   border-radius: 4px;
   font-size: 1rem;
   cursor: pointer;
-  padding: 8px 16px;
+  padding: 8px 1rem;
   transition: all 0.3s ease-in-out;
   font-weight: 500;
 
@@ -134,11 +134,6 @@
   border-color: $primary-color;
   background-color: $primary-color;
   color: $white;
-
-  &:hover:not(:disabled) {
-    background-color: color.adjust($primary-color, $lightness: -10%);
-    border-color: color.adjust($primary-color, $lightness: -10%);
-  }
 }
 
 .secondaryButton {
@@ -684,7 +679,7 @@
   border-radius: 4px;
   font-size: 1rem;
   cursor: pointer;
-  padding: 8px 16px;
+  padding: 8px 1rem;
   transition: all 0.3s ease-in-out;
   font-weight: 500;
 
@@ -703,11 +698,6 @@
   border-color: $primary-color;
   background-color: $primary-color;
   color: $white;
-
-  &:hover:not(:disabled) {
-    background-color: color.adjust($primary-color, $lightness: -10%);
-    border-color: color.adjust($primary-color, $lightness: -10%);
-  }
 }
 
 .actionButtonSecondary {

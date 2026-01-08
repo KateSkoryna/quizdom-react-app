@@ -321,7 +321,7 @@
 }
 
 .heroJokeText {
-  font-size: 18px;
+  font-size: 16px;
   font-family: "bebas neue";
   text-align: start;
   color: $white;
@@ -334,24 +334,6 @@
 
   @media screen and (min-width: 998px) {
     font-size: 28px;
-    width: 40%;
-  }
-}
-
-.heroJokeTextBig {
-  font-size: 18px;
-  line-height: 1.2;
-  font-family: "bebas neue";
-  text-align: start;
-  color: white;
-  width: 50%;
-
-  @media screen and (min-width: 768px) {
-    font-size: 24px;
-  }
-
-  @media screen and (min-width: 998px) {
-    font-size: 30px;
   }
 }
 
@@ -365,7 +347,7 @@
   }
 
   @media screen and (min-width: 998px) {
-    font-size: 16px;
+    font-size: 1rem;
   }
 }
 .errorText {
