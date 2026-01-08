@@ -29,6 +29,7 @@ export const UserEditActions = ({
           now={progressUpload}
           variant={progressUpload > 0 ? "primary" : "secondary"}
           label={progressUpload > 0 ? `${Math.round(progressUpload)}%` : ""}
+          aria-label="Profile photo upload progress"
         />
       </div>
       {isEditMode ? (

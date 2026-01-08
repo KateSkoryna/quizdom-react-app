@@ -41,11 +41,13 @@ const NavbarContainer = () => {
               src={isUserPage ? logoLight : logoDark}
               alt="quizdom logo"
               aria-label="quizdom logo"
+              width={43}
+              height={41}
             />
           </Navbar.Brand>
           <Navbar.Toggle
             className={styles.navbarToggle}
-            aria-controls="basic-navbar-nav"
+            aria-label="Toggle navigation menu"
             onClick={handleShow}
           />
           <Offcanvas
