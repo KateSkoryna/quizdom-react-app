@@ -11,8 +11,8 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { quizSchema } from "../../schemas";
 import addClassnameToText from "../../utils/addClassnameToText";
 import type { Status } from "../modal/quizModal";
-import { useQuizStore } from "../../store/quizStore";
 import { useGeneratedQuizStore } from "../../store/generatedQuizStore";
+import { useAddQuiz, useUpdateQuiz } from "../../hooks/useQuizzes";
 
 // Use type instead of interface
 type QuizFormProps = {
@@ -48,8 +48,8 @@ type QuizFormRef = {
 const QuizFormComponent = forwardRef<QuizFormRef, QuizFormProps>(
   ({ handleClose, onFormStateChange, existingQuiz }, ref) => {
     const currentUser = useAuthStore((state: AuthStore) => state.currentUser);
-    const addQuiz = useQuizStore((store) => store.addQuiz);
-    const updateQuiz = useQuizStore((store) => store.updateQuiz);
+    const { mutateAsync: addQuiz } = useAddQuiz();
+    const { mutateAsync: updateQuiz } = useUpdateQuiz();
     const {
       generatedQuiz,
       isGenerating,
@@ -79,7 +79,6 @@ const QuizFormComponent = forwardRef<QuizFormRef, QuizFormProps>(
     const {
       register,
       handleSubmit,
-      setError,
       reset,
       watch,
       setValue,
@@ -103,15 +102,11 @@ const QuizFormComponent = forwardRef<QuizFormRef, QuizFormProps>(
       onFormStateChange?.({ isDirty, isSubmitting });
     }, [isDirty, isSubmitting, onFormStateChange]);
 
-    // Fill form when quiz is generated
     useEffect(() => {
       if (generatedQuiz) {
-        // 1. Set top-level fields
         setValue("title", generatedQuiz.title, { shouldDirty: true });
         setValue("description", generatedQuiz.description, { shouldDirty: true });
 
-        // 2. Simply use setValue for the array.
-        // React Hook Form will pass this down to the useFieldArray in the child.
         setValue("questions", generatedQuiz.questions, {
           shouldDirty: true,
           shouldValidate: true,
@@ -133,13 +128,10 @@ const QuizFormComponent = forwardRef<QuizFormRef, QuizFormProps>(
     const handleFormSubmit = async ({ status, ...data }: QuizFormState & { status: Status }) => {
       if (currentUser) {
         if (existingQuiz?.id) {
-          // Update existing quiz
-          await updateQuiz(existingQuiz.id, { ...data, status });
+          await updateQuiz({ quizId: existingQuiz.id, data: { ...data, status } });
         } else {
-          // Create new quiz
-          await addQuiz({ ...data, status }, setError);
+          await addQuiz({ ...data, status });
         }
-
         reset();
         handleClose();
       } else {
@@ -201,9 +193,7 @@ const QuizFormComponent = forwardRef<QuizFormRef, QuizFormProps>(
                   />
                 </div>
 
-                {generateError && (
-                  <div style={{ color: "red" }}>{generateError}</div>
-                )}
+                {generateError && <div style={{ color: "red" }}>{generateError}</div>}
 
                 {remainingAttempts <= 0 && (
                   <div style={{ color: "orange" }}>

@@ -1,32 +1,20 @@
-import { useEffect, useState, useMemo } from "react";
 import { Accordion, Card, Container, Badge } from "react-bootstrap";
 import { useQuizCompletionStore } from "../../store/quizAttemptsStore";
-import { useQuizStore } from "../../store/quizStore";
 import { useAuthStore } from "../../store/authStore";
-import type { UserQuiz } from "../../types/quiz";
+import { useQueries } from "@tanstack/react-query";
+import type { UserQuiz } from "../../types";
 import Loader from "../common/loader";
 import styles from "../../styles/components/userResults.module.scss";
 import dayjs from "dayjs";
 import StarRating from "../common/starRating";
+import { fetchQuizById } from "../../fetchers/quiz-api";
+import { useEffect } from "react";
 
 const UserResultsComponent = () => {
   const currentUser = useAuthStore((state) => state.currentUser);
   const completionCache = useQuizCompletionStore((state) => state.completionCache);
   const loadAllCompletions = useQuizCompletionStore((state) => state.loadAllCompletions);
-  const isLoading = useQuizCompletionStore((state) => state.isLoading);
-  const [quizDetails, setQuizDetails] = useState<Record<string, UserQuiz>>({});
-  const [loadingQuizzes, setLoadingQuizzes] = useState(true);
-
-  const completedQuizzes = useMemo(() => {
-    return Object.entries(completionCache)
-      .filter(([, completion]) => completion !== null)
-      .map(([quizId, completion]) => ({ quizId, completion: completion! }))
-      .sort((a, b) => {
-        const dateA = a.completion.completedAt || new Date(0);
-        const dateB = b.completion.completedAt || new Date(0);
-        return dateB.getTime() - dateA.getTime();
-      });
-  }, [completionCache]);
+  const isLoadingCompletions = useQuizCompletionStore((state) => state.isLoading);
 
   useEffect(() => {
     if (currentUser) {
@@ -34,30 +22,40 @@ const UserResultsComponent = () => {
     }
   }, [currentUser, loadAllCompletions]);
 
-  useEffect(() => {
-    const fetchQuizDetails = async () => {
-      const quizIds = completedQuizzes.map((q) => q.quizId);
-      const details: Record<string, UserQuiz> = {};
+  // Get completed quizzes list
+  const completedQuizzes = Object.entries(completionCache)
+    .filter(([, completion]) => completion !== null)
+    .map(([quizId, completion]) => ({ quizId, completion: completion! }))
+    .sort((a, b) => {
+      const dateA = a.completion.completedAt || new Date(0);
+      const dateB = b.completion.completedAt || new Date(0);
+      return dateB.getTime() - dateA.getTime();
+    });
 
-      for (const quizId of quizIds) {
-        const quiz = await useQuizStore.getState().getQuizById(quizId);
-        if (quiz) {
-          details[quizId] = quiz;
-        }
+  // Fetch all quiz details with React Query
+  const quizQueries = useQueries({
+    queries: completedQuizzes.map(({ quizId }) => ({
+      queryKey: ["quiz", quizId],
+      queryFn: () => fetchQuizById(quizId),
+      staleTime: 1000 * 60 * 5,
+    })),
+  });
+
+  // Combine fetched quizzes into a dictionary
+  const quizDetails: Record<string, UserQuiz> = quizQueries.reduce<Record<string, UserQuiz>>(
+    (acc, query, idx) => {
+      if (query.data) {
+        acc[completedQuizzes[idx].quizId] = query.data;
       }
+      return acc;
+    },
+    {}
+  );
 
-      setQuizDetails(details);
-      setLoadingQuizzes(false);
-    };
+  const loadingQuizzes = quizQueries.some((q) => q.isLoading);
 
-    if (completedQuizzes.length > 0) {
-      fetchQuizDetails();
-    } else {
-      setLoadingQuizzes(false);
-    }
-  }, [completedQuizzes]);
-
-  if (isLoading || loadingQuizzes) {
+  // Show loader if completions or quizzes are loading
+  if (isLoadingCompletions || loadingQuizzes) {
     return <Loader />;
   }
 

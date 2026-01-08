@@ -5,14 +5,16 @@ import styles from "../styles/pages/home.module.scss";
 import { ErrorBoundary } from "react-error-boundary";
 import SectionErrorFallback from "../components/fallback/sectionErrorFallback";
 import { useState } from "react";
-import { useQuizStore } from "../store/quizStore";
+import { UserQuiz } from "../types";
+import { useQueryClient } from "@tanstack/react-query";
 
 const HomePage = () => {
-  const clearQuizzes = useQuizStore((store) => store.clearQuizzes);
+  const queryClient = useQueryClient();
   const [resetKey, setResetKey] = useState(0);
 
   const handleReset = () => {
-    clearQuizzes();
+    queryClient.setQueryData<UserQuiz[]>(["quizzes"], []);
+    queryClient.setQueryData<UserQuiz[]>(["userQuizzes"], []);
     setResetKey((prev) => prev + 1);
   };
 

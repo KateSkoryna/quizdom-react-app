@@ -1,10 +1,7 @@
-import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Modal, Button, Badge } from "react-bootstrap";
-import { useQuizStore } from "../store/quizStore";
 import { useAuthStore } from "../store/authStore";
 import { useQuizCompletionStore } from "../store/quizAttemptsStore";
-import { UserQuiz } from "../types";
 import Loader from "../components/common/loader";
 import StartQuizModal from "../components/modal/startQuizModal";
 import NavigateUserModal from "../components/modal/navigateUserModal";
@@ -16,42 +13,30 @@ import cardStyles from "../styles/components/quizCard.module.scss";
 import dayjs from "dayjs";
 import { ErrorBoundary } from "react-error-boundary";
 import SectionErrorFallback from "../components/fallback/sectionErrorFallback";
+import { useQuizById } from "../hooks/useQuizzes";
+import { useEffect, useState } from "react";
 
 const QuizPage = () => {
   const { quizId } = useParams<{ quizId: string }>();
   const navigate = useNavigate();
-  const [quiz, setQuiz] = useState<UserQuiz | null>(null);
-  const [loading, setLoading] = useState(true);
+
   const [showPreQuizModal, setShowPreQuizModal] = useState(false);
   const [startQuiz, setStartQuiz] = useState(false);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
 
-  const { getQuizById } = useQuizStore();
   const currentUser = useAuthStore((state) => state.currentUser);
   const { completionCache } = useQuizCompletionStore();
 
+  const { data: quiz, isLoading } = useQuizById(quizId);
+
+  // Open pre-quiz modal once quiz is loaded
   useEffect(() => {
-    const fetchQuiz = async () => {
-      if (!quizId) {
-        navigate("/quizzes");
-        return;
-      }
-
-      setLoading(true);
-      const fetchedQuiz = await getQuizById(quizId);
-
-      if (!fetchedQuiz) {
-        navigate("/quizzes");
-        return;
-      }
-
-      setQuiz(fetchedQuiz);
-      setLoading(false);
+    if (quiz) {
       setShowPreQuizModal(true);
-    };
-
-    fetchQuiz();
-  }, [quizId, getQuizById, navigate]);
+    } else if (!quizId) {
+      navigate("/quizzes");
+    }
+  }, [quiz, quizId, navigate]);
 
   const handleStartFromPreQuiz = () => {
     if (!currentUser) {
@@ -60,9 +45,7 @@ const QuizPage = () => {
     }
 
     const completion = quiz && completionCache[quiz.id];
-    if (completion) {
-      return;
-    }
+    if (completion) return;
 
     setShowPreQuizModal(false);
     setStartQuiz(true);
@@ -80,13 +63,8 @@ const QuizPage = () => {
 
   const handleAuthModalToggle = () => setIsAuthModalOpen(!isAuthModalOpen);
 
-  if (loading) {
-    return <Loader />;
-  }
-
-  if (!quiz) {
-    return null;
-  }
+  if (isLoading) return <Loader />;
+  if (!quiz) return null;
 
   const completion = completionCache[quiz.id];
   const hasCompleted = currentUser && !!completion;
@@ -106,7 +84,11 @@ const QuizPage = () => {
           <Modal.Title as="h4">Quiz Preview</Modal.Title>
         </Modal.Header>
         <Modal.Body className={styles.preQuizBody}>
-          <ErrorBoundary FallbackComponent={(props) => <SectionErrorFallback {...props} section="quiz preview" />}>
+          <ErrorBoundary
+            FallbackComponent={(props) => (
+              <SectionErrorFallback {...props} section="quiz preview" />
+            )}
+          >
             <div className={cardStyles.quizCardContent}>
               {hasCompleted && (
                 <Badge bg="success" className={cardStyles.completedBadge}>

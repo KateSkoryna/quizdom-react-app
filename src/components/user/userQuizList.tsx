@@ -1,30 +1,14 @@
 import { Accordion, Container } from "react-bootstrap";
 import UserQuizItem from "./userQuizItem";
 import Loader from "../common/loader";
-import { useQuizStore } from "../../store/quizStore";
 import { Status } from "../modal/quizModal";
 import { useAuthStore } from "../../store/authStore";
-import { useEffect } from "react";
 import styles from "../../styles/components/userResults.module.scss";
+import { useQuizzesByUser } from "../../hooks/useQuizzes";
 
 const UserQuizList = ({ status, title }: { status: Status; title: string }) => {
-  const isLoading = useQuizStore((state) => state.isLoading);
   const currentUser = useAuthStore((state) => state.currentUser);
-  const getQuizzesById = useQuizStore((state) => state.getQuizzesById);
-  const getUserQuizzes = useQuizStore((state) => state.getUserQuizzes);
-
-  // Get user's quizzes using selector
-  const quizzes = currentUser ? getUserQuizzes(currentUser.id, status) : [];
-
-  useEffect(() => {
-    const getQuizzes = async (): Promise<void> => {
-      if (currentUser) {
-        await getQuizzesById(currentUser.id);
-      }
-    };
-
-    getQuizzes();
-  }, [currentUser, getQuizzesById]);
+  const { data: quizzes = [], isLoading } = useQuizzesByUser(status, currentUser?.id);
 
   if (isLoading) {
     return <Loader />;
