@@ -1,0 +1,171 @@
+import apiClient from "./axiosInstance";
+import { UserQuiz } from "../types";
+import { QuizFormState } from "../types";
+import { Status } from "../components/modal/quizModal";
+
+/**
+ * Quiz API response with pagination info
+ */
+export interface QuizPageResponse {
+  data: UserQuiz[];
+  pagination: {
+    limit: number;
+    offset: number;
+    total: number;
+  };
+}
+
+/**
+ * Parameters for fetching quizzes
+ */
+export interface FetchQuizzesParams {
+  category?: string | null;
+  complexity?: string | null;
+  limit: number;
+  offset: number;
+}
+
+/**
+ * Fetch quizzes with pagination support for TanStack Query
+ * This function throws errors that TanStack Query can handle
+ */
+export async function fetchQuizzes(params: FetchQuizzesParams): Promise<QuizPageResponse> {
+  try {
+    const queryParams: Record<string, string | number> = {
+      limit: params.limit,
+      offset: params.offset,
+    };
+
+    if (params.category) {
+      queryParams.category = params.category;
+    }
+
+    if (params.complexity) {
+      queryParams.complexity = params.complexity;
+    }
+
+    const response = await apiClient.get("/getQuizzes", {
+      params: queryParams,
+    });
+
+    // Check if the API response indicates failure
+    if (response.data.success === false) {
+      throw new Error(response.data.error || "Failed to fetch quizzes");
+    }
+
+    // Transform the response data to include proper dates
+    const quizzes = response.data.data.map((quiz: any) => ({
+      ...quiz,
+      publishedAt: quiz.publishedAt?._seconds
+        ? new Date(quiz.publishedAt._seconds * 1000)
+        : new Date(),
+    }));
+
+    return {
+      data: quizzes,
+      pagination: response.data.pagination || {
+        limit: params.limit,
+        offset: params.offset,
+        total: quizzes.length,
+      },
+    };
+  } catch (error: any) {
+    // Transform error for better handling
+    const errorMsg = error.response?.data?.error || error.message || "Failed to fetch quizzes";
+    throw new Error(errorMsg);
+  }
+}
+
+export async function fetchQuizById(quizId: string): Promise<UserQuiz> {
+  try {
+    const response = await apiClient.get("/getQuizById", {
+      params: { quizId },
+    });
+
+    if (response.data.success === false) {
+      throw new Error(response.data.error || "Failed to fetch quiz");
+    }
+
+    const quiz = response.data.data;
+
+    return {
+      ...quiz,
+      publishedAt: quiz.publishedAt?._seconds
+        ? new Date(quiz.publishedAt._seconds * 1000)
+        : new Date(),
+    };
+  } catch (error: any) {
+    throw new Error(error.response?.data?.error || error.message || "Failed to fetch quiz");
+  }
+}
+
+export async function fetchQuizzesByUser(userId: string, status?: string): Promise<UserQuiz[]> {
+  try {
+    const params: Record<string, string> = { userId };
+    if (status) params.status = status;
+
+    const response = await apiClient.get("/getQuizzesByUserId", { params });
+
+    if (response.data.success === false) {
+      throw new Error(response.data.error || "Failed to fetch user quizzes");
+    }
+
+    return response.data.data.map((quiz: any) => ({
+      ...quiz,
+      publishedAt: quiz.publishedAt?._seconds
+        ? new Date(quiz.publishedAt._seconds * 1000)
+        : new Date(),
+    }));
+  } catch (error: any) {
+    throw new Error(error.response?.data?.error || error.message || "Failed to fetch user quizzes");
+  }
+}
+
+export async function createQuiz(data: QuizFormState & { status: Status }): Promise<UserQuiz> {
+  try {
+    const response = await apiClient.post("/createQuiz", data);
+
+    if (response.data.success === false) {
+      throw new Error(response.data.error || "Failed to create quiz");
+    }
+
+    return response.data.data;
+  } catch (error: any) {
+    throw new Error(error.response?.data?.error || error.message || "Failed to create quiz");
+  }
+}
+
+export async function updateQuiz(
+  quizId: string,
+  data: Partial<QuizFormState & { status: Status }>
+): Promise<UserQuiz> {
+  try {
+    const response = await apiClient.put("/updateQuiz", data, {
+      params: { quizId },
+    });
+
+    if (response.data.success === false) {
+      throw new Error(response.data.error || "Failed to update quiz");
+    }
+
+    console.log(response.data.data);
+
+    return response.data.data;
+  } catch (error: any) {
+    throw new Error(error.response?.data?.error || error.message || "Failed to update quiz");
+  }
+}
+
+export async function deleteQuiz(quizId: string): Promise<void> {
+  try {
+    const response = await apiClient.delete("/deleteQuiz", {
+      params: { quizId },
+    });
+
+    if (response.data.success === false) {
+      throw new Error(response.data.error || "Failed to delete quiz");
+    }
+  } catch (error: any) {
+    throw new Error(error.response?.data?.error || error.message || "Failed to delete quiz");
+  }
+}
