@@ -205,11 +205,12 @@ export const updateQuiz = onRequest(corsOptions, async (req, res) => {
     // Validate update data (partial allowed)
     const validatedQuiz = quizSchema.partial().parse(req.body);
 
-    await updateQuizService(quizId, validatedQuiz);
+    const updatedQuiz = await updateQuizService(quizId, validatedQuiz);
 
     res.status(200).json({
       success: true,
       message: "Quiz updated successfully",
+      data: updatedQuiz,
     });
   } catch (error) {
     if (error instanceof Error) {
