@@ -53,6 +53,10 @@ export enum QuizCategory {
   NEXT_JS = "NextJS",
   NODE_JS = "NodeJS",
   JEST = "Jest",
+  WEB_FUNDAMENTALS = "Web Fundamentals",
+  HTTP_REST = "HTTP & REST APIs",
+  WEB_PERFORMANCE = "Web Performance",
+  WEB_ACCESSIBILITY = "Web Accessibility",
   OTHER = "Other",
 }
 
