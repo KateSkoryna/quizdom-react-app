@@ -455,8 +455,8 @@
 .description {
   font-size: 0.875rem;
   font-weight: 700;
+  line-height: 1.2;
 
-  // Modern CSS line clamping
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
