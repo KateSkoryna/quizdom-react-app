@@ -1,60 +1,69 @@
-import { useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import NewsListComponent from "../components/news/newsList";
-import SearchComponent from "../components/news/searchComponent";
 import Loader from "../components/common/loader";
-import { useNews } from "../hooks/useNews";
+import { CATEGORIES, DEFAULT_CATEGORY, useNews } from "../hooks/useNews";
 import { ErrorBoundary } from "react-error-boundary";
 import SectionErrorFallback from "../components/fallback/sectionErrorFallback";
+import Nav from "react-bootstrap/Nav";
+import Button from "react-bootstrap/esm/Button";
+import { Container } from "react-bootstrap";
+import SearchForm from "../components/forms/searchForm";
+import styles from "../styles/pages/news.module.scss";
 
 export interface Article {
-  id: string;
   author?: string;
-  title: string;
-  url: string;
+  category: string;
+  country: string;
   description?: string;
   image?: string;
+  language: string;
+  published_at: string;
+  source: string;
+  title: string;
+  url: string;
 }
-
-enum NewsCategory {
-  TECHNOLOGY = "technology",
-  HEALTH = "health",
-  SCIENCE = "science",
-  BUSINESS = "business",
-}
-
-const NEWS_CATEGORY = {
-  [NewsCategory.TECHNOLOGY]: "technology",
-  [NewsCategory.HEALTH]: "health",
-  [NewsCategory.BUSINESS]: "business",
-  [NewsCategory.SCIENCE]: "science",
-};
 
 const NewsPage = () => {
-  const [searchParams] = useSearchParams();
-  const { news: newsList, isLoading, fetchNews } = useNews();
+  const [searchParams, setSearchParams] = useSearchParams();
 
-  const searchQuery = searchParams.get("query") || "none";
-  const searchCategory = searchParams.get("category") || "technology";
-  const values: string[] = Object.values(NEWS_CATEGORY);
+  const query = searchParams.get("query") ?? "";
+  const category = searchParams.get("category") ?? DEFAULT_CATEGORY;
 
-  // Fetch news when search params change
-  useEffect(() => {
-    fetchNews(searchCategory, searchQuery);
-  }, [searchCategory, searchQuery, fetchNews]);
+  const { data: news, isLoading } = useNews(category, query);
 
-  const news = newsList.map((article, index) => ({
-    ...article,
-    id: `${new Date().getTime()}-${index}`,
-  }));
+  const handleCategoryClick = (category: string) => {
+    setSearchParams({ category });
+  };
 
   return (
     <>
-      <SearchComponent categories={values} />
+      <Container className={styles.formContainer}>
+        <SearchForm
+          query={query}
+          category={category}
+          setSearchParams={(next) => setSearchParams(next)}
+        />
+        <Nav className={styles.searchNavbar}>
+          {CATEGORIES.map((categoryParam) => (
+            <Nav.Item key={categoryParam}>
+              <Nav.Link
+                as={Button}
+                onClick={() => handleCategoryClick(categoryParam)}
+                className={`${styles.categoryBtn} ${categoryParam === category ? styles.selected : ""}`}
+              >
+                {categoryParam}
+              </Nav.Link>
+            </Nav.Item>
+          ))}
+        </Nav>
+      </Container>
+
       {isLoading ? (
         <Loader />
       ) : (
-        <ErrorBoundary FallbackComponent={(props) => <SectionErrorFallback {...props} section="news list" />}>
+        <ErrorBoundary
+          FallbackComponent={(props) => <SectionErrorFallback {...props} section="news list" />}
+        >
           <NewsListComponent news={news} />
         </ErrorBoundary>
       )}
