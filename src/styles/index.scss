@@ -65,7 +65,9 @@ a {
   border-color: $primary-color;
 }
 
-.main {
-  margin-top: $spacing-60;
-  padding-top: $spacing-30;
+main {
+  @media screen and (max-width: 1023px) {
+    padding-bottom: 0;
+    min-height: calc(100vh - 60px);
+  }
 }

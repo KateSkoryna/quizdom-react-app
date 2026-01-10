@@ -69,6 +69,11 @@
     border-radius: 6px;
     pointer-events: none;
 
+    // Cursor pointer on mobile and tablet to indicate clickable
+    @media screen and (max-width: 1199px) {
+      cursor: pointer;
+    }
+
     & .front,
     .back {
       height: 100%;
@@ -250,7 +255,38 @@
     }
   }
 
-  &:hover .quizCardContent {
+  // Hover effect only on desktop (not on mobile/tablet with touch)
+  @media screen and (min-width: 1200px) {
+    &:hover .quizCardContent {
+      transform: rotateY(180deg);
+
+      // Disable front pointer events, enable back
+      & .front {
+        pointer-events: none;
+      }
+
+      & .back {
+        pointer-events: auto;
+      }
+
+      // Activate button glow effect on card hover
+      & .startButton {
+        transform: translateY(-2px);
+        box-shadow:
+          0 0 20px rgba(247, 148, 29, 0.6),
+          0 0 40px rgba(39, 170, 225, 0.5),
+          0 4px 20px rgba(0, 0, 0, 0.15);
+
+        &:before {
+          opacity: 1;
+          animation: glowing 20s linear infinite;
+        }
+      }
+    }
+  }
+
+  // Flipped state for mobile (click to toggle)
+  .quizCardContent.flipped {
     transform: rotateY(180deg);
 
     // Disable front pointer events, enable back
@@ -262,7 +298,7 @@
       pointer-events: auto;
     }
 
-    // Activate button glow effect on card hover
+    // Activate button glow effect
     & .startButton {
       transform: translateY(-2px);
       box-shadow:

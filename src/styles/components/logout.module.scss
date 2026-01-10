@@ -70,6 +70,10 @@
   font-size: $font-size-14;
   font-weight: 600;
   padding: 0.75rem 1rem;
+
+  @media (prefers-color-scheme: dark) {
+    color: $text-light;
+  }
 }
 
 .dropdownItem {
@@ -77,6 +81,10 @@
   color: $text-primary;
   transition: all 0.2s ease;
   cursor: pointer;
+
+  @media (prefers-color-scheme: dark) {
+    color: $text-light;
+  }
 
   &:hover {
     color: $primary-color;

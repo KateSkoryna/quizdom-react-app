@@ -647,11 +647,16 @@
 }
 
 .img {
-  width: 180px;
-  height: 180px;
+  width: 120px;
+  height: 120px;
   position: absolute;
-  left: -10%;
-  top: 100px;
+  top: 120px;
+
+  @media (min-width: $breakpoint-md) {
+    width: 180px;
+    height: 180px;
+    left: -10%;
+  }
 }
 
 .questionCounter {

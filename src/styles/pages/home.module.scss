@@ -325,11 +325,12 @@
   font-family: "bebas neue";
   text-align: start;
   color: $white;
-  width: 75%;
+
   -webkit-text-stroke: 0.2px black;
 
   @media screen and (min-width: 768px) {
     font-size: 24px;
+    width: 75%;
   }
 
   @media screen and (min-width: 998px) {
@@ -375,8 +376,23 @@
 .homePageContainer {
   display: flex;
   flex-direction: column;
-  height: calc(100vh - 60px);
-  overflow: hidden;
+
+  // Mobile: allow natural page scroll
+  @media screen and (max-width: 767px) {
+    min-height: auto;
+  }
+
+  // Tablet: account for fixed footer and header
+  @media screen and (min-width: 768px) and (max-width: 1023px) {
+    height: calc(100vh - 60px - 50px); // header + footer
+    overflow: hidden;
+  }
+
+  // Desktop: keep fixed sections with internal scroll
+  @media screen and (min-width: 1024px) {
+    height: calc(100vh - 60px - 60px); // header + footer
+    overflow: hidden;
+  }
 }
 
 .fixedSection {
@@ -385,9 +401,18 @@
 }
 
 .scrollableSection {
-  flex: 1;
-  overflow-y: auto;
-  overflow-x: hidden;
-  scroll-behavior: smooth;
-  padding-top: 1rem;
+  // Mobile: no scroll container, flows naturally
+  @media screen and (max-width: 767px) {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+  }
+
+  // Tablet and Desktop: scrollable section
+  @media screen and (min-width: 768px) {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+    padding-top: 1rem;
+  }
 }
