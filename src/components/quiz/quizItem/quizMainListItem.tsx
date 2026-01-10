@@ -9,6 +9,7 @@ import QuizStats from "./quizStats";
 import QuizCover from "./quizCover";
 import QuizLevelBadge from "./quizLevelBadge";
 import dayjs from "dayjs";
+import { useState } from "react";
 
 type QuizMainListItemProps = {
   quiz: UserQuiz;
@@ -30,13 +31,33 @@ const QuizMainListItem = ({
 }: QuizMainListItemProps) => {
   const currentUser = useAuthStore((state) => state.currentUser);
   const completionCache = useQuizCompletionStore((state) => state.completionCache);
+  const [isFlipped, setIsFlipped] = useState(false);
 
   const localizedDate = dayjs(publishedAt).format("DD/MM/YYYY");
 
   const isCompleted = currentUser && id && !!completionCache[id];
 
+  const handleCardClick = (e: React.MouseEvent) => {
+    const target = e.target as HTMLElement;
+
+    // Prevent flip if clicking on interactive elements (buttons, links)
+    if (
+      target.closest('button') ||
+      target.closest('a') ||
+      target.closest('[role="button"]')
+    ) {
+      return;
+    }
+
+    // Toggle flip state
+    setIsFlipped(!isFlipped);
+  };
+
   return (
-    <Card className={styles.quizCardContent}>
+    <Card
+      className={`${styles.quizCardContent} ${isFlipped ? styles.flipped : ''}`}
+      onClick={handleCardClick}
+    >
       <div className={styles.front}>
         {isCompleted && (
           <Badge bg="success" className={styles.completedBadge}>

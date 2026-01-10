@@ -18,21 +18,18 @@ const QuizMainList = () => {
   const getFavorites = useFavoritesStore((state) => state.getFavorites);
   const getLikes = useLikesStore((state) => state.getLikes);
 
-  const searchCategory = searchParams.get("category") || null;
-  const searchComplexity = searchParams.get("complexity") || null;
+  const categoryFilter = searchParams.get("category") || null;
+  const complexityFilter = searchParams.get("complexity") || null;
+  const quizzesPerPage = 10;
 
-  // Use the infinite query hook
   const { data, isLoading, isError, error, fetchNextPage, hasNextPage, isFetchingNextPage } =
-    useInfiniteQuizzes(searchCategory, searchComplexity, 10);
+    useInfiniteQuizzes(categoryFilter, complexityFilter, quizzesPerPage);
 
-  // Flatten all pages into a single array of quizzes
-  // useMemo prevents recalculation on every render
   const quizzes = useMemo(() => {
     if (!data?.pages) return [];
     return data.pages.flatMap((page) => page.data);
   }, [data]);
 
-  // Load user-specific data on mount
   useEffect(() => {
     if (currentUser) {
       loadAllCompletions();
@@ -41,46 +38,38 @@ const QuizMainList = () => {
     }
   }, [currentUser, loadAllCompletions, getFavorites, getLikes]);
 
-  // Ref for the sentinel element (the element we'll observe)
-  const observerTarget = useRef<HTMLDivElement>(null);
+  const intersectionSentinelRef = useRef<HTMLDivElement>(null);
 
-  // Intersection Observer callback
-  // useCallback ensures the function reference stays stable
-  const handleObserver = useCallback(
+  const handleIntersection = useCallback(
     (entries: IntersectionObserverEntry[]) => {
-      const [target] = entries;
+      const [sentinelEntry] = entries;
 
-      // If the sentinel is visible and we have more pages
-      // and we're not already fetching, load the next page
-      if (target.isIntersecting && hasNextPage && !isFetchingNextPage) {
+      if (sentinelEntry.isIntersecting && hasNextPage && !isFetchingNextPage) {
         fetchNextPage();
       }
     },
     [hasNextPage, isFetchingNextPage, fetchNextPage]
   );
 
-  // Set up the Intersection Observer
   useEffect(() => {
-    const element = observerTarget.current;
-    if (!element) return;
+    const sentinelElement = intersectionSentinelRef.current;
+    if (!sentinelElement) return;
 
-    // Create observer with options
-    const observer = new IntersectionObserver(handleObserver, {
-      root: null, // Use viewport as root
-      rootMargin: "100px", // Start loading 100px before the element is visible
-      threshold: 0.1, // Trigger when 10% of the element is visible
+    const scrollContainer = sentinelElement.closest('[class*="scrollableSection"]') as HTMLElement;
+
+    const observer = new IntersectionObserver(handleIntersection, {
+      root: scrollContainer || null,
+      rootMargin: "100px",
+      threshold: 0.1,
     });
 
-    observer.observe(element);
+    observer.observe(sentinelElement);
 
-    // Cleanup: disconnect observer when component unmounts
     return () => observer.disconnect();
-  }, [handleObserver]);
+  }, [handleIntersection]);
 
-  // Handle loading state
   if (isLoading) return <Loader />;
 
-  // Handle error state - throw error to be caught by ErrorBoundary
   if (isError) {
     throw error;
   }
@@ -103,20 +92,16 @@ const QuizMainList = () => {
         )}
       </div>
 
-      {/* Sentinel element for infinite scroll */}
-      {/* This invisible element triggers loading when scrolled into view */}
       {hasNextPage && quizzes.length > 0 && (
-        <div ref={observerTarget} style={{ height: "20px", margin: "0.5rem 0" }} />
+        <div ref={intersectionSentinelRef} style={{ height: "20px", margin: "0.5rem 0" }} />
       )}
 
-      {/* Loading indicator when fetching next page */}
       {isFetchingNextPage && (
         <div style={{ textAlign: "center", padding: "1rem" }}>
           <Loader />
         </div>
       )}
 
-      {/* Show message when no quizzes found */}
       {!hasNextPage && quizzes.length === 0 && (
         <div style={{ textAlign: "center", padding: "1rem", color: "#666" }}>
           <p>No quizzes yet.</p>
