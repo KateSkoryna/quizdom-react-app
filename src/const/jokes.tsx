@@ -7,7 +7,7 @@ export interface Joke {
 export const jokes: Joke[] = [
   {
     id: 1,
-    joke: 'Today I learned that changing random stuff until your program works is "hacky" and a "bad coding practice" but if you do it fast enough it\'s "Machine Learning" and pays 4x your current salary.',
+    joke: 'Today I learned that changing random stuff until your program works is called "hacky", but if you do it fast enough it is called "Machine Learning".',
     author: "William Shakespeare",
   },
   {
@@ -17,7 +17,7 @@ export const jokes: Joke[] = [
   },
   {
     id: 3,
-    joke: "Why do python programmers wear glasses? - Because they can't C.",
+    joke: "Why do python programmers wear glasses? Because they can't C.",
     author: "Abraham Lincoln",
   },
   {
@@ -32,27 +32,27 @@ export const jokes: Joke[] = [
   },
   {
     id: 6,
-    joke: "Why do Java programmers hate communism? - They don't want to live in a classless society.",
+    joke: "Why do Java programmers hate communism? Because they don't want to live in a classless society.",
     author: "Albert Einstein",
   },
   {
     id: 7,
-    joke: '"Knock, knock."\n"Who\'s there?"\n\n[very long pause]\n\n"Java."',
+    joke: '"Knock, knock." "Who\'s there?" [very long pause] "Java."',
     author: "Winston Churchill",
   },
   {
     id: 8,
-    joke: "Saying that Java is nice because it works on every OS is like saying that anal sex is nice because it works on every gender.",
+    joke: "Saying Java is nice because it works everywhere is like saying something else is nice because it works everywhere.",
     author: "Pablo Picasso",
   },
   {
     id: 9,
-    joke: "Documentation is like sex:\nWhen it's good, it's very good.\nWhen it's bad, it's better than nothing...",
+    joke: "Documentation is like sex: when it's good, it's very good. When it's bad, it's better than nothing.",
     author: "Martin Luther King Jr.",
   },
   {
     id: 10,
-    joke: 'A SQL statement walks into a bar and sees two tables.\nIt approaches, and asks "may I join you?"',
+    joke: 'A SQL statement walks into a bar, sees two tables, and asks: "May I join you?"',
     author: "John F. Kennedy",
   },
   {
@@ -62,12 +62,12 @@ export const jokes: Joke[] = [
   },
   {
     id: 12,
-    joke: "Perfect tech stack like a perfect partner. It just does not exist, so let's get to work",
+    joke: "A perfect tech stack is like a perfect partner. It does not exist, so let's get to work.",
     author: "Elon Musk",
   },
   {
     id: 13,
-    joke: "Technical confidence comes from one of two things: ignorance or experience",
+    joke: "Technical confidence comes from one of two things: ignorance or experience.",
     author: "Bill Gates",
   },
   {
@@ -77,7 +77,7 @@ export const jokes: Joke[] = [
   },
   {
     id: 15,
-    joke: "My wife complained that I care more about coding than her. I told her that in my array of interests, she is at [1](position 1). She was satisfied.",
+    joke: "My wife said I care more about coding than her. I told her she is at index [1] in my array of interests.",
     author: "Bill Clinton",
   },
   {
@@ -97,7 +97,7 @@ export const jokes: Joke[] = [
   },
   {
     id: 19,
-    joke: "I changed my password to 'incorrect'. So whenever I forget, it reminds me: 'Your password is incorrect.'",
+    joke: "I changed my password to 'incorrect', so when I forget it, the system reminds me.",
     author: "Anonymous",
   },
   {
@@ -112,17 +112,17 @@ export const jokes: Joke[] = [
   },
   {
     id: 22,
-    joke: "Debugging is like being the detective in a crime movie where you're also the murderer at the same time.",
+    joke: "Debugging is like being the detective in a crime movie where you are also the murderer.",
     author: "Thomas Edison",
   },
   {
     id: 23,
-    joke: "I don’t always test my code, but when I do, I do it in production.",
+    joke: "I do not always test my code, but when I do, I do it in production.",
     author: "Most developers",
   },
   {
     id: 24,
-    joke: "In order to understand recursion, one must first understand recursion.",
+    joke: "To understand recursion, you must first understand recursion.",
     author: "Anonymous",
   },
   {
@@ -132,12 +132,12 @@ export const jokes: Joke[] = [
   },
   {
     id: 26,
-    joke: "Programmer (noun.): A machine that turns coffee into code.",
+    joke: "Programmer: a machine that turns coffee into code.",
     author: "Anonymous",
   },
   {
     id: 27,
-    joke: "I have a joke on programming, but it only works on my machine.",
+    joke: "I have a joke about programming, but it only works on my machine.",
     author: "Anonymous",
   },
   {
@@ -147,7 +147,7 @@ export const jokes: Joke[] = [
   },
   {
     id: 29,
-    joke: "0 is false, 1 is true, right? Except when it isn’t.",
+    joke: "0 is false and 1 is true. Except when it isn't.",
     author: "Anonymous",
   },
   {
@@ -157,7 +157,7 @@ export const jokes: Joke[] = [
   },
   {
     id: 31,
-    joke: "A SQL query walks into a bar, walks up to two tables and asks 'May I join you?'",
+    joke: "A SQL query walks into a bar and asks two tables: 'May I join you?'",
     author: "Anonymous",
   },
   {
@@ -172,12 +172,12 @@ export const jokes: Joke[] = [
   },
   {
     id: 34,
-    joke: "There are 10 types of people in this world: those who understand binary and those who don’t.",
+    joke: "There are 10 types of people: those who understand binary and those who don't.",
     author: "Anonymous",
   },
   {
     id: 35,
-    joke: "Programming is like writing a book… except if you miss a single comma on page 126 the whole thing makes no sense.",
+    joke: "Programming is like writing a book, except one missing comma can break everything.",
     author: "Anonymous",
   },
 ];
