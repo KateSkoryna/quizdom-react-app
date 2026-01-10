@@ -1,14 +1,9 @@
 import { onRequest } from "firebase-functions/v2/https";
 import * as functions from "firebase-functions";
 import { quizSchema } from "../../schemas/quizSchema";
-import { COLLECTIONS } from "../../utils/constants";
+import { COLLECTIONS, corsOptions } from "../../utils/constants";
 import { verifyAuthToken } from "../../utils/authHelper";
 import * as logger from "firebase-functions/logger";
-
-const corsOptions = {
-  cors: ["https://kateskoryna.github.io", "http://localhost:5173"],
-  invoker: "public" as const,
-};
 
 /**
  * POST /validateQuizData

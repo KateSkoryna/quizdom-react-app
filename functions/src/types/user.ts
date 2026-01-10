@@ -29,6 +29,7 @@ export interface UserDocument {
   location: string;
   sex: Gender;
   bio: string;
+  averageScore: number;
   createdAt: string;
   lastLogin: string;
 }

@@ -1,11 +1,7 @@
 import { onRequest } from "firebase-functions/v2/https";
 import { verifyAuthToken } from "../../utils/authHelper";
 import { generateQuizFlow } from "../../services/quiz-ai-service";
-
-const corsOptions = {
-  cors: ["https://kateskoryna.github.io", "http://localhost:5173"],
-  invoker: "public" as const,
-};
+import { corsOptions } from "../../utils/constants";
 
 export const generateQuiz = onRequest(corsOptions, async (req, res) => {
   try {

@@ -34,6 +34,7 @@ export const syncUserWithDatabase = async (decodedUser: DecodedUser): Promise<Us
       location: "",
       sex: Gender.NEUTRAL,
       bio: "I'm a new user and dont have any bio yet",
+      averageScore: 0,
       createdAt: new Date().toISOString(),
       lastLogin: new Date().toISOString(),
     };

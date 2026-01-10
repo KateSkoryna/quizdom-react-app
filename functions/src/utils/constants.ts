@@ -14,3 +14,8 @@ export enum ACTION {
   ADD = "add",
   REMOVE = "remove",
 }
+
+export const corsOptions = {
+  cors: ["https://kateskoryna.github.io"],
+  invoker: "public" as const,
+};

@@ -9,11 +9,7 @@ import {
   updateQuiz as updateQuizService,
   deleteQuiz as deleteQuizService,
 } from "../../services/quiz-service";
-
-const corsOptions = {
-  cors: ["https://kateskoryna.github.io", "http://localhost:5173"],
-  invoker: "public" as const,
-};
+import { corsOptions } from "../../utils/constants";
 
 /**
  * GET /getQuizzes

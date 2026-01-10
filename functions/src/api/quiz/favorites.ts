@@ -1,12 +1,7 @@
 import { onRequest } from "firebase-functions/v2/https";
 import { verifyAuthToken } from "../../utils/authHelper";
 import { getFavorites, toggleUserFavorite, getFavoriteQuizList } from "../../services/quiz-service";
-import { ACTION } from "../../utils/constants";
-
-const corsOptions = {
-  cors: ["https://kateskoryna.github.io", "http://localhost:5173"],
-  invoker: "public" as const,
-};
+import { ACTION, corsOptions } from "../../utils/constants";
 
 /**
  * GET /getUserFavorites
