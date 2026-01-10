@@ -2,7 +2,6 @@ import { User, signOut } from "firebase/auth";
 import { auth } from "../firebase";
 import { useAuthStore } from "../store/authStore";
 import { CurrentUser, GENDER } from "../types";
-import { getCurrentUser } from "./api";
 import apiClient from "./axiosInstance";
 import { useGlobalErrorStore, ErrorSeverity } from "../store/globalErrorStore";
 
@@ -22,44 +21,27 @@ export const fetchUserWithToken = async (
       };
       localStorage.setItem("authData", JSON.stringify(authData));
 
-      const userDoc = await getCurrentUser(firebaseUser.uid);
+      // Call backend /login API to create/sync user
+      const response = await apiClient.post("/login");
 
-      if (userDoc && userDoc.exists()) {
-        const userData = userDoc.data();
-
-        let dateOfBirth: Date;
-        if (userData.dateOfBirth?.toDate) {
-          dateOfBirth = userData.dateOfBirth.toDate();
-        } else if (userData.dateOfBirth) {
-          dateOfBirth = new Date(userData.dateOfBirth);
-        } else {
-          dateOfBirth = new Date();
-        }
-
-        const currentUser: CurrentUser = {
-          id: firebaseUser.uid,
-          displayName: userData.displayName,
-          email: userData.email,
-          photoURL: userData.photoURL,
-          sex: (userData.sex as GENDER) || GENDER.NEUTRAL,
-          bio: userData.bio,
-          location: userData.location,
-          averageScore: userData.averageScore || 0,
-          dateOfBirth,
-        };
-        setCurrentUser(currentUser);
-      } else {
-        console.warn("User document not found in Firestore for uid:", firebaseUser.uid);
-        await signOut(auth);
-        localStorage.removeItem("authData");
-        setCurrentUser(null);
-
-        useGlobalErrorStore.getState().addError({
-          userMessage: "Account setup incomplete. Please contact support.",
-          severity: ErrorSeverity.ERROR,
-          dismissable: true,
-        });
+      if (!response.data.success) {
+        throw new Error(response.data.error || "Failed to sync user profile");
       }
+
+      const userData = response.data.data;
+      const currentUser: CurrentUser = {
+        id: userData.id,
+        displayName: userData.displayName,
+        email: userData.email,
+        photoURL: userData.photoURL,
+        dateOfBirth: userData.dateOfBirth ? new Date(userData.dateOfBirth) : new Date(),
+        sex: (userData.sex as GENDER) || GENDER.NEUTRAL,
+        averageScore: userData.averageScore || 0,
+        bio: userData.bio,
+        location: userData.location,
+      };
+
+      setCurrentUser(currentUser);
     } else {
       localStorage.removeItem("authData");
       setCurrentUser(null);
@@ -73,6 +55,7 @@ export const fetchUserWithToken = async (
       dismissable: true,
     });
 
+    await signOut(auth);
     localStorage.removeItem("authData");
     setCurrentUser(null);
   } finally {

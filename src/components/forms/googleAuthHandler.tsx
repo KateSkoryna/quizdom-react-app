@@ -1,16 +1,22 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuthStore, type AuthStore } from "../../store/authStore";
 import GoogleAuthButton from "./googleAuthButton";
-import apiClient from "../../fetchers/axiosInstance";
-import { CurrentUser, GENDER } from "../../types";
 
 const GoogleAuthHandler = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const loginWithGoogle = useAuthStore((state: AuthStore) => state.loginWithGoogle);
-  const setCurrentUser = useAuthStore((state: AuthStore) => state.setCurrentUser);
+  const currentUser = useAuthStore((state: AuthStore) => state.currentUser);
   const navigate = useNavigate();
+
+  // Navigate to user page once login completes and user is loaded
+  useEffect(() => {
+    if (currentUser && isLoading) {
+      setIsLoading(false);
+      navigate("/user");
+    }
+  }, [currentUser, isLoading, navigate]);
 
   const handleGoogleAuth = async () => {
     setIsLoading(true);
@@ -18,30 +24,13 @@ const GoogleAuthHandler = () => {
 
     try {
       await loginWithGoogle();
-      const response = await apiClient.post("/login");
-
-      if (!response.data.success) {
-        throw new Error(response.data.error || "Failed to sync user profile");
-      }
-
-      const userData = response.data.data;
-      const currentUser: CurrentUser = {
-        id: userData.id,
-        displayName: userData.displayName,
-        email: userData.email,
-        photoURL: userData.photoURL,
-        dateOfBirth: userData.dateOfBirth ? new Date(userData.dateOfBirth) : new Date(),
-        sex: (userData.sex as GENDER) || GENDER.NEUTRAL,
-        averageScore: 0,
-        bio: userData.bio,
-        location: userData.location,
-      };
-
-      setCurrentUser(currentUser);
-      navigate("/user");
+      // onAuthStateChanged in app.tsx will handle user sync via /login API
+      // Don't navigate here - let the auth flow complete first
+      // The ProtectedRoute will handle navigation once user is loaded
     } catch (error: any) {
-      setError(`Authentication failed: ${error.message || "Please try again."}`);
-    } finally {
+      if (error.code !== "auth/popup-closed-by-user") {
+        setError(`Authentication failed: ${error.message || "Please try again."}`);
+      }
       setIsLoading(false);
     }
   };

@@ -10,17 +10,18 @@ const ProtectedRoute = ({ children }: { children: ReactNode }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (isAuthLoading) return;
-
-    if (currentUser) {
-      navigate("/user");
+    // If auth finished loading and no user, redirect to login
+    if (!isAuthLoading && !currentUser) {
+      navigate("/login");
     }
   }, [currentUser, isAuthLoading, navigate]);
 
+  // Show loader while checking auth state
   if (isAuthLoading) {
     return <Loader />;
   }
 
+  // If no user after loading, show access denied (will redirect to login via useEffect)
   if (!currentUser) {
     return <AccessDenied />;
   }
