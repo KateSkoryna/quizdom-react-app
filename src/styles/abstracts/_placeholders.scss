@@ -42,7 +42,11 @@
   &:hover {
     background-color: $secondary-color;
     outline: none;
-    color: $text-light;
+    color: $text-light !important;
+  }
+
+  &:focus {
+    color: $text-light !important;
   }
 }
 
