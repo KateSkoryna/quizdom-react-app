@@ -2,10 +2,11 @@ import Card from "react-bootstrap/Card";
 import Nav from "react-bootstrap/esm/Nav";
 import { Container, Navbar } from "react-bootstrap";
 import styles from "../../styles/components/footer.module.scss";
+import dayjs from "dayjs";
 
 const Footer = () => {
   return (
-    <Navbar expand="lg" data-bs-theme="dark" fixed="bottom" className={styles.footerNavbar}>
+    <Navbar expand="lg" data-bs-theme="dark" className={styles.footerNavbar}>
       <Container className={styles.footerContainer}>
         <Nav className={styles.footerContactNavbar}>
           <Nav.Link
@@ -33,7 +34,7 @@ const Footer = () => {
             aria-label="email link"
           />
         </Nav>
-        <Card.Text>Copyright © 2025 by Kate Skoryna</Card.Text>
+        <Card.Text>{`Copyright © ${dayjs().format("YYYY")} by Kate Skoryna`}</Card.Text>
       </Container>
     </Navbar>
   );
