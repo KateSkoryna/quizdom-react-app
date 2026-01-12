@@ -23,16 +23,21 @@ const QuizModal = ({ showModal, handleCloseModal, existingQuiz }: QuizModalProps
   }>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isDirty, setIsDirty] = useState(false);
+  const [currentAction, setCurrentAction] = useState<Status | null>(null);
 
   const handleFormStateChange = useCallback(
     (state: { isDirty: boolean; isSubmitting: boolean }) => {
       setIsDirty(state.isDirty);
       setIsSubmitting(state.isSubmitting);
+      if (!state.isSubmitting) {
+        setCurrentAction(null);
+      }
     },
     []
   );
 
   const handleSaveQuiz = (status: Status) => {
+    setCurrentAction(status);
     formRef.current?.submit(status);
   };
 
@@ -65,15 +70,15 @@ const QuizModal = ({ showModal, handleCloseModal, existingQuiz }: QuizModalProps
           onClick={() => handleSaveQuiz("done")}
           disabled={isSubmitting}
         >
-          {isSubmitting ? "Publishing..." : "Publish Quiz"}
+          {isSubmitting && currentAction === "done" ? "Publishing..." : "Publish Quiz"}
         </Button>
         <button
           type="button"
           className={styles.addQuestionButton}
           onClick={() => handleSaveQuiz("draft")}
-          disabled={!isDirty}
+          disabled={!isDirty || isSubmitting}
         >
-          Save to Drafts
+          {isSubmitting && currentAction === "draft" ? "Saving..." : "Save to Drafts"}
         </button>
       </Modal.Footer>
     </Modal>
