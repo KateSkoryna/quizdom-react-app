@@ -118,7 +118,6 @@ const StartQuizModal = ({ show, handleClose, questions, quizId }: StartQuizModal
     <Modal
       show={show}
       onHide={handleClose}
-      fullscreen="sm-down"
       centered
       size="lg"
       dialogClassName={styles.startQuizModalDialog}
@@ -156,7 +155,11 @@ const StartQuizModal = ({ show, handleClose, questions, quizId }: StartQuizModal
                 </h5>
                 <h6>Correct answers: {((score / questions.length) * 100).toFixed(1)}%</h6>
               </div>
-              <Card.Img src={owl} className={styles.img} alt="Wise owl mascot celebrating quiz completion" />
+              <Card.Img
+                src={owl}
+                className={styles.img}
+                alt="Wise owl mascot celebrating quiz completion"
+              />
 
               <div className={styles.ratingSection}>
                 <h6 className="text-center">Evaluate this quiz (optional)</h6>
@@ -213,7 +216,7 @@ const StartQuizModal = ({ show, handleClose, questions, quizId }: StartQuizModal
           </Modal.Header>
           <Modal.Body>
             <div className={styles.questionHeader}>
-              <h5 className={styles.questionTitle}>{question.questionTitle}</h5>
+              <h6 className={styles.questionTitle}>{question.questionTitle}</h6>
               {question.hint && <Hint questionHint={question.hint} />}
             </div>
             <ListGroup className={styles.answersList}>
