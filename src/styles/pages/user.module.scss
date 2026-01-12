@@ -182,12 +182,17 @@
 
 .userTabs {
   display: flex;
+  flex-wrap: wrap;
   width: 100%;
   border-bottom: 2px solid rgba(0, 0, 0, 0.1);
 
   :global(.nav-item) {
-    flex: 1;
+    flex: 0 0 50%;
     text-align: center;
+
+    @media (min-width: 1024px) {
+      flex: 1;
+    }
   }
 
   :global(.nav-link) {
