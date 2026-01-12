@@ -1,8 +1,23 @@
 import axios from "axios";
 import { auth } from "../firebase";
 
-// Get Firebase Functions URL (uses Vite environment variables)
-const FUNCTIONS_URL = import.meta.env.VITE_FUNCTIONS_URL;
+// Get Firebase Functions URL dynamically based on hostname
+// In dev mode, use current hostname instead of hardcoded localhost
+const getFunctionsUrl = () => {
+  const isDev = window.location.hostname === "localhost" ||
+                window.location.hostname === "127.0.0.1" ||
+                window.location.hostname.startsWith("192.168.");
+
+  if (isDev) {
+    // Use Vite proxy which forwards to production functions
+    return "/api";
+  }
+
+  // For production, use the env variable
+  return import.meta.env.VITE_FUNCTIONS_URL;
+};
+
+const FUNCTIONS_URL = getFunctionsUrl();
 
 // Create axios instance
 const apiClient = axios.create({
