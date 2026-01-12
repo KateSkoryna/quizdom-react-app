@@ -18,9 +18,11 @@ npm run lighthouse:audit
 6. Save scores to `lighthouse/history.json`
 
 **Smart report management:**
-- ✅ Multiple runs per day = 1 report (overwrites previous)
+- ✅ Multiple runs per day = 1 report per device (overwrites previous)
+- 📁 Reports organized by year/date: `reports/YYYY/MM-DD/`
 - 📁 Reports kept for 1 year, auto-deleted after (ignored in git)
 - 📊 Terminal always shows full report
+- 📊 History.json keeps only latest score per day per device
 
 **Output includes:**
 - ✅ Scores comparison (Mobile vs Desktop)
@@ -40,15 +42,17 @@ Shows historical trends and changes from previous audits.
 ```
 lighthouse/
 ├── README.md
-├── history.json              # Tracked scores over time
+├── history.json              # Tracked scores over time (1 per day per device)
 ├── reports/                  # Generated reports (ignored in git)
-│   ├── mobile_*.json         # Raw mobile audit data
-│   ├── desktop_*.json        # Raw desktop audit data
-│   └── report_*.txt          # Human-readable reports
+│   └── YYYY/                 # Year folder
+│       └── MM-DD/            # Date folder
+│           ├── mobile.json   # Raw mobile audit data
+│           ├── desktop.json  # Raw desktop audit data
+│           └── report.txt    # Human-readable report
 └── scripts/
     ├── audit.sh              # Main audit script
     ├── generate-report.js    # Creates readable reports
-    ├── tracker.js            # Saves to history
+    ├── tracker.js            # Saves to history (deduplicates same day)
     └── compare.js            # Shows trends
 ```
 
@@ -128,14 +132,17 @@ npm run lighthouse:compare  # See the improvements!
 **Manual cleanup (if needed):**
 ```bash
 # Delete reports older than 90 days
-find lighthouse/reports -name "*.json" -mtime +90 -delete
-find lighthouse/reports -name "*.txt" -mtime +90 -delete
+find lighthouse/reports -type f -mtime +90 -delete
+find lighthouse/reports -type d -empty -delete
 
-# Delete all except most recent 10
-ls -t lighthouse/reports/*.txt | tail -n +11 | xargs rm
+# Delete specific year
+rm -rf lighthouse/reports/2025
+
+# Keep only last 3 months
+find lighthouse/reports -type f -mtime +90 -delete && find lighthouse/reports -type d -empty -delete
 ```
 
-**Note:** `history.json` always keeps ALL score summaries (never deleted), even after report files are removed.
+**Note:** `history.json` keeps only the LATEST score per day per device (deduplicates automatically).
 
 ## Tips
 
@@ -144,4 +151,5 @@ ls -t lighthouse/reports/*.txt | tail -n +11 | xargs rm
 - Desktop scores are usually higher than mobile
 - Focus on issues marked 🔴 (red) first
 - Each report shows specific file paths to fix
-- Check `lighthouse/reports/report_2026-01-08.txt` to review past audits
+- Check `lighthouse/reports/2026/01-08/report.txt` to review past audits
+- Reports organized by year/date for easy browsing

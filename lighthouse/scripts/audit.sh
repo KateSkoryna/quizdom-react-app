@@ -7,12 +7,14 @@
 set -e  # Exit on error
 
 # Use only date (no time) - overwrites if run multiple times same day
-DATE=$(date +"%Y-%m-%d")
-MOBILE_JSON="./lighthouse/reports/mobile_${DATE}.json"
-DESKTOP_JSON="./lighthouse/reports/desktop_${DATE}.json"
-REPORT_TXT="./lighthouse/reports/report_${DATE}.txt"
+YEAR=$(date +"%Y")
+DATE=$(date +"%m-%d")
+REPORT_DIR="./lighthouse/reports/${YEAR}/${DATE}"
+MOBILE_JSON="${REPORT_DIR}/mobile.json"
+DESKTOP_JSON="${REPORT_DIR}/desktop.json"
+REPORT_TXT="${REPORT_DIR}/report.txt"
 
-mkdir -p ./lighthouse/reports
+mkdir -p "${REPORT_DIR}"
 
 echo "🏗️  Building production app..."
 npm run build
@@ -55,11 +57,14 @@ node lighthouse/scripts/generate-report.js "${MOBILE_JSON}" "${DESKTOP_JSON}" | 
 # Save to history
 node lighthouse/scripts/tracker.js "${MOBILE_JSON}" "${DESKTOP_JSON}"
 
-# Clean up reports older than 1 year (365 days)
-find ./lighthouse/reports -name "*.json" -mtime +365 -delete 2>/dev/null || true
-find ./lighthouse/reports -name "*.txt" -mtime +365 -delete 2>/dev/null || true
+# Clean up year folders older than 1 year
+# First, delete old files
+find ./lighthouse/reports -type f -mtime +365 -delete 2>/dev/null || true
+# Then, remove empty directories
+find ./lighthouse/reports -type d -empty -delete 2>/dev/null || true
 
 echo ""
 echo "✅ Audit complete!"
 echo "📄 Report saved: ${REPORT_TXT}"
+echo "📁 Reports organized in: lighthouse/reports/${YEAR}/${DATE}/"
 echo ""

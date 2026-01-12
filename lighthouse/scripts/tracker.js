@@ -58,8 +58,19 @@ if (fs.existsSync(HISTORY_FILE)) {
 const mobileEntry = extractData(mobileJsonPath, 'mobile');
 const desktopEntry = extractData(desktopJsonPath, 'desktop');
 
-if (mobileEntry) history.push(mobileEntry);
-if (desktopEntry) history.push(desktopEntry);
+// Get today's date for comparison
+const today = new Date().toLocaleDateString();
+
+// Remove existing entries for today (keep only latest per day per device)
+if (mobileEntry) {
+  history = history.filter(entry => !(entry.date === today && entry.device === 'mobile'));
+  history.push(mobileEntry);
+}
+
+if (desktopEntry) {
+  history = history.filter(entry => !(entry.date === today && entry.device === 'desktop'));
+  history.push(desktopEntry);
+}
 
 // Save updated history
 fs.writeFileSync(HISTORY_FILE, JSON.stringify(history, null, 2));
