@@ -64,6 +64,13 @@ export default defineConfig({
     host: "0.0.0.0",
     port: 5173,
     allowedHosts: true,
+    proxy: {
+      "/api": {
+        target: "http://localhost:5001/quizdom-react-app/us-central1",
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, ""),
+      },
+    },
   },
   css: {
     modules: {
