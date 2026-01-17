@@ -1,4 +1,5 @@
-import { Accordion, Card, Container, Badge } from "react-bootstrap";
+import { useState, useEffect } from "react";
+import { Accordion, Card, Container, Badge, Button } from "react-bootstrap";
 import { useQuizCompletionStore } from "../../store/quizAttemptsStore";
 import { useAuthStore } from "../../store/authStore";
 import { useQueries } from "@tanstack/react-query";
@@ -8,13 +9,15 @@ import styles from "../../styles/components/userResults.module.scss";
 import dayjs from "dayjs";
 import StarRating from "../common/starRating";
 import { fetchQuizById } from "../../fetchers/quiz-api";
-import { useEffect } from "react";
+
+const RESULTS_PER_PAGE = 6;
 
 const UserResultsComponent = () => {
   const currentUser = useAuthStore((state) => state.currentUser);
   const completionCache = useQuizCompletionStore((state) => state.completionCache);
   const loadAllCompletions = useQuizCompletionStore((state) => state.loadAllCompletions);
   const isLoadingCompletions = useQuizCompletionStore((state) => state.isLoading);
+  const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
     if (currentUser) {
@@ -32,9 +35,16 @@ const UserResultsComponent = () => {
       return dateB.getTime() - dateA.getTime();
     });
 
-  // Fetch all quiz details with React Query
+  // Pagination
+  const total = completedQuizzes.length;
+  const totalPages = Math.ceil(total / RESULTS_PER_PAGE);
+  const startIndex = (currentPage - 1) * RESULTS_PER_PAGE;
+  const endIndex = startIndex + RESULTS_PER_PAGE;
+  const paginatedQuizzes = completedQuizzes.slice(startIndex, endIndex);
+
+  // Fetch quiz details only for current page with React Query
   const quizQueries = useQueries({
-    queries: completedQuizzes.map(({ quizId }) => ({
+    queries: paginatedQuizzes.map(({ quizId }) => ({
       queryKey: ["quiz", quizId],
       queryFn: () => fetchQuizById(quizId),
       staleTime: 1000 * 60 * 5,
@@ -45,7 +55,7 @@ const UserResultsComponent = () => {
   const quizDetails: Record<string, UserQuiz> = quizQueries.reduce<Record<string, UserQuiz>>(
     (acc, query, idx) => {
       if (query.data) {
-        acc[completedQuizzes[idx].quizId] = query.data;
+        acc[paginatedQuizzes[idx].quizId] = query.data;
       }
       return acc;
     },
@@ -69,11 +79,22 @@ const UserResultsComponent = () => {
     );
   }
 
+  const handlePrevPage = () => {
+    setCurrentPage((prev) => Math.max(1, prev - 1));
+  };
+
+  const handleNextPage = () => {
+    setCurrentPage((prev) => Math.min(totalPages, prev + 1));
+  };
+
   return (
-    <Container className={styles.resultsContainer}>
-      <h4 className={styles.resultsTitle}>My Completed Quizzes ({completedQuizzes.length})</h4>
-      <Accordion>
-        {completedQuizzes.map(({ quizId, completion }, index) => {
+    <div className="d-flex flex-column h-100">
+      <div className="flex-grow-0">
+        <h4 className={styles.resultsTitle}>My Completed Quizzes ({total})</h4>
+      </div>
+      <div className="flex-grow-0">
+        <Accordion>
+          {paginatedQuizzes.map(({ quizId, completion }, index) => {
           const quiz = quizDetails[quizId];
           const correct = completion.score?.correctAnswers || 0;
           const total = completion.score?.totalQuestions || 0;
@@ -147,7 +168,32 @@ const UserResultsComponent = () => {
           );
         })}
       </Accordion>
-    </Container>
+      </div>
+
+      {totalPages > 1 && (
+        <div className="d-flex justify-content-center align-items-center gap-3 mt-auto py-3">
+          <Button
+            variant="outline-primary"
+            size="sm"
+            onClick={handlePrevPage}
+            disabled={currentPage === 1}
+          >
+            &lt;
+          </Button>
+          <span className="fw-semibold">
+            {currentPage}/{totalPages}
+          </span>
+          <Button
+            variant="outline-primary"
+            size="sm"
+            onClick={handleNextPage}
+            disabled={currentPage === totalPages}
+          >
+            &gt;
+          </Button>
+        </div>
+      )}
+    </div>
   );
 };
 

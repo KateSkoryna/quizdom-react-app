@@ -5,9 +5,11 @@ const UserFavoritesComponent = () => {
   const { error } = useFavoritesStore();
 
   return (
-    <div className="pt-3 text-center">
-      <h5 className="mb-3">User Favorites</h5>
-      {error && <div className="alert alert-danger">{error}</div>}
+    <div className="d-flex flex-column h-100">
+      <div className="flex-grow-0">
+        <h5 className="mb-3 text-center">User Favorites</h5>
+        {error && <div className="alert alert-danger">{error}</div>}
+      </div>
       <UserFavoriteQuizList />
     </div>
   );
