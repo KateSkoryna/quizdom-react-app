@@ -86,7 +86,7 @@ export const getQuizById = onRequest(corsOptions, async (req, res) => {
 /**
  * GET /getQuizzesByUserId
  * Get all quizzes created by a specific user
- * Query param: userId
+ * Query param: userId, status, limit, offset
  */
 export const getQuizzesByUserId = onRequest(corsOptions, async (req, res) => {
   if (req.method !== "GET") {
@@ -96,6 +96,8 @@ export const getQuizzesByUserId = onRequest(corsOptions, async (req, res) => {
 
   const userId = req.query.userId as string;
   const status = req.query.status as string | undefined;
+  const limit = req.query.limit ? parseInt(req.query.limit as string) : 100;
+  const offset = req.query.offset ? parseInt(req.query.offset as string) : 0;
 
   if (!userId) {
     res.status(400).json({ success: false, error: "userId is required" });
@@ -103,10 +105,15 @@ export const getQuizzesByUserId = onRequest(corsOptions, async (req, res) => {
   }
 
   try {
-    const quizzes = await getQuizzesByUserIdService(userId, status);
+    const result = await getQuizzesByUserIdService(userId, status, limit, offset);
     res.status(200).json({
       success: true,
-      data: quizzes,
+      data: result.quizzes,
+      pagination: {
+        limit,
+        offset,
+        total: result.total,
+      },
     });
   } catch (error: any) {
     void error;

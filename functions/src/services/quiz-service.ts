@@ -204,8 +204,14 @@ export const getQuizById = async (quizId: string): Promise<UserQuiz | null> => {
 /**
  * Get all quizzes by a specific user/author
  * Optionally filter by status
+ * Supports pagination with limit and offset
  */
-export const getQuizzesByUserId = async (userId: string, status?: string): Promise<UserQuiz[]> => {
+export const getQuizzesByUserId = async (
+  userId: string,
+  status?: string,
+  limit: number = 100,
+  offset: number = 0
+): Promise<{ quizzes: UserQuiz[]; total: number }> => {
   let query: Query = db.collection(COLLECTIONS.QUIZZES).where("authorId", "==", userId);
 
   if (status) {
@@ -214,8 +220,11 @@ export const getQuizzesByUserId = async (userId: string, status?: string): Promi
 
   const snapshot = await query.get();
 
+  // Get total count
+  const total = snapshot.docs.length;
+
   // Sort in memory instead of using orderBy to avoid requiring Firestore index
-  const quizzes = snapshot.docs.map(
+  const allQuizzes = snapshot.docs.map(
     (doc: QueryDocumentSnapshot) =>
       ({
         id: doc.id,
@@ -223,7 +232,10 @@ export const getQuizzesByUserId = async (userId: string, status?: string): Promi
       }) as UserQuiz
   );
 
-  return quizzes;
+  // Apply pagination
+  const quizzes = allQuizzes.slice(offset, offset + limit);
+
+  return { quizzes, total };
 };
 
 /**
