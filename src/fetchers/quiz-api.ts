@@ -99,10 +99,17 @@ export async function fetchQuizById(quizId: string): Promise<UserQuiz> {
   }
 }
 
-export async function fetchQuizzesByUser(userId: string, status?: string): Promise<UserQuiz[]> {
+export async function fetchQuizzesByUser(
+  userId: string,
+  status?: string,
+  limit?: number,
+  offset?: number
+): Promise<QuizPageResponse> {
   try {
-    const params: Record<string, string> = { userId };
+    const params: Record<string, string | number> = { userId };
     if (status) params.status = status;
+    if (limit !== undefined) params.limit = limit;
+    if (offset !== undefined) params.offset = offset;
 
     const response = await apiClient.get("/getQuizzesByUserId", { params });
 
@@ -110,12 +117,21 @@ export async function fetchQuizzesByUser(userId: string, status?: string): Promi
       throw new Error(response.data.error || "Failed to fetch user quizzes");
     }
 
-    return response.data.data.map((quiz: any) => ({
+    const quizzes = response.data.data.map((quiz: any) => ({
       ...quiz,
       publishedAt: quiz.publishedAt?._seconds
         ? new Date(quiz.publishedAt._seconds * 1000)
         : new Date(),
     }));
+
+    return {
+      data: quizzes,
+      pagination: response.data.pagination || {
+        limit: limit || 100,
+        offset: offset || 0,
+        total: quizzes.length,
+      },
+    };
   } catch (error: any) {
     throw new Error(error.response?.data?.error || error.message || "Failed to fetch user quizzes");
   }

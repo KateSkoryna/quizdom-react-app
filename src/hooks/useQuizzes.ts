@@ -5,16 +5,22 @@ import {
   deleteQuiz,
   fetchQuizzesByUser,
   fetchQuizById,
+  QuizPageResponse,
 } from "../fetchers/quiz-api";
 import { QuizFormState, UserQuiz } from "../types";
 import { Status } from "../components/modal/quizModal";
 
-export function useQuizzesByUser(status: Status, userId?: string) {
-  return useQuery<UserQuiz[], Error>({
-    queryKey: ["userQuizzes", userId, status],
+export function useQuizzesByUser(
+  status: Status,
+  userId?: string,
+  limit?: number,
+  offset?: number
+) {
+  return useQuery<QuizPageResponse, Error>({
+    queryKey: ["userQuizzes", userId, status, limit, offset],
     queryFn: () => {
       if (!userId) throw new Error("User ID is required");
-      return fetchQuizzesByUser(userId, status);
+      return fetchQuizzesByUser(userId, status, limit, offset);
     },
     enabled: !!userId, // do not run until userId exists
     staleTime: 1000 * 60 * 5,
