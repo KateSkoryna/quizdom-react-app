@@ -2,36 +2,48 @@ import { Controller, useFormContext } from "react-hook-form";
 import { Form } from "react-bootstrap";
 import { useState } from "react";
 import styles from "../../styles/components/modal.module.scss";
-import { getConfigByFieldName } from "../../const/complexity";
 
-interface FormDropdownComponentProps {
-  fieldName: "complexity" | "category";
+interface DropdownOption {
+  value: string;
+  label: string;
 }
 
-const FormDropdownComponent = ({ fieldName }: FormDropdownComponentProps) => {
+interface FormDropdownComponentProps {
+  name: string;
+  label: string;
+  options: DropdownOption[];
+  formatDisplayValue?: (value: string) => string;
+  className?: string;
+}
+
+const FormDropdownComponent = ({
+  name,
+  label,
+  options,
+  formatDisplayValue = (value: string) => value,
+  className,
+}: FormDropdownComponentProps) => {
   const { control } = useFormContext();
   const [isOpen, setIsOpen] = useState(false);
-
-  const config = getConfigByFieldName(fieldName);
 
   return (
     <Controller
       control={control}
-      name={fieldName}
+      name={name}
       render={({ field: { onChange, value } }) => (
-        <Form.Group className={styles.dropdownGroup} controlId={fieldName}>
+        <Form.Group className={className || styles.dropdownGroup} controlId={name}>
           <Form.Label as="p" className={styles.formLabel}>
-            {config.label}
+            {label}
           </Form.Label>
           <details
             className={styles.dropdown}
             open={isOpen}
             onToggle={(e) => setIsOpen(e.currentTarget.open)}
           >
-            <summary className={styles.dropdownSummary}>{config.formatDisplayValue(value)}</summary>
+            <summary className={styles.dropdownSummary}>{formatDisplayValue(value)}</summary>
             <div className={styles.dropdownList}>
               <div className={styles.dropdownListInner}>
-                {config.options.map((option) => (
+                {options.map((option) => (
                   <button
                     key={option.value}
                     type="button"

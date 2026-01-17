@@ -20,11 +20,11 @@ const HomePage = () => {
 
   return (
     <div className={styles.homePageContainer}>
-      <div className={styles.fixedSection}>
-        <HeroContainer />
-        <SearchQuizComponent />
-      </div>
       <div className={styles.scrollableSection}>
+        <HeroContainer />
+        <div className={styles.stickySearchWrapper}>
+          <SearchQuizComponent />
+        </div>
         <ErrorBoundary
           FallbackComponent={(props) => <SectionErrorFallback {...props} section="quiz list" />}
           onReset={handleReset}

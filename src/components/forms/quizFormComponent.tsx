@@ -13,6 +13,7 @@ import addClassnameToText from "../../utils/addClassnameToText";
 import type { Status } from "../modal/quizModal";
 import { useGeneratedQuizStore } from "../../store/generatedQuizStore";
 import { useAddQuiz, useUpdateQuiz } from "../../hooks/useQuizzes";
+import { getConfigByFieldName } from "../../const/complexity";
 
 // Use type instead of interface
 type QuizFormProps = {
@@ -59,6 +60,10 @@ const QuizFormComponent = forwardRef<QuizFormRef, QuizFormProps>(
       clearGeneratedQuiz,
     } = useGeneratedQuizStore();
     const [userPrompt, setUserPrompt] = useState("");
+
+    // Get dropdown configs
+    const complexityConfig = getConfigByFieldName("complexity");
+    const categoryConfig = getConfigByFieldName("category");
 
     const initialValues = existingQuiz
       ? {
@@ -226,8 +231,18 @@ const QuizFormComponent = forwardRef<QuizFormRef, QuizFormProps>(
             </Form.Group>
 
             <div className={styles.dropdownRow}>
-              <FormDropdownComponent fieldName="complexity" />
-              <FormDropdownComponent fieldName="category" />
+              <FormDropdownComponent
+                name="complexity"
+                label={complexityConfig.label}
+                options={complexityConfig.options}
+                formatDisplayValue={complexityConfig.formatDisplayValue}
+              />
+              <FormDropdownComponent
+                name="category"
+                label={categoryConfig.label}
+                options={categoryConfig.options}
+                formatDisplayValue={categoryConfig.formatDisplayValue}
+              />
             </div>
 
             <QuestionsFormComponent />
