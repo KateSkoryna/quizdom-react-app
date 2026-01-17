@@ -5,6 +5,7 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
+  gap: 8px;
   width: 100%;
 
   @media screen and (min-width: 768px) {
@@ -49,10 +50,10 @@
 .buttonContainer {
   display: flex;
   justify-content: start;
-  margin-bottom: 30px;
 
-  @media screen and (min-width: 768px) {
-    margin-bottom: 0;
+  @media (max-width: 767px) {
+    flex-direction: column;
+    width: 100%;
   }
 }
 
@@ -118,7 +119,7 @@
 }
 
 .heroCardContainer {
-  padding: 0 0 2rem 0;
+  padding: 2rem 0 1rem 0;
   position: relative;
 
   &::before,
@@ -140,11 +141,11 @@
       url("../../assets/triangle.svg"), url("../../assets/x.svg"), url("../../assets/line.svg");
     // decorElement1, 2, 3, 4, 5 positions
     background-position:
-      30% -10%,
-      -5% 75%,
-      85% 40%,
+      30% 0%,
+      -5% 55%,
+      85% 100%,
       50% 50%,
-      50% 85%;
+      90% 30%;
     background-size:
       50px auto,
       50px auto,
@@ -163,7 +164,7 @@
       background-position:
         103% 55%,
         -1% 95%,
-        85% 95%,
+        85% 100%,
         55% 15%,
         15% 40%;
     }
@@ -206,11 +207,11 @@
         100px auto,
         60px auto;
       background-position:
-        30% 10%,
-        87% 15%,
+        40% 30%,
+        87% 35%,
         30% 80%,
-        20% 95%,
-        55% 95%;
+        20% 100%,
+        55% 100%;
     }
 
     @media screen and (min-width: 1024px) {
@@ -357,7 +358,6 @@
 
 .selectCategory {
   width: 100%;
-  margin-bottom: 10px;
   text-transform: capitalize;
 
   &:focus {
@@ -395,15 +395,19 @@
   }
 }
 
-.fixedSection {
-  flex-shrink: 0;
+.stickySearchWrapper {
+  position: sticky;
+  top: 60px;
+  z-index: 10;
+  background-color: $white;
+  padding-top: 1rem;
   padding-bottom: 1rem;
+  margin-bottom: 1rem;
 }
 
 .scrollableSection {
   // Mobile: no scroll container, flows naturally
   @media screen and (max-width: 767px) {
-    padding-top: 1rem;
     padding-bottom: 1rem;
   }
 
@@ -413,6 +417,6 @@
     overflow-y: auto;
     overflow-x: hidden;
     scroll-behavior: smooth;
-    padding-top: 1rem;
+    padding-bottom: 1rem;
   }
 }
