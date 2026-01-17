@@ -7,7 +7,6 @@ const UserFavoritesComponent = () => {
   return (
     <div className="d-flex flex-column h-100">
       <div className="flex-grow-0">
-        <h5 className="mb-3 text-center">User Favorites</h5>
         {error && <div className="alert alert-danger">{error}</div>}
       </div>
       <UserFavoriteQuizList />

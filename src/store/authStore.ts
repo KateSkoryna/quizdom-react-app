@@ -11,6 +11,7 @@ import {
 import { auth } from "../firebase";
 import { CurrentUser, UserData } from "../types";
 import { useGlobalErrorStore, ErrorSeverity } from "./globalErrorStore";
+import { useQuizCompletionStore } from "./quizAttemptsStore";
 
 export interface AuthStore {
   currentUser: CurrentUser | null;
@@ -124,6 +125,7 @@ export const useAuthStore = create<AuthStore>((set) => ({
       await signOut(auth);
       localStorage.removeItem("authData");
       useGlobalErrorStore.getState().clearErrors();
+      useQuizCompletionStore.getState().reset();
       set({ currentUser: null, isAuthLoading: false, authError: null });
     } catch (error: any) {
       const userMessage = "Failed to sign out. Please try again.";

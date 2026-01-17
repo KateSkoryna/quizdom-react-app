@@ -87,10 +87,28 @@ const UnifiedAuthForm = ({ mode, onModeChange }: UnifiedAuthFormProps) => {
     setShowPassword(false);
   };
 
+  const loadUserAndNavigate = async (uid: string) => {
+    // Load user data and set in store
+    const userDoc = await getCurrentUser(uid);
+    if (!userDoc || !userDoc.exists()) {
+      throw new Error("Failed to load user profile");
+    }
+
+    const userData = userDoc.data();
+    const currentUser: CurrentUser = {
+      ...(userData as CurrentUser),
+      id: uid,
+      dateOfBirth: userData.dateOfBirth?.toDate ? userData.dateOfBirth.toDate() : new Date(),
+    };
+
+    setCurrentUser(currentUser);
+    navigate("/user");
+  };
+
   const onSubmit = async (values: AuthFormData): Promise<void> => {
     if (mode === "login") {
-      await login(values.email, values.password);
-      navigate("/user");
+      const userCredential = await login(values.email, values.password);
+      await loadUserAndNavigate(userCredential.user.uid);
     } else {
       const userCredential = await signup(values as UserData);
 
@@ -101,21 +119,7 @@ const UnifiedAuthForm = ({ mode, onModeChange }: UnifiedAuthFormProps) => {
           email: values.email,
         });
 
-        // Load user data and set in store
-        const userDoc = await getCurrentUser(userCredential.user.uid);
-        if (!userDoc || !userDoc.exists()) {
-          throw new Error("Failed to load user profile");
-        }
-
-        const userData = userDoc.data();
-        const currentUser: CurrentUser = {
-          ...(userData as CurrentUser),
-          id: userCredential.user.uid,
-          dateOfBirth: userData.dateOfBirth?.toDate ? userData.dateOfBirth.toDate() : new Date(),
-        };
-
-        setCurrentUser(currentUser);
-        navigate("/user");
+        await loadUserAndNavigate(userCredential.user.uid);
       } catch (firestoreError: unknown) {
         // Rollback: Delete the Firebase Auth user if Firestore creation fails
         try {
