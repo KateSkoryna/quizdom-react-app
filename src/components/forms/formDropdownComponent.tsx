@@ -1,7 +1,7 @@
 import { Controller, useFormContext } from "react-hook-form";
 import { Form } from "react-bootstrap";
-import { useState } from "react";
 import styles from "../../styles/components/modal.module.scss";
+import { useDropdown } from "../../hooks/useDropdown";
 
 interface DropdownOption {
   value: string;
@@ -24,7 +24,7 @@ const FormDropdownComponent = ({
   className,
 }: FormDropdownComponentProps) => {
   const { control } = useFormContext();
-  const [isOpen, setIsOpen] = useState(false);
+  const { isOpen, setIsOpen, dropdownRef } = useDropdown();
 
   return (
     <Controller
@@ -36,6 +36,7 @@ const FormDropdownComponent = ({
             {label}
           </Form.Label>
           <details
+            ref={dropdownRef}
             className={styles.dropdown}
             open={isOpen}
             onToggle={(e) => setIsOpen(e.currentTarget.open)}
