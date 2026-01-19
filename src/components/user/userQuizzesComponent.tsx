@@ -6,7 +6,7 @@ const UserQuizzesComponent = () => {
   return (
     <div className={`${styles.container} d-flex flex-column h-100`}>
       <AddQuizComponent />
-      <UserQuizList status="done" title="My Quizzes" />
+      <UserQuizList status="done" />
     </div>
   );
 };

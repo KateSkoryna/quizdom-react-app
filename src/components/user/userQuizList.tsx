@@ -9,7 +9,7 @@ import { useQuizzesByUser } from "../../hooks/useQuizzes";
 
 const QUIZZES_PER_PAGE = 6;
 
-const UserQuizList = ({ status, title }: { status: Status; title: string }) => {
+const UserQuizList = ({ status }: { status: Status }) => {
   const currentUser = useAuthStore((state) => state.currentUser);
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -34,9 +34,8 @@ const UserQuizList = ({ status, title }: { status: Status; title: string }) => {
 
   if (quizzes && quizzes.length > 0) {
     return (
-      <div className="d-flex flex-column h-100">
+      <div className="d-flex flex-column h-100 mt-2">
         <div className="flex-grow-0">
-          <h5 className="mb-3 text-center">{title}</h5>
           <Accordion defaultActiveKey="0" flush>
             {quizzes.map((quiz, index) => {
               return (

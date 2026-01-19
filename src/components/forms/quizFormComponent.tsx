@@ -164,39 +164,35 @@ const QuizFormComponent = forwardRef<QuizFormRef, QuizFormProps>(
 
             {!existingQuiz && (
               <>
-                <div
-                  style={{
-                    display: "flex",
-                    gap: "1rem",
-                    alignItems: "center",
-                    marginBottom: "1rem",
-                  }}
-                >
-                  <Form.Group style={{ flex: 1 }} controlId="div-userPrompt">
-                    <Form.Label className={styles.formLabel}>AI Prompt (optional)</Form.Label>
+                <Form.Group className={styles.aiPromptGroup} controlId="div-userPrompt">
+                  <Form.Label className={styles.formLabel}>AI Prompt (optional)</Form.Label>
+                  <div className={styles.textareaButtonWrapper}>
                     <Form.Control
                       className={styles.formTextarea}
                       as="textarea"
+                      rows={4}
                       maxLength={250}
                       value={userPrompt}
                       onChange={(e) => setUserPrompt(e.target.value)}
-                      placeholder="Describe what you want the AI to generate..."
+                      placeholder="E.g., 'Create 10 True/False questions focusing on real-world scenarios with selected complexity and category'"
                     />
-                    <Form.Text className={styles.smallText}>
-                      {userPrompt.length}/250 characters
-                    </Form.Text>
-                  </Form.Group>
-
-                  <Button
-                    type="button"
-                    className={[styles.generateAIBtn, isGenerating && styles.loading]
-                      .filter(Boolean)
-                      .join(" ")}
-                    onClick={handleGenerateQuiz}
-                    disabled={isGenerating || remainingAttempts <= 0}
-                    style={{ backgroundColor: "transparent" }}
-                  />
-                </div>
+                    <Button
+                      type="button"
+                      className={[
+                        styles.generateAIBtn,
+                        styles.aiGenerateButton,
+                        isGenerating && styles.loading,
+                      ]
+                        .filter(Boolean)
+                        .join(" ")}
+                      onClick={handleGenerateQuiz}
+                      disabled={isGenerating || remainingAttempts <= 0}
+                    />
+                  </div>
+                  <Form.Text className={styles.smallText}>
+                    {userPrompt.length}/250 characters
+                  </Form.Text>
+                </Form.Group>
 
                 {generateError && <div style={{ color: "red" }}>{generateError}</div>}
 

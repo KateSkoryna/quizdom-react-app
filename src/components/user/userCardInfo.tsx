@@ -36,7 +36,7 @@ const UserCardInfo = () => {
             <UserResultsComponent />
           </Tab.Pane>
           <Tab.Pane eventKey="drafts" title="Drafts">
-            <UserQuizList status="draft" title="Draft Quizzes" />
+            <UserQuizList status="draft" />
           </Tab.Pane>
         </Tab.Content>
       </Col>
