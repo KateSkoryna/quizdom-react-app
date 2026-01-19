@@ -3,38 +3,38 @@
 
 .gridWrapper {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 8px;
-  padding: 0 12px 24px 12px;
+  grid-template-columns: repeat(auto-fill, minmax(12.5rem, 1fr));
+  gap: $spacing-8;
+  padding: 0 $spacing-12 calc(#{$spacing-12} * 2) $spacing-12;
   list-style: none;
   margin: 0 auto;
   width: 100%;
-  max-width: 1320px;
+  max-width: 82.5rem;
   align-items: start;
 
   @media screen and (min-width: 576px) {
-    max-width: 540px;
+    max-width: 33.75rem;
   }
 
   @media screen and (min-width: 768px) {
     grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
-    max-width: 720px;
+    gap: $spacing-12;
+    max-width: 45rem;
   }
 
   @media screen and (min-width: 992px) {
     grid-template-columns: repeat(3, 1fr);
-    gap: 1rem;
-    max-width: 960px;
+    gap: $spacing-16;
+    max-width: 60rem;
   }
 
   @media screen and (min-width: 1200px) {
     grid-template-columns: repeat(4, 1fr);
-    max-width: 1140px;
+    max-width: 71.25rem;
   }
 
   @media screen and (min-width: 1400px) {
-    max-width: 1320px;
+    max-width: 82.5rem;
   }
 }
 
@@ -65,8 +65,8 @@
     height: 100%;
     transition: transform 0.6s;
     transform-style: preserve-3d;
-    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-    border-radius: 6px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px $spacing-8;
+    border-radius: $border-radius-6;
     pointer-events: none;
 
     // Cursor pointer on mobile and tablet to indicate clickable
@@ -92,7 +92,7 @@
     & .back {
       transform: rotateY(180deg);
       pointer-events: none;
-      padding: 8px 1rem;
+      padding: $spacing-8 $spacing-16;
       display: flex;
       flex-direction: column;
       align-content: center;
@@ -109,10 +109,10 @@
       & .actionButtons {
         display: flex;
         align-items: center;
-        gap: 4px;
+        gap: $spacing-4;
         position: absolute;
-        top: 1rem;
-        right: 1rem;
+        top: $spacing-16;
+        right: $spacing-16;
         pointer-events: auto;
         z-index: 10;
       }
@@ -120,18 +120,18 @@
       // Like Button Container - bottom right
       & .likeButtonContainer {
         position: absolute;
-        bottom: 1rem;
-        right: 1rem;
+        bottom: $spacing-16;
+        right: $spacing-16;
         pointer-events: auto;
         z-index: 10;
 
         & .likeContainer {
           display: flex;
           align-items: center;
-          gap: 0.5rem;
+          gap: $spacing-8;
 
           & .likeCount {
-            font-size: 0.875rem;
+            font-size: $font-size-14;
             font-weight: 600;
             color: $gray-light;
           }
@@ -160,8 +160,8 @@
         cursor: pointer;
         position: relative;
         z-index: 0;
-        border-radius: 50%;
-        font-size: 1rem;
+        border-radius: $border-radius-circle;
+        font-size: $font-size-16;
         font-weight: 700;
         text-transform: uppercase;
         letter-spacing: 0.5px;
@@ -194,7 +194,7 @@
           height: calc(100% + 4px);
           opacity: 0;
           transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-          border-radius: 50%;
+          border-radius: $border-radius-circle;
         }
 
         &:hover,
@@ -202,9 +202,9 @@
           border: none;
           transform: translateY(-2px);
           box-shadow:
-            0 0 20px rgba(247, 148, 29, 0.6),
-            0 0 40px rgba(39, 170, 225, 0.5),
-            0 4px 20px rgba(0, 0, 0, 0.15);
+            0 0 calc(#{$spacing-16} + #{$spacing-4}) rgba(247, 148, 29, 0.6),
+            0 0 calc((#{$spacing-16} + #{$spacing-4}) * 2) rgba(39, 170, 225, 0.5),
+            0 $spacing-4 calc(#{$spacing-16} + #{$spacing-4}) rgba(0, 0, 0, 0.15);
 
           &:before {
             opacity: 1;
@@ -220,9 +220,9 @@
         &:active {
           transform: translateY(0);
           box-shadow:
-            0 0 15px rgba(247, 148, 29, 0.5),
-            0 0 30px rgba(39, 170, 225, 0.4),
-            0 2px 10px rgba(0, 0, 0, 0.1);
+            0 0 $spacing-16 rgba(247, 148, 29, 0.5),
+            0 0 calc(#{$spacing-16} + #{$spacing-14}) rgba(39, 170, 225, 0.4),
+            0 calc(#{$spacing-4} / 2) $spacing-12 rgba(0, 0, 0, 0.1);
         }
 
         &:after {
@@ -234,7 +234,7 @@
           background: $white;
           left: 0;
           top: 0;
-          border-radius: 50%;
+          border-radius: $border-radius-circle;
         }
 
         &:disabled {
@@ -242,9 +242,9 @@
           cursor: not-allowed;
           transform: none;
           box-shadow:
-            0 0 15px rgba(247, 148, 29, 0.4),
-            0 0 30px rgba(39, 170, 225, 0.3),
-            0 2px 10px rgba(0, 0, 0, 0.1);
+            0 0 $spacing-16 rgba(247, 148, 29, 0.4),
+            0 0 calc(#{$spacing-16} + #{$spacing-14}) rgba(39, 170, 225, 0.3),
+            0 calc(#{$spacing-4} / 2) $spacing-12 rgba(0, 0, 0, 0.1);
 
           &:before {
             opacity: 0;
@@ -273,9 +273,9 @@
       & .startButton {
         transform: translateY(-2px);
         box-shadow:
-          0 0 20px rgba(247, 148, 29, 0.6),
-          0 0 40px rgba(39, 170, 225, 0.5),
-          0 4px 20px rgba(0, 0, 0, 0.15);
+          0 0 calc(#{$spacing-16} + #{$spacing-4}) rgba(247, 148, 29, 0.6),
+          0 0 calc((#{$spacing-16} + #{$spacing-4}) * 2) rgba(39, 170, 225, 0.5),
+          0 $spacing-4 calc(#{$spacing-16} + #{$spacing-4}) rgba(0, 0, 0, 0.15);
 
         &:before {
           opacity: 1;
@@ -302,9 +302,9 @@
     & .startButton {
       transform: translateY(-2px);
       box-shadow:
-        0 0 20px rgba(247, 148, 29, 0.6),
-        0 0 40px rgba(39, 170, 225, 0.5),
-        0 4px 20px rgba(0, 0, 0, 0.15);
+        0 0 calc(#{$spacing-16} + #{$spacing-4}) rgba(247, 148, 29, 0.6),
+        0 0 calc((#{$spacing-16} + #{$spacing-4}) * 2) rgba(39, 170, 225, 0.5),
+        0 $spacing-4 calc(#{$spacing-16} + #{$spacing-4}) rgba(0, 0, 0, 0.15);
 
       &:before {
         opacity: 1;
@@ -317,13 +317,13 @@
 // Completed Badge
 .completedBadge {
   position: absolute;
-  top: 8px;
-  right: 8px;
+  top: $spacing-8;
+  right: $spacing-8;
   z-index: 10;
   font-size: 0.7rem;
   font-weight: 600;
-  padding: 0.25rem 0.5rem;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  padding: $spacing-4 $spacing-8;
+  box-shadow: 0 calc(#{$spacing-4} / 2) $spacing-8 rgba(0, 0, 0, 0.2);
 }
 
 // Quiz Cover
@@ -331,14 +331,14 @@
   width: 100%;
   height: 8rem;
   margin: 0;
-  padding: 8px 1rem;
+  padding: $spacing-8 $spacing-16;
   position: relative;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  border-top-left-radius: 6px;
-  border-top-right-radius: 6px;
+  border-top-left-radius: $border-radius-6;
+  border-top-right-radius: $border-radius-6;
   background: $primary-gradient;
 
   @media screen and (max-width: 768px) {
@@ -347,9 +347,9 @@
 
   & .coverTitle {
     color: white;
-    font-size: 1rem;
+    font-size: $font-size-16;
     font-weight: 700;
-    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    text-shadow: 0 calc(#{$spacing-4} / 2) $spacing-12 rgba(0, 0, 0, 0.3);
     text-align: center;
 
     // Modern CSS line clamping
@@ -367,8 +367,8 @@
     font-size: $font-size-8;
     font-weight: 400;
     position: absolute;
-    bottom: 8px;
-    right: 1rem;
+    bottom: $spacing-8;
+    right: $spacing-16;
     margin: 0;
   }
 }
@@ -380,10 +380,10 @@
 }
 
 .quizInfoCard {
-  padding: 0.5rem 1rem;
+  padding: $spacing-8 $spacing-16;
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: $spacing-8;
   border: none;
   border-radius: 0;
   transition: all 0.3s ease;
@@ -396,24 +396,24 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 1rem;
+  gap: $spacing-16;
 }
 
 .title {
-  font-size: $font-size-18;
+  font-size: $font-size-16;
   font-weight: 700;
   color: $text-primary;
   margin: 0;
 
   @media screen and (min-width: 769px) {
-    font-size: 1.5rem;
+    font-size: $font-size-24;
   }
 }
 
 .subtitle {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: $spacing-8;
   font-size: $font-size-16;
   color: $text-secondary;
 }
@@ -421,14 +421,14 @@
 .complexity {
   display: flex;
   align-items: baseline;
-  gap: 0.25rem;
+  gap: $spacing-4;
   font-weight: 600;
   color: $primary-color;
 }
 
 .levelIcon {
-  width: 1rem;
-  height: 1rem;
+  width: $spacing-16;
+  height: $spacing-16;
   object-fit: contain;
 }
 
@@ -447,13 +447,13 @@
   align-items: center;
   justify-content: space-between;
   margin-top: auto;
-  gap: 0.5rem;
+  gap: $spacing-8;
   color: $gray-light;
 }
 
 // Description
 .description {
-  font-size: 0.875rem;
+  font-size: $font-size-14;
   font-weight: 700;
   line-height: 1.2;
 
@@ -468,7 +468,7 @@
 // Stats
 .stats {
   display: flex;
-  gap: 0.75rem;
+  gap: $spacing-12;
   align-items: center;
   justify-content: flex-end;
 }
@@ -476,14 +476,14 @@
 .statItem {
   display: flex;
   align-items: center;
-  gap: 0.25rem;
+  gap: $spacing-4;
   font-size: 0.65rem;
   color: $gray-light;
 }
 
 .statIcon {
-  width: 18px;
-  height: 18px;
+  width: 1.125rem;
+  height: 1.125rem;
   object-fit: contain;
   fill: $gray-light;
 }
@@ -555,7 +555,7 @@
 
 .publishedDate {
   color: $gray-light;
-  font-size: 0.875rem;
+  font-size: $font-size-14;
 }
 
 // Add Quiz Card
@@ -568,21 +568,21 @@
   gap: 0.66rem;
   cursor: pointer;
   transition: all 0.3s ease-in-out;
-  border: 2px dashed $gray-light;
-  border-radius: 6px;
+  border: calc(#{$spacing-4} / 2) dashed $gray-light;
+  border-radius: $border-radius-6;
   background: transparent;
-  font-size: 1rem;
+  font-size: $font-size-16;
   font-weight: 700;
   color: $black;
   margin: 0;
 
   @media screen and (min-width: $breakpoint-md) {
     min-height: 16rem;
-    font-size: 1.5rem;
+    font-size: $font-size-24;
   }
 
   .addQuizIcon {
-    font-size: 2rem;
+    font-size: $font-size-32;
     color: $black;
     transition: all 0.3s ease-in-out;
 
@@ -594,7 +594,7 @@
   &:hover {
     border-color: $primary-color;
     border-style: solid;
-    box-shadow: 0 0 20px rgba($primary-color, 0.2);
+    box-shadow: 0 0 calc(#{$spacing-16} + #{$spacing-4}) rgba($primary-color, 0.2);
     color: $primary-color;
 
     .addQuizIcon {
@@ -607,17 +607,17 @@
 // Responsive
 @media screen and (max-width: 768px) {
   .quizCard {
-    min-height: 200px;
+    min-height: 12.5rem;
   }
 
   .cardMeta {
     flex-direction: column;
     align-items: flex-start;
-    gap: 0.75rem;
+    gap: $spacing-12;
   }
 
   .stats {
-    gap: 0.5rem;
+    gap: $spacing-8;
     width: 100%;
   }
 
@@ -626,12 +626,12 @@
   }
 
   .title {
-    font-size: 1.25rem;
+    font-size: $font-size-20;
   }
 
   .cardFooter {
     flex-direction: column-reverse;
-    gap: 1rem;
+    gap: $spacing-16;
     align-items: stretch;
   }
 
@@ -641,7 +641,7 @@
 
   .startButton {
     padding: 0.875rem 1.75rem;
-    font-size: 1.25rem;
+    font-size: $font-size-20;
   }
 
   .publishedInfo {

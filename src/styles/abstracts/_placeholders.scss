@@ -31,7 +31,7 @@
   border-radius: $border-radius-5;
   background-color: $primary-color;
   color: $text-light;
-  padding: $spacing-5 $spacing-10;
+  padding: calc(#{$spacing-12} / 2) $spacing-12;
   text-align: center;
   text-decoration: none;
   display: inline-block;
@@ -51,10 +51,10 @@
 }
 
 %button-secondary {
-  border: 2px solid;
-  border-radius: 50px;
+  border: calc(#{$spacing-4} / 2) solid;
+  border-radius: $border-radius-50;
   background: transparent;
-  padding: $spacing-5 $spacing-10;
+  padding: calc(#{$spacing-12} / 2) $spacing-12;
   text-align: center;
   text-decoration: none;
   display: inline-block;
@@ -69,9 +69,9 @@
 
 %icon-button {
   cursor: pointer;
-  width: 24px;
-  height: 24px;
-  transition: all 0.3s ease;
+  width: calc(#{$spacing-12} * 2);
+  height: calc(#{$spacing-12} * 2);
+  transition: $transition-all;
   color: $gray-light;
   stroke: $gray-light;
 
@@ -82,6 +82,6 @@
 }
 
 %container {
-  margin-top: 2rem;
-  margin-bottom: 2rem;
+  margin-top: calc(#{$spacing-16} * 2);
+  margin-bottom: calc(#{$spacing-16} * 2);
 }

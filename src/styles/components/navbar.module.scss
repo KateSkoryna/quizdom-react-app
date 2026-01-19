@@ -69,6 +69,6 @@
   align-items: center;
 
   @media screen and (max-width: 932px) {
-    margin-bottom: 20px;
+    margin-bottom: calc(#{$spacing-16} + #{$spacing-4});
   }
 }

@@ -29,7 +29,7 @@
 
   &::after {
     display: inline-block;
-    margin-left: 0.5rem;
+    margin-left: $spacing-8;
     vertical-align: middle;
     content: "";
     border-top: 0.3em solid $black;
@@ -40,10 +40,10 @@
 }
 
 .userIcon {
-  width: 2rem;
-  height: 2rem;
-  border-radius: 50%;
-  border: 2px solid transparent;
+  width: calc(#{$spacing-16} * 2);
+  height: calc(#{$spacing-16} * 2);
+  border-radius: $border-radius-circle;
+  border: calc(#{$spacing-4} / 2) solid transparent;
   transition: border-color 0.2s ease;
 
   &:hover {
@@ -52,11 +52,11 @@
 }
 
 .dropdownMenu {
-  margin-top: 0.5rem;
+  margin-top: $spacing-8;
   border-radius: $border-radius-5;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  min-width: 200px;
-  padding: 0.5rem 0;
+  box-shadow: 0 $spacing-4 $spacing-12 rgba(0, 0, 0, 0.15);
+  min-width: 12.5rem;
+  padding: $spacing-8 0;
 
   @media screen and (max-width: 767px) {
     left: 50% !important;
@@ -69,11 +69,11 @@
   color: $text-secondary;
   font-size: $font-size-14;
   font-weight: 600;
-  padding: 0.75rem 1rem;
+  padding: $spacing-12 $spacing-16;
 }
 
 .dropdownItem {
-  padding: 0.75rem 1rem;
+  padding: $spacing-12 $spacing-16;
   color: $text-primary;
   transition: all 0.2s ease;
   cursor: pointer;

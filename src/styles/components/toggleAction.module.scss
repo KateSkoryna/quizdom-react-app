@@ -27,8 +27,8 @@ button {
     justify-content: center;
 
     svg {
-      width: 24px;
-      height: 24px;
+      width: calc(#{$spacing-12} * 2);
+      height: calc(#{$spacing-12} * 2);
       color: $gray-light;
       transition:
         transform 0.2s ease,

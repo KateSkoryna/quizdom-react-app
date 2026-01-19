@@ -16,15 +16,15 @@
   display: inline-block;
   border: 1px solid #a9a9a9;
   border-radius: 10%;
-  width: 30px;
-  height: 30px;
-  margin: 0 10px;
+  width: calc(#{$spacing-16} + #{$spacing-14});
+  height: calc(#{$spacing-16} + #{$spacing-14});
+  margin: 0 $spacing-12;
 }
 
 .checkbox label .checkboxIconWrapper .checkboxIcon {
   position: absolute;
-  width: 15px;
-  height: 15px;
+  width: $spacing-16;
+  height: $spacing-16;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
