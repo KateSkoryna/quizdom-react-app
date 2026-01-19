@@ -15,19 +15,16 @@
   position: relative;
   display: inline-block;
   border: 1px solid #a9a9a9;
-  border-radius: 10%;
+  border-radius: $border-radius-4;
   width: calc(#{$spacing-16} + #{$spacing-14});
   height: calc(#{$spacing-16} + #{$spacing-14});
   margin: 0 $spacing-12;
 }
 
 .checkbox label .checkboxIconWrapper .checkboxIcon {
-  position: absolute;
+  @extend %absolute-center;
   width: $spacing-16;
   height: $spacing-16;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
   color: #00093c;
 }
 

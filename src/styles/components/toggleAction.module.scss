@@ -1,4 +1,5 @@
 @use "../settings" as *;
+@use "../abstracts" as *;
 
 button {
   cursor: pointer;
@@ -22,9 +23,7 @@ button {
   }
 
   .toggleIcon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    @extend %flex-row;
 
     svg {
       width: calc(#{$spacing-12} * 2);

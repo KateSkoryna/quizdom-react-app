@@ -80,7 +80,7 @@
   position: relative;
   display: inline-block;
   border: 1px solid #a9a9a9;
-  border-radius: 10%;
+  border-radius: $border-radius-4;
   width: calc(#{$spacing-16} + #{$spacing-14});
   height: calc(#{$spacing-16} + #{$spacing-14});
   margin: 0 calc(#{$spacing-8} + (#{$spacing-4} / 2)) 0 0;

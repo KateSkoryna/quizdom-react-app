@@ -93,7 +93,7 @@
   width: 100%;
   background-color: $primary-color;
   border: none;
-  border-radius: calc(#{$spacing-12} / 2);
+  border-radius: $border-radius-4;
   color: #fff;
   padding: calc(#{$spacing-12} / 2) calc(#{$spacing-8} + (#{$spacing-4} / 2));
   text-align: center;

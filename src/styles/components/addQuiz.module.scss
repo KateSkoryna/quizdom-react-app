@@ -63,9 +63,7 @@
   border: none;
   box-shadow: 0 $spacing-4 calc(#{$spacing-16} + #{$spacing-4}) rgba($primary-color, 0.5);
   color: $white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  @extend %flex-row;
   cursor: pointer;
   transition:
     transform 0.3s ease,
