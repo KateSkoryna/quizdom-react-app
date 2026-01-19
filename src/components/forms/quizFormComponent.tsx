@@ -1,9 +1,10 @@
 import Form from "react-bootstrap/Form";
 import { useForm, FormProvider } from "react-hook-form";
 import { QuizFormState, Complexity, QuizCategory, UserQuiz } from "../../types";
-import { Container, Button } from "react-bootstrap";
+import { Container } from "react-bootstrap";
 import FormDropdownComponent from "./formDropdownComponent";
 import QuestionsFormComponent from "./questionsFormComponent";
+import AIPromptInput from "./AIPromptInput";
 import styles from "../../styles/components/modal.module.scss";
 import { useAuthStore, type AuthStore } from "../../store/authStore";
 import { forwardRef, useImperativeHandle, useEffect, useState } from "react";
@@ -139,8 +140,6 @@ const QuizFormComponent = forwardRef<QuizFormRef, QuizFormProps>(
         }
         reset();
         handleClose();
-      } else {
-        console.error("No current user found!");
       }
     };
 
@@ -163,45 +162,15 @@ const QuizFormComponent = forwardRef<QuizFormRef, QuizFormProps>(
             )}
 
             {!existingQuiz && (
-              <>
-                <Form.Group className={styles.aiPromptGroup} controlId="div-userPrompt">
-                  <Form.Label className={styles.formLabel}>AI Prompt (optional)</Form.Label>
-                  <div className={styles.textareaButtonWrapper}>
-                    <Form.Control
-                      className={styles.formTextarea}
-                      as="textarea"
-                      rows={4}
-                      maxLength={250}
-                      value={userPrompt}
-                      onChange={(e) => setUserPrompt(e.target.value)}
-                      placeholder="E.g., 'Create 10 True/False questions focusing on real-world scenarios with selected complexity and category'"
-                    />
-                    <Button
-                      type="button"
-                      className={[
-                        styles.generateAIBtn,
-                        styles.aiGenerateButton,
-                        isGenerating && styles.loading,
-                      ]
-                        .filter(Boolean)
-                        .join(" ")}
-                      onClick={handleGenerateQuiz}
-                      disabled={isGenerating || remainingAttempts <= 0}
-                    />
-                  </div>
-                  <Form.Text className={styles.smallText}>
-                    {userPrompt.length}/250 characters
-                  </Form.Text>
-                </Form.Group>
-
-                {generateError && <div style={{ color: "red" }}>{generateError}</div>}
-
-                {remainingAttempts <= 0 && (
-                  <div style={{ color: "orange" }}>
-                    Maximum generation attempts reached. Please reload to try again.
-                  </div>
-                )}
-              </>
+              <AIPromptInput
+                value={userPrompt}
+                onChange={setUserPrompt}
+                onGenerate={handleGenerateQuiz}
+                isGenerating={isGenerating}
+                isDisabled={isGenerating || remainingAttempts <= 0}
+                error={generateError}
+                remainingAttempts={remainingAttempts}
+              />
             )}
             <Form.Group className={styles.formGroup} controlId="div-title">
               <Form.Label className={styles.formLabel}>Quiz Title</Form.Label>
