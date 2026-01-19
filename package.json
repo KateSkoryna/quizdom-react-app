@@ -36,6 +36,7 @@
     "react-lazy-load-image-component": "^1.6.0",
     "react-loader-spinner": "^8.0.0",
     "react-router-dom": "^6.23.0",
+    "react-speech-recognition": "^4.0.1",
     "sort-by": "^1.2.0",
     "yup": "^1.7.1",
     "zustand": "^5.0.9"
@@ -45,6 +46,7 @@
     "@types/react": "^19.2.7",
     "@types/react-dom": "^19.2.3",
     "@types/react-lazy-load-image-component": "^1.6.4",
+    "@types/react-speech-recognition": "^3.9.6",
     "@typescript-eslint/eslint-plugin": "^8.48.1",
     "@typescript-eslint/parser": "^8.48.1",
     "@vitejs/plugin-react": "^5.1.1",
