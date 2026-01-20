@@ -44,7 +44,7 @@ export const convertComplexity = (complexity: string) => {
 export const getConfigByFieldName = (fieldName: string) => {
   if (fieldName === "complexity") {
     return {
-      label: "Complexity level",
+      label: "Complexity",
       options: [
         {
           value: Complexity.BEGINNER,
