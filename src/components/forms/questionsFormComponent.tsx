@@ -48,8 +48,10 @@ const QuestionsFormComponent = () => {
             </div>
 
             <Form.Control
-              className={modalStyles.formInput}
+              className={modalStyles.formTextarea}
               {...register(`questions[${index}].questionTitle`)}
+              as="textarea"
+              rows={2}
               type="text"
               placeholder="Question Text"
             />
@@ -58,10 +60,8 @@ const QuestionsFormComponent = () => {
             <Form.Group className="mt-3" controlId={`hint-${index}`}>
               <Form.Label className={modalStyles.formLabel}>Hint (optional)</Form.Label>
               <Form.Control
-                className={modalStyles.formTextarea}
+                className={modalStyles.formInput}
                 {...register(`questions[${index}].hint`)}
-                as="textarea"
-                rows={2}
                 placeholder="Add a helpful hint for this question..."
               />
             </Form.Group>

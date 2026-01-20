@@ -60,7 +60,7 @@ const AIPromptInput = ({
             maxLength={250}
             value={value}
             onChange={(e) => onChange(e.target.value)}
-            placeholder="E.g., 'Create 10 True/False questions focusing on real-world scenarios with selected complexity and category'"
+            placeholder="Generate 10 questions focusing on real-world scenarios with selected complexity and category..."
           />
           {browserSupportsSpeechRecognition && (
             <button

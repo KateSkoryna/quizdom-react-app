@@ -38,6 +38,7 @@ const AnswersFormComponent = ({ nestIndex }: { nestIndex: number }) => {
                   },
                 } as const)}
                 as="textarea"
+                rows={5}
                 className={modalStyles.answerInput}
                 placeholder={`Answer ${index + 1}`}
               />

@@ -14,7 +14,7 @@
   &::after {
     content: "";
     position: absolute;
-        border-radius: $border-radius-circle;
+    border-radius: $border-radius-circle;
     filter: blur(calc(#{$spacing-16} * 2.5));
     z-index: 0;
   }
@@ -52,7 +52,7 @@
   position: absolute;
   width: 200px;
   height: 200px;
-      border-radius: $border-radius-circle;
+  border-radius: $border-radius-circle;
   background: radial-gradient(
     circle at 30% 30%,
     rgba(249, 115, 22, 0.7),
@@ -81,6 +81,7 @@
   button,
   select {
     box-shadow: rgba(0, 0, 0, 0.24) 0 $spacing-4 $spacing-8;
+    width: 100%;
   }
 }
 
@@ -90,7 +91,12 @@
 
 form {
   @extend %flex-column;
+  align-items: flex-start;
   gap: $spacing-8;
+
+  & > div {
+    width: 100%;
+  }
 }
 
 .formTitle {
