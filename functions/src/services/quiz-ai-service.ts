@@ -12,7 +12,7 @@ export const ai = genkit({
       apiKey: process.env.GEMINI_API_KEY,
     }),
   ],
-  model: googleAI.model("gemini-2.5-flash"),
+  model: googleAI.model("gemini-2.0-flash"),
 });
 
 // --- Quiz generation flow (AI JSON ONLY) ---
