@@ -56,7 +56,7 @@ const UserQuizItem = ({
                 <MdEdit className={styles.icon} />
               </button>
             )}
-            <DeleteQuizComponent />
+            <DeleteQuizComponent quizId={quiz.id} quizTitle={title} />
           </div>
         )}
 
