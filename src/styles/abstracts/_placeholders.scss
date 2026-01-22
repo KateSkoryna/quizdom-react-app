@@ -26,44 +26,76 @@
   background-repeat: no-repeat;
 }
 
+// Base button styles - shared by all buttons
 %button-base {
-  border: none;
   border-radius: $border-radius-4;
-  background-color: $primary-color;
-  color: $text-light;
-  padding: calc(#{$spacing-12} / 2) $spacing-12;
+  font-size: $font-size-16;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 0.3rem $spacing-16;
+  transition: all 0.3s ease-in-out;
   text-align: center;
   text-decoration: none;
   display: inline-block;
-  font-size: $font-size-16;
-  cursor: pointer;
-  transition: $transition-all;
-
-  &:hover {
-    background-color: $secondary-color;
-    outline: none;
-    color: $text-light !important;
-  }
 
   &:focus {
-    color: $text-light !important;
+    outline: none;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
   }
 }
 
-%button-secondary {
-  border: calc(#{$spacing-4} / 2) solid;
-  border-radius: $border-radius-50;
-  background: transparent;
-  padding: calc(#{$spacing-12} / 2) $spacing-12;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: $font-size-16;
-  cursor: pointer;
-  transition: $transition-all;
+// Primary button - colored background
+%button-primary {
+  @extend %button-base;
+  background-color: $primary-color !important;
+  border: calc(#{$spacing-4} / 2) solid $primary-color !important;
+  color: $white !important;
 
-  &:hover {
-    outline: none;
+  &:hover:not(:disabled) {
+    transform: scale(1.05);
+  }
+
+  &:focus {
+    box-shadow: 0 0 0 $spacing-4 rgba($primary-color, 0.25);
+  }
+}
+
+// Secondary button - white background with black border
+%button-secondary {
+  @extend %button-base;
+  background-color: $white !important;
+  border: calc(#{$spacing-4} / 2) solid $black !important;
+  color: $black !important;
+
+  &:hover:not(:disabled) {
+    transform: scale(1.05);
+    background-color: $black !important;
+    color: $white !important;
+    border: calc(#{$spacing-4} / 2) solid $white !important;
+  }
+
+  &:focus {
+    box-shadow: 0 0 0 $spacing-4 rgba($primary-color, 0.25);
+  }
+}
+
+// Danger button - for destructive actions
+%button-danger {
+  @extend %button-base;
+  background-color: #dc3545 !important;
+  border: calc(#{$spacing-4} / 2) solid #dc3545 !important;
+  color: $white !important;
+
+  &:hover:not(:disabled) {
+    transform: scale(1.05);
+  }
+
+  &:focus {
+    box-shadow: 0 0 0 $spacing-4 rgba(#dc3545, 0.25);
   }
 }
 
@@ -84,4 +116,46 @@
 %container {
   margin-top: calc(#{$spacing-16} * 2);
   margin-bottom: calc(#{$spacing-16} * 2);
+}
+
+// Standard modal dialog styles
+%modal-dialog-base {
+  & .modal-content {
+    padding-top: $spacing-16;
+    padding-bottom: $spacing-16;
+    border: none;
+    border-radius: $border-radius-8;
+  }
+
+  & .modal-header {
+    border-bottom: none;
+    padding: $spacing-16;
+  }
+
+  & .modal-body {
+    border: none;
+    padding: $spacing-16;
+  }
+
+  & .modal-footer {
+    border-top: none;
+    padding: $spacing-16;
+  }
+
+  & .btn-close {
+    transform: scale(3);
+    margin: $spacing-8 $spacing-8 0 0;
+    transition: all 0.3s ease-in-out;
+
+    &:hover {
+      opacity: 1;
+      transform: scale(3.15);
+      filter: invert(56%) sepia(89%) saturate(1742%) hue-rotate(359deg) brightness(99%)
+        contrast(95%);
+    }
+
+    &:focus {
+      box-shadow: 0 0 0 $spacing-4 rgba($primary-color, 0.25);
+    }
+  }
 }

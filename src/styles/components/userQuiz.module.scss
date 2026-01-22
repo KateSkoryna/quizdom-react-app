@@ -123,3 +123,21 @@
   @extend %flex-row;
   margin-top: $spacing-4;
 }
+
+.secondaryButton {
+  @extend %button-secondary;
+  min-width: 7.5rem;
+}
+
+.deleteModalDialog {
+  @extend %modal-dialog-base;
+
+  & .modal-footer {
+    gap: $spacing-12;
+  }
+}
+
+.deleteButton {
+  @extend %button-danger;
+  min-width: 7.5rem;
+}

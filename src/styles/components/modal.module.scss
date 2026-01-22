@@ -3,66 +3,14 @@
 @use "../abstracts" as *;
 
 .quizModalDialog {
+  @extend %modal-dialog-base;
   max-height: 75vh;
   @extend %flex-row;
-
-  & .modal-content {
-    padding-top: $spacing-16;
-    padding-bottom: $spacing-16;
-    border: none;
-  }
-
-  & .modal-body {
-    border: none;
-  }
-
-  & .btn-close {
-    transform: scale(3);
-    margin: $spacing-8 $spacing-8 0 0;
-    transition: all 0.3s ease-in-out;
-
-    &:hover {
-      opacity: 1;
-      transform: scale(3.15);
-      filter: invert(56%) sepia(89%) saturate(1742%) hue-rotate(359deg) brightness(99%)
-        contrast(95%);
-    }
-
-    &:focus {
-      box-shadow: 0 0 0 $spacing-4 rgba($primary-color, 0.25);
-    }
-  }
 }
 
 .startQuizModalDialog {
+  @extend %modal-dialog-base;
   max-width: 40rem;
-
-  & .modal-content {
-    padding-top: $spacing-16;
-    padding-bottom: $spacing-16;
-    border: none;
-  }
-
-  & .modal-body {
-    border: none;
-  }
-
-  & .btn-close {
-    transform: scale(3);
-    margin: $spacing-8 $spacing-8 0 0;
-    transition: all 0.3s ease-in-out;
-
-    &:hover {
-      opacity: 1;
-      transform: scale(3.15);
-      filter: invert(56%) sepia(89%) saturate(1742%) hue-rotate(359deg) brightness(99%)
-        contrast(95%);
-    }
-
-    &:focus {
-      box-shadow: 0 0 0 $spacing-4 rgba($primary-color, 0.25);
-    }
-  }
 }
 
 .answersList {
@@ -104,41 +52,17 @@
 .footerButton {
   @extend %flex-row;
   gap: $spacing-8;
-  background: none;
-  border: calc(#{$spacing-4} / 2) solid;
-  border-radius: $border-radius-4;
-  font-size: $font-size-16;
-  cursor: pointer;
   padding: $spacing-8 $spacing-16;
-  transition: all 0.3s ease-in-out;
-  font-weight: 500;
-
-  &:focus {
-    outline: none;
-  }
-
-  &:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-  }
 }
 
 .primaryButton {
+  @extend %button-primary;
   @extend .footerButton;
-  border-color: $primary-color;
-  background-color: $primary-color;
-  color: $white;
 }
 
 .secondaryButton {
+  @extend %button-secondary;
   @extend .footerButton;
-  border-color: $black;
-  color: $black;
-
-  &:hover:not(:disabled) {
-    border-color: $primary-color;
-    color: $primary-color;
-  }
 }
 
 .formContainer {
@@ -481,30 +405,14 @@
 }
 
 .addQuestionButton {
+  @extend %button-secondary;
   display: flex;
   align-items: center;
   gap: $spacing-8;
-  background: none;
-  border: calc(#{$spacing-4} / 2) solid $black;
-  border-radius: $border-radius-4;
-  color: $black;
-  font-size: $font-size-16;
-  cursor: pointer;
   padding: $spacing-8;
-  transition: all 0.3s ease-in-out;
 
   svg {
     font-size: $font-size-20;
-  }
-
-  &:hover {
-    border-color: $primary-color;
-    color: $primary-color;
-    transform: translateX(2px);
-  }
-
-  &:focus {
-    outline: none;
   }
 }
 
@@ -777,41 +685,17 @@
 .actionButton {
   @extend %flex-row;
   gap: $spacing-8;
-  background: none;
-  border: calc(#{$spacing-4} / 2) solid;
-  border-radius: $border-radius-4;
-  font-size: $font-size-16;
-  cursor: pointer;
   padding: $spacing-8 $spacing-16;
-  transition: all 0.3s ease-in-out;
-  font-weight: 500;
-
-  &:focus {
-    outline: none;
-  }
-
-  &:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-  }
 }
 
 .actionButtonPrimary {
+  @extend %button-primary;
   @extend .actionButton;
-  border-color: $primary-color;
-  background-color: $primary-color;
-  color: $white;
 }
 
 .actionButtonSecondary {
+  @extend %button-secondary;
   @extend .actionButton;
-  border-color: $black;
-  color: $black;
-
-  &:hover:not(:disabled) {
-    border-color: $primary-color;
-    color: $primary-color;
-  }
 }
 
 .ratingSection {
@@ -896,32 +780,26 @@
 }
 
 .hintButton {
+  @extend %button-base;
   display: flex;
   align-items: center;
   gap: $spacing-8;
   background: none;
   border: calc(#{$spacing-4} / 2) solid $primary-color;
-  border-radius: $border-radius-4;
   color: $primary-color;
   font-size: 0.95rem;
-  font-weight: 500;
-  cursor: pointer;
   padding: calc(#{$spacing-12} / 2) $spacing-12;
-  transition: all 0.3s ease-in-out;
   white-space: nowrap;
 
   svg {
     font-size: $font-size-20;
   }
 
-  &:hover {
-    background-color: $primary-color;
-    color: $white;
-    transform: translateY(-2px);
+  &:hover:not(:disabled) {
+    transform: scale(1.05);
   }
 
   &:focus {
-    outline: none;
     box-shadow: 0 0 0 0.2rem rgba($primary-color, 0.25);
   }
 }
