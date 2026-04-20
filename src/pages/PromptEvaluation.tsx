@@ -362,23 +362,35 @@ const PromptEvaluation: React.FC = () => {
                     >
                       How to improve your prompt
                     </h4>
-                    <div
+                    <ul
                       style={{
                         fontSize: "0.875rem",
                         color: "#374151",
                         lineHeight: "1.6",
-                        display: "flex",
-                        flexDirection: "column",
-                        gap: "0.25rem",
+                        paddingLeft: "1.25rem",
+                        margin: 0,
                       }}
                     >
                       {res.details.semantic.reasoning
-                        .split("\n")
+                        .split(/\n|(?=•)/)
                         .filter((line: string) => line.trim())
-                        .map((line: string, i: number) => (
-                          <span key={i}>{line.trim()}</span>
-                        ))}
-                    </div>
+                        .map((line: string, i: number) => {
+                          const trimmed = line.trim();
+                          const isBullet = trimmed.startsWith("•");
+                          return (
+                            <li
+                              key={i}
+                              style={{
+                                listStyleType: isBullet ? "disc" : "none",
+                                marginLeft: isBullet ? "0" : "-1.25rem",
+                                marginBottom: "0.4rem",
+                              }}
+                            >
+                              {isBullet ? trimmed.substring(1).trim() : trimmed}
+                            </li>
+                          );
+                        })}
+                    </ul>
                   </div>
 
                   <details style={{ marginTop: "1rem" }}>
