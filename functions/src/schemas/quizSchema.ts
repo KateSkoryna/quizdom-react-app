@@ -33,7 +33,10 @@ export const questionSchema = z.object({
       "Each question must have at least one correct answer"
     ),
 
-  hint: z.string().max(50).optional(),
+  hint: z
+    .string()
+    .min(1, "Hint cannot be empty")
+    .max(30, "Hint must be at most 30 characters long"),
 });
 
 // --- Quiz ---
@@ -47,7 +50,7 @@ export const quizSchema = z.object({
   description: z
     .string()
     .min(10, "Quiz description must be at least 10 characters long")
-    .max(200, "Quiz description must be at most 200 characters long")
+    .max(160, "Quiz description must be at most 160 characters long")
     .trim(),
   status: z.string(),
   complexity: z.enum(["Beginner", "Medium", "Advanced", "Expert"]),
@@ -111,11 +114,11 @@ export const flowQuestionSchema = z.object({
 
   correct_answer: z.string(),
 
-  hint: z.string(),
+  hint: z.string().max(30),
 });
 
 export const quizOutputSchema = z.object({
-  title: z.string(),
-  description: z.string(),
+  title: z.string().max(100),
+  description: z.string().max(160),
   questions: z.array(flowQuestionSchema),
 });

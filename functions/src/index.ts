@@ -29,6 +29,7 @@ export {
 
 // AI Quiz Generation
 export { generateQuiz } from "./api/quiz/generateQuiz";
+export { evaluatePrompt } from "./api/quiz/evaluate";
 
 // Favorites
 export { toggleFavorite, getUserFavorites, getFavoriteQuizzes } from "./api/quiz/favorites";

@@ -185,3 +185,48 @@ export async function deleteQuiz(quizId: string): Promise<void> {
     throw new Error(error.response?.data?.error || error.message || "Failed to delete quiz");
   }
 }
+
+export async function evaluatePromptStream(
+  onResult: (result: any) => void,
+  onDone: (id: string, timestamp: number) => void,
+  onError: (message: string) => void
+): Promise<void> {
+  const { auth } = await import("../firebase");
+  const currentUser = auth.currentUser;
+  if (!currentUser) throw new Error("Not authenticated");
+
+  const token = await currentUser.getIdToken();
+  const baseURL = apiClient.defaults.baseURL ?? "/api";
+
+  const response = await fetch(`${baseURL}/evaluatePrompt`, {
+    method: "POST",
+    headers: { Authorization: `Bearer ${token}` },
+  });
+
+  if (!response.ok) {
+    const data = await response.json();
+    throw new Error(data.error || "Failed to run evaluation");
+  }
+
+  const reader = response.body!.getReader();
+  const decoder = new TextDecoder();
+  let buffer = "";
+
+  while (true) {
+    const { done, value } = await reader.read();
+    if (done) break;
+
+    buffer += decoder.decode(value, { stream: true });
+    const parts = buffer.split("\n\n");
+    buffer = parts.pop() ?? "";
+
+    for (const part of parts) {
+      const line = part.trim();
+      if (!line.startsWith("data: ")) continue;
+      const event = JSON.parse(line.slice(6));
+      if (event.type === "result") onResult(event.data);
+      else if (event.type === "done") onDone(event.id, event.timestamp);
+      else if (event.type === "error") onError(event.message);
+    }
+  }
+}

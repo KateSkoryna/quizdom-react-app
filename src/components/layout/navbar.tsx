@@ -19,6 +19,7 @@ const NavbarContainer = () => {
 
   const userName = currentUser?.displayName?.split(" ")[0];
   const isUserPage = location.pathname.includes("/user");
+  const isAdmin = currentUser?.email === import.meta.env.VITE_ADMIN_EMAIL;
 
   const active = useMemo(() => {
     return location.pathname.split("/")[1] || "/";
@@ -80,6 +81,17 @@ const NavbarContainer = () => {
                 >
                   News
                 </Nav.Link>
+                {isAdmin && (
+                  <Nav.Link
+                    as={Link}
+                    to="/prompt-evaluation"
+                    className={`${isUserPage ? styles.navLinkLight : styles.navLink}`}
+                    eventKey="prompt-evaluation"
+                    onClick={handleClose}
+                  >
+                    AI Lab
+                  </Nav.Link>
+                )}
               </Nav>
               {currentUser ? (
                 <LogoutComponent

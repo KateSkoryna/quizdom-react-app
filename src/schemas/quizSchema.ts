@@ -33,7 +33,11 @@ export const questionSchema = yup.object().shape({
         return answers.some((answer) => answer.isCorrect === true);
       }
     ),
-  hint: yup.string().trim().optional(),
+  hint: yup
+    .string()
+    .trim()
+    .required("Hint is required")
+    .max(30, "Hint must be at most 30 characters long"),
 });
 
 // Quiz validation schema
@@ -49,7 +53,7 @@ export const quizSchema = yup.object().shape({
     .required("Quiz description is required")
     .trim()
     .min(10, "Quiz description must be at least 10 characters long")
-    .max(500, "Quiz description must be at most 500 characters long"),
+    .max(160, "Quiz description must be at most 160 characters long"),
   complexity: yup
     .mixed<Complexity>()
     .oneOf(Object.values(Complexity), "Invalid complexity level")
@@ -61,8 +65,8 @@ export const quizSchema = yup.object().shape({
   questions: yup
     .array()
     .of(questionSchema)
-    .min(1, "Quiz must have at least one question")
-    .max(50, "Quiz must have at most 50 questions")
+    .min(6, "Quiz must contain at least 6 questions")
+    .max(25, "Quiz must contain at most 25 questions")
     .required("Questions are required"),
 });
 

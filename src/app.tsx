@@ -16,6 +16,7 @@ const AuthPage = lazy(() => import("./pages/auth"));
 const HomePage = lazy(() => import("./pages/home"));
 const NewsPage = lazy(() => import("./pages/news"));
 const QuizPage = lazy(() => import("./pages/quiz"));
+const PromptEvaluationPage = lazy(() => import("./pages/PromptEvaluation"));
 const NotFoundPage = lazy(() => import("./pages/notFound"));
 
 const router = createHashRouter([
@@ -69,6 +70,16 @@ const router = createHashRouter([
           <Suspense fallback={<Loader />}>
             <ProtectedRoute>
               <UserPage />
+            </ProtectedRoute>
+          </Suspense>
+        ),
+      },
+      {
+        path: "prompt-evaluation",
+        element: (
+          <Suspense fallback={<Loader />}>
+            <ProtectedRoute>
+              <PromptEvaluationPage />
             </ProtectedRoute>
           </Suspense>
         ),
