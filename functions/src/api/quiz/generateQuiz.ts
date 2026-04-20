@@ -15,6 +15,19 @@ export const generateQuiz = onRequest(corsOptions, async (req, res) => {
 
     const { category, complexity, language, customUserPrompt } = req.body;
 
+    if (customUserPrompt) {
+      const match = customUserPrompt.match(/\b(\d+)\s*questions?\b/i);
+      if (match) {
+        const requested = parseInt(match[1], 10);
+        if (requested < 6) {
+          res
+            .status(400)
+            .json({ error: `Minimum number of questions is 6. You requested ${requested}.` });
+          return;
+        }
+      }
+    }
+
     const quiz = await generateQuizFlow({
       category,
       complexity,

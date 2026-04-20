@@ -123,7 +123,8 @@ async function updateQuizRating(quizId: string): Promise<void> {
     return;
   }
 
-  const averageRating = ratings.reduce((sum: number, rating: number) => sum + rating, 0) / ratings.length;
+  const averageRating =
+    ratings.reduce((sum: number, rating: number) => sum + rating, 0) / ratings.length;
 
   await db
     .collection(COLLECTIONS.QUIZZES)

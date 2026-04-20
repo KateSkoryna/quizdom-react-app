@@ -61,6 +61,26 @@ const QuizFormComponent = forwardRef<QuizFormRef, QuizFormProps>(
       clearGeneratedQuiz,
     } = useGeneratedQuizStore();
     const [userPrompt, setUserPrompt] = useState("");
+    const [promptError, setPromptError] = useState<string | null>(null);
+
+    const handlePromptChange = (value: string) => {
+      setUserPrompt(value);
+      const match = value.match(/\b(\d+)\s*questions?\b/i);
+      if (match) {
+        const count = parseInt(match[1], 10);
+        if (count < 6) {
+          setPromptError(
+            `${count} question${count === 1 ? "" : "s"} is too few — the minimum is 6.`
+          );
+        } else if (count > 25) {
+          setPromptError(`${count} questions is too many — the maximum is 25.`);
+        } else {
+          setPromptError(null);
+        }
+      } else {
+        setPromptError(null);
+      }
+    };
 
     // Get dropdown configs
     const complexityConfig = getConfigByFieldName("complexity");
@@ -164,11 +184,11 @@ const QuizFormComponent = forwardRef<QuizFormRef, QuizFormProps>(
             {!existingQuiz && (
               <AIPromptInput
                 value={userPrompt}
-                onChange={setUserPrompt}
+                onChange={handlePromptChange}
                 onGenerate={handleGenerateQuiz}
                 isGenerating={isGenerating}
-                isDisabled={isGenerating || remainingAttempts <= 0}
-                error={generateError}
+                isDisabled={isGenerating || remainingAttempts <= 0 || !!promptError}
+                error={promptError ?? generateError}
                 remainingAttempts={remainingAttempts}
               />
             )}
