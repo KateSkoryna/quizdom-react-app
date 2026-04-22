@@ -36,8 +36,8 @@ const NewsPage = () => {
   };
 
   return (
-    <>
-      <Container className={styles.formContainer}>
+    <Container style={{ paddingTop: "100px" }}>
+      <>
         <SearchForm
           query={query}
           category={category}
@@ -56,7 +56,7 @@ const NewsPage = () => {
             </Nav.Item>
           ))}
         </Nav>
-      </Container>
+      </>
 
       {isLoading ? (
         <Loader />
@@ -67,7 +67,7 @@ const NewsPage = () => {
           <NewsListComponent news={news} />
         </ErrorBoundary>
       )}
-    </>
+    </Container>
   );
 };
 
