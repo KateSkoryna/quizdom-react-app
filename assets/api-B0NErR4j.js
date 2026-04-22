@@ -1,0 +1,1 @@
+import{g as o}from"./index-BHKOsxn4.js";import{d as a,u as n,a as c}from"./firebase-firestore-BDkqznP2.js";async function u(s){try{const r=a(o,"users",s);return await c(r)}catch(r){if(r instanceof Error)throw new Error(r.message)}}async function g(s,r,t){try{const e=a(o,"users",s);await n(e,{[r]:t})}catch(e){if(e instanceof Error)throw new Error(e.message)}}export{g as e,u as g};
