@@ -1,21 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
-interface NewsArticle {
-  title: string;
-  description: string;
-  url: string;
-  image: string;
-  published_at: string;
-  source: string;
-}
-
-interface UseNewsReturn {
-  news: NewsArticle[];
-  isLoading: boolean;
-  error: string | null;
-  fetchNews: (category: string, keywords: string) => Promise<void>;
-}
 
 export enum NewsCategory {
   TECHNOLOGY = "technology",

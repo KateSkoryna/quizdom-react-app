@@ -43,7 +43,7 @@ export interface Answer {
 export interface Question {
   questionTitle: string;
   answers: Answer[];
-  hint?: string;
+  hint: string;
 }
 
 export enum QuizCategory {
