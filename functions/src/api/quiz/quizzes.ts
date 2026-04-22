@@ -38,7 +38,7 @@ export const getQuizzes = onRequest(corsOptions, async (req, res) => {
         total: quizzes.length,
       },
     });
-  } catch (error: any) {
+  } catch (_error) {
     res.status(500).json({
       success: false,
       error: "Failed to fetch quizzes",

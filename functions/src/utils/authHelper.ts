@@ -37,7 +37,7 @@ export async function verifyAuthToken(
       email: decodedToken.email,
       name: decodedToken.name,
     };
-  } catch (error) {
+  } catch (_error) {
     res.status(401).json({
       success: false,
       error: "Unauthorized - Invalid token",

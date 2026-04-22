@@ -74,7 +74,7 @@ export const getQuizCompletionStatus = onRequest(corsOptions, async (req, res) =
       success: true,
       completion,
     });
-  } catch (error) {
+  } catch (_error) {
     res.status(500).json({
       success: false,
       error: "Failed to get quiz completion",
@@ -97,7 +97,7 @@ export const getAllUserCompletions = onRequest(corsOptions, async (req, res) => 
       success: true,
       completions,
     });
-  } catch (error) {
+  } catch (_error) {
     res.status(500).json({
       success: false,
       error: "Failed to get user completions",
