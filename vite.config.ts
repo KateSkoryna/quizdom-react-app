@@ -35,6 +35,9 @@ export default defineConfig({
     }),
   ],
   base: "/quizdom-react-app/",
+  define: {
+    "process.env.NODE_ENV": JSON.stringify(process.env.NODE_ENV || "production"),
+  },
   build: {
     rollupOptions: {
       output: {
