@@ -24,6 +24,9 @@ import type { SemanticSearchDependencies } from "../../types/search";
 
 const KEYWORD_FALLBACK_CANDIDATES = 200;
 
+// v2 Firestore triggers must run in a region matching the database location (eur3)
+const FIRESTORE_TRIGGER_REGION = "europe-west1";
+
 const searchDependencies: SemanticSearchDependencies = {
   extractIntent: extractSearchIntent,
   embedQuery: embedSearchQuery,
@@ -120,7 +123,7 @@ export const searchQuizzes = onRequest({ ...corsOptions, maxInstances: 10 }, asy
  * Keeps the quizEmbeddings vector index in sync with published quizzes
  */
 export const syncQuizEmbeddingOnWrite = onDocumentWritten(
-  `${COLLECTIONS.QUIZZES}/{quizId}`,
+  { document: `${COLLECTIONS.QUIZZES}/{quizId}`, region: FIRESTORE_TRIGGER_REGION },
   async (event) => {
     const quizId = event.params.quizId;
     const before = event.data?.before.exists
