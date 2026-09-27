@@ -17,6 +17,10 @@ export enum ACTION {
 }
 
 export const corsOptions = {
-  cors: ["https://kateskoryna.github.io"],
+  cors: [
+    "https://kateskoryna.github.io",
+    // Firebase Hosting preview channels; only this project can create these subdomains
+    /^https:\/\/quizdom-react-app--[a-z0-9-]+\.web\.app$/,
+  ],
   invoker: "public" as const,
 };
