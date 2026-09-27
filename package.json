@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "dev:live": "FUNCTIONS_PROXY_TARGET=https://us-central1-quizdom-react-app.cloudfunctions.net vite",
     "build": "tsc && vite build",
     "format": "prettier --write \"src/**/*.{ts,tsx,js,jsx,json,css,scss}\" \"functions/{src,test}/**/*.{ts,tsx,js,jsx,json}\"",
     "format:check": "prettier --check \"src/**/*.{ts,tsx,js,jsx,json,css,scss}\" \"functions/{src,test}/**/*.{ts,tsx,js,jsx,json}\"",

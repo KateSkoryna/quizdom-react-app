@@ -10,6 +10,7 @@ import { useEffect, useMemo, useRef, useCallback } from "react";
 import { useSearchParams } from "react-router-dom";
 import Loader from "../common/loader";
 import { useInfiniteQuizzes } from "../../hooks/useInfiniteQuizzes";
+import SemanticSearchResults from "./semanticSearchResults";
 
 const QuizMainList = () => {
   const currentUser = useAuthStore((state) => state.currentUser);
@@ -18,8 +19,32 @@ const QuizMainList = () => {
   const getFavorites = useFavoritesStore((state) => state.getFavorites);
   const getLikes = useLikesStore((state) => state.getLikes);
 
+  const query = searchParams.get("q")?.trim() ?? "";
   const categoryFilter = searchParams.get("category") || null;
   const complexityFilter = searchParams.get("complexity") || null;
+
+  useEffect(() => {
+    if (currentUser) {
+      loadAllCompletions();
+      getFavorites();
+      getLikes();
+    }
+  }, [currentUser, loadAllCompletions, getFavorites, getLikes]);
+
+  return query ? (
+    <SemanticSearchResults q={query} category={categoryFilter} complexity={complexityFilter} />
+  ) : (
+    <QuizBrowseList categoryFilter={categoryFilter} complexityFilter={complexityFilter} />
+  );
+};
+
+type QuizBrowseListProps = {
+  categoryFilter: string | null;
+  complexityFilter: string | null;
+};
+
+const QuizBrowseList = ({ categoryFilter, complexityFilter }: QuizBrowseListProps) => {
+  const currentUser = useAuthStore((state) => state.currentUser);
   const quizzesPerPage = 10;
 
   const { data, isLoading, isError, error, fetchNextPage, hasNextPage, isFetchingNextPage } =
@@ -29,14 +54,6 @@ const QuizMainList = () => {
     if (!data?.pages) return [];
     return data.pages.flatMap((page) => page.data);
   }, [data]);
-
-  useEffect(() => {
-    if (currentUser) {
-      loadAllCompletions();
-      getFavorites();
-      getLikes();
-    }
-  }, [currentUser, loadAllCompletions, getFavorites, getLikes]);
 
   const intersectionSentinelRef = useRef<HTMLDivElement>(null);
 

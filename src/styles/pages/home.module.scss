@@ -1,6 +1,13 @@
 @use "../settings" as *;
 @use "../abstracts" as *;
 
+.searchForm {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-8;
+  width: 100%;
+}
+
 .form {
   display: flex;
   flex-direction: column;
