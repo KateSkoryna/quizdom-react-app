@@ -39,23 +39,17 @@ const SemanticSearchResults = ({ q }: SemanticSearchResultsProps) => {
     );
   }
 
-  const { category, complexity } = data?.search.appliedFilters ?? {};
-  const understood = [category, complexity].filter(Boolean).join(" · ");
-
   return (
-    <div>
-      {understood && <p style={{ color: "#666", margin: "0 0 1rem" }}>Showing: {understood}</p>}
-      <div className={styles.gridWrapper}>
-        <ul className={styles.gridContainer} aria-label={`Search results for ${q}`}>
-          {quizzes.map((quiz) => (
-            <li key={quiz.id} className={styles.gridItem}>
-              <Card className={styles.gridCard}>
-                <QuizMainListItem quiz={quiz} />
-              </Card>
-            </li>
-          ))}
-        </ul>
-      </div>
+    <div className={styles.gridWrapper}>
+      <ul className={styles.gridContainer} aria-label={`Search results for ${q}`}>
+        {quizzes.map((quiz) => (
+          <li key={quiz.id} className={styles.gridItem}>
+            <Card className={styles.gridCard}>
+              <QuizMainListItem quiz={quiz} />
+            </Card>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 };
