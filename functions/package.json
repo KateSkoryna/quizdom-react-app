@@ -10,7 +10,8 @@
     "lint": "eslint src/**/*.ts",
     "lint:fix": "eslint src/**/*.ts --fix",
     "genkit:ui": "genkit start --port 4001 -- npx tsx --watch src/genkit.ts",
-    "genkit:emulator": "genkit start -- firebase emulators:start --inspect-functions"
+    "genkit:emulator": "genkit start -- firebase emulators:start --inspect-functions",
+    "test": "vitest run"
   },
   "engines": {
     "node": "20"
@@ -32,6 +33,7 @@
     "@typescript-eslint/eslint-plugin": "^8.51.0",
     "@typescript-eslint/parser": "^8.51.0",
     "eslint": "^9.39.2",
-    "typescript": "^5.1.0"
+    "typescript": "^5.1.0",
+    "vitest": "^3.2.7"
   }
 }

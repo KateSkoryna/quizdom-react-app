@@ -5,7 +5,7 @@ async function main() {
   // Use the flow directly. Genkit flows are callable like functions.
   // The input object must match your quizInputSchema exactly.
   try {
-    const _quiz = await generateQuizFlow({
+    await generateQuizFlow({
       category: QuizCategory.REACT,
       complexity: Complexity.MEDIUM,
       language: "English",
