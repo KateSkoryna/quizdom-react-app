@@ -34,7 +34,8 @@ export default defineConfig({
       filename: "dist/stats.html",
     }),
   ],
-  base: "/quizdom-react-app/",
+  // GitHub Pages serves the app under /quizdom-react-app/; Firebase Hosting previews serve it at /
+  base: process.env.VITE_BASE_PATH ?? "/quizdom-react-app/",
   define: {
     "process.env.NODE_ENV": JSON.stringify(process.env.NODE_ENV || "production"),
   },
