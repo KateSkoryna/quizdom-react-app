@@ -89,7 +89,6 @@ export interface SemanticSearchResponse {
   search: {
     mode: "semantic" | "keyword";
     offTopic: boolean;
-    relaxedFilters: boolean;
   };
 }
 

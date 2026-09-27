@@ -34,7 +34,7 @@ const SemanticSearchResults = ({ q }: SemanticSearchResultsProps) => {
     return (
       <div style={messageStyle}>
         <p>No quizzes match &quot;{q}&quot;.</p>
-        <p>Try a broader description, for example without the difficulty.</p>
+        <p>Try to change your search query.</p>
       </div>
     );
   }

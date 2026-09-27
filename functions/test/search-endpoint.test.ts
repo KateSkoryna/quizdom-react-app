@@ -89,7 +89,6 @@ describe("GET /searchQuizzes", () => {
       mode: "semantic",
       topic: "ARIA",
       intentSource: "llm",
-      relaxedFilters: false,
       offTopic: false,
     });
   });

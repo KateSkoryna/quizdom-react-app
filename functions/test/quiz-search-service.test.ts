@@ -74,14 +74,13 @@ describe("extractIntentHeuristically", () => {
 });
 
 describe("resolveFilters", () => {
-  it("prefers explicit filters over inferred ones and tracks which were inferred", () => {
-    const { filters, inferredKeys } = resolveFilters(
+  it("prefers explicit filters over inferred ones", () => {
+    const filters = resolveFilters(
       { category: "TypeScript" },
       { category: "ReactJS", complexity: "Expert", semanticQuery: "q", source: "llm" }
     );
 
     expect(filters).toEqual({ category: "TypeScript", complexity: "Expert" });
-    expect(inferredKeys).toEqual(["complexity"]);
   });
 });
 
@@ -125,7 +124,6 @@ describe("searchQuizzesSemantically", () => {
     expect(vectorStore.calls[0]).toEqual({ category: "ReactJS", complexity: "Expert" });
     expect(ids(result.results)).toEqual(["react-hooks-expert"]);
     expect(result.appliedFilters).toEqual({ category: "ReactJS", complexity: "Expert" });
-    expect(result.relaxedFilters).toBe(false);
   });
 
   it("embeds the rewritten semantic query rather than the raw query", async () => {
@@ -159,7 +157,7 @@ describe("searchQuizzesSemantically", () => {
     expect(ids(result.results)).toEqual(["ts-generics"]);
   });
 
-  it("relaxes inferred filters when they eliminate every result", async () => {
+  it("returns nothing instead of dropping filters read from the query", async () => {
     const { deps, vectorStore } = makeDeps({
       intent: { category: "Jest", complexity: "Expert", semanticQuery: "node streams event loop" },
     });
@@ -169,13 +167,12 @@ describe("searchQuizzesSemantically", () => {
       limit: 1,
     });
 
-    expect(vectorStore.calls).toEqual([{ category: "Jest", complexity: "Expert" }, {}]);
-    expect(result.relaxedFilters).toBe(true);
-    expect(result.appliedFilters).toEqual({});
-    expect(ids(result.results)).toEqual(["node-event-loop"]);
+    expect(vectorStore.calls).toEqual([{ category: "Jest", complexity: "Expert" }]);
+    expect(result.appliedFilters).toEqual({ category: "Jest", complexity: "Expert" });
+    expect(result.results).toEqual([]);
   });
 
-  it("never relaxes filters the caller set explicitly", async () => {
+  it("returns nothing instead of dropping filters the caller set", async () => {
     const { deps, vectorStore } = makeDeps({ intent: { complexity: "Expert" } });
 
     const result = await searchQuizzesSemantically(deps, {
@@ -184,12 +181,9 @@ describe("searchQuizzesSemantically", () => {
       filters: { category: "Jest" },
     });
 
-    expect(vectorStore.calls).toEqual([
-      { category: "Jest", complexity: "Expert" },
-      { category: "Jest" },
-    ]);
+    expect(vectorStore.calls).toEqual([{ category: "Jest", complexity: "Expert" }]);
     expect(result.results).toEqual([]);
-    expect(result.appliedFilters).toEqual({ category: "Jest" });
+    expect(result.appliedFilters).toEqual({ category: "Jest", complexity: "Expert" });
   });
 
   it("drops drafts and embeddings whose quiz no longer exists", async () => {

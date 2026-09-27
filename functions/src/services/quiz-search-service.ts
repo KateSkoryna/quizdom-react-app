@@ -85,29 +85,16 @@ export const extractIntentHeuristically = (query: string): ExtractedSearchIntent
 export const resolveFilters = (
   explicit: SearchFilters | undefined,
   intent: ExtractedSearchIntent
-): { filters: SearchFilters; inferredKeys: Array<keyof SearchFilters> } => {
+): SearchFilters => {
   const filters: SearchFilters = {};
-  const inferredKeys: Array<keyof SearchFilters> = [];
 
   const category = explicit?.category ?? intent.category;
-  if (category) {
-    filters.category = category;
-    if (!explicit?.category) inferredKeys.push("category");
-  }
+  if (category) filters.category = category;
 
   const complexity = explicit?.complexity ?? intent.complexity;
-  if (complexity) {
-    filters.complexity = complexity;
-    if (!explicit?.complexity) inferredKeys.push("complexity");
-  }
+  if (complexity) filters.complexity = complexity;
 
-  return { filters, inferredKeys };
-};
-
-const withoutKeys = (filters: SearchFilters, keys: Array<keyof SearchFilters>): SearchFilters => {
-  const result = { ...filters };
-  keys.forEach((key) => delete result[key]);
-  return result;
+  return filters;
 };
 
 const matchesFilters = (quiz: UserQuiz, filters: SearchFilters): boolean =>
@@ -224,7 +211,9 @@ export const searchQuizzesSemantically = async (
 ): Promise<SemanticSearchResult> => {
   const query = request.query.trim();
   const intent = await safeExtractIntent(deps, query);
-  const { filters, inferredKeys } = resolveFilters(request.filters, intent);
+  // Filters read from the query are kept even when nothing matches them, so the
+  // user sees "no quizzes" rather than results for a topic or level they did not ask for
+  const filters = resolveFilters(request.filters, intent);
 
   if (intent.offTopic) {
     return {
@@ -232,13 +221,10 @@ export const searchQuizzesSemantically = async (
       results: [],
       appliedFilters: filters,
       intent,
-      relaxedFilters: false,
       offTopic: true,
     };
   }
 
-  const relaxed = withoutKeys(filters, inferredKeys);
-  const canRelax = inferredKeys.length > 0;
   const embeddingText = intent.semanticQuery.trim() || query;
 
   let queryVector: number[] | null = null;
@@ -248,31 +234,21 @@ export const searchQuizzesSemantically = async (
     deps.logger?.warn("Query embedding failed, falling back to keyword search", error);
   }
 
-  const search = (activeFilters: SearchFilters) =>
-    queryVector
-      ? runVectorSearch(
-          deps,
-          queryVector,
-          activeFilters,
-          request.limit,
-          request.minScore ?? DEFAULT_MIN_SCORE
-        )
-      : runKeywordSearch(deps, query, activeFilters, request.limit);
-
-  let results = await search(filters);
-  let relaxedFilters = false;
-
-  if (results.length === 0 && canRelax) {
-    results = await search(relaxed);
-    relaxedFilters = true;
-  }
+  const results = queryVector
+    ? await runVectorSearch(
+        deps,
+        queryVector,
+        filters,
+        request.limit,
+        request.minScore ?? DEFAULT_MIN_SCORE
+      )
+    : await runKeywordSearch(deps, query, filters, request.limit);
 
   return {
     mode: queryVector ? "semantic" : "keyword",
     results,
-    appliedFilters: relaxedFilters ? relaxed : filters,
+    appliedFilters: filters,
     intent,
-    relaxedFilters,
     offTopic: false,
   };
 };

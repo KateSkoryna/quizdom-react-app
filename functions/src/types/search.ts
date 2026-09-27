@@ -64,6 +64,5 @@ export interface SemanticSearchResult {
   results: ScoredQuiz[];
   appliedFilters: SearchFilters;
   intent: ExtractedSearchIntent;
-  relaxedFilters: boolean;
   offTopic: boolean;
 }
