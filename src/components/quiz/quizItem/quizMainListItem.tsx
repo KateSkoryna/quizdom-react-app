@@ -41,11 +41,7 @@ const QuizMainListItem = ({
     const target = e.target as HTMLElement;
 
     // Prevent flip if clicking on interactive elements (buttons, links)
-    if (
-      target.closest('button') ||
-      target.closest('a') ||
-      target.closest('[role="button"]')
-    ) {
+    if (target.closest("button") || target.closest("a") || target.closest('[role="button"]')) {
       return;
     }
 
@@ -55,7 +51,7 @@ const QuizMainListItem = ({
 
   return (
     <Card
-      className={`${styles.quizCardContent} ${isFlipped ? styles.flipped : ''}`}
+      className={`${styles.quizCardContent} ${isFlipped ? styles.flipped : ""}`}
       onClick={handleCardClick}
     >
       <div className={styles.front}>

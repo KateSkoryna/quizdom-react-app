@@ -54,7 +54,9 @@ const QuizModal = ({ showModal, handleCloseModal, existingQuiz }: QuizModalProps
         <Modal.Title as="h2">{existingQuiz ? "Edit Quiz" : "Create your own Quiz"}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <ErrorBoundary FallbackComponent={(props) => <SectionErrorFallback {...props} section="quiz form" />}>
+        <ErrorBoundary
+          FallbackComponent={(props) => <SectionErrorFallback {...props} section="quiz form" />}
+        >
           <QuizFormComponent
             ref={formRef}
             handleClose={handleCloseModal}

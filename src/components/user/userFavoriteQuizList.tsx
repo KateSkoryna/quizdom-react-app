@@ -77,7 +77,9 @@ const UserFavoriteQuizList = () => {
 
   return (
     <Container className={styles.emptyState}>
-      <p>You haven&apos;t favorited any quizzes yet. Explore quizzes and add them to your favorites!</p>
+      <p>
+        You haven&apos;t favorited any quizzes yet. Explore quizzes and add them to your favorites!
+      </p>
     </Container>
   );
 };

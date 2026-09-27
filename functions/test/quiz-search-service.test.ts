@@ -267,7 +267,11 @@ describe("searchQuizzesSemantically", () => {
   });
 
   it("returns each title once, keeping the most relevant copy", async () => {
-    const copy = makeQuiz({ ...QUIZZES[0], id: "react-hooks-copy", title: "  react HOOKS   basics " });
+    const copy = makeQuiz({
+      ...QUIZZES[0],
+      id: "react-hooks-copy",
+      title: "  react HOOKS   basics ",
+    });
     const quizzes = [...QUIZZES, copy];
     const { deps } = makeDeps({ quizzes });
 

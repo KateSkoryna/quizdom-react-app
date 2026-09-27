@@ -216,7 +216,10 @@ export const updateQuiz = onRequest(corsOptions, async (req, res) => {
     // Validate update data (partial allowed)
     const validatedQuiz = quizSchema.partial().parse(req.body);
 
-    if (validatedQuiz.title !== undefined && (await isQuizTitleTaken(validatedQuiz.title, quizId))) {
+    if (
+      validatedQuiz.title !== undefined &&
+      (await isQuizTitleTaken(validatedQuiz.title, quizId))
+    ) {
       res.status(409).json({ success: false, error: QUIZ_TITLE_TAKEN_ERROR });
       return;
     }

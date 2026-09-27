@@ -1,7 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
-
 export enum NewsCategory {
   TECHNOLOGY = "technology",
   HEALTH = "health",

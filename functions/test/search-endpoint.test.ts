@@ -3,10 +3,12 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import { QUIZZES, embedByVocabulary, InMemoryVectorStore } from "./fixtures";
 import type { ExtractedSearchIntent } from "../src/types/search";
 
-const extractSearchIntent = vi.fn(async (query: string): Promise<ExtractedSearchIntent> => ({
-  semanticQuery: query,
-  source: "llm",
-}));
+const extractSearchIntent = vi.fn(
+  async (query: string): Promise<ExtractedSearchIntent> => ({
+    semanticQuery: query,
+    source: "llm",
+  })
+);
 
 vi.mock("../src/services/quiz-search-ai-service", () => ({ extractSearchIntent }));
 

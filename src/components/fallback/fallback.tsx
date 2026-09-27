@@ -15,7 +15,10 @@ const ErrorFallback = ({ error, resetErrorBoundary }: ErrorFallbackProps) => {
   };
 
   return (
-    <Container className="d-flex align-items-center justify-content-center" style={{ minHeight: "50vh" }}>
+    <Container
+      className="d-flex align-items-center justify-content-center"
+      style={{ minHeight: "50vh" }}
+    >
       <Alert variant="danger" style={{ maxWidth: "600px", width: "100%" }}>
         <Alert.Heading>⚠️ Something went wrong</Alert.Heading>
         <p>
@@ -24,14 +27,16 @@ const ErrorFallback = ({ error, resetErrorBoundary }: ErrorFallbackProps) => {
         <hr />
         <details style={{ marginBottom: "1rem" }}>
           <summary style={{ cursor: "pointer", userSelect: "none" }}>Technical details</summary>
-          <pre style={{
-            fontSize: "0.85rem",
-            marginTop: "0.5rem",
-            padding: "0.5rem",
-            backgroundColor: "#f8f9fa",
-            borderRadius: "4px",
-            overflow: "auto"
-          }}>
+          <pre
+            style={{
+              fontSize: "0.85rem",
+              marginTop: "0.5rem",
+              padding: "0.5rem",
+              backgroundColor: "#f8f9fa",
+              borderRadius: "4px",
+              overflow: "auto",
+            }}
+          >
             {error.message}
           </pre>
         </details>

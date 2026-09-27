@@ -10,12 +10,7 @@ import {
 import { QuizFormState, UserQuiz } from "../types";
 import { Status } from "../components/modal/quizModal";
 
-export function useQuizzesByUser(
-  status: Status,
-  userId?: string,
-  limit?: number,
-  offset?: number
-) {
+export function useQuizzesByUser(status: Status, userId?: string, limit?: number, offset?: number) {
   return useQuery<QuizPageResponse, Error>({
     queryKey: ["userQuizzes", userId, status, limit, offset],
     queryFn: () => {

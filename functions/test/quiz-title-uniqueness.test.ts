@@ -43,12 +43,7 @@ interface MockResponse {
   body: { success?: boolean; error?: string };
 }
 
-const call = (
-  handler: unknown,
-  method: string,
-  body: object,
-  query: Record<string, string> = {}
-) =>
+const call = (handler: unknown, method: string, body: object, query: Record<string, string> = {}) =>
   new Promise<MockResponse>((resolve, reject) => {
     const headers: Record<string, string> = {};
     const response: MockResponse = { statusCode: 200, body: {} };
