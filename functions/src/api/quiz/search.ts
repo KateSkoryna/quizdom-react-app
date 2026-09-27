@@ -143,7 +143,7 @@ export const syncQuizEmbeddingOnWrite = onDocumentWritten(
  * Admin-only backfill of embeddings for all published quizzes
  */
 export const reindexQuizEmbeddings = onRequest(
-  { ...corsOptions, timeoutSeconds: 540 },
+  { ...corsOptions, timeoutSeconds: 540, maxInstances: 1 },
   async (req, res) => {
     if (req.method !== "POST") {
       res.status(405).json({ success: false, error: "Method not allowed" });

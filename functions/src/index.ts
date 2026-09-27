@@ -1,3 +1,4 @@
+import "./config/global-options";
 import * as admin from "firebase-admin";
 
 admin.initializeApp();
