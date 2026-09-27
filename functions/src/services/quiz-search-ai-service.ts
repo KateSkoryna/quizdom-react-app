@@ -26,6 +26,9 @@ export const extractSearchIntentFlow = ai.defineFlow(
         Fields:
         - category: one of ${QUIZ_CATEGORIES.map((value) => `"${value}"`).join(", ")}, or null.
           Set it ONLY when the query clearly targets that technology or area. Do not guess.
+          Generic "js" or "javascript" covers the whole JavaScript ecosystem (Node.js, React,
+          Next.js, ...), so leave category null for it. Use "JavaScript" only for plain/vanilla
+          JavaScript or core language features (closures, promises, prototypes, ...).
         - complexity: one of ${QUIZ_COMPLEXITIES.map((value) => `"${value}"`).join(", ")}, or null.
           Map synonyms: easy/basic/intro/junior -> "Beginner"; intermediate/mid-level -> "Medium";
           hard/challenging/senior -> "Advanced"; expert/mastery/internals deep dive -> "Expert".

@@ -61,6 +61,8 @@ describe("extractIntentHeuristically", () => {
     ["Next.js app router caching", "NextJS", undefined],
     ["typescript generics for experts", "TypeScript", "Expert"],
     ["intermediate questions about closures", "JavaScript", "Medium"],
+    ["js for seniors", undefined, "Advanced"],
+    ["vanilla js basics", "JavaScript", "Beginner"],
     ["screen reader and aria labels", "Web Accessibility", undefined],
     ["something fun to learn", undefined, undefined],
   ])("parses %j", (query, category, complexity) => {

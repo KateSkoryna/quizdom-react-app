@@ -60,13 +60,17 @@ const CATEGORY_PATTERNS: Array<[QuizCategoryValue, RegExp]> = [
   ["Web Performance", /\bperformance\b|\bcore web vitals\b|\blcp\b|\bcls\b|\blazy[- ]loading\b/i],
   ["HTTP & REST APIs", /\bhttp\b|\brest(?:ful)?\b|\bapis?\b|\bstatus codes?\b/i],
   ["Web Fundamentals", /\bhtml\b|\bcss\b|\bdom\b|\bbrowsers?\b|\bweb fundamentals\b/i],
-  ["JavaScript", /\bjavascript\b|\bjs\b|\becmascript\b|\bes6\b|\bclosures?\b|\bpromises?\b/i],
+  // Generic "js"/"javascript" spans Node, React, Next etc., so only plain JS or core features map here
+  [
+    "JavaScript",
+    /\b(?:vanilla|plain)\s+(?:js|javascript)\b|\becmascript\b|\bes6\b|\bclosures?\b|\bpromises?\b/i,
+  ],
 ];
 
 const COMPLEXITY_PATTERNS: Array<[ComplexityValue, RegExp]> = [
-  ["Beginner", /\b(beginners?|easy|basics?|intro(?:ductory)?|newbies?|junior|starter)\b/i],
+  ["Beginner", /\b(beginners?|easy|basics?|intro(?:ductory)?|newbies?|juniors?|starter)\b/i],
   ["Medium", /\b(medium|intermediate|mid[- ]level|moderate)\b/i],
-  ["Advanced", /\b(advanced|hard|difficult|challenging|senior)\b/i],
+  ["Advanced", /\b(advanced|hard|difficult|challenging|seniors?)\b/i],
   ["Expert", /\b(experts?|mastery|deep[- ]dive|internals)\b/i],
 ];
 
