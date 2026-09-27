@@ -5,6 +5,18 @@ import { CurrentUser, GENDER } from "../types";
 import apiClient from "./axiosInstance";
 import { useGlobalErrorStore, ErrorSeverity } from "../store/globalErrorStore";
 
+/**
+ * Firestore Timestamps arrive from the API serialized as { _seconds, _nanoseconds },
+ * which `new Date()` cannot parse
+ */
+const toDateOfBirth = (value: unknown): Date => {
+  if (value && typeof value === "object" && "_seconds" in value) {
+    return new Date((value as { _seconds: number })._seconds * 1000);
+  }
+  const date = value ? new Date(value as string | number) : new Date();
+  return isNaN(date.getTime()) ? new Date() : date;
+};
+
 export const fetchUserWithToken = async (
   firebaseUser: User | null,
   setCurrentUser: (user: CurrentUser | null) => void
@@ -34,7 +46,7 @@ export const fetchUserWithToken = async (
         displayName: userData.displayName,
         email: userData.email,
         photoURL: userData.photoURL,
-        dateOfBirth: userData.dateOfBirth ? new Date(userData.dateOfBirth) : new Date(),
+        dateOfBirth: toDateOfBirth(userData.dateOfBirth),
         sex: (userData.sex as GENDER) || GENDER.NEUTRAL,
         averageScore: userData.averageScore || 0,
         bio: userData.bio,
