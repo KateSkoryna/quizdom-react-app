@@ -4,9 +4,10 @@ import { auth } from "../firebase";
 // Get Firebase Functions URL dynamically based on hostname
 // In dev mode, use current hostname instead of hardcoded localhost
 const getFunctionsUrl = () => {
-  const isDev = window.location.hostname === "localhost" ||
-                window.location.hostname === "127.0.0.1" ||
-                window.location.hostname.startsWith("192.168.");
+  const isDev =
+    window.location.hostname === "localhost" ||
+    window.location.hostname === "127.0.0.1" ||
+    window.location.hostname.startsWith("192.168.");
 
   if (isDev) {
     // Use Vite proxy which forwards to production functions

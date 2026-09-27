@@ -36,8 +36,7 @@ export const generateQuiz = onRequest(corsOptions, async (req, res) => {
     });
 
     res.status(200).json({ quiz });
-  } catch (err: any) {
-    void err;
+  } catch {
     res.status(401).json({ message: "Unauthorized" });
   }
 });

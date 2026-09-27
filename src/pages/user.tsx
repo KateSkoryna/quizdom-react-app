@@ -10,12 +10,20 @@ const UserPage = () => {
     <Container className={styles.userSection}>
       <Row className="g-3 g-lg-4">
         <Col xs={12} lg={3} className="d-flex">
-          <ErrorBoundary FallbackComponent={(props) => <SectionErrorFallback {...props} section="user profile" />}>
+          <ErrorBoundary
+            FallbackComponent={(props) => (
+              <SectionErrorFallback {...props} section="user profile" />
+            )}
+          >
             <UserCardData />
           </ErrorBoundary>
         </Col>
         <Col xs={12} lg={9} className="d-flex">
-          <ErrorBoundary FallbackComponent={(props) => <SectionErrorFallback {...props} section="user quizzes" />}>
+          <ErrorBoundary
+            FallbackComponent={(props) => (
+              <SectionErrorFallback {...props} section="user quizzes" />
+            )}
+          >
             <UserCardInfo />
           </ErrorBoundary>
         </Col>

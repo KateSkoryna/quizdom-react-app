@@ -45,10 +45,12 @@ export const firestoreVectorStore: VectorStore = {
       })
       .get();
 
-    return snapshot.docs.map((doc): VectorMatch => ({
-      quizId: doc.id,
-      distance: doc.get("distance") as number,
-    }));
+    return snapshot.docs.map(
+      (doc): VectorMatch => ({
+        quizId: doc.id,
+        distance: doc.get("distance") as number,
+      })
+    );
   },
 };
 

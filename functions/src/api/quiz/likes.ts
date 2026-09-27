@@ -22,8 +22,7 @@ export const getUserLikes = onRequest(corsOptions, async (req, res) => {
       success: true,
       data: likedQuizIds,
     });
-  } catch (error: any) {
-    void error;
+  } catch {
     res.status(500).json({
       success: false,
       error: "Failed to fetch liked quiz IDs",
@@ -66,8 +65,7 @@ export const toggleLike = onRequest(corsOptions, async (req, res) => {
       success: true,
       message: `Quiz ${action === ACTION.ADD ? "liked" : "unliked"}`,
     });
-  } catch (error: any) {
-    void error;
+  } catch {
     res.status(500).json({
       success: false,
       error: "Failed to toggle like",

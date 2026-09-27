@@ -8,8 +8,11 @@ import {
   createQuiz as createQuizService,
   updateQuiz as updateQuizService,
   deleteQuiz as deleteQuizService,
+  isQuizTitleTaken,
 } from "../../services/quiz-service";
 import { corsOptions } from "../../utils/constants";
+
+const QUIZ_TITLE_TAKEN_ERROR = "Quiz title is already in use. Please choose a different title.";
 
 /**
  * GET /getQuizzes
@@ -74,8 +77,7 @@ export const getQuizById = onRequest(corsOptions, async (req, res) => {
       success: true,
       data: quiz,
     });
-  } catch (error: any) {
-    void error;
+  } catch {
     res.status(500).json({
       success: false,
       error: "Failed to fetch quiz",
@@ -115,8 +117,7 @@ export const getQuizzesByUserId = onRequest(corsOptions, async (req, res) => {
         total: result.total,
       },
     });
-  } catch (error: any) {
-    void error;
+  } catch {
     res.status(500).json({
       success: false,
       error: "Failed to fetch user quizzes",
@@ -141,6 +142,11 @@ export const createQuiz = onRequest(corsOptions, async (req, res) => {
   try {
     // Validate quiz data using Zod
     const validatedQuiz = quizSchema.parse(req.body); // <- Zod parses and throws if invalid
+
+    if (await isQuizTitleTaken(validatedQuiz.title)) {
+      res.status(409).json({ success: false, error: QUIZ_TITLE_TAKEN_ERROR });
+      return;
+    }
 
     // Create quiz with author info
     const quiz = await createQuizService(
@@ -208,6 +214,14 @@ export const updateQuiz = onRequest(corsOptions, async (req, res) => {
     // Validate update data (partial allowed)
     const validatedQuiz = quizSchema.partial().parse(req.body);
 
+    if (
+      validatedQuiz.title !== undefined &&
+      (await isQuizTitleTaken(validatedQuiz.title, quizId))
+    ) {
+      res.status(409).json({ success: false, error: QUIZ_TITLE_TAKEN_ERROR });
+      return;
+    }
+
     const updatedQuiz = await updateQuizService(quizId, validatedQuiz);
 
     res.status(200).json({
@@ -251,7 +265,7 @@ export const deleteQuiz = onRequest(corsOptions, async (req, res) => {
 
   try {
     // Check if quiz exists and user is the author
-    const existingQuiz: any = await getQuizByIdService(quizId);
+    const existingQuiz = await getQuizByIdService(quizId);
     if (!existingQuiz) {
       res.status(404).json({ success: false, error: "Quiz not found" });
       return;
@@ -271,8 +285,7 @@ export const deleteQuiz = onRequest(corsOptions, async (req, res) => {
       success: true,
       message: "Quiz deleted successfully",
     });
-  } catch (error: any) {
-    void error;
+  } catch {
     res.status(500).json({
       success: false,
       error: "Failed to delete quiz",

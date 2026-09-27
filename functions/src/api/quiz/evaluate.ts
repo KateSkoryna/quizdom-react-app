@@ -43,7 +43,9 @@ export const evaluatePrompt = onRequest(corsOptions, async (req, res) => {
       triggeredBy: user.uid,
     });
 
-    res.write(`data: ${JSON.stringify({ type: "done", id: evalRef.id, timestamp: Date.now() })}\n\n`);
+    res.write(
+      `data: ${JSON.stringify({ type: "done", id: evalRef.id, timestamp: Date.now() })}\n\n`
+    );
   } catch (error) {
     const message = error instanceof Error ? error.message : "Failed to run evaluation";
     res.write(`data: ${JSON.stringify({ type: "error", message })}\n\n`);

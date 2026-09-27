@@ -9,6 +9,7 @@ import {
   QuerySnapshot,
 } from "firebase-admin/firestore";
 import { COLLECTIONS, ACTION } from "../utils/constants";
+import { normalizeQuizTitle } from "../utils/quizTitle";
 import type { QuizCompletion, UserQuiz, QuizFormState } from "../types/quiz";
 
 export const getQuizCompletion = async (
@@ -240,6 +241,20 @@ export const getQuizzesByUserId = async (
 };
 
 /**
+ * Whether another quiz already uses this title (see normalizeQuizTitle).
+ * Quizzes saved before titleKey existed are matched by their exact title.
+ */
+export const isQuizTitleTaken = async (title: string, excludeQuizId?: string): Promise<boolean> => {
+  const quizzes = db.collection(COLLECTIONS.QUIZZES);
+  const [byKey, byExactTitle] = await Promise.all([
+    quizzes.where("titleKey", "==", normalizeQuizTitle(title)).limit(2).get(),
+    quizzes.where("title", "==", title.trim()).limit(2).get(),
+  ]);
+
+  return [...byKey.docs, ...byExactTitle.docs].some((doc) => doc.id !== excludeQuizId);
+};
+
+/**
  * Create a new quiz
  */
 export const createQuiz = async (
@@ -253,6 +268,7 @@ export const createQuiz = async (
 ): Promise<UserQuiz> => {
   const quizDoc = {
     ...quizData,
+    titleKey: normalizeQuizTitle(quizData.title),
     authorId,
     authorName,
     publishedAt: Timestamp.now(),
@@ -285,7 +301,11 @@ export const updateQuiz = async (
 ): Promise<UserQuiz> => {
   const quizRef = db.collection(COLLECTIONS.QUIZZES).doc(quizId);
 
-  await quizRef.update(quizData);
+  await quizRef.update(
+    quizData.title === undefined
+      ? quizData
+      : { ...quizData, titleKey: normalizeQuizTitle(quizData.title) }
+  );
 
   const updatedDoc = await quizRef.get();
 

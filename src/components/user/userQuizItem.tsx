@@ -73,9 +73,7 @@ const UserQuizItem = ({
 
           return (
             <p key={key} className={styles.itemText}>
-              <span className={styles.propertyName}>
-                {key[0].toUpperCase() + key.slice(1)}:
-              </span>
+              <span className={styles.propertyName}>{key[0].toUpperCase() + key.slice(1)}:</span>
               {displayValue}
             </p>
           );

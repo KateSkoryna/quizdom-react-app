@@ -37,8 +37,8 @@ export const completeQuiz = onRequest(corsOptions, async (req, res) => {
       success: true,
       message: "Quiz completed successfully",
     });
-  } catch (error: any) {
-    if (error.message === "ALREADY_COMPLETED") {
+  } catch (error) {
+    if (error instanceof Error && error.message === "ALREADY_COMPLETED") {
       res.status(409).json({
         success: false,
         error: "You have already completed this quiz",
@@ -146,8 +146,8 @@ export const updateQuizCompletionFeedback = onRequest(corsOptions, async (req, r
       success: true,
       message: "Feedback updated successfully",
     });
-  } catch (error: any) {
-    if (error.message === "COMPLETION_NOT_FOUND") {
+  } catch (error) {
+    if (error instanceof Error && error.message === "COMPLETION_NOT_FOUND") {
       res.status(404).json({
         success: false,
         error: "You must complete the quiz before leaving feedback",

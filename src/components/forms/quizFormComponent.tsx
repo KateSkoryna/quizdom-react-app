@@ -108,6 +108,7 @@ const QuizFormComponent = forwardRef<QuizFormRef, QuizFormProps>(
       reset,
       watch,
       setValue,
+      setError,
       formState: { errors, isDirty, isSubmitting },
     } = methods;
 
@@ -153,10 +154,17 @@ const QuizFormComponent = forwardRef<QuizFormRef, QuizFormProps>(
 
     const handleFormSubmit = async ({ status, ...data }: QuizFormState & { status: Status }) => {
       if (currentUser) {
-        if (existingQuiz?.id) {
-          await updateQuiz({ quizId: existingQuiz.id, data: { ...data, status } });
-        } else {
-          await addQuiz({ ...data, status });
+        try {
+          if (existingQuiz?.id) {
+            await updateQuiz({ quizId: existingQuiz.id, data: { ...data, status } });
+          } else {
+            await addQuiz({ ...data, status });
+          }
+        } catch (error) {
+          setError("root", {
+            message: error instanceof Error ? error.message : "Failed to save quiz",
+          });
+          return;
         }
         reset();
         handleClose();

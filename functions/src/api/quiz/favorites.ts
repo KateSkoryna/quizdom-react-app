@@ -24,8 +24,7 @@ export const getUserFavorites = onRequest(corsOptions, async (req, res) => {
       success: true,
       data: favoriteQuizIds,
     });
-  } catch (error: any) {
-    void error;
+  } catch {
     res.status(500).json({
       success: false,
       error: "Failed to fetch quizzes IDs",
@@ -52,8 +51,7 @@ export const getFavoriteQuizzes = onRequest(corsOptions, async (req, res) => {
       success: true,
       data: favoriteQuizzes,
     });
-  } catch (error: any) {
-    void error;
+  } catch {
     res.status(500).json({
       success: false,
       error: "Failed to fetch quizzes",
@@ -97,8 +95,7 @@ export const toggleFavorite = onRequest(corsOptions, async (req, res) => {
       success: true,
       message: `Quiz ${action === ACTION.ADD ? "added to" : "removed from"} favorites`,
     });
-  } catch (error: any) {
-    void error;
+  } catch {
     res.status(500).json({
       success: false,
       error: "Failed to update favorites",

@@ -28,7 +28,8 @@
 
   &:hover {
     transform: translateY(-2px);
-    box-shadow: 0 calc(#{$spacing-12} / 2) calc(#{$spacing-16} + #{$spacing-4}) rgba($primary-color, 0.5);
+    box-shadow: 0 calc(#{$spacing-12} / 2) calc(#{$spacing-16} + #{$spacing-4})
+      rgba($primary-color, 0.5);
   }
 
   &:active {
