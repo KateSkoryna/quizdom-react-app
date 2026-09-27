@@ -4,7 +4,7 @@ on:
   pull_request:
 
 concurrency:
-  group: preview-${{ github.event.pull_request.number }}
+  group: preview
   cancel-in-progress: true
 
 permissions:
@@ -53,4 +53,7 @@ jobs:
           repoToken: ${{ secrets.GITHUB_TOKEN }}
           firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
           projectId: quizdom-react-app
-          expires: 7d
+          # One fixed channel keeps the preview URL stable, so it can be added
+          # once to Firebase Auth's authorized domains; the latest PR deploy wins
+          channelId: preview
+          expires: 30d
