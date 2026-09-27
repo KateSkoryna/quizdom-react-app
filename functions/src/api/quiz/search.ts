@@ -111,6 +111,7 @@ export const searchQuizzes = onRequest({ ...corsOptions, maxInstances: 10 }, asy
         relaxedFilters: result.relaxedFilters,
         topic: result.intent.topic ?? null,
         intentSource: result.intent.source,
+        offTopic: result.offTopic,
       },
     });
   } catch (error) {

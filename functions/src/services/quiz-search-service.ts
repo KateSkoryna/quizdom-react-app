@@ -1,5 +1,6 @@
 import { createHash } from "node:crypto";
 import { quizSchema } from "../schemas/quizSchema";
+import { normalizeQuizTitle } from "../utils/quizTitle";
 import type { UserQuiz } from "../types/quiz";
 import type {
   ComplexityValue,
@@ -19,6 +20,9 @@ export const QUIZ_COMPLEXITIES = quizSchema.shape.complexity.options;
 export const MAX_SEARCH_QUERY_LENGTH = 300;
 export const MAX_SEARCH_LIMIT = 50;
 export const DEFAULT_SEARCH_LIMIT = 10;
+// Cosine similarity floor for gemini-embedding-001 results: relevant quizzes score ~0.57-0.75,
+// unrelated queries (cooking, sports, prompt-injection text) top out around 0.56
+export const DEFAULT_MIN_SCORE = 0.6;
 const VECTOR_CANDIDATE_MULTIPLIER = 3;
 const MAX_QUESTIONS_IN_EMBEDDING = 25;
 
@@ -146,12 +150,23 @@ export const rankByKeywords = (quizzes: UserQuiz[], query: string): ScoredQuiz[]
     .sort((a, b) => b.score - a.score);
 };
 
+// Results arrive best-first, so keeping the first quiz per title keeps the most relevant one
+const dedupeByTitle = (results: ScoredQuiz[]): ScoredQuiz[] => {
+  const seen = new Set<string>();
+  return results.filter(({ quiz }) => {
+    const key = normalizeQuizTitle(quiz.title);
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+};
+
 const runVectorSearch = async (
   deps: SemanticSearchDependencies,
   queryVector: number[],
   filters: SearchFilters,
   limit: number,
-  minScore: number | undefined
+  minScore: number
 ): Promise<ScoredQuiz[]> => {
   const matches = await deps.vectorStore.findNearest(
     queryVector,
@@ -163,16 +178,17 @@ const runVectorSearch = async (
   const quizzes = await deps.getQuizzesByIds(matches.map((match) => match.quizId));
   const quizById = new Map(quizzes.map((quiz) => [quiz.id, quiz]));
 
-  return matches
+  const results = matches
     .map((match) => ({ quiz: quizById.get(match.quizId), score: 1 - match.distance }))
     .filter(
       (entry): entry is ScoredQuiz =>
         entry.quiz !== undefined &&
         entry.quiz.status === "done" &&
         matchesFilters(entry.quiz, filters) &&
-        (minScore === undefined || entry.score >= minScore)
-    )
-    .slice(0, limit);
+        entry.score >= minScore
+    );
+
+  return dedupeByTitle(results).slice(0, limit);
 };
 
 const runKeywordSearch = async (
@@ -182,9 +198,11 @@ const runKeywordSearch = async (
   limit: number
 ): Promise<ScoredQuiz[]> => {
   const candidates = await deps.getKeywordCandidates(filters);
-  return rankByKeywords(
-    candidates.filter((quiz) => matchesFilters(quiz, filters)),
-    query
+  return dedupeByTitle(
+    rankByKeywords(
+      candidates.filter((quiz) => matchesFilters(quiz, filters)),
+      query
+    )
   ).slice(0, limit);
 };
 
@@ -207,6 +225,18 @@ export const searchQuizzesSemantically = async (
   const query = request.query.trim();
   const intent = await safeExtractIntent(deps, query);
   const { filters, inferredKeys } = resolveFilters(request.filters, intent);
+
+  if (intent.offTopic) {
+    return {
+      mode: "semantic",
+      results: [],
+      appliedFilters: filters,
+      intent,
+      relaxedFilters: false,
+      offTopic: true,
+    };
+  }
+
   const relaxed = withoutKeys(filters, inferredKeys);
   const canRelax = inferredKeys.length > 0;
   const embeddingText = intent.semanticQuery.trim() || query;
@@ -220,7 +250,13 @@ export const searchQuizzesSemantically = async (
 
   const search = (activeFilters: SearchFilters) =>
     queryVector
-      ? runVectorSearch(deps, queryVector, activeFilters, request.limit, request.minScore)
+      ? runVectorSearch(
+          deps,
+          queryVector,
+          activeFilters,
+          request.limit,
+          request.minScore ?? DEFAULT_MIN_SCORE
+        )
       : runKeywordSearch(deps, query, activeFilters, request.limit);
 
   let results = await search(filters);
@@ -237,5 +273,6 @@ export const searchQuizzesSemantically = async (
     appliedFilters: relaxedFilters ? relaxed : filters,
     intent,
     relaxedFilters,
+    offTopic: false,
   };
 };

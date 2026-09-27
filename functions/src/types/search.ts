@@ -12,6 +12,7 @@ export interface SearchFilters {
 export interface ExtractedSearchIntent extends SearchFilters {
   topic?: string;
   semanticQuery: string;
+  offTopic?: boolean;
   source: "llm" | "heuristic";
 }
 
@@ -64,4 +65,5 @@ export interface SemanticSearchResult {
   appliedFilters: SearchFilters;
   intent: ExtractedSearchIntent;
   relaxedFilters: boolean;
+  offTopic: boolean;
 }
