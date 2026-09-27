@@ -369,6 +369,17 @@ export const getFavoriteQuizList = async (userId: string): Promise<UserQuiz[]> =
 
   const quizIds = favoritesSnapshot.docs.map((doc: QueryDocumentSnapshot) => doc.data().quizId);
 
+  return getQuizzesByIds(quizIds);
+};
+
+/**
+ * Fetch quizzes by ID, preserving the order of the given IDs and skipping missing ones
+ */
+export const getQuizzesByIds = async (quizIds: string[]): Promise<UserQuiz[]> => {
+  if (quizIds.length === 0) {
+    return [];
+  }
+
   // Firestore 'in' query supports max 30 items (updated limit), so chunk if needed
   const chunkSize = 30;
   const chunks: string[][] = [];
@@ -376,14 +387,12 @@ export const getFavoriteQuizList = async (userId: string): Promise<UserQuiz[]> =
     chunks.push(quizIds.slice(i, i + chunkSize));
   }
 
-  // Fetch all chunks in parallel
-  const quizPromises = chunks.map((chunk) =>
-    db.collection(COLLECTIONS.QUIZZES).where(FieldPath.documentId(), "in", chunk).get()
+  const snapshots = await Promise.all(
+    chunks.map((chunk) =>
+      db.collection(COLLECTIONS.QUIZZES).where(FieldPath.documentId(), "in", chunk).get()
+    )
   );
 
-  const snapshots = await Promise.all(quizPromises);
-
-  // Combine all results and preserve the order from favorites
   const quizMap = new Map<string, UserQuiz>();
   snapshots.forEach((snapshot: QuerySnapshot) => {
     snapshot.docs.forEach((doc: QueryDocumentSnapshot) => {
@@ -391,7 +400,6 @@ export const getFavoriteQuizList = async (userId: string): Promise<UserQuiz[]> =
     });
   });
 
-  // Return quizzes in the order they were favorited
   return quizIds
     .map((id: string) => quizMap.get(id))
     .filter((quiz: UserQuiz | undefined): quiz is UserQuiz => quiz !== undefined);

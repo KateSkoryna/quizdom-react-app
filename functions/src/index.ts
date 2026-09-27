@@ -27,6 +27,9 @@ export {
   deleteQuiz,
 } from "./api/quiz/quizzes";
 
+// Semantic Quiz Search
+export { searchQuizzes, syncQuizEmbeddingOnWrite, reindexQuizEmbeddings } from "./api/quiz/search";
+
 // AI Quiz Generation
 export { generateQuiz } from "./api/quiz/generateQuiz";
 export { evaluatePrompt } from "./api/quiz/evaluate";

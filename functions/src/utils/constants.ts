@@ -8,6 +8,7 @@ export const COLLECTIONS = {
   USERS: "users",
   FAVORITES: "favorites",
   LIKES: "likes",
+  QUIZ_EMBEDDINGS: "quizEmbeddings",
 } as const;
 
 export enum ACTION {
