@@ -11,6 +11,13 @@ type DatepickerProps = {
   selectedColor?: string;
 };
 
+// react-datepicker throws on an Invalid Date, so treat it as empty
+const toValidDate = (value: Date | null | undefined): Date | null => {
+  if (!value) return null;
+  const date = new Date(value);
+  return isNaN(date.getTime()) ? null : date;
+};
+
 const DatepickerContainer = ({
   value,
   callback,
@@ -32,7 +39,7 @@ const DatepickerContainer = ({
       minDate={dayjs().subtract(100, "years").toDate()}
       dropdownMode="select"
       showMonthDropdown
-      selected={value ? new Date(value) : null}
+      selected={toValidDate(value)}
       onChange={callback}
     />
   );

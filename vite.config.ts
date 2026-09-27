@@ -67,7 +67,10 @@ export default defineConfig({
     allowedHosts: true,
     proxy: {
       "/api": {
-        target: "http://localhost:5001/quizdom-react-app/us-central1",
+        // Local emulator by default; `npm run dev:live` points it at the deployed functions
+        target:
+          process.env.FUNCTIONS_PROXY_TARGET ??
+          "http://localhost:5001/quizdom-react-app/us-central1",
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ""),
       },

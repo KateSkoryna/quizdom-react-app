@@ -26,6 +26,14 @@ export interface FetchQuizzesParams {
 }
 
 /**
+ * Converts the Firestore timestamp the API returns into a Date
+ */
+const withPublishedDate = (quiz: any) => ({
+  ...quiz,
+  publishedAt: quiz.publishedAt?._seconds ? new Date(quiz.publishedAt._seconds * 1000) : new Date(),
+});
+
+/**
  * Fetch quizzes with pagination support for TanStack Query
  * This function throws errors that TanStack Query can handle
  */
@@ -53,13 +61,7 @@ export async function fetchQuizzes(params: FetchQuizzesParams): Promise<QuizPage
       throw new Error(response.data.error || "Failed to fetch quizzes");
     }
 
-    // Transform the response data to include proper dates
-    const quizzes = response.data.data.map((quiz: any) => ({
-      ...quiz,
-      publishedAt: quiz.publishedAt?._seconds
-        ? new Date(quiz.publishedAt._seconds * 1000)
-        : new Date(),
-    }));
+    const quizzes = response.data.data.map(withPublishedDate);
 
     return {
       data: quizzes,
@@ -73,6 +75,44 @@ export async function fetchQuizzes(params: FetchQuizzesParams): Promise<QuizPage
     // Transform error for better handling
     const errorMsg = error.response?.data?.error || error.message || "Failed to fetch quizzes";
     throw new Error(errorMsg);
+  }
+}
+
+export interface SemanticSearchParams {
+  q: string;
+  category?: string | null;
+  complexity?: string | null;
+}
+
+export interface SemanticSearchResponse {
+  data: Array<UserQuiz & { score: number }>;
+  search: {
+    mode: "semantic" | "keyword";
+    offTopic: boolean;
+  };
+}
+
+/**
+ * Natural-language quiz search backed by vector embeddings
+ */
+export async function searchQuizzes(params: SemanticSearchParams): Promise<SemanticSearchResponse> {
+  try {
+    const queryParams: Record<string, string> = { q: params.q };
+    if (params.category) queryParams.category = params.category;
+    if (params.complexity) queryParams.complexity = params.complexity;
+
+    const response = await apiClient.get("/searchQuizzes", { params: queryParams });
+
+    if (response.data.success === false) {
+      throw new Error(response.data.error || "Failed to search quizzes");
+    }
+
+    return {
+      data: response.data.data.map(withPublishedDate),
+      search: response.data.search,
+    };
+  } catch (error: any) {
+    throw new Error(error.response?.data?.error || error.message || "Failed to search quizzes");
   }
 }
 

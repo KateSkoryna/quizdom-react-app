@@ -108,7 +108,6 @@ export const searchQuizzes = onRequest({ ...corsOptions, maxInstances: 10 }, asy
       search: {
         mode: result.mode,
         appliedFilters: result.appliedFilters,
-        relaxedFilters: result.relaxedFilters,
         topic: result.intent.topic ?? null,
         intentSource: result.intent.source,
         offTopic: result.offTopic,
