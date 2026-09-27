@@ -20,8 +20,6 @@ const QuizMainList = () => {
   const getLikes = useLikesStore((state) => state.getLikes);
 
   const query = searchParams.get("q")?.trim() ?? "";
-  const categoryFilter = searchParams.get("category") || null;
-  const complexityFilter = searchParams.get("complexity") || null;
 
   useEffect(() => {
     if (currentUser) {
@@ -31,24 +29,15 @@ const QuizMainList = () => {
     }
   }, [currentUser, loadAllCompletions, getFavorites, getLikes]);
 
-  return query ? (
-    <SemanticSearchResults q={query} category={categoryFilter} complexity={complexityFilter} />
-  ) : (
-    <QuizBrowseList categoryFilter={categoryFilter} complexityFilter={complexityFilter} />
-  );
+  return query ? <SemanticSearchResults q={query} /> : <QuizBrowseList />;
 };
 
-type QuizBrowseListProps = {
-  categoryFilter: string | null;
-  complexityFilter: string | null;
-};
-
-const QuizBrowseList = ({ categoryFilter, complexityFilter }: QuizBrowseListProps) => {
+const QuizBrowseList = () => {
   const currentUser = useAuthStore((state) => state.currentUser);
   const quizzesPerPage = 10;
 
   const { data, isLoading, isError, error, fetchNextPage, hasNextPage, isFetchingNextPage } =
-    useInfiniteQuizzes(categoryFilter, complexityFilter, quizzesPerPage);
+    useInfiniteQuizzes(null, null, quizzesPerPage);
 
   const quizzes = useMemo(() => {
     if (!data?.pages) return [];

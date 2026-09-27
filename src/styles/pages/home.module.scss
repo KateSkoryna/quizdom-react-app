@@ -1,11 +1,18 @@
 @use "../settings" as *;
 @use "../abstracts" as *;
 
-.searchForm {
+.searchRow {
   display: flex;
   flex-direction: column;
   gap: $spacing-8;
-  width: 100%;
+
+  @media screen and (min-width: 768px) {
+    flex-direction: row;
+  }
+}
+
+.searchInput {
+  flex: 1;
 }
 
 .form {

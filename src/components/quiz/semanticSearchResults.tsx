@@ -6,14 +6,12 @@ import { useSemanticSearch } from "../../hooks/useSemanticSearch";
 
 type SemanticSearchResultsProps = {
   q: string;
-  category: string | null;
-  complexity: string | null;
 };
 
 const messageStyle = { textAlign: "center", padding: "1rem", color: "#666" } as const;
 
-const SemanticSearchResults = ({ q, category, complexity }: SemanticSearchResultsProps) => {
-  const { data, isLoading, isError, error } = useSemanticSearch(q, category, complexity);
+const SemanticSearchResults = ({ q }: SemanticSearchResultsProps) => {
+  const { data, isLoading, isError, error } = useSemanticSearch(q);
 
   if (isLoading) return <Loader />;
 
@@ -36,22 +34,28 @@ const SemanticSearchResults = ({ q, category, complexity }: SemanticSearchResult
     return (
       <div style={messageStyle}>
         <p>No quizzes match &quot;{q}&quot;.</p>
-        {(category || complexity) && <p>Try removing the category or complexity filter.</p>}
+        <p>Try a broader description, for example without the difficulty.</p>
       </div>
     );
   }
 
+  const { category, complexity } = data?.search.appliedFilters ?? {};
+  const understood = [category, complexity].filter(Boolean).join(" · ");
+
   return (
-    <div className={styles.gridWrapper}>
-      <ul className={styles.gridContainer} aria-label={`Search results for ${q}`}>
-        {quizzes.map((quiz) => (
-          <li key={quiz.id} className={styles.gridItem}>
-            <Card className={styles.gridCard}>
-              <QuizMainListItem quiz={quiz} />
-            </Card>
-          </li>
-        ))}
-      </ul>
+    <div>
+      {understood && <p style={{ color: "#666", margin: "0 0 1rem" }}>Showing: {understood}</p>}
+      <div className={styles.gridWrapper}>
+        <ul className={styles.gridContainer} aria-label={`Search results for ${q}`}>
+          {quizzes.map((quiz) => (
+            <li key={quiz.id} className={styles.gridItem}>
+              <Card className={styles.gridCard}>
+                <QuizMainListItem quiz={quiz} />
+              </Card>
+            </li>
+          ))}
+        </ul>
+      </div>
     </div>
   );
 };
