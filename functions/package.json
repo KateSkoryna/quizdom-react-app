@@ -7,8 +7,9 @@
     "start": "npm run shell",
     "deploy": "firebase deploy --only functions",
     "logs": "firebase functions:log",
-    "lint": "eslint src/**/*.ts",
-    "lint:fix": "eslint src/**/*.ts --fix",
+    "lint": "eslint \"src/**/*.ts\"",
+    "lint:fix": "eslint \"src/**/*.ts\" --fix",
+    "typecheck": "tsc --noEmit && tsc -p tsconfig.test.json",
     "genkit:ui": "genkit start --port 4001 -- npx tsx --watch src/genkit.ts",
     "genkit:emulator": "genkit start -- firebase emulators:start --inspect-functions",
     "test": "vitest run"

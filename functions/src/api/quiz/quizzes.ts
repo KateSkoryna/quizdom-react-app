@@ -77,8 +77,7 @@ export const getQuizById = onRequest(corsOptions, async (req, res) => {
       success: true,
       data: quiz,
     });
-  } catch (error: any) {
-    void error;
+  } catch {
     res.status(500).json({
       success: false,
       error: "Failed to fetch quiz",
@@ -118,8 +117,7 @@ export const getQuizzesByUserId = onRequest(corsOptions, async (req, res) => {
         total: result.total,
       },
     });
-  } catch (error: any) {
-    void error;
+  } catch {
     res.status(500).json({
       success: false,
       error: "Failed to fetch user quizzes",
@@ -267,7 +265,7 @@ export const deleteQuiz = onRequest(corsOptions, async (req, res) => {
 
   try {
     // Check if quiz exists and user is the author
-    const existingQuiz: any = await getQuizByIdService(quizId);
+    const existingQuiz = await getQuizByIdService(quizId);
     if (!existingQuiz) {
       res.status(404).json({ success: false, error: "Quiz not found" });
       return;
@@ -287,8 +285,7 @@ export const deleteQuiz = onRequest(corsOptions, async (req, res) => {
       success: true,
       message: "Quiz deleted successfully",
     });
-  } catch (error: any) {
-    void error;
+  } catch {
     res.status(500).json({
       success: false,
       error: "Failed to delete quiz",
