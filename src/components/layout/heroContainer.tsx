@@ -7,16 +7,33 @@ import knight from "../../assets/knight.svg";
 import circle from "../../assets/circle.svg";
 import triangle from "../../assets/triangle.svg";
 import zigzag from "../../assets/line.svg";
+import queen from "../../assets/queen.svg";
 import { QUIZ_SECTION_ID, QUIZ_SEARCH_INPUT_ID } from "../../const/const";
 
 const FEATURES = ["AI quiz builder", "Semantic search", "Progress stats"];
 
-const DECORATIONS = [
-  { src: knight, className: "decoKnight" },
+type Decoration = { src: string; className: string };
+
+const AROUND_DECORATIONS: Decoration[] = [
   { src: circle, className: "decoCircle" },
   { src: triangle, className: "decoTriangle" },
   { src: zigzag, className: "decoZigzag" },
 ];
+
+const BEHIND_PHOTO_DECORATIONS: Decoration[] = [
+  { src: circle, className: "sceneBackRing" },
+  { src: queen, className: "sceneBackQueen" },
+];
+
+const OVER_PHOTO_DECORATIONS: Decoration[] = [
+  { src: knight, className: "sceneFrontKnight" },
+  { src: triangle, className: "sceneFrontTriangle" },
+];
+
+const renderDecorations = (decorations: Decoration[]) =>
+  decorations.map(({ src, className }) => (
+    <img key={className} src={src} className={styles[className]} alt="" aria-hidden="true" />
+  ));
 
 const HeroContainer = () => {
   const scrollToQuizzes = () => {
@@ -34,9 +51,7 @@ const HeroContainer = () => {
       <div className={styles.heroPanel}>
         <div className={styles.heroGlow} aria-hidden="true" />
         <div className={styles.heroGrid} aria-hidden="true" />
-        {DECORATIONS.map(({ src, className }) => (
-          <img key={className} src={src} className={styles[className]} alt="" aria-hidden="true" />
-        ))}
+        {renderDecorations(AROUND_DECORATIONS)}
         <div className={styles.heroContent}>
           <span className={styles.heroEyebrow}>
             <MdAutoAwesome aria-hidden="true" />
@@ -72,6 +87,8 @@ const HeroContainer = () => {
         <div className={styles.heroVisual}>
           <div className={styles.heroOrbit} aria-hidden="true" />
           <div className={styles.heroPhoto}>
+            <span className={`${styles.orb} ${styles.orbBack}`} aria-hidden="true" />
+            {renderDecorations(BEHIND_PHOTO_DECORATIONS)}
             <div className={styles.heroImageFrame}>
               <img
                 src={heroSq}
@@ -83,6 +100,8 @@ const HeroContainer = () => {
                 loading="eager"
               />
             </div>
+            {renderDecorations(OVER_PHOTO_DECORATIONS)}
+            <span className={`${styles.orb} ${styles.orbFront}`} aria-hidden="true" />
           </div>
           <div className={`${styles.floatCard} ${styles.floatScore}`} aria-hidden="true">
             <MdCheckCircle className={styles.floatScoreIcon} />

@@ -236,28 +236,6 @@ $glass-border: rgba($white, 0.16);
   }
 }
 
-.decoKnight {
-  @extend %hero-deco;
-  display: none;
-  opacity: 1;
-  filter: drop-shadow(0 0.5rem 1rem rgba($primary-color, 0.5));
-  animation-duration: 5s;
-
-  @include respond-to-md {
-    display: block;
-    top: 15rem;
-    right: 2.5rem;
-    width: 2.75rem;
-  }
-
-  @include respond-to-lg {
-    top: 12%;
-    right: auto;
-    left: 56%;
-    width: 3.5rem;
-  }
-}
-
 .decoZigzag {
   @extend %hero-deco;
   display: none;
@@ -469,6 +447,8 @@ $glass-border: rgba($white, 0.16);
 }
 
 .heroPhoto {
+  position: relative;
+  isolation: isolate;
   flex-shrink: 0;
   width: 5.5rem;
 
@@ -482,12 +462,101 @@ $glass-border: rgba($white, 0.16);
 }
 
 .heroImageFrame {
+  position: relative;
+  z-index: 1;
   width: 100%;
   aspect-ratio: 1;
   padding: 0.25rem;
   border-radius: 46% 54% 52% 48% / 48% 46% 54% 52%;
   background: linear-gradient(135deg, $primary-color, $element-color 50%, $accent-blue);
   box-shadow: 0 1.5rem 4rem rgba($element-color, 0.45);
+}
+
+%scene-layer {
+  position: absolute;
+  pointer-events: none;
+  animation: heroFloat 7s ease-in-out infinite;
+}
+
+%scene-back {
+  @extend %scene-layer;
+  z-index: 0;
+  filter: blur(2px);
+  opacity: 0.5;
+  animation-duration: 9s;
+}
+
+%scene-front {
+  @extend %scene-layer;
+  z-index: 2;
+  filter: drop-shadow(0 0.75rem 1.25rem rgba($black, 0.55));
+  animation-duration: 4.5s;
+}
+
+.sceneBackRing {
+  @extend %scene-back;
+  top: -18%;
+  left: -24%;
+  width: 66%;
+}
+
+.sceneBackQueen {
+  @extend %scene-back;
+  right: -14%;
+  bottom: -8%;
+  width: max(12%, 0.75rem);
+  rotate: 14deg;
+  animation-delay: 1.2s;
+}
+
+.sceneFrontKnight {
+  @extend %scene-front;
+  top: -8%;
+  left: -10%;
+  width: max(24%, 1.75rem);
+  filter: drop-shadow(0 0.75rem 1.25rem rgba($black, 0.55))
+    drop-shadow(0 0 0.75rem rgba($primary-color, 0.45));
+}
+
+.sceneFrontTriangle {
+  @extend %scene-front;
+  top: 58%;
+  right: -10%;
+  width: max(18%, 1.25rem);
+  rotate: 12deg;
+  animation-delay: 0.6s;
+}
+
+.orb {
+  position: absolute;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  pointer-events: none;
+  animation: heroFloat 7s ease-in-out infinite;
+}
+
+.orbBack {
+  z-index: 0;
+  right: 4%;
+  bottom: -12%;
+  width: 34%;
+  background: radial-gradient(circle at 32% 28%, #ffd29a 0%, $primary-color 38%, #8a3b00 100%);
+  box-shadow: 0 1rem 2rem rgba($primary-color, 0.35);
+  animation-duration: 10s;
+  animation-delay: 2s;
+}
+
+.orbFront {
+  z-index: 2;
+  top: 6%;
+  right: 2%;
+  width: max(14%, 0.9rem);
+  background: radial-gradient(circle at 30% 28%, #d9f3ff 0%, $accent-blue 42%, #0b4a7a 100%);
+  box-shadow:
+    0 0.75rem 1.5rem rgba($black, 0.5),
+    0 0 1rem rgba($accent-blue, 0.6);
+  animation-duration: 4s;
+  animation-delay: 1s;
 }
 
 .heroImg {
@@ -585,7 +654,11 @@ $glass-border: rgba($white, 0.16);
   .heroContent,
   .heroVisual,
   .heroOrbit,
-  .decoKnight,
+  .sceneBackRing,
+  .sceneBackQueen,
+  .sceneFrontKnight,
+  .sceneFrontTriangle,
+  .orb,
   .decoCircle,
   .decoTriangle,
   .decoZigzag,
