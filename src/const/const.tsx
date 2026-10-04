@@ -12,3 +12,6 @@ export const QUIZ_LEVEL_CONFIG = {
   Advanced: { name: "Advanced", color: "#5CB8E0", icon: Advanced },
   Expert: { name: "Expert", color: "#27AAE1", icon: Expert },
 };
+
+export const QUIZ_SECTION_ID = "quizzes";
+export const QUIZ_SEARCH_INPUT_ID = "q";
