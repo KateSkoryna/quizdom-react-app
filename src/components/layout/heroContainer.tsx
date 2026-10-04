@@ -106,8 +106,8 @@ const HeroContainer = () => {
           <div className={`${styles.floatCard} ${styles.floatScore}`} aria-hidden="true">
             <MdCheckCircle className={styles.floatScoreIcon} />
             <span>
-              <strong>Correct!</strong>
-              <small>+10 points</small>
+              <strong>Quiz complete</strong>
+              <small>9/10 correct</small>
             </span>
           </div>
           <figure className={`${styles.floatCard} ${styles.floatQuote}`}>
