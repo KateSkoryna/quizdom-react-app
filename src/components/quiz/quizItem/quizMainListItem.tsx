@@ -1,5 +1,4 @@
 import Card from "react-bootstrap/Card";
-import Badge from "react-bootstrap/Badge";
 import styles from "../../../styles/components/quizCard.module.scss";
 import { UserQuiz } from "../../../types";
 import { useAuthStore } from "../../../store/authStore";
@@ -9,7 +8,8 @@ import QuizStats from "./quizStats";
 import QuizCover from "./quizCover";
 import QuizLevelBadge from "./quizLevelBadge";
 import dayjs from "dayjs";
-import { useState } from "react";
+import { useState, type CSSProperties } from "react";
+import { QUIZ_LEVEL_CONFIG } from "../../../const/const";
 
 type QuizMainListItemProps = {
   quiz: UserQuiz;
@@ -35,7 +35,10 @@ const QuizMainListItem = ({
 
   const localizedDate = dayjs(publishedAt).format("DD/MM/YYYY");
 
-  const isCompleted = currentUser && id && !!completionCache[id];
+  const isCompleted = !!(currentUser && id && completionCache[id]);
+  const levelStyle = {
+    "--level-color": QUIZ_LEVEL_CONFIG[complexity]?.color,
+  } as CSSProperties;
 
   const handleCardClick = (e: React.MouseEvent) => {
     const target = e.target as HTMLElement;
@@ -52,15 +55,11 @@ const QuizMainListItem = ({
   return (
     <Card
       className={`${styles.quizCardContent} ${isFlipped ? styles.flipped : ""}`}
+      style={levelStyle}
       onClick={handleCardClick}
     >
       <div className={styles.front}>
-        {isCompleted && (
-          <Badge bg="success" className={styles.completedBadge}>
-            ✓ Completed
-          </Badge>
-        )}
-        <QuizCover title={title} category={category} />
+        <QuizCover title={title} category={category} isCompleted={isCompleted} />
         <Card.Body className={styles.quizInfoCard}>
           <Card.Text className={styles.description}>{description}</Card.Text>
           <QuizLevelBadge complexity={complexity} />

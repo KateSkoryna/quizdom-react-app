@@ -1,5 +1,5 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { Modal, Button, Badge } from "react-bootstrap";
+import { Modal, Button } from "react-bootstrap";
 import { useAuthStore } from "../store/authStore";
 import { useQuizCompletionStore } from "../store/quizAttemptsStore";
 import Loader from "../components/common/loader";
@@ -90,14 +90,8 @@ const QuizPage = () => {
             )}
           >
             <div className={cardStyles.quizCardContent}>
-              {hasCompleted && (
-                <Badge bg="success" className={cardStyles.completedBadge}>
-                  ✓ Completed
-                </Badge>
-              )}
-              <QuizCover title={quiz.title} category={quiz.category} />
+              <QuizCover title={quiz.title} category={quiz.category} isCompleted={!!hasCompleted} />
               <div className={cardStyles.quizInfoCard}>
-                <h3 className="mb-3">{quiz.title}</h3>
                 <p className={cardStyles.description}>{quiz.description}</p>
                 <QuizLevelBadge complexity={quiz.complexity} />
                 <QuizStats
