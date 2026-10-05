@@ -15,7 +15,6 @@ const FEATURES = ["AI quiz builder", "Semantic search", "Progress stats"];
 type Decoration = { src: string; className: string };
 
 const AROUND_DECORATIONS: Decoration[] = [
-  { src: circle, className: "decoCircle" },
   { src: triangle, className: "decoTriangle" },
   { src: zigzag, className: "decoZigzag" },
 ];
@@ -48,72 +47,75 @@ const HeroContainer = () => {
 
   return (
     <Container as="section" className={styles.hero} aria-labelledby="hero-title">
-      <div className={styles.heroPanel}>
-        <div className={styles.heroGlow} aria-hidden="true" />
-        <div className={styles.heroGrid} aria-hidden="true" />
-        {renderDecorations(AROUND_DECORATIONS)}
-        <div className={styles.heroContent}>
-          <span className={styles.heroEyebrow}>
-            <MdAutoAwesome aria-hidden="true" />
-            Coding quizzes, powered by AI
-          </span>
-          <h1 id="hero-title" className={styles.heroTitle}>
-            Dive into the depths of <span className={styles.heroTitleAccent}>coding wisdom</span>
-          </h1>
-          <p className={styles.heroLead}>
-            Sharpen your JavaScript, React and TypeScript skills with bite-sized quizzes — or let AI
-            build one on any topic in seconds.
-          </p>
-          <div className={styles.heroActions}>
-            <button type="button" className={styles.heroPrimary} onClick={scrollToQuizzes}>
-              Explore quizzes
-              <MdArrowDownward aria-hidden="true" />
-            </button>
-            <button type="button" className={styles.heroSecondary} onClick={focusSearch}>
-              <MdSearch aria-hidden="true" />
-              Find a topic
-            </button>
-          </div>
-          <ul className={styles.heroFeatures}>
-            {FEATURES.map((feature) => (
-              <li key={feature}>
-                <MdCheckCircle aria-hidden="true" />
-                {feature}
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        <div className={styles.heroVisual}>
-          <div className={styles.heroOrbit} aria-hidden="true" />
-          <div className={styles.heroPhoto}>
-            <span className={`${styles.orb} ${styles.orbBack}`} aria-hidden="true" />
-            {renderDecorations(BEHIND_PHOTO_DECORATIONS)}
-            <div className={styles.heroImageFrame}>
-              <img
-                src={heroSq}
-                className={styles.heroImg}
-                alt=""
-                width={380}
-                height={380}
-                fetchPriority="high"
-                loading="eager"
-              />
-            </div>
-            {renderDecorations(OVER_PHOTO_DECORATIONS)}
-            <span className={`${styles.orb} ${styles.orbFront}`} aria-hidden="true" />
-          </div>
-          <div className={`${styles.floatCard} ${styles.floatScore}`} aria-hidden="true">
-            <MdCheckCircle className={styles.floatScoreIcon} />
-            <span>
-              <strong>Quiz complete</strong>
-              <small>9/10 correct</small>
+      <div className={styles.heroShell}>
+        <img src={circle} className={styles.decoCircle} alt="" aria-hidden="true" />
+        <div className={styles.heroPanel}>
+          <div className={styles.heroGlow} aria-hidden="true" />
+          <div className={styles.heroGrid} aria-hidden="true" />
+          {renderDecorations(AROUND_DECORATIONS)}
+          <div className={styles.heroContent}>
+            <span className={styles.heroEyebrow}>
+              <MdAutoAwesome aria-hidden="true" />
+              Coding quizzes, powered by AI
             </span>
+            <h1 id="hero-title" className={styles.heroTitle}>
+              Dive into the depths of <span className={styles.heroTitleAccent}>coding wisdom</span>
+            </h1>
+            <p className={styles.heroLead}>
+              Sharpen your JavaScript, React and TypeScript skills with bite-sized quizzes — or let
+              AI build one on any topic in seconds.
+            </p>
+            <div className={styles.heroActions}>
+              <button type="button" className={styles.heroPrimary} onClick={scrollToQuizzes}>
+                Explore quizzes
+                <MdArrowDownward aria-hidden="true" />
+              </button>
+              <button type="button" className={styles.heroSecondary} onClick={focusSearch}>
+                <MdSearch aria-hidden="true" />
+                Find a topic
+              </button>
+            </div>
+            <ul className={styles.heroFeatures}>
+              {FEATURES.map((feature) => (
+                <li key={feature}>
+                  <MdCheckCircle aria-hidden="true" />
+                  {feature}
+                </li>
+              ))}
+            </ul>
           </div>
-          <figure className={`${styles.floatCard} ${styles.floatQuote}`}>
-            <figcaption className={styles.floatQuoteLabel}>Dev wisdom</figcaption>
-            <BlockQuote />
-          </figure>
+
+          <div className={styles.heroVisual}>
+            <div className={styles.heroOrbit} aria-hidden="true" />
+            <div className={styles.heroPhoto}>
+              <span className={`${styles.orb} ${styles.orbBack}`} aria-hidden="true" />
+              {renderDecorations(BEHIND_PHOTO_DECORATIONS)}
+              <div className={styles.heroImageFrame}>
+                <img
+                  src={heroSq}
+                  className={styles.heroImg}
+                  alt=""
+                  width={380}
+                  height={380}
+                  fetchPriority="high"
+                  loading="eager"
+                />
+              </div>
+              {renderDecorations(OVER_PHOTO_DECORATIONS)}
+              <span className={`${styles.orb} ${styles.orbFront}`} aria-hidden="true" />
+            </div>
+            <div className={`${styles.floatCard} ${styles.floatScore}`} aria-hidden="true">
+              <MdCheckCircle className={styles.floatScoreIcon} />
+              <span>
+                <strong>Quiz complete</strong>
+                <small>9/10 correct</small>
+              </span>
+            </div>
+            <figure className={`${styles.floatCard} ${styles.floatQuote}`}>
+              <figcaption className={styles.floatQuoteLabel}>Dev wisdom</figcaption>
+              <BlockQuote />
+            </figure>
+          </div>
         </div>
       </div>
     </Container>

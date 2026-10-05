@@ -139,11 +139,15 @@ $glass-border: rgba($white, 0.16);
 }
 
 .hero {
-  padding-top: calc(#{$spacing-16} * 5);
+  padding-top: calc(#{$spacing-16} * 6.5);
 
-  @include respond-to-md {
-    padding-top: calc(#{$spacing-16} * 5.5);
+  @include respond-to-lg {
+    padding-top: calc(#{$spacing-16} * 7);
   }
+}
+
+.heroShell {
+  position: relative;
 }
 
 .heroPanel {
@@ -196,21 +200,23 @@ $glass-border: rgba($white, 0.16);
 
 .decoCircle {
   @extend %hero-deco;
-  top: 1rem;
-  right: 1rem;
-  width: 2.75rem;
+  z-index: 2;
+  top: -1.25rem;
+  right: 1.25rem;
+  width: 3rem;
+  opacity: 0.9;
   animation-delay: 0.8s;
 
   @include respond-to-md {
-    top: 1.5rem;
-    right: 1.5rem;
-    width: 3.5rem;
+    top: -1.5rem;
+    right: 2rem;
+    width: 3.75rem;
   }
 
   @include respond-to-lg {
-    top: 8%;
+    top: -2rem;
     right: 7%;
-    width: 4.5rem;
+    width: 5rem;
   }
 }
 
