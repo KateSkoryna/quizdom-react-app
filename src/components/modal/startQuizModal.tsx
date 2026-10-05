@@ -6,6 +6,7 @@ import { useQuizCompletionStore } from "../../store/quizAttemptsStore";
 import styles from "../../styles/components/quizPlay.module.scss";
 import owl from "../../assets/owl.svg";
 import Hint from "./hint";
+import RatingStars from "./ratingStars";
 
 const ANSWER_LETTERS = ["A", "B", "C", "D"];
 
@@ -32,7 +33,6 @@ const StartQuizModal = ({ show, handleClose, questions, quizId }: StartQuizModal
   const [score, setScore] = useState(0);
   const [result, setResult] = useState(false);
   const [rating, setRating] = useState(0);
-  const [hoverRating, setHoverRating] = useState(0);
   const [feedback, setFeedback] = useState("");
   const [savedAttempt, setSavedAttempt] = useState(false);
 
@@ -153,24 +153,7 @@ const StartQuizModal = ({ show, handleClose, questions, quizId }: StartQuizModal
 
             <div className={styles.feedbackGroup}>
               <h3 className={styles.feedbackTitle}>Rate this quiz (optional)</h3>
-              <div className={styles.starRating}>
-                {[1, 2, 3, 4, 5].map((star) => (
-                  <button
-                    key={star}
-                    type="button"
-                    className={`${styles.star} ${
-                      star <= (hoverRating || rating) ? styles.starFilled : ""
-                    }`}
-                    onClick={() => setRating(star)}
-                    onMouseEnter={() => setHoverRating(star)}
-                    onMouseLeave={() => setHoverRating(0)}
-                    aria-label={`Rate ${star} stars`}
-                    aria-pressed={star === rating}
-                  >
-                    ★
-                  </button>
-                ))}
-              </div>
+              <RatingStars value={rating} onChange={setRating} />
               <label htmlFor="quiz-feedback" className="visually-hidden">
                 Share your thoughts
               </label>
