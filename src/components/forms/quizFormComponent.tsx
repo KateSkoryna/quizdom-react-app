@@ -1,11 +1,11 @@
 import Form from "react-bootstrap/Form";
 import { useForm, FormProvider } from "react-hook-form";
 import { QuizFormState, Complexity, QuizCategory, UserQuiz } from "../../types";
-import { Container } from "react-bootstrap";
 import FormDropdownComponent from "./formDropdownComponent";
 import QuestionsFormComponent from "./questionsFormComponent";
 import AIPromptInput from "./AIPromptInput";
-import styles from "../../styles/components/modal.module.scss";
+import styles from "../../styles/components/quizForm.module.scss";
+import { MdTune } from "react-icons/md";
 import { useAuthStore, type AuthStore } from "../../store/authStore";
 import { forwardRef, useImperativeHandle, useEffect, useState } from "react";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -176,47 +176,53 @@ const QuizFormComponent = forwardRef<QuizFormRef, QuizFormProps>(
     const errorRoot = errors.root?.message;
 
     return (
-      <Container className={styles.formContainer}>
-        <FormProvider {...methods}>
-          <Form
-            onSubmit={handleSubmit((data: QuizFormState) =>
-              handleFormSubmit({ ...data, status: "done" })
-            )}
-          >
-            {errorRoot && (
-              <div className="alert alert-danger" role="alert">
-                {errorRoot}
-              </div>
-            )}
+      <FormProvider {...methods}>
+        <Form
+          className={styles.form}
+          noValidate
+          onSubmit={handleSubmit((data: QuizFormState) =>
+            handleFormSubmit({ ...data, status: "done" })
+          )}
+        >
+          {errorRoot && (
+            <div className="alert alert-danger" role="alert">
+              {errorRoot}
+            </div>
+          )}
 
-            {!existingQuiz && (
-              <AIPromptInput
-                value={userPrompt}
-                onChange={handlePromptChange}
-                onGenerate={handleGenerateQuiz}
-                isGenerating={isGenerating}
-                isDisabled={isGenerating || remainingAttempts <= 0 || !!promptError}
-                error={promptError ?? generateError}
-                remainingAttempts={remainingAttempts}
-              />
-            )}
-            <Form.Group className={styles.formGroup} controlId="div-title">
-              <Form.Label className={styles.formLabel}>Quiz Title</Form.Label>
+          {!existingQuiz && (
+            <AIPromptInput
+              value={userPrompt}
+              onChange={handlePromptChange}
+              onGenerate={handleGenerateQuiz}
+              isGenerating={isGenerating}
+              isDisabled={isGenerating || remainingAttempts <= 0 || !!promptError}
+              error={promptError ?? generateError}
+              remainingAttempts={remainingAttempts}
+            />
+          )}
+          <section className={styles.section} aria-labelledby="quiz-details-title">
+            <h3 id="quiz-details-title" className={styles.sectionTitle}>
+              <MdTune aria-hidden="true" />
+              Quiz details
+            </h3>
+            <Form.Group className={styles.field} controlId="div-title">
+              <Form.Label className={styles.label}>Title</Form.Label>
               <Form.Control
-                className={styles.formInput}
+                className={styles.input}
                 {...register("title")}
                 type="text"
-                placeholder="Best Quiz ever..."
+                placeholder="e.g. JavaScript Closures & Scope"
               />
               {errorTitle && addClassnameToText("text-danger", errorTitle as string)}
             </Form.Group>
 
-            <Form.Group className={styles.formGroup} controlId="div-description">
-              <Form.Label className={styles.formLabel}>Quiz Description</Form.Label>
+            <Form.Group className={styles.field} controlId="div-description">
+              <Form.Label className={styles.label}>Description</Form.Label>
               <Form.Control
-                className={styles.formTextarea}
+                className={styles.textarea}
                 {...register("description")}
-                placeholder="Add your custom description..."
+                placeholder="What will people learn or practise?"
                 as="textarea"
                 rows={3}
               />
@@ -237,11 +243,11 @@ const QuizFormComponent = forwardRef<QuizFormRef, QuizFormProps>(
                 formatDisplayValue={categoryConfig.formatDisplayValue}
               />
             </div>
+          </section>
 
-            <QuestionsFormComponent />
-          </Form>
-        </FormProvider>
-      </Container>
+          <QuestionsFormComponent />
+        </Form>
+      </FormProvider>
     );
   }
 );

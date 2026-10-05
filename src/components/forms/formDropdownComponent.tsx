@@ -1,6 +1,6 @@
 import { Controller, useFormContext } from "react-hook-form";
 import { Form } from "react-bootstrap";
-import styles from "../../styles/components/modal.module.scss";
+import styles from "../../styles/components/quizForm.module.scss";
 import { useDropdown } from "../../hooks/useDropdown";
 
 interface DropdownOption {
@@ -31,8 +31,8 @@ const FormDropdownComponent = ({
       control={control}
       name={name}
       render={({ field: { onChange, value } }) => (
-        <Form.Group className={className || styles.dropdownGroup} controlId={name}>
-          <Form.Label as="p" className={styles.formLabel}>
+        <Form.Group className={className || styles.field} controlId={name}>
+          <Form.Label as="p" className={styles.label}>
             {label}
           </Form.Label>
           <details

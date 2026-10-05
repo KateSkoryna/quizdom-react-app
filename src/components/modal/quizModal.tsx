@@ -1,7 +1,7 @@
 import Modal from "react-bootstrap/Modal";
-import { Button } from "react-bootstrap";
 import QuizFormComponent from "../forms/quizFormComponent";
-import styles from "../../styles/components/modal.module.scss";
+import styles from "../../styles/components/quizForm.module.scss";
+import { MdPublish, MdSaveAlt } from "react-icons/md";
 import { useRef, useState, useCallback } from "react";
 import { UserQuiz } from "../../types";
 import { ErrorBoundary } from "react-error-boundary";
@@ -47,13 +47,22 @@ const QuizModal = ({ showModal, handleCloseModal, existingQuiz }: QuizModalProps
       show={showModal}
       onHide={handleCloseModal}
       scrollable
-      dialogClassName={styles.quizModalDialog}
+      dialogClassName={styles.dialog}
       centered
     >
-      <Modal.Header closeButton className={styles.modalHeader}>
-        <Modal.Title as="h2">{existingQuiz ? "Edit Quiz" : "Create your own Quiz"}</Modal.Title>
+      <Modal.Header closeButton closeVariant="white" className={styles.header}>
+        <div className={styles.headerText}>
+          <Modal.Title as="h2" className={styles.title}>
+            {existingQuiz ? "Edit quiz" : "Create your own quiz"}
+          </Modal.Title>
+          <p className={styles.subtitle}>
+            {existingQuiz
+              ? "Update questions, hints and answers, then publish your changes."
+              : "Write questions yourself or let AI draft them, then fine-tune every answer."}
+          </p>
+        </div>
       </Modal.Header>
-      <Modal.Body>
+      <Modal.Body className={styles.body}>
         <ErrorBoundary
           FallbackComponent={(props) => <SectionErrorFallback {...props} section="quiz form" />}
         >
@@ -65,22 +74,24 @@ const QuizModal = ({ showModal, handleCloseModal, existingQuiz }: QuizModalProps
           />
         </ErrorBoundary>
       </Modal.Body>
-      <Modal.Footer className={styles.modalFooter}>
-        <Button
-          type="button"
-          className={styles.primaryButton}
-          onClick={() => handleSaveQuiz("done")}
-          disabled={isSubmitting}
-        >
-          {isSubmitting && currentAction === "done" ? "Publishing..." : "Publish Quiz"}
-        </Button>
+      <Modal.Footer className={styles.footer}>
         <button
           type="button"
-          className={styles.addQuestionButton}
+          className={styles.draftButton}
           onClick={() => handleSaveQuiz("draft")}
           disabled={!isDirty || isSubmitting}
         >
-          {isSubmitting && currentAction === "draft" ? "Saving..." : "Save to Drafts"}
+          <MdSaveAlt aria-hidden="true" />
+          {isSubmitting && currentAction === "draft" ? "Saving..." : "Save to drafts"}
+        </button>
+        <button
+          type="button"
+          className={styles.publishButton}
+          onClick={() => handleSaveQuiz("done")}
+          disabled={isSubmitting}
+        >
+          <MdPublish aria-hidden="true" />
+          {isSubmitting && currentAction === "done" ? "Publishing..." : "Publish quiz"}
         </button>
       </Modal.Footer>
     </Modal>

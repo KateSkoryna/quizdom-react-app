@@ -1,9 +1,12 @@
 import { Form } from "react-bootstrap";
 import { useFieldArray, useFormContext } from "react-hook-form";
 import FormCheckboxComponent from "./formCheckboxComponent";
-import modalStyles from "../../styles/components/modal.module.scss";
-import { MdDeleteOutline, MdAddCircleOutline } from "react-icons/md";
+import styles from "../../styles/components/quizForm.module.scss";
+import { MdDeleteOutline, MdAdd } from "react-icons/md";
 import addClassnameToText from "../../utils/addClassnameToText";
+
+const MAX_ANSWERS = 4;
+const MIN_ANSWERS = 2;
 
 const AnswersFormComponent = ({ nestIndex }: { nestIndex: number }) => {
   const {
@@ -22,13 +25,14 @@ const AnswersFormComponent = ({ nestIndex }: { nestIndex: number }) => {
   });
 
   return (
-    <Form.Group className="mt-3">
-      <div className={modalStyles.answersGrid}>
+    <fieldset className={styles.field}>
+      <legend className={styles.label}>Answers</legend>
+      <div className={styles.answersGrid}>
         {answers.map((answer, index) => {
           // @ts-ignore
           const error = errors?.questions?.[nestIndex]?.answers?.[index]?.answer?.message as string;
           return (
-            <div key={answer.id}>
+            <div key={answer.id} className={styles.answerTile}>
               <Form.Control
                 {...register(`questions[${nestIndex}].answers[${index}].answer`, {
                   required: "Answer is required",
@@ -38,46 +42,40 @@ const AnswersFormComponent = ({ nestIndex }: { nestIndex: number }) => {
                   },
                 } as const)}
                 as="textarea"
-                rows={5}
-                className={modalStyles.answerInput}
+                rows={2}
+                className={styles.textarea}
                 placeholder={`Answer ${index + 1}`}
+                aria-label={`Question ${nestIndex + 1}, answer ${index + 1}`}
               />
               {error && addClassnameToText("text-danger", error)}
-              <Form.Group
-                className="d-flex justify-content-between mt-2"
-                controlId={`isCorrect-${index}-${answer.id}`}
-              >
-                <FormCheckboxComponent
-                  label="Choose correct answer"
-                  nestIndex={nestIndex}
-                  index={index}
-                />
-                {answers.length > 2 && (
+              <div className={styles.answerFooter}>
+                <FormCheckboxComponent label="Correct answer" nestIndex={nestIndex} index={index} />
+                {answers.length > MIN_ANSWERS && (
                   <button
                     type="button"
-                    className={modalStyles.removeQuestionButton}
+                    className={styles.iconButton}
                     onClick={() => remove(index)}
                     aria-label={`Remove answer ${index + 1}`}
                   >
-                    <MdDeleteOutline />
+                    <MdDeleteOutline aria-hidden="true" />
                   </button>
                 )}
-              </Form.Group>
+              </div>
             </div>
           );
         })}
       </div>
-      {answers.length < 4 && (
+      {answers.length < MAX_ANSWERS && (
         <button
           type="button"
-          className={modalStyles.addAnswerButton}
+          className={styles.addAnswerButton}
           onClick={() => append({ answer: "", isCorrect: false })}
         >
-          <MdAddCircleOutline />
-          <span>Add Answer</span>
+          <MdAdd aria-hidden="true" />
+          Add answer
         </button>
       )}
-    </Form.Group>
+    </fieldset>
   );
 };
 
