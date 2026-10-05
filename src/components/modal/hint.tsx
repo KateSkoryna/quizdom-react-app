@@ -1,32 +1,29 @@
-import { Popover, Overlay } from "react-bootstrap";
 import { MdLightbulbOutline } from "react-icons/md";
-import { useRef, useState } from "react";
-import styles from "../../styles/components/modal.module.scss";
+import { useId, useState } from "react";
+import styles from "../../styles/components/quizPlay.module.scss";
 
 export default function Hint({ questionHint }: { questionHint: string }) {
   const [showHint, setShowHint] = useState(false);
-  const hint = useRef<HTMLButtonElement>(null);
+  const panelId = useId();
+
   return (
     <>
       <button
-        ref={hint}
         type="button"
         className={styles.hintButton}
         onClick={() => setShowHint(!showHint)}
+        aria-expanded={showHint}
+        aria-controls={panelId}
       >
-        <MdLightbulbOutline size={24} />
-        <span>Hint</span>
+        <MdLightbulbOutline aria-hidden="true" />
+        {showHint ? "Hide hint" : "Show hint"}
       </button>
-      <Overlay target={hint.current} show={showHint} placement="bottom">
-        {(props) => (
-          <Popover {...props}>
-            <Popover.Body className={styles.hintContent}>
-              <MdLightbulbOutline size={20} />
-              <p>{questionHint}</p>
-            </Popover.Body>
-          </Popover>
-        )}
-      </Overlay>
+      {showHint && (
+        <div id={panelId} className={styles.hintPanel} role="note">
+          <MdLightbulbOutline aria-hidden="true" />
+          <p>{questionHint}</p>
+        </div>
+      )}
     </>
   );
 }
