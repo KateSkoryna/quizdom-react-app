@@ -1,5 +1,5 @@
-import { Card } from "react-bootstrap";
-import styles from "../../styles/pages/user.module.scss";
+import { MdPhotoCamera } from "react-icons/md";
+import styles from "../../styles/pages/profile.module.scss";
 
 interface AvatarUploadProps {
   avatarUrl?: string;
@@ -9,17 +9,20 @@ interface AvatarUploadProps {
 
 export const AvatarUpload = ({ avatarUrl, isEditMode, onFileSelect }: AvatarUploadProps) => {
   return (
-    <div className={styles.userImage}>
+    <div className={styles.avatar}>
+      <img src={avatarUrl} className={styles.avatarImg} alt="Your profile avatar" />
       {isEditMode && (
-        <label className={styles.inputUpload}>
+        <label className={styles.avatarUpload} title="Change photo">
           <input
             type="file"
+            accept="image/*"
+            className="visually-hidden"
             onChange={(e) => onFileSelect(e.target.files)}
             aria-label="Upload profile photo"
           />
+          <MdPhotoCamera aria-hidden="true" />
         </label>
       )}
-      <Card.Img src={avatarUrl} className={styles.cardImg} alt="User profile avatar" />
     </div>
   );
 };

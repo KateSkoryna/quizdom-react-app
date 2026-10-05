@@ -1,7 +1,6 @@
-import { Card } from "react-bootstrap";
 import { Control, Controller, FieldValues, Path } from "react-hook-form";
-import { lazy, Suspense } from "react";
-import styles from "../../styles/pages/user.module.scss";
+import { lazy, Suspense, type ReactNode } from "react";
+import styles from "../../styles/pages/profile.module.scss";
 
 const SearchBox = lazy(() =>
   import("@mapbox/search-js-react").then((module) => ({ default: module.SearchBox }))
@@ -13,6 +12,7 @@ interface UserLocationFormFieldProps<T extends FieldValues> {
   isEditMode: boolean;
   control: Control<T>;
   fieldName: Path<T>;
+  icon?: ReactNode;
 }
 
 export const UserLocationFormField = <T extends FieldValues>({
@@ -21,61 +21,72 @@ export const UserLocationFormField = <T extends FieldValues>({
   isEditMode,
   control,
   fieldName,
+  icon,
 }: UserLocationFormFieldProps<T>) => {
   const MAPBOX_API_KEY = import.meta.env.VITE_MAPBOX_API;
 
   return (
-    <Card.Text
-      as="div"
-      className={`${styles.birthField} d-flex justify-content-between align-items-center`}
-    >
-      <strong>{label}:</strong>
-      <span className={isEditMode ? styles.locationSearchBox : undefined}>
-        {isEditMode ? (
-          <Suspense fallback={<span className="text-muted">Loading search...</span>}>
-            <Controller
-              name={fieldName}
-              control={control}
-              render={({ field: { onChange, value: fieldValue } }) => (
-                <SearchBox
-                  accessToken={MAPBOX_API_KEY}
-                  value={fieldValue || ""}
-                  onRetrieve={(result) => {
-                    const placeName =
-                      result.features[0]?.properties?.full_address ||
-                      result.features[0]?.properties?.name ||
-                      "";
-                    onChange(placeName);
-                  }}
-                  onChange={(value) => {
-                    onChange(value);
-                  }}
-                  options={{
-                    language: "en",
-                    limit: 5,
-                  }}
-                  placeholder="Search location..."
-                  theme={{
-                    variables: {
-                      fontFamily: '"Montserrat", sans-serif',
-                      borderRadius: "4px",
-                      boxShadow: "none",
-                      border: "1px solid #ced4da",
-                      colorText: "#212529",
-                      colorBackground: "#fff",
-                      colorBackgroundHover: "#f8f9fa",
-                      colorBackgroundActive: "#e9ecef",
-                      spacing: "0.375rem",
-                    },
-                  }}
-                />
-              )}
-            />
-          </Suspense>
-        ) : (
-          value || "Not set"
-        )}
-      </span>
-    </Card.Text>
+    <div className={styles.field}>
+      {icon && (
+        <span className={styles.fieldIcon} aria-hidden="true">
+          {icon}
+        </span>
+      )}
+      <div className={styles.fieldBody}>
+        <span className={styles.fieldLabel}>{label}</span>
+        <div
+          className={
+            isEditMode
+              ? styles.locationSearch
+              : `${styles.fieldValue} ${value ? "" : styles.fieldMuted}`
+          }
+        >
+          {isEditMode ? (
+            <Suspense fallback={<span className="text-muted">Loading search...</span>}>
+              <Controller
+                name={fieldName}
+                control={control}
+                render={({ field: { onChange, value: fieldValue } }) => (
+                  <SearchBox
+                    accessToken={MAPBOX_API_KEY}
+                    value={fieldValue || ""}
+                    onRetrieve={(result) => {
+                      const placeName =
+                        result.features[0]?.properties?.full_address ||
+                        result.features[0]?.properties?.name ||
+                        "";
+                      onChange(placeName);
+                    }}
+                    onChange={(value) => {
+                      onChange(value);
+                    }}
+                    options={{
+                      language: "en",
+                      limit: 5,
+                    }}
+                    placeholder="Search location..."
+                    theme={{
+                      variables: {
+                        fontFamily: '"Montserrat", sans-serif',
+                        borderRadius: "12px",
+                        boxShadow: "none",
+                        border: "1px solid #d7dae6",
+                        colorText: "#00093c",
+                        colorBackground: "#fff",
+                        colorBackgroundHover: "#f8f9fa",
+                        colorBackgroundActive: "#e9ecef",
+                        spacing: "0.375rem",
+                      },
+                    }}
+                  />
+                )}
+              />
+            </Suspense>
+          ) : (
+            value || "Not set"
+          )}
+        </div>
+      </div>
+    </div>
   );
 };

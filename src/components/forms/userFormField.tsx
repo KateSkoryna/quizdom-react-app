@@ -1,6 +1,6 @@
-import { Card } from "react-bootstrap";
+import { useId, type ReactNode } from "react";
 import { UseFormRegister, FieldValues, Path } from "react-hook-form";
-import styles from "../../styles/pages/user.module.scss";
+import styles from "../../styles/pages/profile.module.scss";
 
 interface UserFormFieldProps<T extends FieldValues> {
   label: string;
@@ -11,6 +11,7 @@ interface UserFormFieldProps<T extends FieldValues> {
   placeholder?: string;
   options?: { value: string; label: string }[];
   register?: UseFormRegister<T>;
+  icon?: ReactNode;
 }
 
 export const UserFormField = <T extends FieldValues>({
@@ -22,7 +23,11 @@ export const UserFormField = <T extends FieldValues>({
   placeholder,
   options,
   register,
+  icon,
 }: UserFormFieldProps<T>) => {
+  const inputId = useId();
+  const isEditing = isEditMode && !!register;
+
   const renderEditField = () => {
     if (!register) {
       return null;
@@ -30,7 +35,7 @@ export const UserFormField = <T extends FieldValues>({
 
     if (fieldType === "select" && options) {
       return (
-        <select className="form-select form-select-sm" {...register(fieldName)}>
+        <select id={inputId} className={`form-select ${styles.input}`} {...register(fieldName)}>
           <option value="">Select {label.toLowerCase()}</option>
           {options.map((option) => (
             <option key={option.value} value={option.value}>
@@ -44,7 +49,8 @@ export const UserFormField = <T extends FieldValues>({
     if (fieldType === "textarea") {
       return (
         <textarea
-          className="form-control form-control-sm"
+          id={inputId}
+          className={styles.input}
           {...register(fieldName)}
           placeholder={placeholder}
           rows={3}
@@ -54,8 +60,9 @@ export const UserFormField = <T extends FieldValues>({
 
     return (
       <input
+        id={inputId}
         type={fieldType}
-        className="form-control form-control-sm"
+        className={styles.input}
         {...register(fieldName)}
         placeholder={placeholder}
       />
@@ -63,12 +70,28 @@ export const UserFormField = <T extends FieldValues>({
   };
 
   return (
-    <Card.Text
-      as="div"
-      className={`${styles.cardText} d-flex justify-content-between align-items-center`}
-    >
-      <strong>{label}:</strong>
-      <span>{isEditMode ? renderEditField() : value || "Not set"}</span>
-    </Card.Text>
+    <div className={styles.field}>
+      {icon && (
+        <span className={styles.fieldIcon} aria-hidden="true">
+          {icon}
+        </span>
+      )}
+      <div className={styles.fieldBody}>
+        {isEditing ? (
+          <label htmlFor={inputId} className={styles.fieldLabel}>
+            {label}
+          </label>
+        ) : (
+          <span className={styles.fieldLabel}>{label}</span>
+        )}
+        {isEditing ? (
+          renderEditField()
+        ) : (
+          <p className={`${styles.fieldValue} ${value ? "" : styles.fieldMuted}`}>
+            {value || "Not set"}
+          </p>
+        )}
+      </div>
+    </div>
   );
 };

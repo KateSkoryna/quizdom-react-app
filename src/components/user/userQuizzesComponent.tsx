@@ -1,13 +1,17 @@
 import AddQuizComponent from "../quiz/addQuizComponent";
 import UserQuizList from "./userQuizList";
-import styles from "../../styles/components/userQuiz.module.scss";
+import { PanelHeader } from "./userPanel";
 
 const UserQuizzesComponent = () => {
   return (
-    <div className={`${styles.container} d-flex flex-column h-100`}>
-      <AddQuizComponent />
+    <>
+      <PanelHeader
+        title="Published quizzes"
+        subtitle="Quizzes you created and shared with everyone"
+        action={<AddQuizComponent />}
+      />
       <UserQuizList status="done" />
-    </div>
+    </>
   );
 };
 

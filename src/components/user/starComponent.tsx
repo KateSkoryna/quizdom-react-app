@@ -1,8 +1,9 @@
 import { useEffect, useMemo } from "react";
 import { useAuthStore } from "../../store/authStore";
 import { useQuizCompletionStore } from "../../store/quizAttemptsStore";
-import StarRating from "../common/starRating";
-import styles from "../../styles/components/userQuiz.module.scss";
+import styles from "../../styles/pages/profile.module.scss";
+
+const MAX_RATING = 10;
 
 function StarComponent() {
   const currentUser = useAuthStore((state) => state.currentUser);
@@ -41,7 +42,7 @@ function StarComponent() {
     const averagePercentage = totalPercentage / totalQuizzes;
 
     // Convert to 1-10 scale
-    const rating = (averagePercentage / 100) * 10;
+    const rating = (averagePercentage / 100) * MAX_RATING;
 
     return {
       totalQuizzes,
@@ -51,22 +52,39 @@ function StarComponent() {
   }, [completionCache]);
 
   return (
-    <div className={styles.statisticsContainer}>
-      <div className={styles.statRow}>
-        <span className={styles.statLabel}>Total Passed:</span>
-        <span className={styles.statValue}>{statistics.totalQuizzes} quizzes</span>
+    <section className={styles.stats} aria-label="Your statistics">
+      <div className={styles.statTiles}>
+        <div className={styles.statTile}>
+          <span className={styles.statValue}>{statistics.totalQuizzes}</span>
+          <span className={styles.statLabel}>Quizzes passed</span>
+        </div>
+        <div className={styles.statTile}>
+          <span className={styles.statValue}>{statistics.averagePercentage}%</span>
+          <span className={styles.statLabel}>Average score</span>
+        </div>
       </div>
-      <div className={styles.statRow}>
-        <span className={styles.statLabel}>Average Performance:</span>
-        <span className={styles.statValue}>{statistics.averagePercentage}%</span>
+      <div className={styles.ratingMeter}>
+        <div className={styles.ratingHeader}>
+          <span>Quizdom rating</span>
+          <strong>
+            {statistics.rating.toFixed(1)}/{MAX_RATING}
+          </strong>
+        </div>
+        <div
+          className={styles.meterTrack}
+          role="meter"
+          aria-label="Quizdom rating"
+          aria-valuemin={0}
+          aria-valuemax={MAX_RATING}
+          aria-valuenow={statistics.rating}
+        >
+          <div
+            className={styles.meterFill}
+            style={{ width: `${(statistics.rating / MAX_RATING) * 100}%` }}
+          />
+        </div>
       </div>
-      <div className={styles.ratingRow}>
-        <span className={styles.ratingLabel}>Rating: {statistics.rating.toFixed(1)}/10</span>
-      </div>
-      <div className={styles.starsRow}>
-        <StarRating rating={statistics.rating} maxStars={10} size="medium" />
-      </div>
-    </div>
+    </section>
   );
 }
 

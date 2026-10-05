@@ -1,6 +1,5 @@
-import { Card } from "react-bootstrap";
 import { useAuthStore } from "../../store/authStore";
-import styles from "../../styles/pages/user.module.scss";
+import styles from "../../styles/pages/profile.module.scss";
 import { useState, useCallback } from "react";
 import { useForm } from "react-hook-form";
 import { useImageUpload } from "../../hooks/useImageUpload";
@@ -14,6 +13,7 @@ import { UserAboutFormField } from "./userAboutFormField";
 import { editUser } from "../../fetchers/api";
 import { Timestamp } from "firebase/firestore";
 import StarComponent from "./starComponent";
+import { MdCake, MdInfoOutline, MdLocationOn, MdPersonOutline, MdWc } from "react-icons/md";
 
 interface UserFormData {
   displayName: string;
@@ -150,26 +150,21 @@ const UserCardData = () => {
   ];
 
   return (
-    <Card className={`${styles.card} d-flex flex-column border h-100`}>
-      <AvatarUpload
-        avatarUrl={photoURL || currentUser?.photoURL}
-        isEditMode={isEditMode}
-        onFileSelect={handleSelectedFile}
-      />
-      <hr className={styles.separator} />
-      <div>
-        <StarComponent />
-      </div>
-      <hr className={styles.separator} />
-      <div>
-        <UserFormField
-          label="Email"
-          value={currentUser?.email}
-          isEditMode={false}
-          fieldName="email"
+    <section className={styles.profileCard} aria-label="Your profile">
+      <div className={styles.profileHeader}>
+        <AvatarUpload
+          avatarUrl={photoURL || currentUser?.photoURL}
+          isEditMode={isEditMode}
+          onFileSelect={handleSelectedFile}
         />
+        <h1 className={styles.name}>{currentUser?.displayName || "Your profile"}</h1>
+        <p className={styles.email}>{currentUser?.email}</p>
+      </div>
+      <StarComponent />
+      <div className={styles.details}>
         <UserFormField
           label="Name"
+          icon={<MdPersonOutline />}
           value={currentUser?.displayName}
           isEditMode={isEditMode}
           fieldName="displayName"
@@ -179,7 +174,8 @@ const UserCardData = () => {
         />
 
         <UserBirthFormField
-          label="Date of Birth"
+          label="Date of birth"
+          icon={<MdCake />}
           value={currentUser?.dateOfBirth}
           isEditMode={isEditMode}
           control={control}
@@ -188,7 +184,12 @@ const UserCardData = () => {
 
         <UserFormField
           label="Sex"
-          value={currentUser?.sex}
+          icon={<MdWc />}
+          value={
+            currentUser?.sex
+              ? currentUser.sex[0].toUpperCase() + currentUser.sex.slice(1)
+              : undefined
+          }
           isEditMode={isEditMode}
           fieldName="sex"
           fieldType="select"
@@ -198,6 +199,7 @@ const UserCardData = () => {
 
         <UserLocationFormField
           label="Location"
+          icon={<MdLocationOn />}
           value={currentUser?.location}
           isEditMode={isEditMode}
           control={control}
@@ -206,6 +208,7 @@ const UserCardData = () => {
 
         <UserAboutFormField
           label="About me"
+          icon={<MdInfoOutline />}
           value={currentUser?.bio}
           isEditMode={isEditMode}
           fieldName="bio"
@@ -223,7 +226,7 @@ const UserCardData = () => {
         onSave={handleSubmit(onSubmit)}
         onCancel={handleCancel}
       />
-    </Card>
+    </section>
   );
 };
 

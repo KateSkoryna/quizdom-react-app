@@ -1,6 +1,5 @@
-import { Card, Button } from "react-bootstrap";
-import ProgressBar from "react-bootstrap/ProgressBar";
-import modalStyles from "../../styles/components/modal.module.scss";
+import { MdEdit } from "react-icons/md";
+import styles from "../../styles/pages/profile.module.scss";
 
 interface UserEditActionsProps {
   isEditMode: boolean;
@@ -22,41 +21,44 @@ export const UserEditActions = ({
   onCancel,
 }: UserEditActionsProps) => {
   return (
-    <Card.Footer className="mt-auto" style={{ backgroundColor: "transparent" }}>
-      <div className="mb-2" style={{ minHeight: "1.5rem" }}>
-        <ProgressBar
-          animated={progressUpload > 0 && progressUpload < 100}
-          now={progressUpload}
-          variant={progressUpload > 0 ? "primary" : "secondary"}
-          label={progressUpload > 0 ? `${Math.round(progressUpload)}%` : ""}
+    <div className={styles.actions}>
+      {progressUpload > 0 && (
+        <div
+          className={styles.uploadTrack}
+          role="progressbar"
           aria-label="Profile photo upload progress"
-        />
-      </div>
+          aria-valuemin={0}
+          aria-valuemax={100}
+          aria-valuenow={Math.round(progressUpload)}
+        >
+          <div className={styles.uploadFill} style={{ width: `${progressUpload}%` }} />
+        </div>
+      )}
       {isEditMode ? (
-        <div className="d-flex gap-2">
-          <Button
+        <div className={styles.actionRow}>
+          <button
             type="button"
-            className={`flex-grow-1 ${modalStyles.primaryButton}`}
-            onClick={onSave}
-            disabled={loading || !isDirty}
-          >
-            {loading ? "Saving..." : "Save Profile"}
-          </Button>
-          <Button
-            type="button"
-            variant=""
-            className={modalStyles.secondaryButton}
+            className={styles.secondaryButton}
             onClick={onCancel}
             disabled={loading}
           >
             Cancel
-          </Button>
+          </button>
+          <button
+            type="button"
+            className={styles.primaryButton}
+            onClick={onSave}
+            disabled={loading || !isDirty}
+          >
+            {loading ? "Saving..." : "Save profile"}
+          </button>
         </div>
       ) : (
-        <Button type="button" className={`w-100 ${modalStyles.primaryButton}`} onClick={onEdit}>
-          Edit Profile
-        </Button>
+        <button type="button" className={styles.secondaryButton} onClick={onEdit}>
+          <MdEdit aria-hidden="true" />
+          Edit profile
+        </button>
       )}
-    </Card.Footer>
+    </div>
   );
 };
