@@ -13,6 +13,7 @@ import { UserAboutFormField } from "./userAboutFormField";
 import { editUser } from "../../fetchers/api";
 import { Timestamp } from "firebase/firestore";
 import StarComponent from "./starComponent";
+import { MdCake, MdInfoOutline, MdLocationOn, MdPersonOutline, MdWc } from "react-icons/md";
 
 interface UserFormData {
   displayName: string;
@@ -163,6 +164,7 @@ const UserCardData = () => {
       <div className={styles.details}>
         <UserFormField
           label="Name"
+          icon={<MdPersonOutline />}
           value={currentUser?.displayName}
           isEditMode={isEditMode}
           fieldName="displayName"
@@ -173,6 +175,7 @@ const UserCardData = () => {
 
         <UserBirthFormField
           label="Date of birth"
+          icon={<MdCake />}
           value={currentUser?.dateOfBirth}
           isEditMode={isEditMode}
           control={control}
@@ -181,7 +184,12 @@ const UserCardData = () => {
 
         <UserFormField
           label="Sex"
-          value={currentUser?.sex}
+          icon={<MdWc />}
+          value={
+            currentUser?.sex
+              ? currentUser.sex[0].toUpperCase() + currentUser.sex.slice(1)
+              : undefined
+          }
           isEditMode={isEditMode}
           fieldName="sex"
           fieldType="select"
@@ -191,6 +199,7 @@ const UserCardData = () => {
 
         <UserLocationFormField
           label="Location"
+          icon={<MdLocationOn />}
           value={currentUser?.location}
           isEditMode={isEditMode}
           control={control}
@@ -199,6 +208,7 @@ const UserCardData = () => {
 
         <UserAboutFormField
           label="About me"
+          icon={<MdInfoOutline />}
           value={currentUser?.bio}
           isEditMode={isEditMode}
           fieldName="bio"

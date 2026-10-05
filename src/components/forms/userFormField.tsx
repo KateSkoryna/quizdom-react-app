@@ -1,4 +1,4 @@
-import { useId } from "react";
+import { useId, type ReactNode } from "react";
 import { UseFormRegister, FieldValues, Path } from "react-hook-form";
 import styles from "../../styles/pages/profile.module.scss";
 
@@ -11,6 +11,7 @@ interface UserFormFieldProps<T extends FieldValues> {
   placeholder?: string;
   options?: { value: string; label: string }[];
   register?: UseFormRegister<T>;
+  icon?: ReactNode;
 }
 
 export const UserFormField = <T extends FieldValues>({
@@ -22,6 +23,7 @@ export const UserFormField = <T extends FieldValues>({
   placeholder,
   options,
   register,
+  icon,
 }: UserFormFieldProps<T>) => {
   const inputId = useId();
   const isEditing = isEditMode && !!register;
@@ -69,20 +71,27 @@ export const UserFormField = <T extends FieldValues>({
 
   return (
     <div className={styles.field}>
-      {isEditing ? (
-        <label htmlFor={inputId} className={styles.fieldLabel}>
-          {label}
-        </label>
-      ) : (
-        <span className={styles.fieldLabel}>{label}</span>
+      {icon && (
+        <span className={styles.fieldIcon} aria-hidden="true">
+          {icon}
+        </span>
       )}
-      {isEditing ? (
-        renderEditField()
-      ) : (
-        <p className={`${styles.fieldValue} ${value ? "" : styles.fieldMuted}`}>
-          {value || "Not set"}
-        </p>
-      )}
+      <div className={styles.fieldBody}>
+        {isEditing ? (
+          <label htmlFor={inputId} className={styles.fieldLabel}>
+            {label}
+          </label>
+        ) : (
+          <span className={styles.fieldLabel}>{label}</span>
+        )}
+        {isEditing ? (
+          renderEditField()
+        ) : (
+          <p className={`${styles.fieldValue} ${value ? "" : styles.fieldMuted}`}>
+            {value || "Not set"}
+          </p>
+        )}
+      </div>
     </div>
   );
 };

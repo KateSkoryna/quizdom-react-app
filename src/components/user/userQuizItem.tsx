@@ -36,27 +36,29 @@ const UserQuizItem = ({ quiz, isDraft }: { quiz: UserQuiz; isDraft?: boolean }) 
             <MdHelpOutline aria-hidden="true" />
             {questions.length} questions
           </span>
-          <span>
-            {isDraft ? "Saved" : "Published"} {localizedDate}
-            {!isOwner && ` · by ${authorName}`}
-          </span>
         </div>
       </div>
-      {isOwner && (
-        <div className={styles.rowActions}>
-          {isDraft && (
-            <button
-              type="button"
-              onClick={() => setShowEditModal(true)}
-              className={styles.iconButton}
-              aria-label={`Edit ${title}`}
-            >
-              <MdEdit aria-hidden="true" />
-            </button>
-          )}
-          <DeleteQuizComponent quizId={quiz.id} quizTitle={title} />
-        </div>
-      )}
+      <div className={styles.rowSide}>
+        {isOwner && (
+          <div className={styles.rowActions}>
+            {isDraft && (
+              <button
+                type="button"
+                onClick={() => setShowEditModal(true)}
+                className={styles.iconButton}
+                aria-label={`Edit ${title}`}
+              >
+                <MdEdit aria-hidden="true" />
+              </button>
+            )}
+            <DeleteQuizComponent quizId={quiz.id} quizTitle={title} />
+          </div>
+        )}
+        <span className={styles.rowDate}>
+          {isDraft ? "Saved" : "Published"} {localizedDate}
+          {!isOwner && <span className={styles.rowAuthor}>by {authorName}</span>}
+        </span>
+      </div>
       {showEditModal && (
         <QuizModal
           showModal={showEditModal}

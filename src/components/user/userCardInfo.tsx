@@ -1,3 +1,4 @@
+import { useState, type CSSProperties } from "react";
 import Tab from "react-bootstrap/Tab";
 import Nav from "react-bootstrap/Nav";
 import { MdFavoriteBorder, MdInsights, MdOutlineEditNote, MdOutlineQuiz } from "react-icons/md";
@@ -16,10 +17,26 @@ const TABS = [
 ];
 
 const UserCardInfo = () => {
+  const [activeKey, setActiveKey] = useState(TABS[0].key);
+  const activeIndex = Math.max(
+    0,
+    TABS.findIndex((tab) => tab.key === activeKey)
+  );
+  const indicatorStyle = {
+    "--tab-index": activeIndex,
+    "--tab-col-sm": activeIndex % 2,
+    "--tab-row-sm": Math.floor(activeIndex / 2),
+  } as CSSProperties;
+
   return (
-    <Tab.Container id="user-card" defaultActiveKey="my-quizzes">
+    <Tab.Container
+      id="user-card"
+      activeKey={activeKey}
+      onSelect={(key) => key && setActiveKey(key)}
+    >
       <section className={styles.tabsPanel} aria-label="Your quizzes">
-        <Nav variant="pills" className={styles.tabs}>
+        <Nav variant="pills" className={styles.tabs} style={indicatorStyle}>
+          <span className={styles.tabIndicator} aria-hidden="true" />
           {TABS.map(({ key, label, icon }) => (
             <Nav.Item key={key}>
               <Nav.Link eventKey={key}>
