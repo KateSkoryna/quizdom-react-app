@@ -1,8 +1,8 @@
 import { useFieldArray, useFormContext } from "react-hook-form";
 import AnswersFormComponent from "./answersFormComponent";
 import { Form } from "react-bootstrap";
-import modalStyles from "../../styles/components/modal.module.scss";
-import { MdAdd, MdRemove } from "react-icons/md";
+import styles from "../../styles/components/quizForm.module.scss";
+import { MdAdd, MdDeleteOutline, MdLightbulbOutline } from "react-icons/md";
 import addClassnameToText from "../../utils/addClassnameToText";
 
 const QuestionsFormComponent = () => {
@@ -21,75 +21,79 @@ const QuestionsFormComponent = () => {
   });
 
   return (
-    <Form.Group className="mb-3" controlId="div-questions">
+    <div className={styles.questions}>
       {questions.map((question, index) => {
         // @ts-ignore
         const error = errors?.questions?.[index]?.questionTitle?.message;
         return (
-          <Form.Group
+          <section
             key={question.id}
-            className={modalStyles.questionContainer}
-            controlId={`question-${index}`}
+            className={styles.questionCard}
+            aria-label={`Question ${index + 1}`}
           >
-            <div className="d-flex justify-content-between mb-3">
-              <Form.Label className={`mb-0 align-self-center ${modalStyles.questionLabel}`}>
+            <div className={styles.questionHeader}>
+              <Form.Label htmlFor={`question-${index}`} className={styles.questionLabel}>
+                <span className={styles.questionNumber} aria-hidden="true">
+                  {index + 1}
+                </span>
                 Question {index + 1}
               </Form.Label>
               {index > 0 && (
-                <button
-                  type="button"
-                  className={modalStyles.addQuestionButton}
-                  onClick={() => remove(index)}
-                >
-                  <MdRemove />
-                  <span>Remove Question</span>
+                <button type="button" className={styles.ghostButton} onClick={() => remove(index)}>
+                  <MdDeleteOutline aria-hidden="true" />
+                  Remove
                 </button>
               )}
             </div>
 
-            <Form.Control
-              className={modalStyles.formTextarea}
-              {...register(`questions[${index}].questionTitle`)}
-              as="textarea"
-              rows={2}
-              type="text"
-              placeholder="Question Text"
-            />
-            {error && addClassnameToText("text-danger", error)}
-
-            <Form.Group className="mt-3" controlId={`hint-${index}`}>
-              <Form.Label className={modalStyles.formLabel}>Hint (optional)</Form.Label>
+            <div className={styles.field}>
               <Form.Control
-                className={modalStyles.formInput}
-                {...register(`questions[${index}].hint`)}
-                placeholder="Add a helpful hint for this question..."
+                id={`question-${index}`}
+                className={styles.textarea}
+                {...register(`questions[${index}].questionTitle`)}
+                as="textarea"
+                rows={2}
+                placeholder="What would you like to ask?"
               />
+              {error && addClassnameToText("text-danger", error)}
+            </div>
+
+            <Form.Group className={styles.field} controlId={`hint-${index}`}>
+              <Form.Label className={styles.label}>
+                Hint <span className={styles.optional}>(optional)</span>
+              </Form.Label>
+              <div className={styles.hintField}>
+                <MdLightbulbOutline aria-hidden="true" />
+                <Form.Control
+                  className={styles.input}
+                  {...register(`questions[${index}].hint`)}
+                  placeholder="A nudge in the right direction, without giving the answer away"
+                />
+              </div>
             </Form.Group>
 
             <AnswersFormComponent nestIndex={index} />
-          </Form.Group>
+          </section>
         );
       })}
-      <div className={modalStyles.addQuestionContainer}>
-        <button
-          type="button"
-          className={modalStyles.addQuestionButton}
-          onClick={() =>
-            append({
-              questionTitle: "",
-              hint: "",
-              answers: [
-                { answer: "", isCorrect: false },
-                { answer: "", isCorrect: false },
-              ],
-            })
-          }
-        >
-          <MdAdd />
-          <span>Add Question</span>
-        </button>
-      </div>
-    </Form.Group>
+      <button
+        type="button"
+        className={styles.addQuestionButton}
+        onClick={() =>
+          append({
+            questionTitle: "",
+            hint: "",
+            answers: [
+              { answer: "", isCorrect: false },
+              { answer: "", isCorrect: false },
+            ],
+          })
+        }
+      >
+        <MdAdd aria-hidden="true" />
+        Add question
+      </button>
+    </div>
   );
 };
 

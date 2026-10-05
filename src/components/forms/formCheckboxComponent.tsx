@@ -1,5 +1,5 @@
 import { useFormContext } from "react-hook-form";
-import styles from "../../styles/components/modal.module.scss";
+import styles from "../../styles/components/quizForm.module.scss";
 import { MdCheck } from "react-icons/md";
 
 type FormCheckboxProps = {
@@ -11,18 +11,16 @@ type FormCheckboxProps = {
 const FormCheckboxComponent = ({ label, nestIndex, index }: FormCheckboxProps) => {
   const { register } = useFormContext();
   return (
-    <div className={styles.checkbox}>
-      <label>
-        <input
-          type="checkbox"
-          {...register(`questions[${nestIndex}].answers[${index}].isCorrect` as const)}
-        />
-        <span className={styles.checkboxIconWrapper}>
-          <MdCheck className={styles.checkboxIcon} />
-        </span>
-        {label}
-      </label>
-    </div>
+    <label className={styles.correctToggle}>
+      <input
+        type="checkbox"
+        {...register(`questions[${nestIndex}].answers[${index}].isCorrect` as const)}
+      />
+      <span className={styles.toggleBox} aria-hidden="true">
+        <MdCheck />
+      </span>
+      {label}
+    </label>
   );
 };
 
