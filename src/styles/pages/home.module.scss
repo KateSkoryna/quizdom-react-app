@@ -240,7 +240,7 @@ $glass-border: rgba($white, 0.16);
 
 .decoLine {
   @extend %hero-deco;
-  bottom: 14%;
+  bottom: 4%;
   left: -0.6rem;
   width: 3.5rem;
   animation-delay: 2s;
@@ -251,7 +251,7 @@ $glass-border: rgba($white, 0.16);
   }
 
   @include respond-to-lg {
-    bottom: 12%;
+    bottom: -0.75rem;
     left: -1.75rem;
     width: 7rem;
   }
@@ -279,20 +279,20 @@ $glass-border: rgba($white, 0.16);
 
 .decoCross {
   @extend %hero-deco;
-  bottom: 22%;
-  right: -0.6rem;
-  width: 1.5rem;
+  bottom: -1.25rem;
+  left: 42%;
+  width: 3rem;
   animation-delay: 2.4s;
 
-  @include respond-to-sm {
-    right: -1.25rem;
-    width: 2.5rem;
+  @include respond-to-md {
+    bottom: -1.5rem;
+    width: 3.75rem;
   }
 
   @include respond-to-lg {
-    bottom: 16%;
-    right: -1.5rem;
-    width: 3.25rem;
+    bottom: -2rem;
+    left: 44%;
+    width: 5rem;
   }
 }
 
