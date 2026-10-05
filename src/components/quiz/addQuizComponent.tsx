@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { Button, Container } from "react-bootstrap";
+import { MdAdd } from "react-icons/md";
 import QuizModal from "../modal/quizModal";
 import { useAuthStore } from "../../store/authStore";
-import styles from "../../styles/components/addQuiz.module.scss";
+import styles from "../../styles/pages/profile.module.scss";
 
 const AddQuizComponent = () => {
   const currentUser = useAuthStore((state) => state.currentUser);
@@ -14,14 +14,14 @@ const AddQuizComponent = () => {
   if (!currentUser) return null;
 
   return (
-    <Container className={styles.addQuizContainer}>
-      <Button onClick={handleShowModal} className={styles.ctaButton}>
-        <span className={styles.plusIcon}>+</span>
-        Create Your Quiz
-      </Button>
+    <>
+      <button type="button" onClick={handleShowModal} className={styles.primaryButton}>
+        <MdAdd aria-hidden="true" />
+        Create quiz
+      </button>
 
       {show && <QuizModal showModal={show} handleCloseModal={handleCloseModal} />}
-    </Container>
+    </>
   );
 };
 

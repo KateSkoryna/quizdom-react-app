@@ -1,7 +1,6 @@
-import { Card } from "react-bootstrap";
 import { Control, Controller, FieldValues, Path } from "react-hook-form";
 import { lazy, Suspense } from "react";
-import styles from "../../styles/pages/user.module.scss";
+import styles from "../../styles/pages/profile.module.scss";
 
 const SearchBox = lazy(() =>
   import("@mapbox/search-js-react").then((module) => ({ default: module.SearchBox }))
@@ -25,12 +24,15 @@ export const UserLocationFormField = <T extends FieldValues>({
   const MAPBOX_API_KEY = import.meta.env.VITE_MAPBOX_API;
 
   return (
-    <Card.Text
-      as="div"
-      className={`${styles.birthField} d-flex justify-content-between align-items-center`}
-    >
-      <strong>{label}:</strong>
-      <span className={isEditMode ? styles.locationSearchBox : undefined}>
+    <div className={styles.field}>
+      <span className={styles.fieldLabel}>{label}</span>
+      <div
+        className={
+          isEditMode
+            ? styles.locationSearch
+            : `${styles.fieldValue} ${value ? "" : styles.fieldMuted}`
+        }
+      >
         {isEditMode ? (
           <Suspense fallback={<span className="text-muted">Loading search...</span>}>
             <Controller
@@ -58,10 +60,10 @@ export const UserLocationFormField = <T extends FieldValues>({
                   theme={{
                     variables: {
                       fontFamily: '"Montserrat", sans-serif',
-                      borderRadius: "4px",
+                      borderRadius: "12px",
                       boxShadow: "none",
-                      border: "1px solid #ced4da",
-                      colorText: "#212529",
+                      border: "1px solid #d7dae6",
+                      colorText: "#00093c",
                       colorBackground: "#fff",
                       colorBackgroundHover: "#f8f9fa",
                       colorBackgroundActive: "#e9ecef",
@@ -75,7 +77,7 @@ export const UserLocationFormField = <T extends FieldValues>({
         ) : (
           value || "Not set"
         )}
-      </span>
-    </Card.Text>
+      </div>
+    </div>
   );
 };

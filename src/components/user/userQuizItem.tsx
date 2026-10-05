@@ -1,98 +1,70 @@
-import Accordion from "react-bootstrap/Accordion";
+import type { CSSProperties } from "react";
+import { useState } from "react";
+import dayjs from "dayjs";
+import { MdEdit, MdHelpOutline } from "react-icons/md";
 import { UserQuiz } from "../../types";
-import styles from "../../styles/components/userQuiz.module.scss";
 import { useAuthStore } from "../../store/authStore";
 import DeleteQuizComponent from "../quiz/deleteQuizComponent";
-import { MdEdit } from "react-icons/md";
-import dayjs from "dayjs";
-import { useState } from "react";
 import QuizModal from "../modal/quizModal";
+import { QUIZ_LEVEL_CONFIG } from "../../const/const";
+import styles from "../../styles/pages/profile.module.scss";
 
-const UserQuizItem = ({
-  quiz,
-  eventKey,
-  isDraft,
-}: {
-  quiz: UserQuiz;
-  eventKey: string;
-  isDraft?: boolean;
-}) => {
-  const {
-    title,
-    authorId,
-    authorName,
-    publishedAt,
-    ratingsCount: _ratingCount,
-    likesCount: _likesCount,
-    status: _status,
-    id: _id,
-    ...rest
-  } = quiz;
+const UserQuizItem = ({ quiz, isDraft }: { quiz: UserQuiz; isDraft?: boolean }) => {
+  const { title, description, category, complexity, questions, authorId, authorName, publishedAt } =
+    quiz;
   const currentUser = useAuthStore((state) => state.currentUser);
-  const localizedDate = dayjs(publishedAt).format("DD/MM/YYYY");
   const [showEditModal, setShowEditModal] = useState(false);
 
-  const handleEditClick = () => {
-    setShowEditModal(true);
-  };
-
-  const handleCloseModal = () => {
-    setShowEditModal(false);
-  };
+  const isOwner = currentUser?.id === authorId;
+  const level = QUIZ_LEVEL_CONFIG[complexity];
+  const localizedDate = dayjs(publishedAt).format("DD MMM YYYY");
+  const levelStyle = { "--level-color": level?.color } as CSSProperties;
 
   return (
-    <Accordion.Item eventKey={eventKey}>
-      <Accordion.Header>{title}</Accordion.Header>
-      <Accordion.Body className="text-start position-relative">
-        {currentUser?.id === authorId && (
-          <div className={styles.actionButtons}>
-            {isDraft && (
-              <button
-                onClick={handleEditClick}
-                className={styles.iconButton}
-                aria-label="Edit quiz"
-                type="button"
-              >
-                <MdEdit className={styles.icon} />
-              </button>
-            )}
-            <DeleteQuizComponent quizId={quiz.id} quizTitle={title} />
-          </div>
-        )}
-
-        {Object.entries(rest).map(([key, value]) => {
-          let displayValue;
-
-          if (Array.isArray(value)) {
-            displayValue = value.length;
-          } else if (typeof value === "string") {
-            displayValue = value[0].toUpperCase() + value.slice(1);
-          } else {
-            displayValue = String(value);
-          }
-
-          return (
-            <p key={key} className={styles.itemText}>
-              <span className={styles.propertyName}>{key[0].toUpperCase() + key.slice(1)}:</span>
-              {displayValue}
-            </p>
-          );
-        })}
-
-        <small className={styles.itemSmalltext}>
-          {`Published at: ${localizedDate}${
-            currentUser?.id === authorId ? "" : ` by ${authorName}`
-          }`}
-        </small>
-      </Accordion.Body>
+    <li className={styles.quizRow} style={levelStyle}>
+      <span className={styles.rowAccent} aria-hidden="true" />
+      <div className={styles.rowMain}>
+        <h3 className={styles.rowTitle}>{title}</h3>
+        {description && <p className={styles.rowDescription}>{description}</p>}
+        <div className={styles.meta}>
+          <span className={styles.pill}>{category}</span>
+          <span className={styles.levelPill}>
+            {level?.icon && <img src={level.icon} alt="" aria-hidden="true" />}
+            {level?.name || complexity}
+          </span>
+          <span className={styles.pill}>
+            <MdHelpOutline aria-hidden="true" />
+            {questions.length} questions
+          </span>
+          <span>
+            {isDraft ? "Saved" : "Published"} {localizedDate}
+            {!isOwner && ` · by ${authorName}`}
+          </span>
+        </div>
+      </div>
+      {isOwner && (
+        <div className={styles.rowActions}>
+          {isDraft && (
+            <button
+              type="button"
+              onClick={() => setShowEditModal(true)}
+              className={styles.iconButton}
+              aria-label={`Edit ${title}`}
+            >
+              <MdEdit aria-hidden="true" />
+            </button>
+          )}
+          <DeleteQuizComponent quizId={quiz.id} quizTitle={title} />
+        </div>
+      )}
       {showEditModal && (
         <QuizModal
           showModal={showEditModal}
-          handleCloseModal={handleCloseModal}
+          handleCloseModal={() => setShowEditModal(false)}
           existingQuiz={quiz}
         />
       )}
-    </Accordion.Item>
+    </li>
   );
 };
 

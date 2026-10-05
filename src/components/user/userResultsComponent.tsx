@@ -1,14 +1,23 @@
 import { useState, useEffect } from "react";
-import { Accordion, Card, Container, Badge, Button } from "react-bootstrap";
+import type { CSSProperties } from "react";
+import { MdInsights } from "react-icons/md";
 import { useQuizCompletionStore } from "../../store/quizAttemptsStore";
 import { useAuthStore } from "../../store/authStore";
 import { useQueries } from "@tanstack/react-query";
 import type { UserQuiz } from "../../types";
 import Loader from "../common/loader";
-import styles from "../../styles/components/userResults.module.scss";
+import styles from "../../styles/pages/profile.module.scss";
 import dayjs from "dayjs";
 import StarRating from "../common/starRating";
 import { fetchQuizById } from "../../fetchers/quiz-api";
+import { QUIZ_LEVEL_CONFIG } from "../../const/const";
+import { PanelEmpty, PanelHeader, PanelPagination } from "./userPanel";
+
+const getScoreClass = (percentage: number) => {
+  if (percentage >= 70) return styles.scoreHigh;
+  if (percentage >= 50) return styles.scoreMid;
+  return styles.scoreLow;
+};
 
 const RESULTS_PER_PAGE = 6;
 
@@ -71,129 +80,83 @@ const UserResultsComponent = () => {
 
   if (completedQuizzes.length === 0) {
     return (
-      <Container className={styles.emptyState}>
-        <p>
+      <>
+        <PanelHeader title="Completed quizzes" subtitle="Your scores, ratings and comments" />
+        <PanelEmpty icon={<MdInsights />}>
           You haven&apos;t completed any quizzes yet. Start taking quizzes to see your results here!
-        </p>
-      </Container>
+        </PanelEmpty>
+      </>
     );
   }
 
-  const handlePrevPage = () => {
-    setCurrentPage((prev) => Math.max(1, prev - 1));
-  };
-
-  const handleNextPage = () => {
-    setCurrentPage((prev) => Math.min(totalPages, prev + 1));
-  };
-
   return (
-    <div className="d-flex flex-column h-100">
-      <div className="flex-grow-0">
-        <h4 className={styles.resultsTitle}>My Completed Quizzes ({total})</h4>
-      </div>
-      <div className="flex-grow-0">
-        <Accordion>
-          {paginatedQuizzes.map(({ quizId, completion }, index) => {
-            const quiz = quizDetails[quizId];
-            const correct = completion.score?.correctAnswers || 0;
-            const total = completion.score?.totalQuestions || 0;
-            const percentage = total > 0 ? Math.round((correct / total) * 100) : 0;
-            const completedDate = completion.completedAt
-              ? dayjs(completion.completedAt).format("DD/MM/YYYY HH:mm")
-              : "Unknown date";
+    <>
+      <PanelHeader
+        title={`Completed quizzes (${total})`}
+        subtitle="Your scores, ratings and comments"
+      />
+      <ul className={styles.list}>
+        {paginatedQuizzes.map(({ quizId, completion }) => {
+          const quiz = quizDetails[quizId];
+          const correct = completion.score?.correctAnswers || 0;
+          const questionsTotal = completion.score?.totalQuestions || 0;
+          const percentage = questionsTotal > 0 ? Math.round((correct / questionsTotal) * 100) : 0;
+          const completedDate = completion.completedAt
+            ? dayjs(completion.completedAt).format("DD MMM YYYY, HH:mm")
+            : "Unknown date";
+          const level = quiz ? QUIZ_LEVEL_CONFIG[quiz.complexity] : undefined;
+          const levelStyle = { "--level-color": level?.color } as CSSProperties;
 
-            return (
-              <Accordion.Item eventKey={String(index)} key={quizId}>
-                <Accordion.Header>
-                  <div className={styles.accordionHeader}>
-                    <div className={styles.headerMain}>
-                      <span className={styles.quizTitle}>{quiz?.title || "Loading..."}</span>
-                      <span className={styles.completedDate}>{completedDate}</span>
-                    </div>
-                    <Badge
-                      bg={percentage >= 70 ? "success" : percentage >= 50 ? "warning" : "danger"}
-                      className={styles.scoreBadge}
-                    >
-                      {percentage}%
-                    </Badge>
+          return (
+            <li key={quizId} className={styles.resultRow} style={levelStyle}>
+              <span className={styles.rowAccent} aria-hidden="true" />
+              <div className={styles.rowMain}>
+                <h3 className={styles.rowTitle}>{quiz?.title || "Loading..."}</h3>
+                <div className={styles.meta}>
+                  {quiz && <span className={styles.pill}>{quiz.category}</span>}
+                  {level && (
+                    <span className={styles.levelPill}>
+                      <img src={level.icon} alt="" aria-hidden="true" />
+                      {level.name}
+                    </span>
+                  )}
+                  <span>Completed {completedDate}</span>
+                </div>
+                {(completion.rating || completion.comment) && (
+                  <div className={styles.feedback}>
+                    {completion.rating && (
+                      <span>
+                        Your rating: <StarRating rating={completion.rating} size="small" />{" "}
+                        {completion.rating}/5
+                      </span>
+                    )}
+                    {completion.comment && (
+                      <p className={styles.feedbackComment}>“{completion.comment}”</p>
+                    )}
                   </div>
-                </Accordion.Header>
-                <Accordion.Body>
-                  <Card className={styles.resultCard}>
-                    <Card.Body>
-                      <div className={styles.resultGrid}>
-                        <div className={styles.resultItem}>
-                          <span className={styles.label}>Score:</span>
-                          <span className={styles.value}>
-                            {correct} / {total}
-                          </span>
-                        </div>
-                        <div className={styles.resultItem}>
-                          <span className={styles.label}>Percentage:</span>
-                          <span className={styles.value}>{percentage}%</span>
-                        </div>
-                        {quiz && (
-                          <>
-                            <div className={styles.resultItem}>
-                              <span className={styles.label}>Category:</span>
-                              <span className={styles.value}>{quiz.category}</span>
-                            </div>
-                            <div className={styles.resultItem}>
-                              <span className={styles.label}>Complexity:</span>
-                              <span className={styles.value}>{quiz.complexity}</span>
-                            </div>
-                          </>
-                        )}
-                        {completion.rating && (
-                          <div className={styles.resultItem}>
-                            <span className={styles.label}>Your Rating:</span>
-                            <span className={styles.value}>
-                              <StarRating rating={completion.rating} size="medium" /> (
-                              {completion.rating}/5)
-                            </span>
-                          </div>
-                        )}
-                        {completion.comment && (
-                          <div className={`${styles.resultItem} ${styles.fullWidth}`}>
-                            <span className={styles.label}>Your Comment:</span>
-                            <span className={styles.value}>{completion.comment}</span>
-                          </div>
-                        )}
-                      </div>
-                    </Card.Body>
-                  </Card>
-                </Accordion.Body>
-              </Accordion.Item>
-            );
-          })}
-        </Accordion>
-      </div>
-
-      {totalPages > 1 && (
-        <div className="d-flex justify-content-center align-items-center gap-3 mt-auto py-3">
-          <Button
-            variant="outline-primary"
-            size="sm"
-            onClick={handlePrevPage}
-            disabled={currentPage === 1}
-          >
-            &lt;
-          </Button>
-          <span className="fw-semibold">
-            {currentPage}/{totalPages}
-          </span>
-          <Button
-            variant="outline-primary"
-            size="sm"
-            onClick={handleNextPage}
-            disabled={currentPage === totalPages}
-          >
-            &gt;
-          </Button>
-        </div>
-      )}
-    </div>
+                )}
+              </div>
+              <div className={styles.scoreBlock}>
+                <span className={`${styles.scoreBadge} ${getScoreClass(percentage)}`}>
+                  {percentage}%
+                </span>
+                <div className={styles.scoreBar} aria-hidden="true">
+                  <div className={styles.scoreBarFill} style={{ width: `${percentage}%` }} />
+                </div>
+                <span className={styles.scoreDetail}>
+                  {correct}/{questionsTotal} correct
+                </span>
+              </div>
+            </li>
+          );
+        })}
+      </ul>
+      <PanelPagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onChange={setCurrentPage}
+      />
+    </>
   );
 };
 

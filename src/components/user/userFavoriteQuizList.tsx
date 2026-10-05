@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
-import { Accordion, Container, Button } from "react-bootstrap";
-import UserQuizListItem from "./userQuizItem";
+import { MdFavoriteBorder } from "react-icons/md";
+import UserQuizItem from "./userQuizItem";
 import Loader from "../common/loader";
 import { useAuthStore } from "../../store/authStore";
 import { useFavoritesStore } from "../../store/favoritesStore";
-import styles from "../../styles/components/userResults.module.scss";
+import { PanelEmpty, PanelPagination } from "./userPanel";
+import styles from "../../styles/pages/profile.module.scss";
 
 const QUIZZES_PER_PAGE = 6;
 
@@ -23,64 +24,31 @@ const UserFavoriteQuizList = () => {
     return <Loader />;
   }
 
-  if (favorites && favorites.length > 0) {
-    const total = favorites.length;
-    const totalPages = Math.ceil(total / QUIZZES_PER_PAGE);
-    const startIndex = (currentPage - 1) * QUIZZES_PER_PAGE;
-    const endIndex = startIndex + QUIZZES_PER_PAGE;
-    const paginatedFavorites = favorites.slice(startIndex, endIndex);
-
-    const handlePrevPage = () => {
-      setCurrentPage((prev) => Math.max(1, prev - 1));
-    };
-
-    const handleNextPage = () => {
-      setCurrentPage((prev) => Math.min(totalPages, prev + 1));
-    };
-
+  if (!favorites || favorites.length === 0) {
     return (
-      <div className="d-flex flex-column h-100">
-        <div className="flex-grow-0">
-          <Accordion defaultActiveKey="0" flush>
-            {paginatedFavorites.map((quiz, index) => {
-              return <UserQuizListItem key={quiz.id} quiz={quiz} eventKey={index.toString()} />;
-            })}
-          </Accordion>
-        </div>
-
-        {totalPages > 1 && (
-          <div className="d-flex justify-content-center align-items-center gap-3 mt-auto py-3">
-            <Button
-              variant="outline-primary"
-              size="sm"
-              onClick={handlePrevPage}
-              disabled={currentPage === 1}
-            >
-              &lt;
-            </Button>
-            <span className="fw-semibold">
-              {currentPage}/{totalPages}
-            </span>
-            <Button
-              variant="outline-primary"
-              size="sm"
-              onClick={handleNextPage}
-              disabled={currentPage === totalPages}
-            >
-              &gt;
-            </Button>
-          </div>
-        )}
-      </div>
+      <PanelEmpty icon={<MdFavoriteBorder />}>
+        You haven&apos;t favorited any quizzes yet. Explore quizzes and add them to your favorites!
+      </PanelEmpty>
     );
   }
 
+  const totalPages = Math.ceil(favorites.length / QUIZZES_PER_PAGE);
+  const startIndex = (currentPage - 1) * QUIZZES_PER_PAGE;
+  const paginatedFavorites = favorites.slice(startIndex, startIndex + QUIZZES_PER_PAGE);
+
   return (
-    <Container className={styles.emptyState}>
-      <p>
-        You haven&apos;t favorited any quizzes yet. Explore quizzes and add them to your favorites!
-      </p>
-    </Container>
+    <>
+      <ul className={styles.list}>
+        {paginatedFavorites.map((quiz) => (
+          <UserQuizItem key={quiz.id} quiz={quiz} />
+        ))}
+      </ul>
+      <PanelPagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onChange={setCurrentPage}
+      />
+    </>
   );
 };
 

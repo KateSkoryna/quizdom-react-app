@@ -1,0 +1,769 @@
+@use "../settings" as *;
+@use "../abstracts" as *;
+
+$navy-deep: #050b2e;
+$violet: #2a1670;
+$surface: #f5f6fb;
+$card-border: #e4e6f0;
+$field-border: #d7dae6;
+$radius-card: calc(#{$spacing-16} * 1.25);
+$radius-field: 0.75rem;
+$button-gradient: linear-gradient(135deg, #ffb866 0%, $primary-color 100%);
+$accent-gradient: linear-gradient(
+  90deg,
+  $primary-color 0%,
+  #ff8fb1 45%,
+  $element-color 70%,
+  $accent-blue 100%
+);
+$dark-panel:
+  radial-gradient(18rem 12rem at 100% 0%, rgba($primary-color, 0.35), transparent 70%),
+  radial-gradient(16rem 12rem at 0% 100%, rgba($accent-blue, 0.25), transparent 70%),
+  linear-gradient(135deg, $secondary-color 0%, $navy-deep 60%, $violet 130%);
+
+%focus-ring {
+  outline: 3px solid $accent-blue;
+  outline-offset: 2px;
+}
+
+%pill-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: $spacing-8;
+  padding: 0.625rem $spacing-16;
+  border-radius: 999px;
+  font-family: inherit;
+  font-size: $font-size-14;
+  font-weight: 700;
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    transform $transition-fast ease-out,
+    box-shadow $transition-base ease-out,
+    border-color $transition-base,
+    background-color $transition-base;
+
+  &:hover:not(:disabled) {
+    transform: translateY(-2px);
+  }
+
+  &:focus-visible {
+    @extend %focus-ring;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  svg {
+    width: 1.125rem;
+    height: 1.125rem;
+  }
+}
+
+.primaryButton {
+  @extend %pill-button;
+  border: 0;
+  background: $button-gradient;
+  box-shadow: 0 0.75rem 1.5rem rgba($primary-color, 0.3);
+  color: $secondary-color;
+
+  &:hover:not(:disabled) {
+    box-shadow: 0 1rem 2rem rgba($primary-color, 0.45);
+  }
+}
+
+.secondaryButton {
+  @extend %pill-button;
+  border: 1.5px solid rgba($secondary-color, 0.2);
+  background: $white;
+  color: $secondary-color;
+
+  &:hover:not(:disabled) {
+    border-color: $secondary-color;
+  }
+}
+
+// Page
+
+.page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+  padding-top: calc(#{$spacing-16} * 6);
+  padding-bottom: calc(#{$spacing-16} * 5);
+
+  :global(.row) {
+    flex: 1;
+  }
+}
+
+// Profile card
+
+.profileCard {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  overflow: hidden;
+  border: 1px solid $card-border;
+  border-radius: $radius-card;
+  background: $white;
+  box-shadow: 0 0.75rem 2rem rgba($secondary-color, 0.08);
+}
+
+.profileHeader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: $spacing-12;
+  padding: calc(#{$spacing-16} * 1.75) $spacing-16 calc(#{$spacing-16} * 1.5);
+  background: $dark-panel;
+  color: $white;
+  text-align: center;
+}
+
+.avatar {
+  position: relative;
+  width: 6.5rem;
+  height: 6.5rem;
+  padding: 0.25rem;
+  border-radius: 50%;
+  background: $accent-gradient;
+  box-shadow: 0 1rem 2rem rgba($element-color, 0.35);
+}
+
+.avatarImg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 3px solid $secondary-color;
+  border-radius: 50%;
+  background: $secondary-color;
+  object-fit: cover;
+}
+
+.avatarUpload {
+  position: absolute;
+  right: -0.125rem;
+  bottom: -0.125rem;
+  @extend %flex-row;
+  width: 2.25rem;
+  height: 2.25rem;
+  border: 2px solid $secondary-color;
+  border-radius: 50%;
+  background: $button-gradient;
+  color: $secondary-color;
+  cursor: pointer;
+  transition: transform $transition-fast;
+
+  &:hover {
+    transform: scale(1.08);
+  }
+
+  &:focus-within {
+    @extend %focus-ring;
+  }
+
+  svg {
+    width: 1.125rem;
+    height: 1.125rem;
+  }
+}
+
+.name {
+  margin: 0;
+  overflow-wrap: anywhere;
+  color: $white;
+  font-size: 1.25rem;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+
+.email {
+  margin: -0.5rem 0 0;
+  overflow-wrap: anywhere;
+  color: rgba($white, 0.65);
+  font-size: $font-size-12;
+}
+
+// Statistics
+
+.stats {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-12;
+  padding: $spacing-16;
+  border-bottom: 1px solid $card-border;
+}
+
+.statTiles {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: $spacing-8;
+}
+
+.statTile {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+  padding: $spacing-12;
+  border-radius: $radius-field;
+  background: $surface;
+}
+
+.statValue {
+  color: $secondary-color;
+  font-size: 1.375rem;
+  font-weight: 800;
+  line-height: 1.1;
+}
+
+.statLabel {
+  color: $text-secondary;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.ratingMeter {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+}
+
+.ratingHeader {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  color: $secondary-color;
+  font-size: $font-size-12;
+  font-weight: 700;
+
+  strong {
+    background: $accent-gradient;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    font-size: $font-size-16;
+    font-weight: 800;
+  }
+}
+
+.meterTrack {
+  overflow: hidden;
+  height: 0.5rem;
+  border-radius: 999px;
+  background: #eceef6;
+}
+
+.meterFill {
+  height: 100%;
+  border-radius: inherit;
+  background: $accent-gradient;
+  transition: width 0.6s ease-out;
+}
+
+// Details & editing
+
+.details {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-12;
+  padding: $spacing-16;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  margin: 0;
+  text-align: left;
+}
+
+.fieldLabel {
+  color: $text-secondary;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.fieldValue {
+  margin: 0;
+  overflow-wrap: anywhere;
+  color: $secondary-color;
+  font-size: $font-size-14;
+  font-weight: 600;
+}
+
+.fieldMuted {
+  color: $gray;
+  font-weight: 500;
+}
+
+.input {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid $field-border;
+  border-radius: $radius-field;
+  background: $white;
+  color: $secondary-color;
+  font-size: $font-size-14;
+  transition:
+    border-color $transition-base,
+    box-shadow $transition-base;
+
+  &:focus {
+    outline: none;
+    border-color: $primary-color;
+    box-shadow: 0 0 0 $spacing-4 rgba($primary-color, 0.18);
+  }
+}
+
+.charCount {
+  align-self: flex-end;
+  color: $gray;
+  font-size: 0.6875rem;
+}
+
+.locationSearch {
+  :global(input) {
+    border-radius: $radius-field !important;
+  }
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-12;
+  margin-top: auto;
+  padding: 0 $spacing-16 $spacing-16;
+}
+
+.actionRow {
+  display: flex;
+  gap: $spacing-8;
+
+  > * {
+    flex: 1;
+  }
+}
+
+.uploadTrack {
+  overflow: hidden;
+  height: 0.375rem;
+  border-radius: 999px;
+  background: #eceef6;
+}
+
+.uploadFill {
+  height: 100%;
+  background: $accent-gradient;
+  transition: width 0.3s ease-out;
+}
+
+// Tabs panel
+
+.tabsPanel {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-height: 37.5rem;
+  padding: $spacing-16;
+  border: 1px solid $card-border;
+  border-radius: $radius-card;
+  background: $white;
+  box-shadow: 0 0.75rem 2rem rgba($secondary-color, 0.08);
+
+  @include respond-to-md {
+    padding: calc(#{$spacing-16} * 1.5);
+  }
+
+  :global(.tab-content) {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+  }
+
+  :global(.tab-pane.active) {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+  }
+}
+
+.tabs {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.25rem;
+  margin-bottom: calc(#{$spacing-16} * 1.5);
+  padding: 0.25rem;
+  border-radius: 999px;
+  background: $surface;
+
+  @include respond-to-md {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  @include respond-to-max(575px) {
+    border-radius: $radius-card;
+  }
+
+  :global(.nav-link) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.375rem;
+    width: 100%;
+    padding: 0.625rem 0.75rem;
+    border-radius: 999px;
+    color: $text-secondary;
+    font-size: $font-size-14;
+    font-weight: 700;
+    white-space: nowrap;
+    transition:
+      color $transition-base,
+      background-color $transition-base;
+
+    &:hover {
+      color: $secondary-color;
+    }
+
+    &:focus-visible {
+      @extend %focus-ring;
+    }
+
+    svg {
+      width: 1.125rem;
+      height: 1.125rem;
+    }
+  }
+
+  :global(.nav-link.active) {
+    background: $dark-panel;
+    box-shadow: 0 0.5rem 1rem rgba($secondary-color, 0.25);
+    color: $white;
+
+    svg {
+      color: $primary-color;
+    }
+  }
+}
+
+.panelHeader {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: $spacing-12;
+  margin-bottom: $spacing-16;
+}
+
+.panelTitle {
+  margin: 0;
+  color: $secondary-color;
+  font-size: 1.125rem;
+  font-weight: 800;
+}
+
+.panelSubtitle {
+  margin: 0.125rem 0 0;
+  color: $text-secondary;
+  font-size: $font-size-12;
+}
+
+// Quiz rows
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-12;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.quizRow {
+  display: flex;
+  align-items: flex-start;
+  gap: $spacing-12;
+  padding: $spacing-16;
+  border: 1px solid $card-border;
+  border-radius: $radius-field;
+  background: $white;
+  transition:
+    border-color $transition-base,
+    box-shadow $transition-base;
+
+  &:hover {
+    border-color: rgba($primary-color, 0.5);
+    box-shadow: 0 0.5rem 1.25rem rgba($secondary-color, 0.06);
+  }
+}
+
+.rowAccent {
+  flex-shrink: 0;
+  align-self: stretch;
+  width: 4px;
+  border-radius: 999px;
+  background: var(--level-color, #{$primary-color});
+}
+
+.rowMain {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 0.375rem;
+  min-width: 0;
+}
+
+.rowTitle {
+  margin: 0;
+  color: $secondary-color;
+  font-size: $font-size-16;
+  font-weight: 800;
+  overflow-wrap: anywhere;
+}
+
+.rowDescription {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  overflow: hidden;
+  margin: 0;
+  color: $text-secondary;
+  font-size: $font-size-14;
+  line-height: 1.45;
+}
+
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.375rem $spacing-8;
+  margin-top: 0.25rem;
+  color: $gray;
+  font-size: $font-size-12;
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.1875rem 0.625rem;
+  border: 1px solid $card-border;
+  border-radius: 999px;
+  background: $surface;
+  color: $secondary-color;
+  font-size: 0.6875rem;
+  font-weight: 700;
+
+  img,
+  svg {
+    width: 0.875rem;
+    height: 0.875rem;
+  }
+}
+
+.levelPill {
+  @extend .pill;
+  border-color: color-mix(in srgb, var(--level-color, #{$primary-color}) 45%, transparent);
+  background: color-mix(in srgb, var(--level-color, #{$primary-color}) 12%, transparent);
+}
+
+.rowActions {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.iconButton {
+  @extend %flex-row;
+  width: 2.25rem;
+  height: 2.25rem;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: $gray;
+  cursor: pointer;
+  transition:
+    color $transition-base,
+    background-color $transition-base;
+
+  &:hover {
+    background: rgba($primary-color, 0.1);
+    color: $primary-color-accessible;
+  }
+
+  &:focus-visible {
+    @extend %focus-ring;
+  }
+
+  svg {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+}
+
+// Results
+
+.resultRow {
+  @extend .quizRow;
+  flex-wrap: wrap;
+
+  @include respond-to-sm {
+    flex-wrap: nowrap;
+  }
+}
+
+.scoreBlock {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.375rem;
+  min-width: 6.5rem;
+
+  @include respond-to-max(575px) {
+    align-items: stretch;
+    width: 100%;
+  }
+}
+
+.scoreBadge {
+  padding: 0.25rem 0.75rem;
+  border-radius: 999px;
+  font-size: $font-size-14;
+  font-weight: 800;
+  text-align: center;
+}
+
+.scoreHigh {
+  background: rgba($color-success, 0.12);
+  color: #1d7a35;
+}
+
+.scoreMid {
+  background: rgba($color-warning, 0.2);
+  color: #8a6400;
+}
+
+.scoreLow {
+  background: rgba($color-danger, 0.12);
+  color: #b02a37;
+}
+
+.scoreBar {
+  overflow: hidden;
+  width: 100%;
+  height: 0.375rem;
+  border-radius: 999px;
+  background: #eceef6;
+}
+
+.scoreBarFill {
+  height: 100%;
+  border-radius: inherit;
+  background: $accent-gradient;
+}
+
+.scoreDetail {
+  color: $gray;
+  font-size: 0.6875rem;
+  font-weight: 600;
+}
+
+.feedback {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  margin-top: 0.375rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.625rem;
+  background: $surface;
+  color: $secondary-color;
+  font-size: $font-size-12;
+}
+
+.feedbackComment {
+  margin: 0;
+  color: $text-secondary;
+  font-style: italic;
+}
+
+// Pagination & empty state
+
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: $spacing-12;
+  margin-top: auto;
+  padding-top: calc(#{$spacing-16} * 1.25);
+  color: $secondary-color;
+  font-size: $font-size-14;
+  font-weight: 700;
+}
+
+.pageButton {
+  @extend .iconButton;
+  border: 1.5px solid $card-border;
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+
+    &:hover {
+      background: transparent;
+      color: $gray;
+    }
+  }
+}
+
+.empty {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: $spacing-12;
+  padding: calc(#{$spacing-16} * 2.5) $spacing-16;
+  border: 1.5px dashed $card-border;
+  border-radius: $radius-card;
+  background: $surface;
+  text-align: center;
+}
+
+.emptyIcon {
+  @extend %flex-row;
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 50%;
+  background: $dark-panel;
+  color: $primary-color;
+
+  svg {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+}
+
+.emptyText {
+  max-width: 24rem;
+  margin: 0;
+  color: $text-secondary;
+  font-size: $font-size-14;
+  line-height: 1.5;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .meterFill,
+  .uploadFill {
+    transition: none;
+  }
+}

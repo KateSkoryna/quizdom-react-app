@@ -1,6 +1,6 @@
-import { Card, Form } from "react-bootstrap";
+import { useId } from "react";
 import { UseFormRegister, FieldValues, Path, useWatch, Control } from "react-hook-form";
-import styles from "../../styles/pages/user.module.scss";
+import styles from "../../styles/pages/profile.module.scss";
 
 interface UserAboutFormFieldProps<T extends FieldValues> {
   label: string;
@@ -23,33 +23,33 @@ export const UserAboutFormField = <T extends FieldValues>({
 }: UserAboutFormFieldProps<T>) => {
   const currentValue = useWatch({ control, name: fieldName }) as string | undefined;
   const charCount = currentValue?.length || 0;
+  const inputId = useId();
 
   return (
-    <Card.Text as="div" className={styles.cardText} style={{ textAlign: "start" }}>
-      <strong>{label}:</strong>
+    <div className={styles.field}>
       {isEditMode ? (
         <>
-          <Form.Control
-            as="textarea"
-            className="form-control form-control-sm mt-2"
+          <label htmlFor={inputId} className={styles.fieldLabel}>
+            {label}
+          </label>
+          <textarea
+            id={inputId}
+            className={styles.input}
             {...register(fieldName)}
             placeholder={placeholder}
-            rows={3}
+            rows={4}
             maxLength={200}
-            style={{ minHeight: "100px" }}
           />
-          <small className="text-muted" style={{ float: "right", marginTop: "4px" }}>
-            {charCount}/200
-          </small>
+          <small className={styles.charCount}>{charCount}/200</small>
         </>
       ) : (
-        <p
-          className="mt-2 mb-0"
-          style={{ color: !value ? "#6c757d" : "inherit", textAlign: "start" }}
-        >
-          {value || "I'm a new user and I don't have a bio yet"}
-        </p>
+        <>
+          <span className={styles.fieldLabel}>{label}</span>
+          <p className={`${styles.fieldValue} ${value ? "" : styles.fieldMuted}`}>
+            {value || "I'm a new user and I don't have a bio yet"}
+          </p>
+        </>
       )}
-    </Card.Text>
+    </div>
   );
 };
