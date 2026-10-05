@@ -280,7 +280,7 @@ $glass-border: rgba($white, 0.16);
 .decoCross {
   @extend %hero-deco;
   bottom: -1.25rem;
-  left: 42%;
+  right: 14%;
   width: 3rem;
   animation-delay: 2.4s;
 
@@ -291,7 +291,7 @@ $glass-border: rgba($white, 0.16);
 
   @include respond-to-lg {
     bottom: -2rem;
-    left: 44%;
+    right: 16%;
     width: 5rem;
   }
 }
