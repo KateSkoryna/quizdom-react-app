@@ -13,9 +13,12 @@ const AddQuizCard = () => {
   return (
     <>
       <Card className={styles.gridCard}>
-        <button className={styles.addQuizCardBtn} onClick={handleShowModal}>
-          ADD QUIZ
-          <MdAdd className={styles.addQuizIcon} />
+        <button type="button" className={styles.addQuizCardBtn} onClick={handleShowModal}>
+          <span className={styles.addQuizIcon}>
+            <MdAdd aria-hidden="true" />
+          </span>
+          Add quiz
+          <span className={styles.addQuizHint}>Write your own or let AI build it</span>
         </button>
       </Card>
       {show && <QuizModal showModal={show} handleCloseModal={handleCloseModal} />}

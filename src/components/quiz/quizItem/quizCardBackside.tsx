@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Button } from "react-bootstrap";
+import { MdArrowForward } from "react-icons/md";
 import { useAuthStore } from "../../../store/authStore";
 import { useQuizCompletionStore } from "../../../store/quizAttemptsStore";
 import StartQuizModal from "../../modal/startQuizModal";
@@ -46,7 +47,7 @@ const QuizCardBackside = ({ questions, quizId, likesCount }: StartQuizButtonProp
   const correct = completion?.score?.correctAnswers ?? 0;
   const total = completion?.score?.totalQuestions ?? 1;
 
-  const score = `${correct} from ${total}`;
+  const score = `${correct}/${total}`;
   const scoreRate = `${Number((correct / total) * 100).toFixed()}%`;
 
   const showLoading = !!(currentUser && isLoading);
@@ -61,9 +62,13 @@ const QuizCardBackside = ({ questions, quizId, likesCount }: StartQuizButtonProp
         {hasCompleted ? (
           <QuizStatistic score={score} scoreRate={scoreRate} />
         ) : (
-          <Button onClick={handleStart} className={styles.startButton} disabled={showLoading}>
-            {showLoading ? "Loading..." : "Start"}
-          </Button>
+          <>
+            <span className={styles.questionsLabel}>{questions.length} questions</span>
+            <Button onClick={handleStart} className={styles.startButton} disabled={showLoading}>
+              {showLoading ? "Loading..." : "Start quiz"}
+              {!showLoading && <MdArrowForward aria-hidden="true" />}
+            </Button>
+          </>
         )}
       </div>
       {startQuiz && (

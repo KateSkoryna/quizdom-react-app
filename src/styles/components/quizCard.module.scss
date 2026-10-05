@@ -1,34 +1,57 @@
 @use "../settings" as *;
 @use "../abstracts" as *;
 
+$card-navy-deep: #050b2e;
+$card-violet: #2a1670;
+$card-radius: calc(#{$spacing-16} * 1.25);
+$card-text-muted: rgba($white, 0.68);
+$card-text-subtle: rgba($white, 0.5);
+$card-border: rgba($white, 0.1);
+$button-gradient: linear-gradient(135deg, #ffb866 0%, $primary-color 100%);
+
+%glass-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.25rem 0.625rem;
+  border: 1px solid rgba($white, 0.16);
+  border-radius: 999px;
+  background: rgba($white, 0.08);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  line-height: 1.3;
+}
+
 .gridWrapper {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(12.5rem, 1fr));
-  gap: $spacing-8;
-  padding: 0 $spacing-12 calc(#{$spacing-12} * 2) $spacing-12;
+  gap: $spacing-16;
+  padding: 0 $spacing-12 calc(#{$spacing-16} * 2);
   list-style: none;
   margin: 0 auto;
   width: 100%;
   max-width: 82.5rem;
   align-items: start;
 
-  @media screen and (min-width: 576px) {
+  @include respond-to-sm {
     max-width: 33.75rem;
   }
 
-  @media screen and (min-width: 768px) {
+  @include respond-to-md {
     grid-template-columns: repeat(2, 1fr);
-    gap: $spacing-12;
+    gap: calc(#{$spacing-16} * 1.25);
     max-width: 45rem;
   }
 
   @media screen and (min-width: 992px) {
     grid-template-columns: repeat(3, 1fr);
-    gap: $spacing-16;
     max-width: 60rem;
   }
 
-  @media screen and (min-width: 1200px) {
+  @include respond-to-xl {
     grid-template-columns: repeat(4, 1fr);
     max-width: 71.25rem;
   }
@@ -38,7 +61,6 @@
   }
 }
 
-// Grid Container
 .gridContainer {
   display: contents;
 }
@@ -48,212 +70,66 @@
 }
 
 .gridCard {
-  height: 100%;
   position: relative;
+  height: 100%;
+  min-height: 16rem;
   border: 0;
-  min-height: 14rem;
+  background: transparent;
+  perspective: 1200px;
+  transition: transform $transition-base ease-out;
 
-  @media screen and (min-width: $breakpoint-md) {
-    min-height: 16rem;
+  @include respond-to-md {
+    min-height: 17rem;
+  }
+
+  @include respond-to-xl {
+    &:hover {
+      transform: translateY(-4px);
+    }
   }
 
   & .quizCardContent {
-    border: none;
-    border-radius: 0;
     position: absolute;
     width: 100%;
     height: 100%;
-    transition: transform 0.6s;
+    transition:
+      transform 0.6s,
+      box-shadow $transition-base;
     transform-style: preserve-3d;
-    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px $spacing-8;
-    border-radius: $border-radius-8;
     pointer-events: none;
 
-    // Cursor pointer on mobile and tablet to indicate clickable
     @media screen and (max-width: 1199px) {
       cursor: pointer;
     }
 
     & .front,
     .back {
-      height: 100%;
-      width: 100%;
       position: absolute;
+      width: 100%;
+      height: 100%;
       backface-visibility: hidden;
       -webkit-backface-visibility: hidden;
     }
 
     & .front {
+      display: flex;
+      flex-direction: column;
       pointer-events: auto;
-      @extend %flex-column;
     }
 
     & .back {
       transform: rotateY(180deg);
       pointer-events: none;
-      padding: $spacing-8 $spacing-16;
+      padding: $spacing-16;
       @extend %flex-column;
-      align-content: center;
-
-      & .completedInfo {
-        text-align: center;
-
-        & > p:first-child {
-          font-weight: bold;
-        }
-      }
-
-      // Action Buttons Container - top right
-      & .actionButtons {
-        display: flex;
-        align-items: center;
-        gap: $spacing-4;
-        position: absolute;
-        top: $spacing-16;
-        right: $spacing-16;
-        pointer-events: auto;
-        z-index: 10;
-      }
-
-      // Like Button Container - bottom right
-      & .likeButtonContainer {
-        position: absolute;
-        bottom: $spacing-16;
-        right: $spacing-16;
-        pointer-events: auto;
-        z-index: 10;
-
-        & .likeContainer {
-          display: flex;
-          align-items: center;
-          gap: $spacing-8;
-
-          & .likeCount {
-            font-size: $font-size-14;
-            font-weight: 600;
-            color: $gray-light;
-          }
-        }
-      }
-
-      // Start Button Container - absolutely positioned on right
-      & .startButtonContainer {
-        @extend %flex-column;
-        width: 100%;
-        height: 100%;
-      }
-
-      // Start Button with gradient glow on hover
-      & .startButton {
-        width: 8rem;
-        height: 8rem;
-        padding: 0;
-        border: none;
-        outline: none;
-        color: $primary-color;
-        background: $white;
-        cursor: pointer;
-        position: relative;
-        z-index: 0;
-        border-radius: $border-radius-circle;
-        font-size: $font-size-16;
-        font-weight: 700;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        @extend %flex-row;
-
-        &:before {
-          content: "";
-          background: linear-gradient(
-            45deg,
-            $primary-color,
-            #27aae1,
-            #00093c,
-            #27aae1,
-            $primary-color,
-            #27aae1,
-            #00093c,
-            #27aae1,
-            $primary-color
-          );
-          position: absolute;
-          top: -2px;
-          left: -2px;
-          background-size: 400%;
-          z-index: -1;
-          filter: blur(5px);
-          width: calc(100% + 4px);
-          height: calc(100% + 4px);
-          opacity: 0;
-          transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-          border-radius: $border-radius-circle;
-        }
-
-        &:hover,
-        &:focus {
-          border: none;
-          transform: translateY(-2px);
-          box-shadow:
-            0 0 calc(#{$spacing-16} + #{$spacing-4}) rgba(247, 148, 29, 0.6),
-            0 0 calc((#{$spacing-16} + #{$spacing-4}) * 2) rgba(39, 170, 225, 0.5),
-            0 $spacing-4 calc(#{$spacing-16} + #{$spacing-4}) rgba(0, 0, 0, 0.15);
-
-          &:before {
-            opacity: 1;
-            animation: glowing 20s linear infinite;
-          }
-        }
-
-        &:hover,
-        &:active {
-          color: $primary-color;
-        }
-
-        &:active {
-          transform: translateY(0);
-          box-shadow:
-            0 0 $spacing-16 rgba(247, 148, 29, 0.5),
-            0 0 calc(#{$spacing-16} + #{$spacing-14}) rgba(39, 170, 225, 0.4),
-            0 calc(#{$spacing-4} / 2) $spacing-12 rgba(0, 0, 0, 0.1);
-        }
-
-        &:after {
-          z-index: -1;
-          content: "";
-          position: absolute;
-          width: 100%;
-          height: 100%;
-          background: $white;
-          left: 0;
-          top: 0;
-          border-radius: $border-radius-circle;
-        }
-
-        &:disabled {
-          opacity: 0.6;
-          cursor: not-allowed;
-          transform: none;
-          box-shadow:
-            0 0 $spacing-16 rgba(247, 148, 29, 0.4),
-            0 0 calc(#{$spacing-16} + #{$spacing-14}) rgba(39, 170, 225, 0.3),
-            0 calc(#{$spacing-4} / 2) $spacing-12 rgba(0, 0, 0, 0.1);
-
-          &:before {
-            opacity: 0;
-            animation: none;
-          }
-        }
-      }
     }
   }
 
-  // Hover effect only on desktop (not on mobile/tablet with touch)
-  @media screen and (min-width: 1200px) {
+  @include respond-to-xl {
     &:hover .quizCardContent {
       transform: rotateY(180deg);
+      box-shadow: 0 1.5rem 3rem rgba($secondary-color, 0.35);
 
-      // Disable front pointer events, enable back
       & .front {
         pointer-events: none;
       }
@@ -261,28 +137,12 @@
       & .back {
         pointer-events: auto;
       }
-
-      // Activate button glow effect on card hover
-      & .startButton {
-        transform: translateY(-2px);
-        box-shadow:
-          0 0 calc(#{$spacing-16} + #{$spacing-4}) rgba(247, 148, 29, 0.6),
-          0 0 calc((#{$spacing-16} + #{$spacing-4}) * 2) rgba(39, 170, 225, 0.5),
-          0 $spacing-4 calc(#{$spacing-16} + #{$spacing-4}) rgba(0, 0, 0, 0.15);
-
-        &:before {
-          opacity: 1;
-          animation: glowing 20s linear infinite;
-        }
-      }
     }
   }
 
-  // Flipped state for mobile (click to toggle)
   .quizCardContent.flipped {
     transform: rotateY(180deg);
 
-    // Disable front pointer events, enable back
     & .front {
       pointer-events: none;
     }
@@ -290,245 +150,287 @@
     & .back {
       pointer-events: auto;
     }
-
-    // Activate button glow effect
-    & .startButton {
-      transform: translateY(-2px);
-      box-shadow:
-        0 0 calc(#{$spacing-16} + #{$spacing-4}) rgba(247, 148, 29, 0.6),
-        0 0 calc((#{$spacing-16} + #{$spacing-4}) * 2) rgba(39, 170, 225, 0.5),
-        0 $spacing-4 calc(#{$spacing-16} + #{$spacing-4}) rgba(0, 0, 0, 0.15);
-
-      &:before {
-        opacity: 1;
-        animation: glowing 20s linear infinite;
-      }
-    }
   }
 }
 
-// Completed Badge
-.completedBadge {
-  position: absolute;
-  top: $spacing-8;
-  right: $spacing-8;
-  z-index: 10;
-  font-size: 0.7rem;
-  font-weight: 600;
-  padding: $spacing-4 $spacing-8;
-  box-shadow: 0 calc(#{$spacing-4} / 2) $spacing-8 rgba(0, 0, 0, 0.2);
+.quizCardContent {
+  --card-level: var(--level-color, #{$primary-color});
+
+  border: 1px solid $card-border;
+  border-radius: $card-radius;
+  background:
+    radial-gradient(
+      14rem 10rem at 100% 0%,
+      color-mix(in srgb, var(--card-level) 38%, transparent),
+      transparent 70%
+    ),
+    radial-gradient(12rem 10rem at 0% 100%, rgba($accent-blue, 0.16), transparent 70%),
+    linear-gradient(160deg, $secondary-color 0%, $card-navy-deep 60%, $card-violet 140%);
+  box-shadow: 0 0.75rem 1.75rem rgba($secondary-color, 0.22);
+  color: $white;
 }
 
-// Quiz Cover
 .cover {
-  width: 100%;
-  height: 8rem;
-  margin: 0;
-  padding: $spacing-8 $spacing-16;
-  position: relative;
-  @extend %flex-column;
-  border-top-left-radius: $border-radius-8;
-  border-top-right-radius: $border-radius-8;
-  background: $primary-gradient;
-
-  @media screen and (max-width: 768px) {
-    height: 6rem;
-  }
-
-  & .coverTitle {
-    color: white;
-    font-size: $font-size-16;
-    font-weight: 700;
-    text-shadow: 0 calc(#{$spacing-4} / 2) $spacing-12 rgba(0, 0, 0, 0.3);
-    text-align: center;
-
-    // Modern CSS line clamping
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2;
-    line-clamp: 2;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-  // Category - positioned in bottom right corner
-  & .category {
-    color: white;
-    font-size: $font-size-8;
-    font-weight: 400;
-    position: absolute;
-    bottom: $spacing-8;
-    right: $spacing-16;
-    margin: 0;
-  }
-}
-
-// Level Info
-.levelInfo {
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  gap: $spacing-12;
+  padding: calc(#{$spacing-16} * 1.25) calc(#{$spacing-16} * 1.25) 0;
 }
 
-.quizInfoCard {
-  padding: $spacing-8 $spacing-16;
-  @extend %flex-column;
-  gap: $spacing-8;
-  border: none;
-  border-radius: 0;
-  transition: all 0.3s ease;
-  position: relative;
-  flex: 1;
-  min-height: 0;
-  align-items: flex-start;
-}
-
-.cardHeader {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: $spacing-16;
-}
-
-.title {
-  font-size: $font-size-16;
-  font-weight: 700;
-  color: $text-primary;
-  margin: 0;
-
-  @media screen and (min-width: 769px) {
-    font-size: $font-size-24;
-  }
-}
-
-.subtitle {
-  display: flex;
-  align-items: center;
-  gap: $spacing-8;
-  font-size: $font-size-16;
-  color: $text-secondary;
-}
-
-.complexity {
-  display: flex;
-  align-items: baseline;
-  gap: $spacing-4;
-  font-weight: 600;
-  color: $primary-color;
-}
-
-.levelIcon {
-  width: $spacing-16;
-  height: $spacing-16;
-  object-fit: contain;
-}
-
-.separator {
-  color: $gray-light;
-}
-
-.author {
-  font-style: italic;
-  font-size: $font-size-8;
-}
-
-// Published Info
-.publishedInfo {
+.coverTop {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-top: auto;
   gap: $spacing-8;
-  color: $gray-light;
+  min-height: 1.5rem;
 }
 
-// Description
-.description {
-  font-size: $font-size-14;
-  font-weight: 700;
-  line-height: 1.2;
+.category {
+  @extend %glass-pill;
+  overflow: hidden;
+  color: rgba($white, 0.9);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
 
+.completedBadge {
+  @extend %glass-pill;
+  flex-shrink: 0;
+  border-color: rgba($color-success, 0.45);
+  background: rgba($color-success, 0.16);
+  color: #7ee2a0;
+
+  svg {
+    width: 0.875rem;
+    height: 0.875rem;
+  }
+}
+
+.coverTitle {
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
   line-clamp: 2;
   overflow: hidden;
-  text-overflow: ellipsis;
+  margin: 0;
+  color: $white;
+  font-size: 1.125rem;
+  font-weight: 800;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
 }
 
-// Stats
+.quizInfoCard {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: $spacing-12;
+  min-height: 0;
+  padding: $spacing-8 calc(#{$spacing-16} * 1.25) $spacing-16;
+  background: transparent;
+  color: inherit;
+}
+
+.description {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  overflow: hidden;
+  margin: 0;
+  color: $card-text-muted;
+  font-size: $font-size-14;
+  line-height: 1.45;
+}
+
+.levelInfo {
+  display: flex;
+  align-items: center;
+}
+
+.complexity {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  margin: 0;
+  padding: 0.25rem 0.625rem 0.25rem 0.5rem;
+  border: 1px solid color-mix(in srgb, var(--card-level, #{$primary-color}) 45%, transparent);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--card-level, #{$primary-color}) 14%, transparent);
+  font-size: $font-size-12;
+  font-weight: 700;
+}
+
+.levelIcon {
+  width: 0.875rem;
+  height: 0.875rem;
+  object-fit: contain;
+}
+
+.publishedInfo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: $spacing-8;
+  width: 100%;
+  margin-top: auto;
+  padding-top: $spacing-12;
+  border-top: 1px solid $card-border;
+  color: $card-text-subtle;
+}
+
+.author {
+  overflow: hidden;
+  margin: 0;
+  font-size: 0.6875rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .stats {
   display: flex;
-  gap: $spacing-12;
+  flex-shrink: 0;
   align-items: center;
-  justify-content: flex-end;
+  gap: $spacing-12;
 }
 
 .statItem {
   display: flex;
   align-items: center;
   gap: $spacing-4;
-  font-size: 0.65rem;
-  color: $gray-light;
+  color: $card-text-muted;
+  font-size: $font-size-12;
 }
 
 .statIcon {
-  width: 1.125rem;
-  height: 1.125rem;
-  object-fit: contain;
-  fill: $gray-light;
+  width: 1rem;
+  height: 1rem;
+  color: $accent-blue;
 }
 
-.rating {
-  display: flex;
-  gap: 0.05rem;
-}
-
-.starContainer {
-  position: relative;
-  display: inline-block;
-  font-size: 0.75rem;
-  line-height: 1;
-}
-
-.starFilled {
-  position: absolute;
-  top: 0;
-  left: 0;
-  color: $primary-color;
-  overflow: hidden;
-  white-space: nowrap;
-}
-
-.starEmpty {
-  color: $gray-light;
-}
-
-.ratingValue {
-  font-weight: 600;
-  color: $gray-light;
-  margin-left: 0.125rem;
-  font-size: 0.65rem;
-}
-
+.ratingValue,
 .statValue {
-  font-weight: 500;
-  font-size: 0.65rem;
+  font-weight: 600;
 }
 
-// Footer
-.cardFooter {
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
+.startButtonContainer {
+  @extend %flex-column;
+  gap: $spacing-12;
   width: 100%;
+  height: 100%;
 }
 
-// Share Button
+.questionsLabel {
+  color: $card-text-muted;
+  font-size: $font-size-14;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.startButton {
+  display: inline-flex;
+  align-items: center;
+  gap: $spacing-8;
+  padding: $spacing-12 calc(#{$spacing-16} * 1.5) !important;
+  border: 0 !important;
+  border-radius: 999px !important;
+  background: $button-gradient !important;
+  box-shadow: 0 0.75rem 2rem rgba($primary-color, 0.4);
+  color: $secondary-color !important;
+  font-size: $font-size-16;
+  font-weight: 700;
+  transition:
+    transform $transition-fast ease-out,
+    box-shadow $transition-base ease-out;
+
+  &:hover:not(:disabled) {
+    box-shadow: 0 1rem 2.5rem rgba($primary-color, 0.55);
+    transform: translateY(-2px);
+  }
+
+  &:focus-visible {
+    outline: 3px solid $accent-blue;
+    outline-offset: 3px;
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+.completedInfo {
+  @extend %flex-column;
+  gap: 0.25rem;
+  text-align: center;
+}
+
+.completedLabel {
+  color: $primary-color;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.completedScore {
+  background: linear-gradient(
+    90deg,
+    $primary-color 0%,
+    #ff8fb1 45%,
+    $element-color 70%,
+    $accent-blue 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  font-size: 2.5rem;
+  font-weight: 800;
+  line-height: 1.1;
+}
+
+.completedRate {
+  color: $card-text-muted;
+  font-size: $font-size-14;
+}
+
+.actionButtons {
+  position: absolute;
+  top: $spacing-16;
+  right: $spacing-16;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: $spacing-8;
+  pointer-events: auto;
+}
+
+.likeButtonContainer {
+  position: absolute;
+  right: $spacing-16;
+  bottom: $spacing-16;
+  z-index: 10;
+  pointer-events: auto;
+}
+
+.likeContainer {
+  display: flex;
+  align-items: center;
+  gap: $spacing-8;
+}
+
+.likeCount {
+  color: $card-text-muted;
+  font-size: $font-size-14;
+  font-weight: 600;
+}
+
 .shareButton {
-  background: transparent;
   @extend %flex-row;
-  border: none;
   padding: 0;
+  border: none;
+  background: transparent;
   line-height: 1;
 }
 
@@ -541,95 +443,83 @@
   }
 }
 
-.publishedDate {
-  color: $gray-light;
-  font-size: $font-size-14;
-}
-
-// Add Quiz Card
 .addQuizCardBtn {
-  height: 100%;
   @extend %flex-column;
-  gap: 0.66rem;
-  cursor: pointer;
-  transition: all 0.3s ease-in-out;
-  border: calc(#{$spacing-4} / 2) dashed $gray-light;
-  border-radius: $border-radius-8;
-  background: transparent;
-  font-size: $font-size-16;
-  font-weight: 700;
-  color: $black;
+  gap: $spacing-8;
+  width: 100%;
+  height: 100%;
+  min-height: 16rem;
   margin: 0;
+  border: 2px dashed rgba($secondary-color, 0.22);
+  border-radius: $card-radius;
+  background:
+    radial-gradient(12rem 10rem at 100% 0%, rgba($primary-color, 0.08), transparent 70%),
+    rgba($secondary-color, 0.03);
+  color: $secondary-color;
+  font-family: inherit;
+  font-size: 1.125rem;
+  font-weight: 800;
+  cursor: pointer;
+  transition:
+    border-color $transition-base,
+    box-shadow $transition-base,
+    transform $transition-fast ease-out;
 
-  @media screen and (min-width: $breakpoint-md) {
-    min-height: 16rem;
-    font-size: $font-size-24;
-  }
-
-  .addQuizIcon {
-    font-size: $font-size-32;
-    color: $black;
-    transition: all 0.3s ease-in-out;
-
-    @media screen and (min-width: 1024px) {
-      font-size: 3rem;
-    }
+  @include respond-to-md {
+    min-height: 17rem;
   }
 
   &:hover {
-    border-color: $primary-color;
     border-style: solid;
-    box-shadow: 0 0 calc(#{$spacing-16} + #{$spacing-4}) rgba($primary-color, 0.2);
-    color: $primary-color;
+    border-color: $primary-color;
+    box-shadow: 0 0.75rem 2rem rgba($primary-color, 0.2);
+    transform: translateY(-4px);
+  }
 
-    .addQuizIcon {
-      color: $primary-color;
-      transform: scale(1.1);
-    }
+  &:focus-visible {
+    outline: 3px solid $accent-blue;
+    outline-offset: 3px;
   }
 }
 
-// Responsive
-@media screen and (max-width: 768px) {
-  .quizCard {
-    min-height: 12.5rem;
+.addQuizIcon {
+  @extend %flex-row;
+  width: 3.5rem;
+  height: 3.5rem;
+  margin-bottom: $spacing-4;
+  border-radius: 50%;
+  background: $button-gradient;
+  box-shadow: 0 0.75rem 1.5rem rgba($primary-color, 0.35);
+  color: $secondary-color;
+  transition: transform $transition-base;
+
+  svg {
+    width: 1.75rem;
+    height: 1.75rem;
   }
 
-  .cardMeta {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: $spacing-12;
+  .addQuizCardBtn:hover & {
+    transform: rotate(90deg);
   }
+}
 
-  .stats {
-    gap: $spacing-8;
-    width: 100%;
-  }
+.addQuizHint {
+  color: $text-secondary;
+  font-size: $font-size-12;
+  font-weight: 500;
+}
 
-  .statItem {
-    font-size: 0.6rem;
-  }
-
-  .title {
-    font-size: $font-size-20;
-  }
-
-  .cardFooter {
-    flex-direction: column-reverse;
-    gap: $spacing-16;
-    align-items: stretch;
-  }
-
-  .shareButton {
-    align-self: flex-end;
-  }
-
+@media (prefers-reduced-motion: reduce) {
+  .gridCard,
+  .gridCard .quizCardContent,
+  .addQuizCardBtn,
+  .addQuizIcon,
   .startButton {
-    padding: 0.875rem 1.75rem;
-    font-size: $font-size-20;
+    transition: none;
   }
 
-  .publishedInfo {
-    width: 100%;
+  .gridCard:hover,
+  .addQuizCardBtn:hover {
+    transform: none;
   }
 }

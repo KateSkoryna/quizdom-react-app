@@ -18,10 +18,13 @@ const QuizStats = ({
   questionsCount,
 }: QuizStatsProps) => {
   const displayAuthor = currentUser ? authorName : "Someone you know";
+  const createdBy = `Created by ${displayAuthor} • ${publishedAt}`;
 
   return (
     <div className={styles.publishedInfo}>
-      <p className={styles.author}>{`Created by ${displayAuthor} • ${publishedAt}`}</p>
+      <p className={styles.author} title={createdBy}>
+        {createdBy}
+      </p>
       <div className={styles.stats}>
         <div className={styles.statItem}>
           <StarRating rating={rating} />
