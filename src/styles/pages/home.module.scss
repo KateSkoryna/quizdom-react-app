@@ -1,20 +1,6 @@
 @use "../settings" as *;
 @use "../abstracts" as *;
 
-.searchRow {
-  display: flex;
-  flex-direction: column;
-  gap: $spacing-8;
-
-  @media screen and (min-width: 768px) {
-    flex-direction: row;
-  }
-}
-
-.searchInput {
-  flex: 1;
-}
-
 .form {
   display: flex;
   flex-direction: column;
@@ -24,15 +10,6 @@
 
   @media screen and (min-width: 768px) {
     flex-direction: row;
-  }
-}
-
-.button {
-  width: 100%;
-
-  @media screen and (min-width: 768px) {
-    width: 200px;
-    margin-bottom: 0;
   }
 }
 
@@ -132,240 +109,618 @@
   opacity: 1;
 }
 
-.heroCardContainer {
-  padding: 0 0 $spacing-16 0;
+$hero-navy-deep: #050b2e;
+$hero-violet: #3b1d8f;
+$glass-bg: rgba($white, 0.08);
+$glass-border: rgba($white, 0.16);
+
+@keyframes heroFloat {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes heroSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+%glass {
+  background: $glass-bg;
+  border: 1px solid $glass-border;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 1.25rem 2.5rem rgba($black, 0.35);
+}
+
+.hero {
+  padding-top: calc(#{$spacing-16} * 6.5);
+
+  @include respond-to-lg {
+    padding-top: calc(#{$spacing-16} * 7);
+  }
+}
+
+.heroShell {
   position: relative;
+}
 
-  &::before,
-  &::after {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    pointer-events: none;
-    background-repeat: no-repeat;
+.heroPanel {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  display: grid;
+  gap: calc(#{$spacing-16} * 1.75);
+  padding: calc(#{$spacing-16} * 1.75) calc(#{$spacing-16} * 1.25);
+  border-radius: calc(#{$spacing-16} * 1.75);
+  background: linear-gradient(135deg, $secondary-color 0%, $hero-navy-deep 55%, $hero-violet 130%);
+  color: $white;
+
+  @include respond-to-lg {
+    grid-template-columns: 1.1fr 1fr;
+    align-items: center;
+    gap: calc(#{$spacing-16} * 2);
+    padding: calc(#{$spacing-16} * 3) calc(#{$spacing-16} * 3.5);
+  }
+}
+
+.heroGlow {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(28rem 20rem at 85% 15%, rgba($primary-color, 0.35), transparent 70%),
+    radial-gradient(24rem 18rem at 5% 100%, rgba($accent-blue, 0.3), transparent 70%),
+    radial-gradient(22rem 22rem at 75% 75%, rgba($element-color, 0.35), transparent 70%);
+}
+
+.heroGrid {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-image:
+    linear-gradient(rgba($white, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba($white, 0.05) 1px, transparent 1px);
+  background-size: 2.5rem 2.5rem;
+  mask-image: radial-gradient(ellipse at 30% 40%, $black 10%, transparent 70%);
+}
+
+%hero-deco {
+  position: absolute;
+  z-index: 2;
+  pointer-events: none;
+  opacity: 0.9;
+  animation: heroFloat 6s ease-in-out infinite;
+}
+
+.decoCircle {
+  @extend %hero-deco;
+  top: -1.25rem;
+  right: 1.25rem;
+  width: 3rem;
+  animation-delay: 0.8s;
+
+  @include respond-to-md {
+    top: -1.5rem;
+    right: 2rem;
+    width: 3.75rem;
   }
 
-  &::before {
-    z-index: 100;
-    background-image:
-      url("../../assets/circle.svg"), url("../../assets/horse.svg"),
-      url("../../assets/triangle.svg"), url("../../assets/x.svg"), url("../../assets/line.svg");
-    // decorElement1, 2, 3, 4, 5 positions
-    background-position:
-      30% 0%,
-      -5% 55%,
-      85% 100%,
-      50% 50%,
-      90% 30%;
-    background-size:
-      calc(#{$spacing-16} * 3 + (#{$spacing-4} / 2)) auto,
-      calc(#{$spacing-16} * 3 + (#{$spacing-4} / 2)) auto,
-      55px auto,
-      45px auto,
-      calc(#{$spacing-16} * 3 + (#{$spacing-4} / 2)) auto;
-    opacity: 0.6;
+  @include respond-to-lg {
+    top: -2rem;
+    right: 7%;
+    width: 5rem;
+  }
+}
 
-    @media screen and (min-width: 768px) {
-      background-size:
-        80px auto,
-        calc(#{$spacing-16} * 4 + (#{$spacing-12} / 2)) auto,
-        calc(#{$spacing-16} * 4 + (#{$spacing-12} / 2)) auto,
-        calc(#{$spacing-16} * 4 + (#{$spacing-12} / 2)) auto,
-        100px auto;
-      background-position:
-        103% 55%,
-        -1% 95%,
-        85% 100%,
-        55% 15%,
-        15% 40%;
-    }
+.decoHorse {
+  @extend %hero-deco;
+  top: 22%;
+  left: -0.6rem;
+  width: 1.75rem;
+  rotate: -8deg;
+  animation-delay: 0.4s;
 
-    @media screen and (min-width: 1024px) {
-      background-size:
-        100px auto,
-        100px auto,
-        100px auto,
-        150px auto,
-        100px auto;
-    }
+  @include respond-to-sm {
+    left: -1.25rem;
+    width: 3rem;
   }
 
-  &::after {
-    z-index: 100;
-    background-image:
-      url("../../assets/circle.svg"), url("../../assets/horse.svg"),
-      url("../../assets/triangle.svg"), url("../../assets/x.svg"), url("../../assets/line.svg");
-    // decorElement6, 7, 8, 9 positions + extra
-    background-position:
-      15% 30%,
-      103% 70%,
-      155% 20%,
-      -2% 95%,
-      95% -10%;
-    background-size:
-      calc(#{$spacing-16} * 3 + (#{$spacing-4} / 2)) auto,
-      calc(#{$spacing-16} * 3 + (#{$spacing-4} / 2)) auto,
-      calc(#{$spacing-16} * 3 + (#{$spacing-4} / 2)) auto,
-      calc(#{$spacing-16} * 3 + (#{$spacing-4} / 2)) auto,
-      45px auto;
-    opacity: 0.5;
+  @include respond-to-lg {
+    top: 18%;
+    left: -1.75rem;
+    width: 4.5rem;
+  }
+}
 
-    @media screen and (min-width: 768px) {
-      background-size:
-        calc(#{$spacing-16} * 4 + (#{$spacing-12} / 2)) auto,
-        150px auto,
-        100px auto,
-        100px auto,
-        calc(#{$spacing-16} * 3.75) auto;
-      background-position:
-        40% 30%,
-        87% 35%,
-        30% 80%,
-        20% 100%,
-        55% 100%;
-    }
+.decoLine {
+  @extend %hero-deco;
+  bottom: 4%;
+  left: -0.6rem;
+  width: 3.5rem;
+  animation-delay: 2s;
 
-    @media screen and (min-width: 1024px) {
-      background-size:
-        120px auto,
-        100px auto,
-        150px auto,
-        100px auto,
-        100px auto;
+  @include respond-to-sm {
+    left: -1.25rem;
+    width: 5rem;
+  }
+
+  @include respond-to-lg {
+    bottom: -0.75rem;
+    left: -1.75rem;
+    width: 7rem;
+  }
+}
+
+.decoTriangle {
+  @extend %hero-deco;
+  top: 34%;
+  right: -0.6rem;
+  width: 1.75rem;
+  rotate: -14deg;
+  animation-delay: 1.6s;
+
+  @include respond-to-sm {
+    right: -1.25rem;
+    width: 3rem;
+  }
+
+  @include respond-to-lg {
+    top: 30%;
+    right: -1.75rem;
+    width: 4rem;
+  }
+}
+
+.decoCross {
+  @extend %hero-deco;
+  bottom: -1.25rem;
+  right: 14%;
+  width: 3rem;
+  animation-delay: 2.4s;
+
+  @include respond-to-md {
+    bottom: -1.5rem;
+    width: 3.75rem;
+  }
+
+  @include respond-to-lg {
+    bottom: -2rem;
+    right: 16%;
+    width: 5rem;
+  }
+}
+
+.heroContent {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: calc(#{$spacing-16} * 1.25);
+  animation: fadeInUp 0.7s ease-out both;
+}
+
+.heroEyebrow {
+  @extend %glass;
+  display: inline-flex;
+  align-items: center;
+  gap: $spacing-8;
+  padding: 0.375rem $spacing-14;
+  border-radius: 999px;
+  font-size: $font-size-12;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  box-shadow: none;
+
+  svg {
+    color: $primary-color;
+  }
+}
+
+.heroTitle {
+  color: $white;
+  font-weight: 800;
+  font-size: clamp(2rem, 1.2rem + 3.6vw, 3.5rem);
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+}
+
+.heroTitleAccent {
+  background: linear-gradient(
+    90deg,
+    $primary-color 0%,
+    #ff8fb1 45%,
+    $element-color 70%,
+    $accent-blue 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.heroLead {
+  max-width: 34rem;
+  color: rgba($white, 0.75);
+  font-size: $font-size-16;
+  line-height: 1.6;
+
+  @include respond-to-lg {
+    font-size: 1.0625rem;
+  }
+}
+
+.heroActions {
+  display: flex;
+  gap: $spacing-8;
+  width: 100%;
+  margin-top: $spacing-4;
+
+  > * {
+    flex: 1;
+    justify-content: center;
+  }
+
+  @include respond-to-sm {
+    gap: $spacing-12;
+    width: auto;
+
+    > * {
+      flex: initial;
     }
   }
 }
 
-.heroCard {
-  margin-top: calc(#{$spacing-16} * 3.75);
-  height: 12rem;
+%hero-button {
+  display: inline-flex;
+  align-items: center;
+  gap: $spacing-8;
+  padding: $spacing-12 $spacing-16;
+  border-radius: 999px;
+  font-family: inherit;
+  font-size: $font-size-14;
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    transform $transition-fast ease-out,
+    box-shadow $transition-base ease-out,
+    background-color $transition-base ease-out;
+
+  @include respond-to-sm {
+    padding: $spacing-12 calc(#{$spacing-16} * 1.5);
+    font-size: $font-size-16;
+  }
+
+  &:hover {
+    transform: translateY(-2px);
+  }
+
+  &:focus-visible {
+    outline: 3px solid $accent-blue;
+    outline-offset: 3px;
+  }
+}
+
+.heroPrimary {
+  @extend %hero-button;
   border: 0;
+  color: $secondary-color;
+  background: linear-gradient(135deg, #ffb866 0%, $primary-color 100%);
+  box-shadow: 0 0.75rem 2rem rgba($primary-color, 0.4);
+
+  &:hover {
+    box-shadow: 0 1rem 2.5rem rgba($primary-color, 0.55);
+  }
+}
+
+.heroSecondary {
+  @extend %hero-button;
+  color: $white;
+  background: transparent;
+  border: 1px solid rgba($white, 0.3);
+
+  &:hover {
+    background-color: rgba($white, 0.08);
+  }
+}
+
+.heroFeatures {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $spacing-8 calc(#{$spacing-16} * 1.25);
+  margin: $spacing-8 0 0;
+  padding: 0;
+  list-style: none;
+  font-size: $font-size-14;
+  color: rgba($white, 0.7);
+
+  li {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+  }
+
+  svg {
+    color: $accent-blue;
+  }
+}
+
+.heroVisual {
   position: relative;
-  background-color: $secondary-color;
-  border-radius: 0;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: $spacing-16;
+  animation: fadeInUp 0.9s ease-out 0.15s both;
 
-  @media screen and (min-width: 1024px) {
-    height: 18rem;
+  @include respond-to-lg {
+    display: grid;
+    place-items: center;
+    min-height: 22rem;
+  }
+}
+
+.heroOrbit {
+  display: none;
+  position: absolute;
+  width: 22rem;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  border: 1.5px dashed rgba($white, 0.22);
+  animation: heroSpin 40s linear infinite;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 8%;
+    right: 12%;
+    width: 0.75rem;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: $primary-color;
+    box-shadow: 0 0 1rem $primary-color;
   }
 
-  @media screen and (min-width: 768px) {
-    height: 16rem;
-  }
-
-  picture {
+  @include respond-to-lg {
     display: block;
-    width: 100%;
   }
+}
+
+.heroPhoto {
+  position: relative;
+  isolation: isolate;
+  flex-shrink: 0;
+  width: 5.5rem;
+
+  @include respond-to-md {
+    width: 8rem;
+  }
+
+  @include respond-to-lg {
+    width: 17rem;
+  }
+}
+
+.heroImageFrame {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  aspect-ratio: 1;
+  padding: 0.25rem;
+  border-radius: 46% 54% 52% 48% / 48% 46% 54% 52%;
+  background: linear-gradient(135deg, $primary-color, $element-color 50%, $accent-blue);
+  box-shadow: 0 1.5rem 4rem rgba($element-color, 0.45);
+}
+
+%scene-layer {
+  position: absolute;
+  pointer-events: none;
+  animation: heroFloat 7s ease-in-out infinite;
+}
+
+%scene-back {
+  @extend %scene-layer;
+  z-index: 0;
+  filter: blur(2px);
+  opacity: 0.5;
+  animation-duration: 9s;
+}
+
+%scene-front {
+  @extend %scene-layer;
+  z-index: 2;
+  filter: drop-shadow(0 0.75rem 1.25rem rgba($black, 0.55));
+  animation-duration: 4.5s;
+}
+
+.sceneBackRing {
+  @extend %scene-back;
+  top: -18%;
+  left: -24%;
+  width: 66%;
+}
+
+.sceneBackQueen {
+  @extend %scene-back;
+  right: -14%;
+  bottom: -8%;
+  width: max(12%, 0.75rem);
+  rotate: 14deg;
+  animation-delay: 1.2s;
+}
+
+.sceneFrontKnight {
+  @extend %scene-front;
+  top: -8%;
+  left: -10%;
+  width: max(24%, 1.75rem);
+  filter: drop-shadow(0 0.75rem 1.25rem rgba($black, 0.55))
+    drop-shadow(0 0 0.75rem rgba($primary-color, 0.45));
+}
+
+.sceneFrontTriangle {
+  @extend %scene-front;
+  top: 58%;
+  right: -10%;
+  width: max(18%, 1.25rem);
+  rotate: 12deg;
+  animation-delay: 0.6s;
+}
+
+.orb {
+  position: absolute;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  pointer-events: none;
+  animation: heroFloat 7s ease-in-out infinite;
+}
+
+.orbBack {
+  z-index: 0;
+  right: 4%;
+  bottom: -12%;
+  width: 34%;
+  background: radial-gradient(circle at 32% 28%, #ffd29a 0%, $primary-color 38%, #8a3b00 100%);
+  box-shadow: 0 1rem 2rem rgba($primary-color, 0.35);
+  animation-duration: 10s;
+  animation-delay: 2s;
+}
+
+.orbFront {
+  z-index: 2;
+  top: 6%;
+  right: 2%;
+  width: max(14%, 0.9rem);
+  background: radial-gradient(circle at 30% 28%, #d9f3ff 0%, $accent-blue 42%, #0b4a7a 100%);
+  box-shadow:
+    0 0.75rem 1.5rem rgba($black, 0.5),
+    0 0 1rem rgba($accent-blue, 0.6);
+  animation-duration: 4s;
+  animation-delay: 1s;
 }
 
 .heroImg {
-  width: 100%;
-  height: 12rem;
-  object-position: 90% center;
-  object-fit: contain;
   display: block;
-
-  @media screen and (min-width: 1024px) {
-    height: 18rem;
-    object-position: 78% center;
-  }
-
-  @media screen and (min-width: 768px) {
-    height: 16rem;
-  }
-}
-
-.overlay {
-  max-width: 1400px;
-  margin-left: auto;
-  margin-right: auto;
-  padding-top: calc(#{$spacing-16} + #{$spacing-4});
-  padding-left: calc(#{$spacing-8} + (#{$spacing-4} / 2));
-  padding-right: calc(#{$spacing-8} + (#{$spacing-4} / 2));
-  display: flex;
-  flex-direction: column;
+  width: 100%;
   height: 100%;
-
-  @media screen and (min-width: 768px) {
-  }
+  object-fit: cover;
+  border-radius: inherit;
 }
 
-.heroContainer {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  height: 100%;
-  flex: 1;
-  position: relative;
-  z-index: 1;
-}
-
-.heroCardBody {
-  padding: 0;
-}
-
-.heroBodyContainer {
-  @media screen and (min-width: 768px) {
-    padding-left: $spacing-12;
-    padding-right: $spacing-12;
-  }
-}
-
-.heroCardTitle {
-  font-size: $font-size-20;
-  animation: fadeInDown 0.8s ease-out;
-  color: rgb(255, 255, 255, 0.8);
-  -webkit-text-stroke: 0.3px black;
-
-  @media screen and (min-width: 768px) {
-    font-size: $font-size-24;
-    margin-bottom: calc(#{$spacing-16} + #{$spacing-4});
-  }
-
-  @media screen and (min-width: 998px) {
-    font-size: $font-size-28;
-    margin-bottom: calc(#{$spacing-16} + #{$spacing-4});
-  }
-}
-
-.heroQuoteWrapper {
-  animation: fadeInUp 1s ease-out 0.3s both;
-}
-
-.heroJokeText {
-  font-size: $font-size-16;
-  font-family: "bebas neue";
-  text-align: start;
+.floatCard {
+  @extend %glass;
+  position: absolute;
+  z-index: 3;
+  border-radius: $spacing-16;
   color: $white;
-
-  -webkit-text-stroke: 0.2px black;
-
-  @media screen and (min-width: 768px) {
-    font-size: $font-size-24;
-    width: 75%;
-  }
-
-  @media screen and (min-width: 998px) {
-    font-size: $font-size-28;
-  }
 }
 
-.heroJokeAuthor {
-  font-size: $font-size-12;
-  text-align: start;
-  color: darkslategrey;
+.floatScore {
+  top: 40%;
+  right: 0;
+  display: none;
+  align-items: center;
+  gap: $spacing-8;
+  padding: $spacing-8 $spacing-14;
+  animation: heroFloat 6s ease-in-out 1s infinite;
 
-  @media screen and (min-width: 768px) {
+  strong,
+  small {
+    display: block;
+    line-height: 1.2;
+  }
+
+  strong {
     font-size: $font-size-14;
   }
 
-  @media screen and (min-width: 998px) {
-    font-size: $font-size-16;
+  small {
+    font-size: $font-size-12;
+    color: rgba($white, 0.7);
+  }
+
+  @include respond-to-lg {
+    display: flex;
   }
 }
+
+.floatScoreIcon {
+  width: 1.75rem;
+  height: 1.75rem;
+  color: $color-success;
+}
+
+.floatQuote {
+  position: relative;
+  flex: 1;
+  margin: 0;
+  padding: $spacing-12 $spacing-14;
+
+  @include respond-to-lg {
+    position: absolute;
+    bottom: -1.5rem;
+    left: -1rem;
+    width: 16rem;
+    margin: 0;
+  }
+}
+
+.floatQuoteLabel {
+  margin-bottom: 0.375rem;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: $primary-color;
+}
+
+.heroJoke {
+  margin: 0;
+}
+
+.heroJokeText {
+  font-size: $font-size-14;
+  line-height: 1.45;
+  color: rgba($white, 0.92);
+}
+
+.heroJokeAuthor {
+  margin-top: 0.375rem;
+  font-size: $font-size-12;
+  color: rgba($white, 0.6);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .heroContent,
+  .heroVisual,
+  .heroOrbit,
+  .sceneBackRing,
+  .sceneBackQueen,
+  .sceneFrontKnight,
+  .sceneFrontTriangle,
+  .orb,
+  .decoCircle,
+  .decoHorse,
+  .decoLine,
+  .decoTriangle,
+  .decoCross,
+  .floatScore {
+    animation: none;
+  }
+
+  .heroPrimary:hover,
+  .heroSecondary:hover {
+    transform: none;
+  }
+}
+
 .errorText {
   visibility: hidden;
 }
@@ -409,14 +764,88 @@
   }
 }
 
+.sectionHeader {
+  padding-top: calc(#{$spacing-16} * 2.5);
+  scroll-margin-top: calc(#{$spacing-16} * 4);
+}
+
+.sectionTitle {
+  font-weight: 800;
+  font-size: clamp(1.5rem, 1.2rem + 1.2vw, 2rem);
+  letter-spacing: -0.02em;
+  color: $secondary-color;
+}
+
+.sectionSubtitle {
+  margin-top: 0.375rem;
+  color: $text-secondary;
+  font-size: $font-size-14;
+}
+
 .stickySearchWrapper {
   position: sticky;
   top: calc(#{$spacing-16} * 3.75);
   z-index: 10;
-  background-color: $white;
-  padding-top: $spacing-16;
-  padding-bottom: $spacing-16;
+  padding: $spacing-16 0;
   margin-bottom: $spacing-16;
+  background-color: rgba($white, 0.85);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.searchBar {
+  display: flex;
+  align-items: center;
+  gap: $spacing-8;
+  padding: 0.375rem 0.375rem 0.375rem $spacing-16;
+  border: 1px solid #e3e5f0;
+  border-radius: 999px;
+  background-color: $white;
+  box-shadow: 0 0.5rem 1.5rem rgba($secondary-color, 0.08);
+  transition:
+    border-color $transition-base,
+    box-shadow $transition-base;
+
+  &:focus-within {
+    border-color: $primary-color;
+    box-shadow: 0 0 0 $spacing-4 rgba($primary-color, 0.2);
+  }
+}
+
+.searchIcon {
+  flex-shrink: 0;
+  width: 1.25rem;
+  height: 1.25rem;
+  color: $gray;
+}
+
+.searchInput {
+  flex: 1;
+  min-width: 0;
+  padding: $spacing-8 0;
+  border: 0;
+  background: transparent;
+  font-size: $font-size-14;
+  box-shadow: none !important;
+
+  &:focus {
+    outline: none;
+  }
+}
+
+.searchButton {
+  flex-shrink: 0;
+  padding: $spacing-8 calc(#{$spacing-16} * 1.25);
+  border: 0 !important;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #ffb866 0%, $primary-color 100%) !important;
+  color: $secondary-color !important;
+  font-weight: 600;
+
+  &:focus-visible {
+    outline: 3px solid $accent-blue;
+    outline-offset: 2px;
+  }
 }
 
 .scrollableSection {

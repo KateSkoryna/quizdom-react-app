@@ -16,7 +16,7 @@ const BlockQuote = () => {
   }, []);
 
   return (
-    <blockquote className="mb-0 fs-4 d-block">
+    <blockquote className={styles.heroJoke}>
       <p className={styles.heroJokeText}>{currentJoke.joke}</p>
       <footer className={styles.heroJokeAuthor}>{`— ${currentJoke.author}`}</footer>
     </blockquote>

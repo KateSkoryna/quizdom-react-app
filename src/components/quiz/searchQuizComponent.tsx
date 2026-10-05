@@ -1,9 +1,10 @@
 import { Button, Form } from "react-bootstrap";
 import styles from "../../styles/pages/home.module.scss";
-import modalStyles from "../../styles/components/modal.module.scss";
 import { useSearchParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { Container } from "react-bootstrap";
+import { MdSearch } from "react-icons/md";
+import { QUIZ_SEARCH_INPUT_ID } from "../../const/const";
 
 type SearchFormData = {
   q: string;
@@ -27,17 +28,18 @@ const SearchQuizComponent = () => {
   return (
     <Container>
       <Form onSubmit={handleSubmit(onSubmit)}>
-        <Form.Group controlId="q">
-          <Form.Label className={modalStyles.formLabel}>Search</Form.Label>
-          <div className={styles.searchRow}>
+        <Form.Group controlId={QUIZ_SEARCH_INPUT_ID}>
+          <Form.Label className="visually-hidden">Search quizzes</Form.Label>
+          <div className={styles.searchBar}>
+            <MdSearch className={styles.searchIcon} aria-hidden="true" />
             <Form.Control
               type="search"
               placeholder="Describe the quiz you want, e.g. easy JavaScript or advanced React hooks"
               maxLength={MAX_QUERY_LENGTH}
-              className={`${modalStyles.formInput} ${styles.searchInput}`}
+              className={styles.searchInput}
               {...register("q")}
             />
-            <Button className={`${modalStyles.primaryButton} ${styles.button}`} type="submit">
+            <Button className={styles.searchButton} type="submit">
               Search
             </Button>
           </div>
