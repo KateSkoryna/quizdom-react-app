@@ -6,7 +6,9 @@ import heroSq from "../../assets/hero2-sq.webp";
 import knight from "../../assets/knight.svg";
 import circle from "../../assets/circle.svg";
 import triangle from "../../assets/triangle.svg";
-import zigzag from "../../assets/line.svg";
+import cross from "../../assets/line.svg";
+import line from "../../assets/x.svg";
+import horse from "../../assets/horse.svg";
 import queen from "../../assets/queen.svg";
 import { QUIZ_SECTION_ID, QUIZ_SEARCH_INPUT_ID } from "../../const/const";
 
@@ -14,9 +16,12 @@ const FEATURES = ["AI quiz builder", "Semantic search", "Progress stats"];
 
 type Decoration = { src: string; className: string };
 
-const AROUND_DECORATIONS: Decoration[] = [
+const EDGE_DECORATIONS: Decoration[] = [
+  { src: circle, className: "decoCircle" },
+  { src: horse, className: "decoHorse" },
+  { src: line, className: "decoLine" },
   { src: triangle, className: "decoTriangle" },
-  { src: zigzag, className: "decoZigzag" },
+  { src: cross, className: "decoCross" },
 ];
 
 const BEHIND_PHOTO_DECORATIONS: Decoration[] = [
@@ -48,11 +53,10 @@ const HeroContainer = () => {
   return (
     <Container as="section" className={styles.hero} aria-labelledby="hero-title">
       <div className={styles.heroShell}>
-        <img src={circle} className={styles.decoCircle} alt="" aria-hidden="true" />
+        {renderDecorations(EDGE_DECORATIONS)}
         <div className={styles.heroPanel}>
           <div className={styles.heroGlow} aria-hidden="true" />
           <div className={styles.heroGrid} aria-hidden="true" />
-          {renderDecorations(AROUND_DECORATIONS)}
           <div className={styles.heroContent}>
             <span className={styles.heroEyebrow}>
               <MdAutoAwesome aria-hidden="true" />

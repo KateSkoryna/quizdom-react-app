@@ -192,19 +192,17 @@ $glass-border: rgba($white, 0.16);
 
 %hero-deco {
   position: absolute;
-  z-index: 0;
+  z-index: 2;
   pointer-events: none;
-  opacity: 0.75;
+  opacity: 0.9;
   animation: heroFloat 6s ease-in-out infinite;
 }
 
 .decoCircle {
   @extend %hero-deco;
-  z-index: 2;
   top: -1.25rem;
   right: 1.25rem;
   width: 3rem;
-  opacity: 0.9;
   animation-delay: 0.8s;
 
   @include respond-to-md {
@@ -220,38 +218,81 @@ $glass-border: rgba($white, 0.16);
   }
 }
 
-.decoTriangle {
+.decoHorse {
   @extend %hero-deco;
-  top: 5.25rem;
-  right: 1.25rem;
-  width: 2.5rem;
-  rotate: -14deg;
-  animation-delay: 1.6s;
+  top: 22%;
+  left: -0.6rem;
+  width: 1.75rem;
+  rotate: -8deg;
+  animation-delay: 0.4s;
 
-  @include respond-to-md {
-    top: 7rem;
-    right: 2rem;
-    width: 3.25rem;
+  @include respond-to-sm {
+    left: -1.25rem;
+    width: 3rem;
   }
 
   @include respond-to-lg {
-    top: auto;
-    right: 9%;
-    bottom: 9%;
+    top: 18%;
+    left: -1.75rem;
+    width: 4.5rem;
+  }
+}
+
+.decoLine {
+  @extend %hero-deco;
+  bottom: 14%;
+  left: -0.6rem;
+  width: 3.5rem;
+  animation-delay: 2s;
+
+  @include respond-to-sm {
+    left: -1.25rem;
+    width: 5rem;
+  }
+
+  @include respond-to-lg {
+    bottom: 12%;
+    left: -1.75rem;
+    width: 7rem;
+  }
+}
+
+.decoTriangle {
+  @extend %hero-deco;
+  top: 34%;
+  right: -0.6rem;
+  width: 1.75rem;
+  rotate: -14deg;
+  animation-delay: 1.6s;
+
+  @include respond-to-sm {
+    right: -1.25rem;
+    width: 3rem;
+  }
+
+  @include respond-to-lg {
+    top: 30%;
+    right: -1.75rem;
     width: 4rem;
   }
 }
 
-.decoZigzag {
+.decoCross {
   @extend %hero-deco;
-  display: none;
+  bottom: 22%;
+  right: -0.6rem;
+  width: 1.5rem;
   animation-delay: 2.4s;
 
+  @include respond-to-sm {
+    right: -1.25rem;
+    width: 2.5rem;
+  }
+
   @include respond-to-lg {
-    display: block;
-    top: 32%;
-    left: 52%;
-    width: 3rem;
+    bottom: 16%;
+    right: -1.5rem;
+    width: 3.25rem;
   }
 }
 
@@ -666,8 +707,10 @@ $glass-border: rgba($white, 0.16);
   .sceneFrontTriangle,
   .orb,
   .decoCircle,
+  .decoHorse,
+  .decoLine,
   .decoTriangle,
-  .decoZigzag,
+  .decoCross,
   .floatScore {
     animation: none;
   }
